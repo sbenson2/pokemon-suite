@@ -1,0 +1,10 @@
+#include <DriverKit/IOService.iig>
+class SuiteUSBProbe: public IOService {
+public:
+    virtual bool init(void) override;
+    virtual void free(void) override;
+    virtual kern_return_t Start(IOService* provider) override;
+    virtual kern_return_t Stop(IOService* provider) override;
+    virtual kern_return_t NewUserClient(uint32_t type, IOUserClient** client) override;
+    kern_return_t CopyValues(uint64_t* values, uint32_t count) LOCALONLY;
+};

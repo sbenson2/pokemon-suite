@@ -1,0 +1,32 @@
+{
+  "gb": {
+    "vertices": 257,
+    "triangles": 510,
+    "sha256": "56bdf9427b570305d5b2f432ac8a30c5984824cff8ef2153cea81efcaac7efb5"
+  },
+  "crystal": {
+    "vertices": 7242,
+    "triangles": 10568,
+    "sha256": "ec637bea4495ccb37f23451e5104d534cfb8f24c1775f35f13e870e1fbde4629"
+  },
+  "gba": {
+    "vertices": 1407,
+    "triangles": 2810,
+    "sha256": "3e09260719ccfbc96eeea3f03fe51b61fa9f31a2ee9fd32121190c1cc6503cd0"
+  },
+  "nds": {
+    "vertices": 674,
+    "triangles": 993,
+    "sha256": "7097a6db551dc1960100abd99e6e8dd9b2d5d5245502a7c0c2f89e1aa0947eb9"
+  },
+  "3ds": {
+    "vertices": 107,
+    "triangles": 210,
+    "sha256": "5d9c385bc076af3a40178783189bb924743105612e820a48524ef7fb1f602710"
+  },
+  "switch": {
+    "vertices": 1886,
+    "triangles": 2754,
+    "sha256": "fa8bf07c596da3872120ac62379abc5e71f05a308ff1401dee914794bbf3d747"
+  }
+}

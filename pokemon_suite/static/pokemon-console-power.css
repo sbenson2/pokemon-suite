@@ -1,0 +1,6 @@
+.console-power-screen {position:absolute;inset:0;z-index:6;overflow:hidden;background:#000;pointer-events:none;}
+.console-power-screen[hidden] {display:none;}
+.gba-stage>.console-power-screen {inset:auto;left:var(--game-left);top:var(--game-top);width:var(--game-width);height:var(--game-height);}
+.console-power-screen[data-phase=off][data-platform=gb] {background:#747c65;}
+.console-power-screen[data-phase=off][data-platform=gbc] {background:#222922;}
+.console-power-video {display:block;width:100%;height:100%;object-fit:contain;image-rendering:pixelated;background:#000;}

@@ -1,0 +1,37 @@
+{
+  "schema": "master-red/cartridges/v1",
+  "qualificationProfileId": "firered-rev1-stock",
+  "policy": {
+    "qualification": "Only the unmodified stock profile can establish campaign correctness.",
+    "compatibility": "Derived cartridges may receive separate compatibility runs only after stock gates pass.",
+    "privacy": "ROM, SRAM, emulator-state, and symbol bytes stay outside version control; only fingerprints and provenance are committed."
+  },
+  "profiles": [
+    {
+      "id": "firered-rev1-stock",
+      "name": "Pokemon FireRed USA/Europe Rev 1",
+      "relationship": "stock",
+      "qualification": true,
+      "bytes": 16777216,
+      "sha1": "dd5945db9b930750cb39d00c84da8571feebf417",
+      "gameCode": "BPRE",
+      "revision": 1,
+      "decompilation": {
+        "sourceId": "pret-pokefirered",
+        "commit": "c75f352304d529f6ba92d4f74b9cf8b5c3810788"
+      }
+    },
+    {
+      "id": "adventure-edition-derived",
+      "name": "Private FireRed Adventure Edition",
+      "relationship": "derived",
+      "derivedFrom": "firered-rev1-stock",
+      "qualification": false,
+      "bytes": 16777216,
+      "sha1": "119a7d55c88abcd2af723fee970595ec0cc97d8e",
+      "sha256": "13004cbb2dba4a23abb27fc32d1f83b741bfe75d8cad7f3fe66a489bab28c273",
+      "symbolsSha256": "0e94829ce9020545ce14819dbbfe281e6bee1dbc3698dcf013f3648bb2ce69f5",
+      "purpose": "Compatibility evidence only; never a research qualification cartridge."
+    }
+  ]
+}

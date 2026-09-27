@@ -1,0 +1,7 @@
+# Package/update verification; pinned together and bundled in native releases.
+tuf==7.0.1
+securesystemslib==1.5.1
+cryptography==50.0.1
+cffi==2.1.1
+pycparser==3.0
+urllib3==2.7.0

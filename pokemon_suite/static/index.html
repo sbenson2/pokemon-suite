@@ -1,0 +1,141 @@
+<!doctype html><html lang="en" data-product="pokemon-suite"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="color-scheme" content="light dark"><title>Pokémon Suite</title><link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./pokemon-playback.css"><link rel="stylesheet" href="./pokemon-suite.css"><link rel="stylesheet" href="./pokemon-farming.css"><link rel="stylesheet" href="./pokemon-workspace.css"><link rel="stylesheet" href="./pokemon-console-power.css"><link rel="stylesheet" href="./pokemon-theme.css"><link rel="stylesheet" href="./pokemon-live-panels.css"><link rel="stylesheet" href="./pokemon-campaign-runs.css"><link rel="stylesheet" href="./gba-surround.css"><link rel="stylesheet" href="./standalone.css"><script src="./pokemon-theme.js"></script></head><body class="visualizer-app">
+  <div id="pokemon-suite" hidden>
+    <aside class="suite-rail" aria-label="Pokémon Suite workspace">
+      <div class="suite-identity"><img class="suite-logo-sprite" src="./assets/pokemon/items/poke_ball.png" alt="" width="36" height="36"><strong>Pokémon<br>Suite</strong></div>
+      <nav class="suite-nav" aria-label="Pokémon Suite">
+        <button type="button" data-suite-view="workspace" aria-pressed="true"><img class="suite-nav-icon" src="./assets/pokemon/items/poke_ball.png" alt="" width="28" height="28">Live game</button>
+        <button type="button" data-suite-view="pokedex" aria-pressed="false"><img class="suite-nav-icon" src="./assets/pokemon/items/town_map.png" alt="" width="28" height="28">Pokédex</button>
+        <button type="button" data-suite-view="tasks" aria-pressed="false"><img class="suite-nav-icon" src="./assets/pokemon/items/safari_ball.png" alt="" width="28" height="28">Farming</button>
+        <button type="button" data-suite-view="shinies" aria-pressed="false"><img class="suite-nav-icon" src="./assets/pokemon/items/star_piece.png" alt="" width="28" height="28">Shinies</button>
+        <button type="button" data-suite-view="roms" aria-pressed="false"><img class="suite-nav-icon" src="./assets/pokemon/items/teachy_tv.png" alt="" width="28" height="28">ROMs</button>
+        <button type="button" data-suite-view="settings" aria-pressed="false"><img class="suite-nav-icon" src="./assets/pokemon/items/silph_scope.png" alt="" width="28" height="28">Settings</button>
+      </nav>
+      <div class="suite-current"><span>Selected game</span><strong id="suite-current-game">Connecting…</strong><small id="suite-current-run"></small></div>
+    </aside>
+    <section class="suite-page suite-dex-page" data-suite-panel="pokedex" aria-labelledby="dex-title" hidden>
+      <header class="dex-heading"><div><h1 id="dex-title">Pokédex</h1><p id="dex-subtitle">Locations, moves and farming requirements for your game.</p></div><label>Game<select id="dex-game"><option value="firered">FireRed</option><option value="leafgreen">LeafGreen</option><option value="emerald">Emerald</option><option value="crystal">Crystal</option></select></label></header>
+      <div class="dex-toolbar"><label class="dex-search">Search Pokémon<input id="dex-search" type="search" placeholder="Name, number, type or location" autocomplete="off"></label><label>Pokédex<select id="dex-scope"><option value="national">National Dex</option></select></label><label>Type<select id="dex-type"><option value="any">All types</option></select></label><label>Acquisition<select id="dex-availability"><option value="all">All entries</option><option value="encounter">Encounter or receive</option><option value="other">Evolution or trade</option></select></label></div>
+      <p id="dex-message" role="status" aria-live="polite"></p>
+      <div class="dex-workspace"><section class="dex-browser" aria-label="Pokémon catalog"><div class="dex-list-heading"><span id="dex-count"></span><span id="dex-range"></span></div><div id="dex-grid" class="dex-grid"></div><div class="dex-pagination"><button id="dex-previous" type="button">Previous</button><span id="dex-page"></span><button id="dex-next" type="button">Next</button></div></section><article id="dex-detail" class="dex-detail" aria-label="Selected Pokémon"></article></div>
+    </section>
+    <section class="suite-page suite-farming-page" data-suite-panel="tasks" aria-labelledby="suite-tasks-title" hidden>
+      <header class="suite-page-heading suite-menu-heading"><img class="suite-heading-sprite" src="./assets/pokemon/items/safari_ball.png" width="48" height="48" alt=""><div><h1 id="suite-tasks-title">Pokémon farming</h1><p>Choose what the bot should find and the requirements it must meet.</p></div></header>
+      <div class="suite-farming-content suite-scroll" tabindex="0" aria-label="Farming requirements and hunts">
+      <div id="suite-farming"></div>
+      <details class="farm-notes" hidden><summary>Other task notes</summary>
+      <form id="suite-task-form" class="suite-composer">
+        <label for="suite-task-text">What should the bot do?</label>
+        <textarea id="suite-task-text" rows="4" maxlength="1000" required placeholder="Shiny hunt a Pikachu in Viridian Forest…" aria-describedby="suite-task-help"></textarea>
+        <div class="suite-suggestions" aria-label="Task examples">
+          <button type="button" data-suite-prompt="Shiny hunt a Pikachu in Viridian Forest.">Shiny hunt</button>
+          <button type="button" data-suite-prompt="Collect the remaining Rare Candies that are currently reachable.">Collect items</button>
+          <button type="button" data-suite-prompt="Prepare my team for the Elite Four: check moves, supplies and training.">Prepare team</button>
+        </div>
+        <div class="suite-composer-actions"><label for="suite-task-game">Game<select id="suite-task-game"><option value="current">Current Pokémon game</option></select></label><button class="suite-primary" type="submit">Save draft</button></div>
+        <p id="suite-task-help">Requests stay as drafts on this device. Automatic task execution is not connected yet.</p>
+      </form>
+      <p id="suite-task-message" class="suite-message" role="status" aria-live="polite"></p>
+      <div class="suite-list-heading"><h2>Saved requests</h2><span id="suite-task-count">0</span></div>
+      <div id="suite-task-list"></div>
+      </details>
+      </div>
+    </section>
+    <section class="suite-page suite-shinies-page" data-suite-panel="shinies" aria-labelledby="suite-shinies-title" hidden>
+      <header class="suite-page-heading suite-menu-heading"><img class="suite-heading-sprite" src="./assets/pokemon/items/star_piece.png" width="48" height="48" alt=""><div><h1 id="suite-shinies-title">Caught shinies</h1><p>Saved captures from each game. Choose a Pokémon to have its bot retrieve it and open a trade lobby.</p></div></header>
+      <div><button type="button" id="suite-shiny-refresh" class="suite-text-button">Refresh collection</button></div>
+      <p id="suite-shiny-message" class="suite-message" role="status"></p>
+      <div id="suite-shiny-list" class="suite-scroll" tabindex="0" aria-label="Caught shinies"></div>
+    </section>
+    <section class="suite-page" data-suite-panel="roms" aria-labelledby="suite-roms-title" hidden>
+      <header class="suite-page-heading suite-menu-heading"><img class="suite-heading-sprite" src="./assets/pokemon/items/teachy_tv.png" width="48" height="48" alt=""><div><h1 id="suite-roms-title">Main-series games</h1><p>Each game has its own save. Switching games closes the previous 3DS or Switch emulator; save in-game first.</p></div></header>
+      <div class="suite-library-filters"><label>Find a game<input id="suite-game-search" type="search" placeholder="Name" autocomplete="off"></label><label>Hardware<select id="suite-game-platform"><option value="all">All hardware</option><option value="gb">Game Boy</option><option value="gbc">Game Boy Color</option><option value="gba">Game Boy Advance</option><option value="nds">Nintendo DS</option><option value="3ds">Nintendo 3DS</option><option value="switch">Nintendo Switch</option></select></label></div>
+      <div id="suite-rom-list" class="suite-rom-list suite-scroll" tabindex="0" aria-label="Installed games"></div>
+      <div class="suite-library-footer"><button id="suite-library-scan" class="suite-secondary" type="button">Rescan collection</button><p id="suite-open-message" class="suite-message" role="status" aria-live="polite"></p></div>
+    </section>
+    <section class="suite-page suite-tests-page" data-suite-panel="tests" aria-labelledby="suite-tests-title" hidden>
+      <header class="suite-page-heading suite-menu-heading"><img class="suite-heading-sprite" src="./assets/pokemon/items/vs_seeker.png" width="48" height="48" alt=""><div><h1 id="suite-tests-title">Bot settings</h1><p>Start the game, then give the bot a task or a collection goal.</p></div></header>
+      <div class="suite-bot-workspace suite-scroll" tabindex="0" aria-label="Bot settings">
+        <section id="suite-bot-live-info" aria-label="Live bot activity">
+          <section class="trainer-card-activity" aria-label="Current campaign decision" aria-live="polite" aria-atomic="true">
+            <div><span>Goal</span><strong id="journey-campaign">AWAITING CAMPAIGN</strong></div>
+            <div><span>Now</span><strong id="journey-current-decision">WAITING FOR POLICY</strong></div>
+          </section>
+          <details class="journey-log"><summary>Decision log</summary><section class="journey-decisions" aria-labelledby="journey-decisions-title">
+            <header><span id="journey-decisions-title">LIVE DECISIONS</span><button id="journey-decision-state" type="button" data-following="true" title="Jump to the newest decision">SYNCING</button></header>
+            <ol id="journey-decision-log" class="journey-decision-log" role="log" aria-live="polite" aria-relevant="additions text" tabindex="0"><li class="journey-decision-empty">Waiting for the first bot decision…</li></ol>
+          </section></details>
+        </section>
+        <div class="bot-settings-context"><label class="suite-bot-game-label">Game<select id="suite-bot-game"></select></label>
+        <section class="suite-game-controls"><h2 id="suite-game-control-title">Game</h2><p id="suite-game-status" role="status"></p></section></div>
+        <div id="suite-campaign-runs"></div>
+        <div id="suite-bot-task-setup"></div>
+        <section id="suite-bot-controls" class="suite-bot-controls"><div><strong>Pokémon bot</strong><span id="suite-bot-status" role="status"></span></div><p id="suite-bot-description"></p><details class="bot-current-task"><summary>Current bot task</summary><dl id="suite-bot-details"></dl></details><div class="suite-control-actions"><button id="suite-bot-farming" type="button" class="suite-secondary">Pokémon requirements &amp; competitive builds</button><button id="suite-bot-shinies" type="button" class="suite-secondary">Caught shinies &amp; trading</button></div></section>
+        <section id="suite-bot-triage" class="bot-rule-section bot-stop-triage" aria-live="polite" hidden></section>
+        <details id="suite-bot-defaults" class="bot-rule-section"><summary>Default capture preferences</summary><div id="suite-bot-preferences"></div></details>
+        <div id="suite-bot-profile"></div>
+        <details class="suite-bot-reports"><summary>Test reports</summary><p id="suite-tests-description"></p>
+      <button id="suite-download-report" type="button">Download report</button>
+      <p id="suite-tests-message" class="suite-message" role="status"></p>
+        </details>
+        <details class="suite-stream-details"><summary>Connection</summary><div id="suite-stream-status-host"></div></details>
+      </div>
+    </section>
+    <section class="suite-page suite-settings-page" data-suite-panel="settings" aria-labelledby="suite-settings-title" hidden>
+      <header class="suite-page-heading suite-menu-heading"><img class="suite-heading-sprite" src="./assets/pokemon/items/silph_scope.png" width="48" height="48" alt=""><div><h1 id="suite-settings-title">Settings</h1></div></header><form id="suite-install-form" class="suite-install-form"><h2>Add FireRed</h2><p>Choose your FireRed US revision 1 image on this computer. The Mac app includes the bot resources; running from source, also name a resource folder. Each installation keeps its own saves.</p><label>Game image path<input name="rom" required autocomplete="off" placeholder="Full path to your .gba file"></label><label>Bot resource folder (optional)<input name="resources" autocomplete="off" placeholder="Leave empty to use the app’s bundled resources"></label><button type="submit">Add game</button><p id="suite-install-status" role="status"></p></form>
+      <div class="suite-scroll" tabindex="0" aria-label="Suite settings">
+        <section id="suite-software-updates" class="suite-settings-group"></section>
+        <section class="suite-settings-group" aria-labelledby="suite-game-view-title">
+          <h2 id="suite-game-view-title">Game view</h2>
+          <div id="suite-hardware-settings"></div>
+          <p id="suite-hardware-empty">Open a game to choose its hardware shell.</p>
+        </section>
+      </div>
+    </section>
+  </div>
+  <div id="player-layout" class="player-layout">
+    <main id="stage" aria-live="polite"></main>
+    <section id="journey-deck" class="journey-deck" aria-labelledby="journey-title" hidden>
+      <nav class="journey-tabs" aria-label="Game information"><button type="button" data-journey-tab="team" aria-pressed="true">Team</button><button type="button" data-journey-tab="hunt" aria-pressed="false">Hunt</button><button type="button" data-journey-tab="trainer" aria-pressed="false">Trainer</button><button id="suite-live-bot-settings" type="button" data-journey-tab="bot" aria-pressed="false">Bot settings</button><button type="button" data-journey-tab="manual" aria-pressed="false">Manual play</button></nav><div class="journey-content" data-mobile-tab="team">
+        <section class="trainer-card" aria-label="Pokémon trainer card">
+          <div class="trainer-card-copy">
+            <header><span>Trainer card</span><strong id="journey-title">RED</strong>          <div id="suite-console" class="suite-live-actions" role="group" aria-label="Live game controls" hidden>
+            <button id="suite-live-start" type="button" data-started="false">Start game</button>
+          </div></header>
+            <dl class="trainer-card-fields">
+              <div><dt>NAME</dt><dd id="journey-trainer-name">RED</dd></div>
+              <div><dt>ID No.</dt><dd id="journey-trainer-id">00000</dd></div>
+              <div><dt>Money</dt><dd id="journey-money">₽0</dd></div>
+              <div><dt>Dex</dt><dd id="journey-pokedex">0 / 0</dd></div>
+              <div><dt>Play time</dt><dd id="journey-play-time">0:00</dd></div>
+              <div><dt>Area</dt><dd id="journey-location">KANTO</dd></div>
+            </dl>
+            <p class="trainer-playback-note">Trainer details are not available for this game yet. Console power and manual play are ready to use.</p>
+            <div id="journey-stats" class="journey-stats"></div>
+            <button id="journey-manual-toggle" class="journey-manual-toggle" type="button"
+              aria-pressed="false" title="Manual control is loading" disabled>PLAY MANUALLY</button>
+          </div>
+          <div class="trainer-card-identity">
+            <div class="trainer-card-portrait-frame"><img id="journey-trainer-portrait" class="trainer-card-portrait" src="./assets/firered/ui/red-trainer.png" alt="RED male trainer sprite"></div>
+            <div id="journey-badges" class="journey-badges" aria-label="Earned Kanto badges"></div>
+          </div>
+        </section>
+        <section class="journey-team" aria-label="Current Pokémon team">
+          <header><span><img src="./assets/pokemon/items/poke_ball.png" width="24" height="24" alt=""> Current team</span><strong id="journey-team-count">0 / 6</strong></header>
+          <div id="journey-party" class="journey-party"></div>
+        </section>
+        <section class="journey-hunt" aria-label="Hunt information"><header><img src="./assets/pokemon/items/premier_ball.png" width="24" height="24" alt=""><span>Hunt</span></header><div id="journey-hunt-content"></div></section>
+        <section class="journey-settings" data-suite-live-card aria-labelledby="journey-settings-title">
+          <header><img src="./assets/pokemon/items/vs_seeker.png" width="24" height="24" alt=""><span id="journey-settings-title">Bot settings</span></header>
+          <div id="journey-settings-host"></div>
+        </section>
+        <section class="journey-manual" data-suite-live-card aria-labelledby="journey-manual-title">
+          <header><img src="./assets/pokemon/items/town_map.png" width="24" height="24" alt=""><span id="journey-manual-title">Manual play</span></header>
+          <div class="journey-manual-content" tabindex="0" aria-label="Manual play controls">
+            <div class="journey-manual-actions"><button id="suite-manual-toggle" type="button" aria-pressed="false" aria-controls="coach-panel suite-native-controller" disabled>Take control</button><p id="suite-manual-help">Take control to play. The bot pauses while you use the controller.</p></div>
+            <div id="suite-coach-host"></div><div id="suite-native-controller"></div>
+          </div>
+        </section>
+      </div>
+    </section>
+  </div>
+<header class="standalone-header"><div class="workspace-brand"><strong>Pokémon Suite</strong></div><p id="connection-status" role="status">Connecting…</p><button id="audio-toggle" type="button" aria-pressed="false">Sound off</button><button id="suite-theme-toggle" type="button" aria-pressed="false"><img src="./assets/pokemon/items/moon_stone.png" width="24" height="24" alt=""><span>Dark mode</span></button></header><button id="library" hidden>Games</button><footer class="live-footer" hidden></footer><div id="standalone-notice" role="status" aria-live="polite"></div><script src="./pokemon-items.js"></script><script src="./pokemon-competitive.js"></script><script src="./pokemon-farming.js"></script><script src="./pokemon-shinies.js"></script><script src="./pokemon-bot-settings.js"></script><script src="./pokemon-bot-tasks.js"></script><script src="./pokemon-campaign-runs.js"></script><script src="./pokemon-playback.js"></script><script src="./pokemon-hunt-panel.js"></script><script src="./master-red-live-panel.js"></script><script src="./pokemon-hardware-shell.js"></script><script src="./pokemon-console-power.js"></script><script src="./pokemon-stop-triage.js"></script><script src="./pokemon-suite.js"></script><script src="./software-updates.js"></script><script src="./standalone.js"></script></body></html>

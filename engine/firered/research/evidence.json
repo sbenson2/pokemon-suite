@@ -1,0 +1,273 @@
+{
+  "schema": "master-red/evidence/v1",
+  "receipts": [
+    {
+      "gateId": "source-provenance-lock",
+      "evidenceClass": "artifact-validation",
+      "successes": 1,
+      "failures": 0,
+      "collectedAt": "2026-08-29T02:56:48Z",
+      "sourceReceiptSha256": "7abb8904f7b628e89b263b9af4838e775b67b8ad14840b0a5dfccfda5407f67b",
+      "sources": [
+        {
+          "id": "pret-pokefirered",
+          "revision": "c75f352304d529f6ba92d4f74b9cf8b5c3810788"
+        },
+        {
+          "id": "mgba-core",
+          "revision": "c034660f007c543233f1cadeb0ca13c71afd8f41"
+        },
+        {
+          "id": "mgba-wasm-wrapper",
+          "revision": "6b19a50a1aa45055970b46999d5cde2451f1f5d0"
+        }
+      ],
+      "localArtifactChecks": {
+        "pretHead": "c75f352304d529f6ba92d4f74b9cf8b5c3810788",
+        "mgbaManifestCommit": "c034660f007c543233f1cadeb0ca13c71afd8f41",
+        "wrapperManifestCommit": "6b19a50a1aa45055970b46999d5cde2451f1f5d0",
+        "mgbaWasmSha256": "297047c0852e2f05eb44b190b0a08134d5e74473ac3ece84277601a8e572e8e4"
+      }
+    },
+    {
+      "gateId": "stock-rom-fingerprint",
+      "evidenceClass": "artifact-validation",
+      "successes": 1,
+      "failures": 0,
+      "collectedAt": "2026-08-29T02:56:48Z",
+      "cartridgeProfileId": "firered-rev1-stock",
+      "bytes": 16777216,
+      "sha1": "dd5945db9b930750cb39d00c84da8571feebf417",
+      "privateFileMode": "0600"
+    },
+    {
+      "gateId": "knowledge-pack-generation",
+      "evidenceClass": "artifact-validation",
+      "successes": 4,
+      "failures": 0,
+      "collectedAt": "2026-09-02T20:00:00.000Z",
+      "cartridgeProfileId": "firered-rev1-stock",
+      "privateReceiptSha256": "817923b641ef4718792669646a13cefc83ca0536b54279f3b1d9801a6e030123",
+      "source": {
+        "id": "pret-pokefirered",
+        "revision": "c75f352304d529f6ba92d4f74b9cf8b5c3810788"
+      },
+      "generator": {
+        "kind": "source-bundle-sha256",
+        "revision": "15026bba2a6f25717c4b1fbf9d7c37c0cb873d05cc8ebc7d3d7f8f9924b8a1fb"
+      },
+      "verifiedBuild": {
+        "romBytes": 16777216,
+        "romSha1": "dd5945db9b930750cb39d00c84da8571feebf417",
+        "romSha256": "729041b940afe031302d630fdbe57c0c145f3f7b6d9b8eca5e98678d0ca4d059",
+        "symbolsBytes": 2384119,
+        "symbolsSha256": "a272c573770b5bed21830974e6c139ff58ba9c05089ce3cdc07aefc6d1d961c0"
+      },
+      "datasets": [
+        {
+          "id": "firered-world-structure",
+          "artifactSha256": "d70e4eeda26b6784939973bbac2f5cae0d04a12f1cb6bff6659479ad7e12f41b",
+          "bytes": 90601583,
+          "counts": {
+            "backgroundEvents": 702,
+            "cells": 233741,
+            "connections": 120,
+            "coordinateEvents": 228,
+            "layouts": 309,
+            "maps": 425,
+            "objectEvents": 1648,
+            "warps": 1294,
+            "wildEncounterMaps": 132
+          },
+          "generatorKind": "source-bundle-sha256",
+          "generatorRevision": "15026bba2a6f25717c4b1fbf9d7c37c0cb873d05cc8ebc7d3d7f8f9924b8a1fb"
+        },
+        {
+          "id": "firered-story-state",
+          "artifactSha256": "eff9c5db923d8ec4f0b1b8896a85d4551f2a58cebc9415b4c8e9937596740c77",
+          "bytes": 6097382,
+          "counts": {
+            "flagReferences": 857,
+            "flagSymbols": 1470,
+            "hallOfFameEntryReferences": 1,
+            "instructions": 24618,
+            "itemReferences": 529,
+            "itemSymbols": 433,
+            "scripts": 5285,
+            "trainerReferences": 804,
+            "trainerSymbols": 743,
+            "unresolvedReferences": 0,
+            "variableReferences": 2432,
+            "variableSymbols": 274
+          },
+          "generatorKind": "source-bundle-sha256",
+          "generatorRevision": "15026bba2a6f25717c4b1fbf9d7c37c0cb873d05cc8ebc7d3d7f8f9924b8a1fb"
+        },
+        {
+          "id": "firered-runtime-symbols",
+          "artifactSha256": "b5920926b32059c715de21eaa72e43c09931ecf9b5fdeac2563b9e204a920346",
+          "bytes": 9225671,
+          "counts": {
+            "missingRequiredSymbols": 0,
+            "requiredSymbols": 15,
+            "structureFields": 129,
+            "structures": 4,
+            "symbols": 50807
+          },
+          "generatorKind": "source-bundle-sha256",
+          "generatorRevision": "15026bba2a6f25717c4b1fbf9d7c37c0cb873d05cc8ebc7d3d7f8f9924b8a1fb"
+        },
+        {
+          "id": "firered-battle-mechanics",
+          "artifactSha256": "b61618b0ec5ae9921e4c82f4cbcc060aa4095e07c060c7f478c754624baf68a0",
+          "bytes": 1691468,
+          "counts": {
+            "moves": 355,
+            "parties": 742,
+            "partyMembers": 1754,
+            "rematches": 221,
+            "species": 412,
+            "trainers": 743,
+            "typeChartEntries": 111
+          },
+          "generatorKind": "source-bundle-sha256",
+          "generatorRevision": "15026bba2a6f25717c4b1fbf9d7c37c0cb873d05cc8ebc7d3d7f8f9924b8a1fb"
+        }
+      ]
+    },
+    {
+      "gateId": "atomic-observation-sampling",
+      "evidenceClass": "real-mgba",
+      "successes": 10000,
+      "failures": 0,
+      "collectedAt": "2026-08-29T16:28:48.474Z",
+      "runId": "atomic-observation-sampling-83c1e035-5538-4b5a-b597-aa2b6ccbda22",
+      "cartridgeProfileId": "firered-rev1-stock",
+      "romSha1": "dd5945db9b930750cb39d00c84da8571feebf417",
+      "mgbaCommit": "c034660f007c543233f1cadeb0ca13c71afd8f41",
+      "mgbaWrapperCommit": "6b19a50a1aa45055970b46999d5cde2451f1f5d0",
+      "mgbaJsSha256": "b2ff314b6777105c3665a44e4dbf26c09ac252ecaca6f1fbb49bb050d206754e",
+      "mgbaWasmSha256": "297047c0852e2f05eb44b190b0a08134d5e74473ac3ece84277601a8e572e8e4",
+      "knowledgeArtifacts": [
+        {
+          "id": "firered-runtime-symbols",
+          "bytes": 9225671,
+          "sha256": "0663395a612a2ab691caa24fe924d3c16a43ca66040ecd5eb11cac3fad8f88de"
+        },
+        {
+          "id": "firered-world-structure",
+          "bytes": 90601583,
+          "sha256": "65dea58c7aae990c8ee675d471dfa3b7eeb0f35c245248717a8926077f05601f"
+        }
+      ],
+      "harnessRevisionKind": "source-bundle-sha256",
+      "harnessRevision": "5b8776484a5eeb0e4fca19d45876d5db8a9b09f52c8e0d9579b4468c61bb6707",
+      "startStateSha256": "6319d7607a07f70136e37ece6742b210e878ec12e2f83ad38e8161f3fd18d1ac",
+      "endStateSha256": "4f32e87c90954cfef379e30c67dca428482a065781421d8fe9a8bdbd00f16ac0",
+      "startSramSha256": "b5a41c3758763bbec72769fab4a2533bf2db0b6312d93d25a695f9e4b9e02260",
+      "endSramSha256": "b5a41c3758763bbec72769fab4a2533bf2db0b6312d93d25a695f9e4b9e02260",
+      "traceSha256": "08aaf85f6f035ee8f6b423a0867f7ee8617a872eab2955920d7b86bc23a5589f"
+    },
+    {
+      "gateId": "snapshot-roundtrip",
+      "evidenceClass": "real-mgba",
+      "successes": 100,
+      "failures": 0,
+      "collectedAt": "2026-08-29T16:38:58.810Z",
+      "runId": "snapshot-roundtrip-37aed571-ac34-4c91-9921-3831de63e32f",
+      "cartridgeProfileId": "firered-rev1-stock",
+      "romSha1": "dd5945db9b930750cb39d00c84da8571feebf417",
+      "mgbaCommit": "c034660f007c543233f1cadeb0ca13c71afd8f41",
+      "mgbaWrapperCommit": "6b19a50a1aa45055970b46999d5cde2451f1f5d0",
+      "mgbaJsSha256": "b2ff314b6777105c3665a44e4dbf26c09ac252ecaca6f1fbb49bb050d206754e",
+      "mgbaWasmSha256": "297047c0852e2f05eb44b190b0a08134d5e74473ac3ece84277601a8e572e8e4",
+      "knowledgeArtifacts": [
+        {
+          "id": "firered-runtime-symbols",
+          "bytes": 9225671,
+          "sha256": "0663395a612a2ab691caa24fe924d3c16a43ca66040ecd5eb11cac3fad8f88de"
+        },
+        {
+          "id": "firered-world-structure",
+          "bytes": 90601583,
+          "sha256": "65dea58c7aae990c8ee675d471dfa3b7eeb0f35c245248717a8926077f05601f"
+        }
+      ],
+      "harnessRevisionKind": "source-bundle-sha256",
+      "harnessRevision": "277e5ebf9279ea703780c7de9ae9c6e9b234a7ff3a59a05f42d5f2cbf49d3c2b",
+      "startStateSha256": "590af31533640f0b2b6be7443f9ac9282913436a7288e8412452b771039a5cce",
+      "endStateSha256": "590af31533640f0b2b6be7443f9ac9282913436a7288e8412452b771039a5cce",
+      "startSramSha256": "b5a41c3758763bbec72769fab4a2533bf2db0b6312d93d25a695f9e4b9e02260",
+      "endSramSha256": "b5a41c3758763bbec72769fab4a2533bf2db0b6312d93d25a695f9e4b9e02260",
+      "traceSha256": "e7564c25268339ecc233c1f7b7a67e87dcb48c41c625eb29e5206979eb5ba66c"
+    },
+    {
+      "gateId": "mart-entry-roundtrip",
+      "evidenceClass": "real-mgba",
+      "successes": 100,
+      "failures": 0,
+      "collectedAt": "2026-08-29T16:39:12.843Z",
+      "runId": "mart-entry-roundtrip-a421653e-66b1-4e73-a63d-2932be6731e9",
+      "cartridgeProfileId": "firered-rev1-stock",
+      "romSha1": "dd5945db9b930750cb39d00c84da8571feebf417",
+      "mgbaCommit": "c034660f007c543233f1cadeb0ca13c71afd8f41",
+      "mgbaWrapperCommit": "6b19a50a1aa45055970b46999d5cde2451f1f5d0",
+      "mgbaJsSha256": "b2ff314b6777105c3665a44e4dbf26c09ac252ecaca6f1fbb49bb050d206754e",
+      "mgbaWasmSha256": "297047c0852e2f05eb44b190b0a08134d5e74473ac3ece84277601a8e572e8e4",
+      "knowledgeArtifacts": [
+        {
+          "id": "firered-runtime-symbols",
+          "bytes": 9225671,
+          "sha256": "0663395a612a2ab691caa24fe924d3c16a43ca66040ecd5eb11cac3fad8f88de"
+        },
+        {
+          "id": "firered-world-structure",
+          "bytes": 90601583,
+          "sha256": "65dea58c7aae990c8ee675d471dfa3b7eeb0f35c245248717a8926077f05601f"
+        }
+      ],
+      "harnessRevisionKind": "source-bundle-sha256",
+      "harnessRevision": "277e5ebf9279ea703780c7de9ae9c6e9b234a7ff3a59a05f42d5f2cbf49d3c2b",
+      "startStateSha256": "590af31533640f0b2b6be7443f9ac9282913436a7288e8412452b771039a5cce",
+      "endStateSha256": "08899afadbf7430c39be8787544d57847fc8b2a7c13f6a5f1de878b9bf7e1771",
+      "startSramSha256": "b5a41c3758763bbec72769fab4a2533bf2db0b6312d93d25a695f9e4b9e02260",
+      "endSramSha256": "d9be7ab822fcfd85e7cec0b6946ca3960ad602d4755b8941d2bfe0b271be1bbd",
+      "traceSha256": "1aa1f2146dde592e51ccf7bab53049ef3f2fa4423510cef4ff481309b6368718",
+      "scenarioSuiteSha256": "0b0c72bd36611e20515bbf3dbf57422e65e99474b3aaa065ed40218aeca69bc6"
+    },
+    {
+      "gateId": "modal-transition-corpus",
+      "evidenceClass": "real-mgba",
+      "successes": 25,
+      "failures": 0,
+      "collectedAt": "2026-08-30T23:24:24.437Z",
+      "runId": "modal-transition-corpus-94637a81-d5d2-433e-ad96-5d3e72aede08",
+      "cartridgeProfileId": "firered-rev1-stock",
+      "romSha1": "dd5945db9b930750cb39d00c84da8571feebf417",
+      "mgbaCommit": "c034660f007c543233f1cadeb0ca13c71afd8f41",
+      "mgbaWrapperCommit": "6b19a50a1aa45055970b46999d5cde2451f1f5d0",
+      "mgbaJsSha256": "b2ff314b6777105c3665a44e4dbf26c09ac252ecaca6f1fbb49bb050d206754e",
+      "mgbaWasmSha256": "297047c0852e2f05eb44b190b0a08134d5e74473ac3ece84277601a8e572e8e4",
+      "knowledgeArtifacts": [
+        {
+          "id": "firered-runtime-symbols",
+          "bytes": 9225671,
+          "sha256": "0663395a612a2ab691caa24fe924d3c16a43ca66040ecd5eb11cac3fad8f88de"
+        },
+        {
+          "id": "firered-world-structure",
+          "bytes": 90601583,
+          "sha256": "65dea58c7aae990c8ee675d471dfa3b7eeb0f35c245248717a8926077f05601f"
+        }
+      ],
+      "harnessRevisionKind": "source-bundle-sha256",
+      "harnessRevision": "9fb81c501f04114f5561f93b5509cc622a0b36d502aaf5f87e52af6a36ec3102",
+      "startStateSha256": "590af31533640f0b2b6be7443f9ac9282913436a7288e8412452b771039a5cce",
+      "endStateSha256": "f9ca9f327be169267196b2f2e6aa3ccad61989f7768e7f1e1bb7822f8f2ae124",
+      "startSramSha256": "b5a41c3758763bbec72769fab4a2533bf2db0b6312d93d25a695f9e4b9e02260",
+      "endSramSha256": "9882da22aaaa46bb97782265e96a89017b1732d4a969dbb87c3b02939a878d5b",
+      "traceSha256": "a25ccad2be501235deda72104c2ceab56fc2c86e064c4207703b246ba55e6eb6",
+      "scenarioSuiteSha256": "8b0b154584069337c38e6bb280a992f635070e751ea0a7c2dafba0a2cd2e75d1"
+    }
+  ]
+}

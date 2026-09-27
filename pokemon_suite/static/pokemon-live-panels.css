@@ -1,0 +1,138 @@
+/* Live information shares one bounded deck: cards when wide, tabs when compact. */
+[data-suite-live-card], [data-journey-tab="bot"], [data-journey-tab="manual"] {display:none;}
+.trainer-playback-note {display:none;}
+body[data-suite-trainer-telemetry="false"] .trainer-card :is(.trainer-card-fields,.trainer-card-identity,.journey-stats,#journey-manual-toggle) {display:none;}
+body[data-suite-trainer-telemetry="false"] .trainer-playback-note {display:block;font-size:13px;line-height:1.5;color:var(--ps-muted);}
+body[data-suite-trainer-telemetry="false"] .journey-party {display:block;}
+.journey-playback-empty {padding:12px;font-size:13px;line-height:1.5;color:var(--ps-muted);}
+body[data-suite-console="true"] .journey-deck {display:block!important;min-height:0;}
+body[data-suite-console="true"] .player-layout,
+body[data-suite-console="true"][data-journey-deck="true"]:not([data-suite-playback="true"]) .player-layout {
+  grid-template-rows:minmax(0,1fr) min(38dvh,var(--journey-deck-height))!important;
+}
+body[data-pokemon-suite="true"] .journey-bot {display:none!important;}
+body[data-suite-console="true"] .journey-content {
+  display:grid;grid-template-columns:minmax(260px,.9fr) minmax(340px,1.2fr) minmax(260px,.9fr) minmax(360px,1.2fr) minmax(320px,1fr);
+  grid-template-rows:minmax(0,1fr);height:100%;overflow-x:scroll;overflow-y:hidden;
+  border:2px solid var(--ps-border);border-radius:7px;overscroll-behavior:contain;
+  scrollbar-color:var(--ps-border) var(--ps-canvas);scrollbar-width:auto;
+}
+body[data-suite-console="true"] :is(.journey-settings,.journey-manual) {
+  display:grid;grid-template-rows:30px minmax(0,1fr);min-width:0;min-height:0;
+  padding:8px;border:2px solid var(--ps-border);border-radius:8px;
+  background:var(--ps-surface);color:var(--ps-ink);box-shadow:inset 0 0 0 2px var(--ps-raised);
+}
+body[data-suite-console="true"] .journey-hunt {display:block;}
+body[data-suite-console="true"] :is(.journey-settings,.journey-manual)>header {
+  display:flex;gap:7px;align-items:center;font-size:13px;font-weight:bold;
+}
+body[data-suite-console="true"] [data-suite-live-card] img {image-rendering:pixelated;object-fit:contain;}
+body[data-suite-console="true"] #journey-settings-host {display:grid;min-height:0;min-width:0;}
+body[data-suite-console="true"] :is(.journey-manual-content,.journey-settings .suite-bot-workspace) {
+  min-height:0;min-width:0;overflow-y:scroll;overflow-x:hidden;scrollbar-gutter:stable;
+  border:2px solid var(--ps-border);border-radius:5px;padding:10px;overscroll-behavior:contain;
+  background:var(--ps-surface);color:var(--ps-ink);font:13px/1.45 'Trebuchet MS',Verdana,sans-serif;
+  --suite-ink:var(--ps-ink);--suite-muted:var(--ps-muted);--suite-line:var(--ps-border);
+  --suite-paper:var(--ps-surface);--suite-red:#b33642;
+}
+body[data-suite-console="true"] .journey-settings .bot-settings-context {grid-template-columns:1fr;gap:8px;}
+body[data-suite-console="true"] .journey-settings .suite-bot-workspace {display:flex;flex-direction:column;gap:10px;}
+body[data-suite-console="true"] .journey-settings .suite-bot-workspace>* {flex-shrink:0;}
+body[data-suite-console="true"] .journey-settings .bot-settings-context {padding-bottom:6px;}
+body[data-suite-console="true"] .journey-settings .suite-game-controls>p {display:none;}
+body[data-suite-console="true"] .journey-settings .suite-game-controls h2 {font-size:14px;margin:0;}
+body[data-suite-console="true"] .journey-settings .bot-task-form {padding:10px;gap:8px;margin:0;}
+body[data-suite-console="true"] .journey-settings .suite-bot-game-label {display:none;}
+body[data-suite-console="true"] .journey-settings :is(.bot-setting-fields,.bot-rule-list>div) {grid-template-columns:1fr;gap:8px;}
+body[data-suite-console="true"] .journey-settings .bot-stat-fields {grid-template-columns:repeat(2,minmax(0,1fr));}
+body[data-suite-console="true"] .journey-settings :is(button,input,select) {max-width:100%;font-family:inherit;}
+body[data-suite-console="true"] .journey-settings .suite-control-actions {display:flex;flex-wrap:wrap;gap:8px;}
+body[data-suite-console="true"] .journey-settings :is(.suite-primary,.suite-secondary),#suite-manual-toggle {
+  min-height:38px;padding:7px 10px;border:2px solid var(--ps-border);border-radius:5px;
+  font:600 12px 'Trebuchet MS',sans-serif;background:var(--ps-raised);color:var(--ps-ink);cursor:pointer;
+}
+body[data-suite-console="true"] .journey-settings .suite-primary {background:#a62e3b;color:#fff;}
+body[data-suite-console="true"] .journey-settings .suite-bot-controls {background:transparent;color:var(--ps-ink);}
+body[data-suite-console="true"] .journey-settings :is(button,input,select,summary):focus-visible,
+#suite-manual-toggle:focus-visible {outline:3px solid var(--ps-focus);outline-offset:2px;}
+#suite-manual-toggle:disabled {opacity:.6;cursor:default;}
+.journey-manual-actions p {margin:8px 0 12px;color:var(--ps-muted);}
+body[data-suite-console="true"] #suite-coach-host .coach-panel {padding:0;border:0;}
+body[data-suite-console="true"] #suite-coach-host :is(.coach-header,.coach-policy,.coach-recorder) {display:none;}
+body[data-suite-console="true"] #suite-coach-host :is(.coach-controller-status,.coach-help) {font-size:11px;color:var(--ps-muted);}
+body[data-suite-console="true"] #suite-native-controller .suite-play-controls {padding:8px;max-height:none;overflow:visible;}
+body[data-suite-console="true"] .trainer-card-copy {grid-template-rows:auto auto 1fr auto;}
+body[data-suite-console="true"] .trainer-card-copy>header {
+  display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto 38px;
+  gap:2px 6px;height:auto;align-items:center;padding-bottom:6px;
+  position:sticky;top:-10px;z-index:2;background:var(--ps-surface);
+}
+body[data-suite-console="true"] .trainer-card-copy>header>span {grid-column:1/-1;font-size:11px;color:var(--ps-muted);}
+body[data-suite-console="true"] .trainer-card-copy>header>strong {padding:0;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+body[data-suite-console="true"] #suite-console {padding:0;}
+body[data-suite-console="true"] #suite-live-start {color:var(--ps-ink);font-size:11px;}
+body[data-suite-console="true"] .trainer-card-identity {top:82px;}
+body[data-suite-console="true"] #player-layout>.journey-bot {grid-template-columns:104px minmax(0,1fr);grid-template-rows:34px;}
+body[data-suite-console="true"] #player-layout>.journey-bot>dl {grid-row:1;}
+body[data-suite-console="true"][data-suite-playback="true"] #player-layout>.journey-bot {display:none!important;}
+body[data-suite-console="true"][data-suite-playback="true"] .player-layout {grid-template-rows:minmax(0,1fr) min(38dvh,var(--journey-deck-height))!important;}
+@media(max-width:1800px) {
+  body[data-suite-console="true"] .journey-deck {display:grid!important;grid-template-rows:42px minmax(0,1fr);}
+  body[data-suite-console="true"] .journey-tabs {display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;padding:2px 5px 0;}
+  body[data-suite-console="true"] .journey-tabs button {
+    display:block;min-width:0;min-height:38px;padding:2px 3px;line-height:1.15;font-size:12px;
+    white-space:normal;border:2px solid var(--ps-border);border-bottom:0;border-radius:5px 5px 0 0;
+    background:var(--ps-raised);color:var(--ps-ink);
+  }
+  body[data-suite-console="true"] .journey-tabs button[aria-pressed="true"] {background:var(--ps-surface);box-shadow:inset 0 3px var(--ps-focus);}
+  body[data-suite-console="true"] .journey-content {display:block;overflow:hidden;padding:4px;}
+  body[data-suite-console="true"] .journey-content>:is(.trainer-card,.journey-team,.journey-hunt,.journey-settings,.journey-manual) {display:none;height:100%;}
+  body[data-suite-console="true"] .journey-content[data-mobile-tab="trainer"]>.trainer-card,
+  body[data-suite-console="true"] .journey-content[data-mobile-tab="team"]>.journey-team,
+  body[data-suite-console="true"] .journey-content[data-mobile-tab="bot"]>.journey-settings,
+  body[data-suite-console="true"] .journey-content[data-mobile-tab="manual"]>.journey-manual {display:grid;}
+  body[data-suite-console="true"] .journey-content[data-mobile-tab="hunt"]>.journey-hunt {display:block;}
+  body[data-suite-console="true"] #player-layout>.journey-bot {grid-template-columns:minmax(0,1fr);grid-template-rows:28px;}
+}
+
+.bot-dex-goal h3 {margin:0 0 8px;font-size:14px;}
+.bot-dex-goal progress {width:100%;height:12px;accent-color:var(--ps-focus,#a62e3b);}
+.bot-dex-count strong {font-size:18px;}
+.bot-dex-blocked {list-style:none;max-height:220px;overflow-y:scroll;border:2px solid var(--ps-border,#536273);border-radius:5px;padding:8px;margin:8px 0;scrollbar-gutter:stable;}
+.bot-dex-blocked li {padding:8px 0;border-bottom:1px solid var(--ps-border,#536273);}
+.bot-dex-blocked small {display:block;margin-top:3px;line-height:1.5;color:var(--ps-muted,#536273);}
+
+/* Activity, decisions and reports stay with the one shared settings workspace. */
+body[data-pokemon-suite="true"] .journey-team {grid-template-rows:26px minmax(0,1fr);}
+#suite-bot-live-info {display:grid;gap:10px;min-width:0;}
+#suite-bot-live-info[hidden] {display:none;}
+.suite-bot-workspace .journey-log[open]>.journey-decisions {
+  position:relative;inset:auto;height:240px;margin-top:8px;border-color:var(--ps-border);
+}
+.suite-bot-workspace .journey-log>summary {font:inherit;color:var(--ps-ink);padding:5px 0;}
+.suite-bot-workspace .journey-log .journey-decision-log {border:1px solid var(--ps-border);}
+.suite-bot-workspace .suite-bot-controls {height:auto;display:grid;margin:0;padding:10px 0;}
+.suite-bot-workspace[data-test-campaign="true"] :is(.bot-settings-context,#suite-bot-task-setup,#suite-bot-defaults,#suite-bot-profile,.suite-control-actions) {display:none;}
+.suite-bot-workspace #suite-report-host {flex:none;}
+.suite-bot-workspace #suite-report-host .fleet-testing {
+  flex:none;max-height:none;overflow:visible;background:var(--ps-surface);color:var(--ps-ink);border-color:var(--ps-border);
+}
+.suite-bot-workspace #suite-report-host .fleet-testing[hidden] {display:none;}
+.suite-bot-workspace #suite-report-host .fleet-testing>header {background:var(--ps-raised);border-color:var(--ps-border);}
+.suite-bot-workspace #suite-report-host .fleet-report-row {background:var(--ps-surface);border-color:var(--ps-border);}
+.suite-bot-workspace #suite-report-host .fleet-report-list {flex:none;max-height:420px;border:1px solid var(--ps-border);overflow:auto;}
+.suite-bot-workspace #suite-report-host .fleet-report-fields {grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+.suite-bot-workspace #suite-report-host .fleet-report-fields dd {white-space:normal;overflow-wrap:anywhere;}
+.suite-bot-workspace #suite-report-host :is(.fleet-report-fields dt,.fleet-report-evidence,.fleet-report-reason) {color:var(--ps-muted);}
+.suite-bot-workspace #suite-report-host .fleet-report-evidence {margin:0;}
+body[data-test-fleet="true"] :is([data-journey-tab="manual"],.journey-manual) {display:none!important;}
+@media(max-width:1800px) {
+  body[data-test-fleet="true"][data-suite-console="true"] .journey-tabs {grid-template-columns:repeat(4,minmax(0,1fr));}
+}
+body[data-pokemon-suite="true"][data-launcher="false"] {--footer-height:0px;}
+.suite-bot-workspace .live-footer {
+  position:static;height:auto;min-width:0;grid-template-columns:minmax(0,1fr);gap:8px;
+  margin-top:8px;padding:10px;border:1px solid var(--ps-border);border-radius:4px;
+  font:12px/1.5 'Trebuchet MS',Verdana,sans-serif;text-transform:none;letter-spacing:0;
+}
+.suite-bot-workspace .live-footer span {white-space:normal;overflow-wrap:anywhere;}

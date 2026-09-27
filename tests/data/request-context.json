@@ -1,0 +1,72 @@
+{
+ "schema": "pokemon-suite/request-context-fixture/v1",
+ "note": "Fixed live context for the request interpreter tests and the phrasing corpus (a post-League FireRed save running its postgame checklist). Shaped like SuiteSessions.snapshots(), shinies(), player_task_options(), the training inventory and the PC inventory. \"bag\" is the trainer's bag pockets as the engine observer decodes them (native item ids); the PC inventory read does not return it yet.",
+ "session": {
+  "schema": "pokemon-suite/session/v1",
+  "game": "firered",
+  "sessionId": "session-fixture-1",
+  "state": "running",
+  "map": "MAP_CERULEAN_CITY_POKEMON_CENTER_1F",
+  "position": {"x": 11, "y": 2},
+  "bot": {"enabled": true, "mode": "postgame", "runScope": "postgame", "awaitingCommand": false, "activity": "task", "status": "running", "reason": null, "objective": null},
+  "mission": {"id": "postgame-national-collection-fixture", "name": "slugma", "speciesId": 218, "method": "wild-land", "state": "running", "phase": "preparing-sweet-scent", "encounters": 12, "caught": 0, "quantity": 1, "shiny": "any", "elapsedMs": 95000, "route": "MAP_MT_EMBER_RUBY_PATH_B3F", "reason": null},
+  "pendingHunt": null,
+  "campaign": {"id": "run-18d5005d-ebbc-40e1-a890-143e18828a87", "label": "FireRed adventure", "status": "complete", "starter": {"species": 1, "name": "BULBASAUR"}},
+  "gameProgress": {"game": "firered", "leagueComplete": true, "nationalDex": true, "canLinkNationally": true, "ownedSpecies": 116, "trainerId": 10933,
+   "statics": [
+    {"id": "mewtwo", "speciesId": 150, "name": "Mewtwo", "method": "static", "used": false, "owned": false, "available": true, "status": "available", "requirements": [], "missing": []},
+    {"id": "articuno", "speciesId": 144, "name": "Articuno", "method": "static", "used": false, "owned": false, "available": true, "status": "available", "requirements": [], "missing": []},
+    {"id": "zapdos", "speciesId": 145, "name": "Zapdos", "method": "static", "used": true, "owned": true, "available": false, "status": "used", "requirements": [], "missing": []},
+    {"id": "moltres", "speciesId": 146, "name": "Moltres", "method": "static", "used": false, "owned": false, "available": true, "status": "available", "requirements": [], "missing": []}
+   ]},
+  "postgame": {"enabled": true, "active": "national-collection", "entries": [{"id": "league", "label": "Hall of Fame", "status": "complete"}, {"id": "national-collection", "label": "National Pokédex collection", "status": "pending"}], "progress": {"completed": 20, "total": 31, "complete": false,
+   "dex": {"known": true, "caught": 116, "total": 386, "complete": false, "missing": [3, 9, 12, 15, 18, 26, 28, 31, 34, 36, 38, 40, 45, 47, 51, 57, 62, 71, 73, 76, 78, 80, 82, 87, 89, 91, 94, 97, 99, 101, 103, 144, 146, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 353, 354, 355, 356, 357, 358, 359, 360, 361, 362, 363, 364, 365, 366, 367, 368, 369, 370, 371, 372, 373, 374, 375, 376, 377, 378, 379, 380, 381, 382, 383, 384, 385, 386], "kanto": {"caught": 116, "total": 150, "complete": false}}}},
+  "spectator": {
+   "map": {"name": "Cerulean City", "region": "Kanto"},
+   "trainer": {"name": "RED", "id": 10933, "money": 627073, "playTime": {"hours": 208, "minutes": 59, "seconds": 52}, "pokedex": {"owned": 116, "seen": 192}},
+   "badges": [{"id": "boulder", "label": "Boulder", "earned": true}, {"id": "cascade", "label": "Cascade", "earned": true}, {"id": "thunder", "label": "Thunder", "earned": true}, {"id": "rainbow", "label": "Rainbow", "earned": true}, {"id": "soul", "label": "Soul", "earned": true}, {"id": "marsh", "label": "Marsh", "earned": true}, {"id": "volcano", "label": "Volcano", "earned": true}, {"id": "earth", "label": "Earth", "earned": true}],
+   "party": [
+    {"lead": true, "slot": 0, "speciesId": 22, "speciesName": "Fearow", "level": 100, "hp": 253, "maxHp": 253, "status": "OK", "shiny": false, "heldItem": 0},
+    {"lead": false, "slot": 1, "speciesId": 55, "speciesName": "Golduck", "level": 100, "hp": 290, "maxHp": 290, "status": "OK", "shiny": false, "heldItem": 0},
+    {"lead": false, "slot": 2, "speciesId": 149, "speciesName": "Dragonite", "nickname": "Drake", "level": 100, "hp": 312, "maxHp": 312, "status": "OK", "shiny": false, "heldItem": 0},
+    {"lead": false, "slot": 3, "speciesId": 53, "speciesName": "Persian", "level": 95, "hp": 241, "maxHp": 241, "status": "OK", "shiny": false, "heldItem": 0},
+    {"lead": false, "slot": 4, "speciesId": 68, "speciesName": "Machamp", "level": 100, "hp": 299, "maxHp": 299, "status": "OK", "shiny": false, "heldItem": 0},
+    {"lead": false, "slot": 5, "speciesId": 65, "speciesName": "Alakazam", "level": 60, "hp": 150, "maxHp": 181, "status": "OK", "shiny": true, "heldItem": 0}
+   ]
+  },
+  "collection": [
+   {"id": "1111111111111111111111111111111111111111111111111111111111111111", "nationalSpeciesId": 6, "pokemon": {"species": 6, "nature": {"name": "Adamant"}, "level": 36}, "caughtAt": "2026-09-10T12:00:00Z", "canTrade": true, "owned": true}
+  ]
+ },
+ "shinies": [
+  {"id": "1111111111111111111111111111111111111111111111111111111111111111", "game": "firered", "name": "Charizard", "nationalSpeciesId": 6, "pokemon": {"species": 6, "nature": {"name": "Adamant"}, "level": 36}, "caughtAt": "2026-09-10T12:00:00Z", "canTrade": true, "owned": true},
+  {"id": "2222222222222222222222222222222222222222222222222222222222222222", "game": "firered", "name": "Pikachu", "nationalSpeciesId": 25, "pokemon": {"species": 25, "nature": {"name": "Timid"}, "level": 5}, "caughtAt": "2026-09-11T12:00:00Z", "canTrade": true, "owned": true},
+  {"id": "3333333333333333333333333333333333333333333333333333333333333333", "game": "firered", "name": "Pikachu", "nationalSpeciesId": 25, "pokemon": {"species": 25, "nature": {"name": "Hasty"}, "level": 6}, "caughtAt": "2026-09-12T12:00:00Z", "canTrade": true, "owned": true},
+  {"id": "4444444444444444444444444444444444444444444444444444444444444444", "game": "firered", "name": "Eevee", "nationalSpeciesId": 133, "pokemon": {"species": 133, "nature": {"name": "Bold"}, "level": 25}, "caughtAt": "2026-09-13T12:00:00Z", "canTrade": true, "owned": true},
+  {"id": "5555555555555555555555555555555555555555555555555555555555555555", "game": "firered", "name": "Gyarados", "nationalSpeciesId": 130, "pokemon": {"species": 130, "nature": {"name": "Jolly"}, "level": 30}, "caughtAt": "2026-09-14T12:00:00Z", "canTrade": true, "owned": true},
+  {"id": "6666666666666666666666666666666666666666666666666666666666666666", "game": "firered", "name": "Chansey", "nationalSpeciesId": 113, "pokemon": {"species": 113, "nature": {"name": "Bold"}, "level": 26}, "caughtAt": "2026-09-15T12:00:00Z", "canTrade": false, "owned": true}
+ ],
+ "profiles": [
+  {"id": "profile-main", "label": "Main save", "createdAt": "2026-09-01T10:00:00Z"},
+  {"id": "profile-speedrun", "label": "Speedrun", "createdAt": "2026-09-05T10:00:00Z"}
+ ],
+ "trainingPokemon": [
+  {"fingerprint": "[65,1234,5678,31,31,31,31,31,31]", "nationalSpeciesId": 65, "name": "Alakazam", "level": 60, "location": "Party slot 6", "ivs": {"hp": 31, "attack": 31, "defense": 31, "speed": 31, "spAttack": 31, "spDefense": 31}, "evs": {"hp": 6, "attack": 0, "defense": 0, "speed": 252, "spAttack": 252, "spDefense": 0}},
+  {"fingerprint": "[149,2234,5678,20,20,20,20,20,20]", "nationalSpeciesId": 149, "name": "Dragonite", "nickname": "Drake", "level": 100, "location": "Party slot 3", "ivs": {"hp": 20, "attack": 20, "defense": 20, "speed": 20, "spAttack": 20, "spDefense": 20}, "evs": {"hp": 6, "attack": 252, "defense": 0, "speed": 252, "spAttack": 0, "spDefense": 0}},
+  {"fingerprint": "[22,3234,5678,10,10,10,10,10,10]", "nationalSpeciesId": 22, "name": "Fearow", "level": 100, "location": "Party slot 1", "ivs": {"hp": 10, "attack": 10, "defense": 10, "speed": 10, "spAttack": 10, "spDefense": 10}, "evs": {"hp": 4, "attack": 252, "defense": 0, "speed": 252, "spAttack": 0, "spDefense": 0}},
+  {"fingerprint": "[68,4234,5678,15,15,15,15,15,15]", "nationalSpeciesId": 68, "name": "Machamp", "level": 100, "location": "Party slot 5", "ivs": {"hp": 15, "attack": 15, "defense": 15, "speed": 15, "spAttack": 15, "spDefense": 15}, "evs": {"hp": 252, "attack": 252, "defense": 6, "speed": 0, "spAttack": 0, "spDefense": 0}}
+ ],
+ "inventory": [
+  {"id": "aaaa000000000000000000000000000000000000000000000000000000000001", "nationalSpeciesId": 64, "name": "Kadabra", "location": "Box 2, slot 3", "natureName": "Timid", "shiny": false,
+   "ivs": {"hp": 12, "attack": 5, "defense": 20, "speed": 28, "spAttack": 30, "spDefense": 14}, "evs": {"hp": 0, "attack": 0, "defense": 0, "speed": 0, "spAttack": 0, "spDefense": 0}},
+  {"id": "aaaa000000000000000000000000000000000000000000000000000000000002", "nationalSpeciesId": 25, "name": "Pikachu", "location": "Box 1, slot 1", "natureName": "Hasty", "shiny": false,
+   "ivs": {"hp": 3, "attack": 17, "defense": 9, "speed": 25, "spAttack": 11, "spDefense": 8}, "evs": {"hp": 0, "attack": 0, "defense": 0, "speed": 0, "spAttack": 0, "spDefense": 0}},
+  {"id": "aaaa000000000000000000000000000000000000000000000000000000000003", "nationalSpeciesId": 65, "name": "Alakazam", "location": "Party slot 6", "level": 60, "natureName": "Modest", "shiny": true,
+   "ivs": {"hp": 31, "attack": 31, "defense": 31, "speed": 31, "spAttack": 31, "spDefense": 31}, "evs": {"hp": 6, "attack": 0, "defense": 0, "speed": 252, "spAttack": 252, "spDefense": 0}}
+ ],
+ "bag": {"items": [{"itemId": 19, "quantity": 35}, {"itemId": 24, "quantity": 12}, {"itemId": 68, "quantity": 7}, {"itemId": 85, "quantity": 3}, {"itemId": 110, "quantity": 2}], "keyItems": [{"itemId": 360, "quantity": 1}, {"itemId": 361, "quantity": 1}], "pokeBalls": [{"itemId": 2, "quantity": 48}, {"itemId": 4, "quantity": 5}, {"itemId": 1, "quantity": 1}], "tmhm": [], "berries": [{"itemId": 139, "quantity": 4}]},
+ "requests": [
+  {"id": "req-1", "state": "prepared", "request": {"game": "firered", "speciesId": 123, "shiny": "required", "quantity": 1}, "plan": {"pokemon": {"name": "Scyther"}}}
+ ],
+ "botSettings": {"shiny": "any", "natures": [], "gender": "any", "ball": {"id": "any", "requirement": "required"}, "minIvs": {}, "minDvs": {}, "limits": {"maxEncounters": 1000, "maxMinutes": 60, "minBalls": 10, "maxSpend": 5000}, "afterCompletion": "stop-save", "collectionStages": "base-forms", "qmmRareCandySupply": false}
+}

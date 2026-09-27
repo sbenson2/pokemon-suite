@@ -1,0 +1,11 @@
+Model Information:
+* title:	Nintendo Switch game Cartridge v2
+* source:	https://sketchfab.com/3d-models/nintendo-switch-game-cartridge-v2-2e681c294545411d98eb61a98f2dba3e
+* author:	maxns1980 (https://sketchfab.com/maxns1980)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Nintendo Switch game Cartridge v2" (https://sketchfab.com/3d-models/nintendo-switch-game-cartridge-v2-2e681c294545411d98eb61a98f2dba3e) by maxns1980 (https://sketchfab.com/maxns1980) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

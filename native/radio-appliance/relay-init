@@ -1,0 +1,20 @@
+#!/bin/sh
+export PATH=/usr/sbin:/usr/bin:/sbin:/bin
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+mount -t devtmpfs devtmpfs /dev
+mkdir -p /dev/pts /run /tmp
+mount -t devpts devpts /dev/pts
+mount -t tmpfs tmpfs /run
+mount -t tmpfs tmpfs /tmp
+modprobe virtio_pci
+modprobe virtio_console
+modprobe xhci_pci
+modprobe af_packet
+modprobe tun
+modprobe rtw88_8822bu
+mdev -s
+python3 -B -u /opt/suite/guest_relay.py
+sync
+poweroff -f
+while :; do sleep 60; done

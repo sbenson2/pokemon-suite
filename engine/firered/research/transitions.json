@@ -1,0 +1,32 @@
+{
+  "schema": "master-red/transitions/v1",
+  "acceptedEvidence": ["real-mgba"],
+  "policy": "Each trace starts with one atomic stable observation, records bounded interruptible actions, and ends with one atomic stable observation or an allowed terminal condition. Transition and unknown samples are recoverable.",
+  "scenarios": [
+    {"id": "title-to-new-game", "stimulus": "start a new game", "expected": ["interrupt", "resample", "decide"], "minimumSuccessfulTraces": 1},
+    {"id": "script-lock-begin-end", "stimulus": "trigger an overworld script", "expected": ["interrupt", "decide"], "minimumSuccessfulTraces": 1},
+    {"id": "door-warp-entry-exit", "stimulus": "cross an exterior door warp in both directions", "expected": ["interrupt", "resample", "decide"], "minimumSuccessfulTraces": 1},
+    {"id": "mart-entry-roundtrip", "stimulus": "enter and leave Viridian Mart", "expected": ["interrupt", "resample", "decide"], "minimumSuccessfulTraces": 100},
+    {"id": "cave-ladder", "stimulus": "use a ladder between cave floors", "expected": ["interrupt", "resample", "decide"], "minimumSuccessfulTraces": 1},
+    {"id": "map-connection", "stimulus": "walk across a route or city map connection", "expected": ["interrupt", "decide"], "minimumSuccessfulTraces": 1},
+    {"id": "elevator", "stimulus": "select and exit an elevator floor", "expected": ["interrupt", "decide"], "minimumSuccessfulTraces": 1},
+    {"id": "teleport-pad", "stimulus": "cross a scripted teleport tile", "expected": ["interrupt", "resample", "decide"], "minimumSuccessfulTraces": 1},
+    {"id": "dialog-open-close", "stimulus": "start and exhaust NPC dialog", "expected": ["interrupt", "decide"], "minimumSuccessfulTraces": 1},
+    {"id": "start-menu-open-close", "stimulus": "open and close the Start menu", "expected": ["interrupt", "decide"], "minimumSuccessfulTraces": 1},
+    {"id": "party-menu-roundtrip", "stimulus": "open party, inspect, and return", "expected": ["interrupt", "decide"], "minimumSuccessfulTraces": 1},
+    {"id": "bag-menu-roundtrip", "stimulus": "open bag, inspect, and return", "expected": ["interrupt", "decide"], "minimumSuccessfulTraces": 1},
+    {"id": "wild-battle-init-return", "stimulus": "enter and win an ordinary wild battle", "expected": ["interrupt", "resample", "decide"], "minimumSuccessfulTraces": 1},
+    {"id": "trainer-battle-init-return", "stimulus": "enter and win a trainer battle", "expected": ["interrupt", "resample", "decide"], "minimumSuccessfulTraces": 1},
+    {"id": "battle-run", "stimulus": "run under an explicit survival escape condition", "expected": ["interrupt", "decide"], "minimumSuccessfulTraces": 1},
+    {"id": "move-learning", "stimulus": "resolve the four-move replacement flow", "expected": ["interrupt", "decide"], "minimumSuccessfulTraces": 1},
+    {"id": "evolution", "stimulus": "complete an evolution sequence", "expected": ["interrupt", "resample", "decide"], "minimumSuccessfulTraces": 1},
+    {"id": "blackout", "stimulus": "lose the last usable party member", "expected": ["interrupt", "resample", "decide"], "minimumSuccessfulTraces": 1},
+    {"id": "center-heal", "stimulus": "complete a Pokemon Center healing transaction", "expected": ["interrupt", "decide"], "minimumSuccessfulTraces": 1},
+    {"id": "mart-purchase", "stimulus": "complete and cancel Mart purchases", "expected": ["interrupt", "decide"], "minimumSuccessfulTraces": 1},
+    {"id": "pc-deposit-withdraw", "stimulus": "deposit and withdraw a party member", "expected": ["interrupt", "decide"], "minimumSuccessfulTraces": 1},
+    {"id": "native-save", "stimulus": "complete an in-game save", "expected": ["interrupt", "decide"], "minimumSuccessfulTraces": 1},
+    {"id": "cut-surf-strength", "stimulus": "activate each required field move", "expected": ["interrupt", "resample", "decide"], "minimumSuccessfulTraces": 3},
+    {"id": "forced-movement", "stimulus": "complete ledge, ice, current, or scripted movement", "expected": ["interrupt", "resample", "decide"], "minimumSuccessfulTraces": 1},
+    {"id": "hall-of-fame", "stimulus": "finish the Champion and native Hall of Fame sequence", "expected": ["interrupt", "resample", "complete"], "minimumSuccessfulTraces": 1}
+  ]
+}

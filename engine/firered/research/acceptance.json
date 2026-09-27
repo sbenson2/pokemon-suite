@@ -1,0 +1,111 @@
+{
+  "schema": "master-red/acceptance/v1",
+  "mission": "Start a new stock FireRed Rev 1 game and reach the native Hall of Fame without human controller input.",
+  "implementationGateIds": [
+    "source-provenance-lock",
+    "stock-rom-fingerprint",
+    "knowledge-pack-generation",
+    "atomic-observation-sampling",
+    "snapshot-roundtrip",
+    "mart-entry-roundtrip",
+    "modal-transition-corpus"
+  ],
+  "rules": {
+    "syntheticEvidence": "Synthetic tests are regressions only and never satisfy a real-mgba gate.",
+    "runMutation": "Controller code and research artifacts may not change during a qualification episode.",
+    "manualAssistance": "A run with one or more manual-control handoffs remains resumable research data but cannot qualify as an autonomous Hall of Fame run.",
+    "manualRecoveryData": "Operator recovery examples are candidate training and regression data; they cannot mutate live policy or satisfy qualification evidence until reviewed and converted into an unchanged-controller repair.",
+    "realMgbaReceipt": "A real-mgba receipt identifies its run, stock cartridge profile, mGBA commit and WASM digest, immutable harness revision, start and end states, and trace digest.",
+    "terminalConditions": ["hall-of-fame", "deadline", "emulator-crash", "cartridge-invalid", "operator-stop"]
+  },
+  "gates": [
+    {
+      "id": "source-provenance-lock",
+      "phase": "implementation",
+      "description": "Every runtime or generated-data source is immutable and license-reviewed.",
+      "targetSuccesses": 1,
+      "maxFailures": 0,
+      "allowedEvidence": ["artifact-validation"]
+    },
+    {
+      "id": "stock-rom-fingerprint",
+      "phase": "implementation",
+      "description": "The qualification session boots the exact stock FireRed Rev 1 cartridge.",
+      "targetSuccesses": 1,
+      "maxFailures": 0,
+      "allowedEvidence": ["artifact-validation"]
+    },
+    {
+      "id": "knowledge-pack-generation",
+      "phase": "implementation",
+      "description": "All four cartridge-authoritative datasets are generated, content-addressed, and provenance-valid.",
+      "targetSuccesses": 4,
+      "maxFailures": 0,
+      "allowedEvidence": ["artifact-validation"]
+    },
+    {
+      "id": "atomic-observation-sampling",
+      "phase": "implementation",
+      "description": "Frame-boundary samples agree internally and never combine state from different frames.",
+      "targetSuccesses": 10000,
+      "maxFailures": 0,
+      "allowedEvidence": ["real-mgba"]
+    },
+    {
+      "id": "snapshot-roundtrip",
+      "phase": "implementation",
+      "description": "Whole-emulator state, SRAM, and player memory restore to equivalent observations.",
+      "targetSuccesses": 100,
+      "maxFailures": 0,
+      "allowedEvidence": ["real-mgba"]
+    },
+    {
+      "id": "mart-entry-roundtrip",
+      "phase": "implementation",
+      "description": "Enter and leave Viridian Mart without terminal ownership faults or lost actions.",
+      "targetSuccesses": 100,
+      "maxFailures": 0,
+      "allowedEvidence": ["real-mgba"]
+    },
+    {
+      "id": "modal-transition-corpus",
+      "phase": "implementation",
+      "description": "Every required transition class produces a bounded interrupt and stable post-observation.",
+      "targetSuccesses": 25,
+      "maxFailures": 0,
+      "allowedEvidence": ["real-mgba"]
+    },
+    {
+      "id": "ordinary-wild-battle-policy",
+      "phase": "campaign",
+      "description": "Ordinary renewable encounters are fought unless capture or survival policy explicitly permits escape.",
+      "targetSuccesses": 100,
+      "maxFailures": 0,
+      "allowedEvidence": ["real-mgba"]
+    },
+    {
+      "id": "oak-parcel-loop",
+      "phase": "campaign",
+      "description": "Cold-start Oak lab, rival, Route 1, Mart, parcel, and lab vertical slice.",
+      "targetSuccesses": 20,
+      "maxFailures": 0,
+      "allowedEvidence": ["real-mgba"]
+    },
+    {
+      "id": "brock-vertical-slice",
+      "phase": "campaign",
+      "description": "Cold-start campaign continuation through the Boulder Badge.",
+      "targetSuccesses": 20,
+      "maxFailures": 0,
+      "allowedEvidence": ["real-mgba"]
+    },
+    {
+      "id": "hall-of-fame-independent-runs",
+      "phase": "campaign",
+      "description": "Independent unchanged-controller runs reach the native Hall of Fame from new games.",
+      "targetSuccesses": 3,
+      "maxFailures": 0,
+      "allowedEvidence": ["real-mgba"]
+    }
+  ]
+}

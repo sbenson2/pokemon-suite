@@ -1,0 +1,1588 @@
+{
+  "source": "Battle facts from retained Misty checkpoint, 2026-09-12; no ROM bytes or trainer identity.",
+  "mechanics": {
+    "species": {
+      "16": {
+        "abilities": [
+          "ABILITY_KEEN_EYE",
+          "ABILITY_NONE"
+        ],
+        "baseAttack": 45,
+        "baseDefense": 40,
+        "baseHP": 40,
+        "baseSpAttack": 35,
+        "baseSpDefense": 35,
+        "baseSpeed": 56,
+        "bodyColor": "BODY_COLOR_BROWN",
+        "catchRate": 255,
+        "eggCycles": 15,
+        "eggGroups": [
+          "EGG_GROUP_FLYING",
+          "EGG_GROUP_FLYING"
+        ],
+        "evYield_Attack": 0,
+        "evYield_Defense": 0,
+        "evYield_HP": 0,
+        "evYield_SpAttack": 0,
+        "evYield_SpDefense": 0,
+        "evYield_Speed": 1,
+        "expYield": 55,
+        "friendship": 70,
+        "genderRatio": {
+          "args": [
+            50
+          ],
+          "call": "PERCENT_FEMALE"
+        },
+        "growthRate": "GROWTH_MEDIUM_SLOW",
+        "id": 16,
+        "itemCommon": "ITEM_NONE",
+        "itemRare": "ITEM_NONE",
+        "name": "SPECIES_PIDGEY",
+        "noFlip": "FALSE",
+        "safariZoneFleeRate": 0,
+        "types": [
+          "TYPE_NORMAL",
+          "TYPE_FLYING"
+        ]
+      },
+      "105": {
+        "abilities": [
+          "ABILITY_ROCK_HEAD",
+          "ABILITY_LIGHTNING_ROD"
+        ],
+        "baseAttack": 80,
+        "baseDefense": 110,
+        "baseHP": 60,
+        "baseSpAttack": 50,
+        "baseSpDefense": 80,
+        "baseSpeed": 45,
+        "bodyColor": "BODY_COLOR_BROWN",
+        "catchRate": 75,
+        "eggCycles": 20,
+        "eggGroups": [
+          "EGG_GROUP_MONSTER",
+          "EGG_GROUP_MONSTER"
+        ],
+        "evYield_Attack": 0,
+        "evYield_Defense": 2,
+        "evYield_HP": 0,
+        "evYield_SpAttack": 0,
+        "evYield_SpDefense": 0,
+        "evYield_Speed": 0,
+        "expYield": 124,
+        "friendship": 70,
+        "genderRatio": {
+          "args": [
+            50
+          ],
+          "call": "PERCENT_FEMALE"
+        },
+        "growthRate": "GROWTH_MEDIUM_FAST",
+        "id": 105,
+        "itemCommon": "ITEM_NONE",
+        "itemRare": "ITEM_THICK_CLUB",
+        "name": "SPECIES_MAROWAK",
+        "noFlip": "FALSE",
+        "safariZoneFleeRate": 0,
+        "types": [
+          "TYPE_GROUND",
+          "TYPE_GROUND"
+        ]
+      },
+      "2": {
+        "abilities": [
+          "ABILITY_OVERGROW",
+          "ABILITY_NONE"
+        ],
+        "baseAttack": 62,
+        "baseDefense": 63,
+        "baseHP": 60,
+        "baseSpAttack": 80,
+        "baseSpDefense": 80,
+        "baseSpeed": 60,
+        "bodyColor": "BODY_COLOR_GREEN",
+        "catchRate": 45,
+        "eggCycles": 20,
+        "eggGroups": [
+          "EGG_GROUP_MONSTER",
+          "EGG_GROUP_GRASS"
+        ],
+        "evYield_Attack": 0,
+        "evYield_Defense": 0,
+        "evYield_HP": 0,
+        "evYield_SpAttack": 1,
+        "evYield_SpDefense": 1,
+        "evYield_Speed": 0,
+        "expYield": 141,
+        "friendship": 70,
+        "genderRatio": {
+          "args": [
+            12.5
+          ],
+          "call": "PERCENT_FEMALE"
+        },
+        "growthRate": "GROWTH_MEDIUM_SLOW",
+        "id": 2,
+        "itemCommon": "ITEM_NONE",
+        "itemRare": "ITEM_NONE",
+        "name": "SPECIES_IVYSAUR",
+        "noFlip": "FALSE",
+        "safariZoneFleeRate": 0,
+        "types": [
+          "TYPE_GRASS",
+          "TYPE_POISON"
+        ]
+      },
+      "39": {
+        "abilities": [
+          "ABILITY_CUTE_CHARM",
+          "ABILITY_NONE"
+        ],
+        "baseAttack": 45,
+        "baseDefense": 20,
+        "baseHP": 115,
+        "baseSpAttack": 45,
+        "baseSpDefense": 25,
+        "baseSpeed": 20,
+        "bodyColor": "BODY_COLOR_PINK",
+        "catchRate": 170,
+        "eggCycles": 10,
+        "eggGroups": [
+          "EGG_GROUP_FAIRY",
+          "EGG_GROUP_FAIRY"
+        ],
+        "evYield_Attack": 0,
+        "evYield_Defense": 0,
+        "evYield_HP": 2,
+        "evYield_SpAttack": 0,
+        "evYield_SpDefense": 0,
+        "evYield_Speed": 0,
+        "expYield": 76,
+        "friendship": 70,
+        "genderRatio": {
+          "args": [
+            75
+          ],
+          "call": "PERCENT_FEMALE"
+        },
+        "growthRate": "GROWTH_FAST",
+        "id": 39,
+        "itemCommon": "ITEM_ORAN_BERRY",
+        "itemRare": "ITEM_NONE",
+        "name": "SPECIES_JIGGLYPUFF",
+        "noFlip": "FALSE",
+        "safariZoneFleeRate": 0,
+        "types": [
+          "TYPE_NORMAL",
+          "TYPE_NORMAL"
+        ]
+      },
+      "56": {
+        "abilities": [
+          "ABILITY_VITAL_SPIRIT",
+          "ABILITY_NONE"
+        ],
+        "baseAttack": 80,
+        "baseDefense": 35,
+        "baseHP": 40,
+        "baseSpAttack": 35,
+        "baseSpDefense": 45,
+        "baseSpeed": 70,
+        "bodyColor": "BODY_COLOR_BROWN",
+        "catchRate": 190,
+        "eggCycles": 20,
+        "eggGroups": [
+          "EGG_GROUP_FIELD",
+          "EGG_GROUP_FIELD"
+        ],
+        "evYield_Attack": 1,
+        "evYield_Defense": 0,
+        "evYield_HP": 0,
+        "evYield_SpAttack": 0,
+        "evYield_SpDefense": 0,
+        "evYield_Speed": 0,
+        "expYield": 74,
+        "friendship": 70,
+        "genderRatio": {
+          "args": [
+            50
+          ],
+          "call": "PERCENT_FEMALE"
+        },
+        "growthRate": "GROWTH_MEDIUM_FAST",
+        "id": 56,
+        "itemCommon": "ITEM_NONE",
+        "itemRare": "ITEM_NONE",
+        "name": "SPECIES_MANKEY",
+        "noFlip": "FALSE",
+        "safariZoneFleeRate": 0,
+        "types": [
+          "TYPE_FIGHTING",
+          "TYPE_FIGHTING"
+        ]
+      },
+      "121": {
+        "abilities": [
+          "ABILITY_ILLUMINATE",
+          "ABILITY_NATURAL_CURE"
+        ],
+        "baseAttack": 75,
+        "baseDefense": 85,
+        "baseHP": 60,
+        "baseSpAttack": 100,
+        "baseSpDefense": 85,
+        "baseSpeed": 115,
+        "bodyColor": "BODY_COLOR_PURPLE",
+        "catchRate": 60,
+        "eggCycles": 20,
+        "eggGroups": [
+          "EGG_GROUP_WATER_3",
+          "EGG_GROUP_WATER_3"
+        ],
+        "evYield_Attack": 0,
+        "evYield_Defense": 0,
+        "evYield_HP": 0,
+        "evYield_SpAttack": 0,
+        "evYield_SpDefense": 0,
+        "evYield_Speed": 2,
+        "expYield": 207,
+        "friendship": 70,
+        "genderRatio": "MON_GENDERLESS",
+        "growthRate": "GROWTH_SLOW",
+        "id": 121,
+        "itemCommon": "ITEM_STARDUST",
+        "itemRare": "ITEM_STAR_PIECE",
+        "name": "SPECIES_STARMIE",
+        "noFlip": "FALSE",
+        "safariZoneFleeRate": 0,
+        "types": [
+          "TYPE_WATER",
+          "TYPE_PSYCHIC"
+        ]
+      },
+      "120": {
+        "abilities": [
+          "ABILITY_ILLUMINATE",
+          "ABILITY_NATURAL_CURE"
+        ],
+        "baseAttack": 45,
+        "baseDefense": 55,
+        "baseHP": 30,
+        "baseSpAttack": 70,
+        "baseSpDefense": 55,
+        "baseSpeed": 85,
+        "bodyColor": "BODY_COLOR_BROWN",
+        "catchRate": 225,
+        "eggCycles": 20,
+        "eggGroups": [
+          "EGG_GROUP_WATER_3",
+          "EGG_GROUP_WATER_3"
+        ],
+        "evYield_Attack": 0,
+        "evYield_Defense": 0,
+        "evYield_HP": 0,
+        "evYield_SpAttack": 0,
+        "evYield_SpDefense": 0,
+        "evYield_Speed": 1,
+        "expYield": 106,
+        "friendship": 70,
+        "genderRatio": "MON_GENDERLESS",
+        "growthRate": "GROWTH_SLOW",
+        "id": 120,
+        "itemCommon": "ITEM_STARDUST",
+        "itemRare": "ITEM_STAR_PIECE",
+        "name": "SPECIES_STARYU",
+        "noFlip": "FALSE",
+        "safariZoneFleeRate": 0,
+        "types": [
+          "TYPE_WATER",
+          "TYPE_WATER"
+        ]
+      }
+    },
+    "moves": {
+      "0": {
+        "accuracy": 0,
+        "effect": "EFFECT_HIT",
+        "flags": 0,
+        "id": 0,
+        "name": "MOVE_NONE",
+        "power": 0,
+        "pp": 0,
+        "priority": 0,
+        "secondaryEffectChance": 0,
+        "target": "MOVE_TARGET_SELECTED",
+        "type": "TYPE_NORMAL"
+      },
+      "1": {
+        "accuracy": 100,
+        "effect": "EFFECT_HIT",
+        "flags": "FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED",
+        "id": 1,
+        "name": "MOVE_POUND",
+        "power": 40,
+        "pp": 35,
+        "priority": 0,
+        "secondaryEffectChance": 0,
+        "target": "MOVE_TARGET_SELECTED",
+        "type": "TYPE_NORMAL"
+      },
+      "2": {
+        "accuracy": 100,
+        "effect": "EFFECT_HIGH_CRITICAL",
+        "flags": "FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED",
+        "id": 2,
+        "name": "MOVE_KARATE_CHOP",
+        "power": 50,
+        "pp": 25,
+        "priority": 0,
+        "secondaryEffectChance": 0,
+        "target": "MOVE_TARGET_SELECTED",
+        "type": "TYPE_FIGHTING"
+      },
+      "67": {
+        "accuracy": 100,
+        "effect": "EFFECT_LOW_KICK",
+        "flags": "FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED",
+        "id": 67,
+        "name": "MOVE_LOW_KICK",
+        "power": 1,
+        "pp": 20,
+        "priority": 0,
+        "secondaryEffectChance": 0,
+        "target": "MOVE_TARGET_SELECTED",
+        "type": "TYPE_FIGHTING"
+      },
+      "129": {
+        "accuracy": 0,
+        "effect": "EFFECT_ALWAYS_HIT",
+        "flags": "FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED",
+        "id": 129,
+        "name": "MOVE_SWIFT",
+        "power": 60,
+        "pp": 20,
+        "priority": 0,
+        "secondaryEffectChance": 0,
+        "target": "MOVE_TARGET_BOTH",
+        "type": "TYPE_NORMAL"
+      },
+      "69": {
+        "accuracy": 100,
+        "effect": "EFFECT_LEVEL_DAMAGE",
+        "flags": "FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED",
+        "id": 69,
+        "name": "MOVE_SEISMIC_TOSS",
+        "power": 1,
+        "pp": 20,
+        "priority": 0,
+        "secondaryEffectChance": 0,
+        "target": "MOVE_TARGET_SELECTED",
+        "type": "TYPE_FIGHTING"
+      },
+      "73": {
+        "accuracy": 90,
+        "effect": "EFFECT_LEECH_SEED",
+        "flags": "FLAG_PROTECT_AFFECTED | FLAG_MAGIC_COAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED",
+        "id": 73,
+        "name": "MOVE_LEECH_SEED",
+        "power": 0,
+        "pp": 10,
+        "priority": 0,
+        "secondaryEffectChance": 0,
+        "target": "MOVE_TARGET_SELECTED",
+        "type": "TYPE_GRASS"
+      },
+      "10": {
+        "accuracy": 100,
+        "effect": "EFFECT_HIT",
+        "flags": "FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED",
+        "id": 10,
+        "name": "MOVE_SCRATCH",
+        "power": 40,
+        "pp": 35,
+        "priority": 0,
+        "secondaryEffectChance": 0,
+        "target": "MOVE_TARGET_SELECTED",
+        "type": "TYPE_NORMAL"
+      },
+      "75": {
+        "accuracy": 95,
+        "effect": "EFFECT_HIGH_CRITICAL",
+        "flags": "FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED",
+        "id": 75,
+        "name": "MOVE_RAZOR_LEAF",
+        "power": 55,
+        "pp": 25,
+        "priority": 0,
+        "secondaryEffectChance": 0,
+        "target": "MOVE_TARGET_BOTH",
+        "type": "TYPE_GRASS"
+      },
+      "205": {
+        "accuracy": 90,
+        "effect": "EFFECT_ROLLOUT",
+        "flags": "FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED",
+        "id": 205,
+        "name": "MOVE_ROLLOUT",
+        "power": 30,
+        "pp": 20,
+        "priority": 0,
+        "secondaryEffectChance": 0,
+        "target": "MOVE_TARGET_SELECTED",
+        "type": "TYPE_ROCK"
+      },
+      "79": {
+        "accuracy": 75,
+        "effect": "EFFECT_SLEEP",
+        "flags": "FLAG_PROTECT_AFFECTED | FLAG_MAGIC_COAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED",
+        "id": 79,
+        "name": "MOVE_SLEEP_POWDER",
+        "power": 0,
+        "pp": 15,
+        "priority": 0,
+        "secondaryEffectChance": 0,
+        "target": "MOVE_TARGET_SELECTED",
+        "type": "TYPE_GRASS"
+      },
+      "22": {
+        "accuracy": 100,
+        "effect": "EFFECT_HIT",
+        "flags": "FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED",
+        "id": 22,
+        "name": "MOVE_VINE_WHIP",
+        "power": 35,
+        "pp": 10,
+        "priority": 0,
+        "secondaryEffectChance": 0,
+        "target": "MOVE_TARGET_SELECTED",
+        "type": "TYPE_GRASS"
+      },
+      "352": {
+        "accuracy": 100,
+        "effect": "EFFECT_CONFUSE_HIT",
+        "flags": "FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED",
+        "id": 352,
+        "name": "MOVE_WATER_PULSE",
+        "power": 60,
+        "pp": 20,
+        "priority": 0,
+        "secondaryEffectChance": 20,
+        "target": "MOVE_TARGET_SELECTED",
+        "type": "TYPE_WATER"
+      },
+      "33": {
+        "accuracy": 95,
+        "effect": "EFFECT_HIT",
+        "flags": "FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED",
+        "id": 33,
+        "name": "MOVE_TACKLE",
+        "power": 35,
+        "pp": 35,
+        "priority": 0,
+        "secondaryEffectChance": 0,
+        "target": "MOVE_TARGET_SELECTED",
+        "type": "TYPE_NORMAL"
+      },
+      "229": {
+        "accuracy": 100,
+        "effect": "EFFECT_RAPID_SPIN",
+        "flags": "FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED",
+        "id": 229,
+        "name": "MOVE_RAPID_SPIN",
+        "power": 20,
+        "pp": 40,
+        "priority": 0,
+        "secondaryEffectChance": 0,
+        "target": "MOVE_TARGET_SELECTED",
+        "type": "TYPE_NORMAL"
+      },
+      "105": {
+        "accuracy": 0,
+        "effect": "EFFECT_RESTORE_HP",
+        "flags": "FLAG_SNATCH_AFFECTED",
+        "id": 105,
+        "name": "MOVE_RECOVER",
+        "power": 0,
+        "pp": 20,
+        "priority": 0,
+        "secondaryEffectChance": 0,
+        "target": "MOVE_TARGET_USER",
+        "type": "TYPE_NORMAL"
+      },
+      "106": {
+        "accuracy": 0,
+        "effect": "EFFECT_DEFENSE_UP",
+        "flags": "FLAG_SNATCH_AFFECTED",
+        "id": 106,
+        "name": "MOVE_HARDEN",
+        "power": 0,
+        "pp": 30,
+        "priority": 0,
+        "secondaryEffectChance": 0,
+        "target": "MOVE_TARGET_USER",
+        "type": "TYPE_NORMAL"
+      },
+      "47": {
+        "accuracy": 55,
+        "effect": "EFFECT_SLEEP",
+        "flags": "FLAG_PROTECT_AFFECTED | FLAG_MAGIC_COAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED",
+        "id": 47,
+        "name": "MOVE_SING",
+        "power": 0,
+        "pp": 15,
+        "priority": 0,
+        "secondaryEffectChance": 0,
+        "target": "MOVE_TARGET_SELECTED",
+        "type": "TYPE_NORMAL"
+      },
+      "111": {
+        "accuracy": 0,
+        "effect": "EFFECT_DEFENSE_CURL",
+        "flags": "FLAG_SNATCH_AFFECTED",
+        "id": 111,
+        "name": "MOVE_DEFENSE_CURL",
+        "power": 0,
+        "pp": 40,
+        "priority": 0,
+        "secondaryEffectChance": 0,
+        "target": "MOVE_TARGET_USER",
+        "type": "TYPE_NORMAL"
+      }
+    },
+    "typeChart": [
+      {
+        "attackingType": "TYPE_NORMAL",
+        "defendingType": "TYPE_ROCK",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_NORMAL",
+        "defendingType": "TYPE_STEEL",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_FIRE",
+        "defendingType": "TYPE_FIRE",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_FIRE",
+        "defendingType": "TYPE_WATER",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_FIRE",
+        "defendingType": "TYPE_GRASS",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_FIRE",
+        "defendingType": "TYPE_ICE",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_FIRE",
+        "defendingType": "TYPE_BUG",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_FIRE",
+        "defendingType": "TYPE_ROCK",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_FIRE",
+        "defendingType": "TYPE_DRAGON",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_FIRE",
+        "defendingType": "TYPE_STEEL",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_WATER",
+        "defendingType": "TYPE_FIRE",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_WATER",
+        "defendingType": "TYPE_WATER",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_WATER",
+        "defendingType": "TYPE_GRASS",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_WATER",
+        "defendingType": "TYPE_GROUND",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_WATER",
+        "defendingType": "TYPE_ROCK",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_WATER",
+        "defendingType": "TYPE_DRAGON",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_ELECTRIC",
+        "defendingType": "TYPE_WATER",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_ELECTRIC",
+        "defendingType": "TYPE_ELECTRIC",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_ELECTRIC",
+        "defendingType": "TYPE_GRASS",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_ELECTRIC",
+        "defendingType": "TYPE_GROUND",
+        "multiplier": 0
+      },
+      {
+        "attackingType": "TYPE_ELECTRIC",
+        "defendingType": "TYPE_FLYING",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_ELECTRIC",
+        "defendingType": "TYPE_DRAGON",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_GRASS",
+        "defendingType": "TYPE_FIRE",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_GRASS",
+        "defendingType": "TYPE_WATER",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_GRASS",
+        "defendingType": "TYPE_GRASS",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_GRASS",
+        "defendingType": "TYPE_POISON",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_GRASS",
+        "defendingType": "TYPE_GROUND",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_GRASS",
+        "defendingType": "TYPE_FLYING",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_GRASS",
+        "defendingType": "TYPE_BUG",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_GRASS",
+        "defendingType": "TYPE_ROCK",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_GRASS",
+        "defendingType": "TYPE_DRAGON",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_GRASS",
+        "defendingType": "TYPE_STEEL",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_ICE",
+        "defendingType": "TYPE_WATER",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_ICE",
+        "defendingType": "TYPE_GRASS",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_ICE",
+        "defendingType": "TYPE_ICE",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_ICE",
+        "defendingType": "TYPE_GROUND",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_ICE",
+        "defendingType": "TYPE_FLYING",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_ICE",
+        "defendingType": "TYPE_DRAGON",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_ICE",
+        "defendingType": "TYPE_STEEL",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_ICE",
+        "defendingType": "TYPE_FIRE",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_FIGHTING",
+        "defendingType": "TYPE_NORMAL",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_FIGHTING",
+        "defendingType": "TYPE_ICE",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_FIGHTING",
+        "defendingType": "TYPE_POISON",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_FIGHTING",
+        "defendingType": "TYPE_FLYING",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_FIGHTING",
+        "defendingType": "TYPE_PSYCHIC",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_FIGHTING",
+        "defendingType": "TYPE_BUG",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_FIGHTING",
+        "defendingType": "TYPE_ROCK",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_FIGHTING",
+        "defendingType": "TYPE_DARK",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_FIGHTING",
+        "defendingType": "TYPE_STEEL",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_POISON",
+        "defendingType": "TYPE_GRASS",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_POISON",
+        "defendingType": "TYPE_POISON",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_POISON",
+        "defendingType": "TYPE_GROUND",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_POISON",
+        "defendingType": "TYPE_ROCK",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_POISON",
+        "defendingType": "TYPE_GHOST",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_POISON",
+        "defendingType": "TYPE_STEEL",
+        "multiplier": 0
+      },
+      {
+        "attackingType": "TYPE_GROUND",
+        "defendingType": "TYPE_FIRE",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_GROUND",
+        "defendingType": "TYPE_ELECTRIC",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_GROUND",
+        "defendingType": "TYPE_GRASS",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_GROUND",
+        "defendingType": "TYPE_POISON",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_GROUND",
+        "defendingType": "TYPE_FLYING",
+        "multiplier": 0
+      },
+      {
+        "attackingType": "TYPE_GROUND",
+        "defendingType": "TYPE_BUG",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_GROUND",
+        "defendingType": "TYPE_ROCK",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_GROUND",
+        "defendingType": "TYPE_STEEL",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_FLYING",
+        "defendingType": "TYPE_ELECTRIC",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_FLYING",
+        "defendingType": "TYPE_GRASS",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_FLYING",
+        "defendingType": "TYPE_FIGHTING",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_FLYING",
+        "defendingType": "TYPE_BUG",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_FLYING",
+        "defendingType": "TYPE_ROCK",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_FLYING",
+        "defendingType": "TYPE_STEEL",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_PSYCHIC",
+        "defendingType": "TYPE_FIGHTING",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_PSYCHIC",
+        "defendingType": "TYPE_POISON",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_PSYCHIC",
+        "defendingType": "TYPE_PSYCHIC",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_PSYCHIC",
+        "defendingType": "TYPE_DARK",
+        "multiplier": 0
+      },
+      {
+        "attackingType": "TYPE_PSYCHIC",
+        "defendingType": "TYPE_STEEL",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_BUG",
+        "defendingType": "TYPE_FIRE",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_BUG",
+        "defendingType": "TYPE_GRASS",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_BUG",
+        "defendingType": "TYPE_FIGHTING",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_BUG",
+        "defendingType": "TYPE_POISON",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_BUG",
+        "defendingType": "TYPE_FLYING",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_BUG",
+        "defendingType": "TYPE_PSYCHIC",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_BUG",
+        "defendingType": "TYPE_GHOST",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_BUG",
+        "defendingType": "TYPE_DARK",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_BUG",
+        "defendingType": "TYPE_STEEL",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_ROCK",
+        "defendingType": "TYPE_FIRE",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_ROCK",
+        "defendingType": "TYPE_ICE",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_ROCK",
+        "defendingType": "TYPE_FIGHTING",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_ROCK",
+        "defendingType": "TYPE_GROUND",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_ROCK",
+        "defendingType": "TYPE_FLYING",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_ROCK",
+        "defendingType": "TYPE_BUG",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_ROCK",
+        "defendingType": "TYPE_STEEL",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_GHOST",
+        "defendingType": "TYPE_NORMAL",
+        "multiplier": 0
+      },
+      {
+        "attackingType": "TYPE_GHOST",
+        "defendingType": "TYPE_PSYCHIC",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_GHOST",
+        "defendingType": "TYPE_DARK",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_GHOST",
+        "defendingType": "TYPE_STEEL",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_GHOST",
+        "defendingType": "TYPE_GHOST",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_DRAGON",
+        "defendingType": "TYPE_DRAGON",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_DRAGON",
+        "defendingType": "TYPE_STEEL",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_DARK",
+        "defendingType": "TYPE_FIGHTING",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_DARK",
+        "defendingType": "TYPE_PSYCHIC",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_DARK",
+        "defendingType": "TYPE_GHOST",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_DARK",
+        "defendingType": "TYPE_DARK",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_DARK",
+        "defendingType": "TYPE_STEEL",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_STEEL",
+        "defendingType": "TYPE_FIRE",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_STEEL",
+        "defendingType": "TYPE_WATER",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_STEEL",
+        "defendingType": "TYPE_ELECTRIC",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_STEEL",
+        "defendingType": "TYPE_ICE",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_STEEL",
+        "defendingType": "TYPE_ROCK",
+        "multiplier": 20
+      },
+      {
+        "attackingType": "TYPE_STEEL",
+        "defendingType": "TYPE_STEEL",
+        "multiplier": 5
+      },
+      {
+        "attackingType": "TYPE_FORESIGHT",
+        "defendingType": "TYPE_FORESIGHT",
+        "multiplier": 0
+      },
+      {
+        "attackingType": "TYPE_NORMAL",
+        "defendingType": "TYPE_GHOST",
+        "multiplier": 0
+      },
+      {
+        "attackingType": "TYPE_FIGHTING",
+        "defendingType": "TYPE_GHOST",
+        "multiplier": 0
+      }
+    ],
+    "trainers": {
+      "234": {
+        "id": 234,
+        "name": "TRAINER_SWIMMER_MALE_LUIS",
+        "trainerClass": "TRAINER_CLASS_SWIMMER_M"
+      },
+      "317": {
+        "id": 317,
+        "name": "TRAINER_BLACK_BELT_KOICHI",
+        "trainerClass": "TRAINER_CLASS_BLACK_BELT"
+      },
+      "326": {
+        "id": 326,
+        "name": "TRAINER_RIVAL_OAKS_LAB_SQUIRTLE",
+        "trainerClass": "TRAINER_CLASS_RIVAL_EARLY"
+      },
+      "327": {
+        "id": 327,
+        "name": "TRAINER_RIVAL_OAKS_LAB_BULBASAUR",
+        "trainerClass": "TRAINER_CLASS_RIVAL_EARLY"
+      },
+      "328": {
+        "id": 328,
+        "name": "TRAINER_RIVAL_OAKS_LAB_CHARMANDER",
+        "trainerClass": "TRAINER_CLASS_RIVAL_EARLY"
+      },
+      "329": {
+        "id": 329,
+        "name": "TRAINER_RIVAL_ROUTE22_EARLY_SQUIRTLE",
+        "trainerClass": "TRAINER_CLASS_RIVAL_EARLY"
+      },
+      "330": {
+        "id": 330,
+        "name": "TRAINER_RIVAL_ROUTE22_EARLY_BULBASAUR",
+        "trainerClass": "TRAINER_CLASS_RIVAL_EARLY"
+      },
+      "331": {
+        "id": 331,
+        "name": "TRAINER_RIVAL_ROUTE22_EARLY_CHARMANDER",
+        "trainerClass": "TRAINER_CLASS_RIVAL_EARLY"
+      },
+      "332": {
+        "id": 332,
+        "name": "TRAINER_RIVAL_CERULEAN_SQUIRTLE",
+        "trainerClass": "TRAINER_CLASS_RIVAL_EARLY"
+      },
+      "333": {
+        "id": 333,
+        "name": "TRAINER_RIVAL_CERULEAN_BULBASAUR",
+        "trainerClass": "TRAINER_CLASS_RIVAL_EARLY"
+      },
+      "334": {
+        "id": 334,
+        "name": "TRAINER_RIVAL_CERULEAN_CHARMANDER",
+        "trainerClass": "TRAINER_CLASS_RIVAL_EARLY"
+      },
+      "348": {
+        "id": 348,
+        "name": "TRAINER_BOSS_GIOVANNI",
+        "trainerClass": "TRAINER_CLASS_BOSS"
+      },
+      "349": {
+        "id": 349,
+        "name": "TRAINER_BOSS_GIOVANNI_2",
+        "trainerClass": "TRAINER_CLASS_BOSS"
+      },
+      "350": {
+        "id": 350,
+        "name": "TRAINER_LEADER_GIOVANNI",
+        "trainerClass": "TRAINER_CLASS_LEADER"
+      },
+      "369": {
+        "id": 369,
+        "name": "TRAINER_TEAM_ROCKET_GRUNT_19",
+        "trainerClass": "TRAINER_CLASS_TEAM_ROCKET"
+      },
+      "370": {
+        "id": 370,
+        "name": "TRAINER_TEAM_ROCKET_GRUNT_20",
+        "trainerClass": "TRAINER_CLASS_TEAM_ROCKET"
+      },
+      "371": {
+        "id": 371,
+        "name": "TRAINER_TEAM_ROCKET_GRUNT_21",
+        "trainerClass": "TRAINER_CLASS_TEAM_ROCKET"
+      },
+      "410": {
+        "id": 410,
+        "name": "TRAINER_ELITE_FOUR_LORELEI",
+        "trainerClass": "TRAINER_CLASS_ELITE_FOUR"
+      },
+      "411": {
+        "id": 411,
+        "name": "TRAINER_ELITE_FOUR_BRUNO",
+        "trainerClass": "TRAINER_CLASS_ELITE_FOUR"
+      },
+      "412": {
+        "id": 412,
+        "name": "TRAINER_ELITE_FOUR_AGATHA",
+        "trainerClass": "TRAINER_CLASS_ELITE_FOUR"
+      },
+      "413": {
+        "id": 413,
+        "name": "TRAINER_ELITE_FOUR_LANCE",
+        "trainerClass": "TRAINER_CLASS_ELITE_FOUR"
+      },
+      "414": {
+        "id": 414,
+        "name": "TRAINER_LEADER_BROCK",
+        "trainerClass": "TRAINER_CLASS_LEADER"
+      },
+      "415": {
+        "id": 415,
+        "name": "TRAINER_LEADER_MISTY",
+        "trainerClass": "TRAINER_CLASS_LEADER"
+      },
+      "416": {
+        "id": 416,
+        "name": "TRAINER_LEADER_LT_SURGE",
+        "trainerClass": "TRAINER_CLASS_LEADER"
+      },
+      "417": {
+        "id": 417,
+        "name": "TRAINER_LEADER_ERIKA",
+        "trainerClass": "TRAINER_CLASS_LEADER"
+      },
+      "418": {
+        "id": 418,
+        "name": "TRAINER_LEADER_KOGA",
+        "trainerClass": "TRAINER_CLASS_LEADER"
+      },
+      "419": {
+        "id": 419,
+        "name": "TRAINER_LEADER_BLAINE",
+        "trainerClass": "TRAINER_CLASS_LEADER"
+      },
+      "420": {
+        "id": 420,
+        "name": "TRAINER_LEADER_SABRINA",
+        "trainerClass": "TRAINER_CLASS_LEADER"
+      },
+      "426": {
+        "id": 426,
+        "name": "TRAINER_RIVAL_SS_ANNE_SQUIRTLE",
+        "trainerClass": "TRAINER_CLASS_RIVAL_LATE"
+      },
+      "427": {
+        "id": 427,
+        "name": "TRAINER_RIVAL_SS_ANNE_BULBASAUR",
+        "trainerClass": "TRAINER_CLASS_RIVAL_LATE"
+      },
+      "428": {
+        "id": 428,
+        "name": "TRAINER_RIVAL_SS_ANNE_CHARMANDER",
+        "trainerClass": "TRAINER_CLASS_RIVAL_LATE"
+      },
+      "429": {
+        "id": 429,
+        "name": "TRAINER_RIVAL_POKEMON_TOWER_SQUIRTLE",
+        "trainerClass": "TRAINER_CLASS_RIVAL_LATE"
+      },
+      "430": {
+        "id": 430,
+        "name": "TRAINER_RIVAL_POKEMON_TOWER_BULBASAUR",
+        "trainerClass": "TRAINER_CLASS_RIVAL_LATE"
+      },
+      "431": {
+        "id": 431,
+        "name": "TRAINER_RIVAL_POKEMON_TOWER_CHARMANDER",
+        "trainerClass": "TRAINER_CLASS_RIVAL_LATE"
+      },
+      "432": {
+        "id": 432,
+        "name": "TRAINER_RIVAL_SILPH_SQUIRTLE",
+        "trainerClass": "TRAINER_CLASS_RIVAL_LATE"
+      },
+      "433": {
+        "id": 433,
+        "name": "TRAINER_RIVAL_SILPH_BULBASAUR",
+        "trainerClass": "TRAINER_CLASS_RIVAL_LATE"
+      },
+      "434": {
+        "id": 434,
+        "name": "TRAINER_RIVAL_SILPH_CHARMANDER",
+        "trainerClass": "TRAINER_CLASS_RIVAL_LATE"
+      },
+      "435": {
+        "id": 435,
+        "name": "TRAINER_RIVAL_ROUTE22_LATE_SQUIRTLE",
+        "trainerClass": "TRAINER_CLASS_RIVAL_LATE"
+      },
+      "436": {
+        "id": 436,
+        "name": "TRAINER_RIVAL_ROUTE22_LATE_BULBASAUR",
+        "trainerClass": "TRAINER_CLASS_RIVAL_LATE"
+      },
+      "437": {
+        "id": 437,
+        "name": "TRAINER_RIVAL_ROUTE22_LATE_CHARMANDER",
+        "trainerClass": "TRAINER_CLASS_RIVAL_LATE"
+      },
+      "438": {
+        "id": 438,
+        "name": "TRAINER_CHAMPION_FIRST_SQUIRTLE",
+        "trainerClass": "TRAINER_CLASS_CHAMPION"
+      },
+      "439": {
+        "id": 439,
+        "name": "TRAINER_CHAMPION_FIRST_BULBASAUR",
+        "trainerClass": "TRAINER_CLASS_CHAMPION"
+      },
+      "440": {
+        "id": 440,
+        "name": "TRAINER_CHAMPION_FIRST_CHARMANDER",
+        "trainerClass": "TRAINER_CLASS_CHAMPION"
+      },
+      "527": {
+        "id": 527,
+        "name": "TRAINER_BIKER_GOON",
+        "trainerClass": "TRAINER_CLASS_BIKER"
+      },
+      "528": {
+        "id": 528,
+        "name": "TRAINER_BIKER_GOON_2",
+        "trainerClass": "TRAINER_CLASS_BIKER"
+      },
+      "529": {
+        "id": 529,
+        "name": "TRAINER_BIKER_GOON_3",
+        "trainerClass": "TRAINER_CLASS_BIKER"
+      },
+      "539": {
+        "id": 539,
+        "name": "TRAINER_TEAM_ROCKET_GRUNT_45",
+        "trainerClass": "TRAINER_CLASS_TEAM_ROCKET"
+      },
+      "543": {
+        "id": 543,
+        "name": "TRAINER_TEAM_ROCKET_ADMIN",
+        "trainerClass": "TRAINER_CLASS_TEAM_ROCKET"
+      },
+      "544": {
+        "id": 544,
+        "name": "TRAINER_TEAM_ROCKET_ADMIN_2",
+        "trainerClass": "TRAINER_CLASS_TEAM_ROCKET"
+      },
+      "545": {
+        "id": 545,
+        "name": "TRAINER_SCIENTIST_GIDEON",
+        "trainerClass": "TRAINER_CLASS_SCIENTIST"
+      },
+      "735": {
+        "id": 735,
+        "name": "TRAINER_ELITE_FOUR_LORELEI_2",
+        "trainerClass": "TRAINER_CLASS_ELITE_FOUR"
+      },
+      "736": {
+        "id": 736,
+        "name": "TRAINER_ELITE_FOUR_BRUNO_2",
+        "trainerClass": "TRAINER_CLASS_ELITE_FOUR"
+      },
+      "737": {
+        "id": 737,
+        "name": "TRAINER_ELITE_FOUR_AGATHA_2",
+        "trainerClass": "TRAINER_CLASS_ELITE_FOUR"
+      },
+      "738": {
+        "id": 738,
+        "name": "TRAINER_ELITE_FOUR_LANCE_2",
+        "trainerClass": "TRAINER_CLASS_ELITE_FOUR"
+      },
+      "739": {
+        "id": 739,
+        "name": "TRAINER_CHAMPION_REMATCH_SQUIRTLE",
+        "trainerClass": "TRAINER_CLASS_CHAMPION"
+      },
+      "740": {
+        "id": 740,
+        "name": "TRAINER_CHAMPION_REMATCH_BULBASAUR",
+        "trainerClass": "TRAINER_CLASS_CHAMPION"
+      },
+      "741": {
+        "id": 741,
+        "name": "TRAINER_CHAMPION_REMATCH_CHARMANDER",
+        "trainerClass": "TRAINER_CLASS_CHAMPION"
+      },
+      "742": {
+        "id": 742,
+        "name": "TRAINER_CUE_BALL_PAXTON",
+        "trainerClass": "TRAINER_CLASS_CUE_BALL"
+      }
+    }
+  },
+  "party": [
+    {
+      "species": 2,
+      "level": 22,
+      "hp": 61,
+      "maxHp": 61,
+      "moves": [
+        75,
+        79,
+        73,
+        22
+      ],
+      "pp": [
+        25,
+        15,
+        10,
+        10
+      ],
+      "stats": {
+        "attack": 35,
+        "defense": 36,
+        "speed": 36,
+        "spAttack": 43,
+        "spDefense": 45
+      },
+      "slot": 0
+    },
+    {
+      "species": 16,
+      "level": 3,
+      "hp": 15,
+      "maxHp": 15,
+      "moves": [
+        33,
+        0,
+        0,
+        0
+      ],
+      "pp": [
+        35,
+        0,
+        0,
+        0
+      ],
+      "stats": {
+        "attack": 8,
+        "defense": 7,
+        "speed": 8,
+        "spAttack": 7,
+        "spDefense": 7
+      },
+      "slot": 1
+    },
+    {
+      "species": 39,
+      "level": 23,
+      "hp": 94,
+      "maxHp": 94,
+      "moves": [
+        47,
+        111,
+        1,
+        205
+      ],
+      "pp": [
+        15,
+        40,
+        29,
+        20
+      ],
+      "stats": {
+        "attack": 27,
+        "defense": 14,
+        "speed": 18,
+        "spAttack": 32,
+        "spDefense": 18
+      },
+      "slot": 2
+    },
+    {
+      "species": 56,
+      "level": 26,
+      "hp": 59,
+      "maxHp": 59,
+      "moves": [
+        10,
+        69,
+        67,
+        2
+      ],
+      "pp": [
+        35,
+        20,
+        20,
+        25
+      ],
+      "stats": {
+        "attack": 51,
+        "defense": 32,
+        "speed": 46,
+        "spAttack": 28,
+        "spDefense": 34
+      },
+      "slot": 3
+    }
+  ],
+  "opponent": {
+    "species": 120,
+    "level": 18,
+    "hp": 38,
+    "maxHp": 38,
+    "moves": [
+      33,
+      106,
+      105,
+      352
+    ],
+    "pp": [
+      35,
+      30,
+      20,
+      20
+    ],
+    "stats": {
+      "attack": 21,
+      "defense": 21,
+      "speed": 38,
+      "spAttack": 30,
+      "spDefense": 24
+    }
+  },
+  "enemyParty": [
+    {
+      "slot": 0,
+      "species": 120,
+      "moves": [
+        33,
+        106,
+        105,
+        352
+      ],
+      "pp": [
+        35,
+        30,
+        20,
+        20
+      ],
+      "level": 18,
+      "hp": 38,
+      "maxHp": 38,
+      "stats": {
+        "attack": 21,
+        "defense": 21,
+        "speed": 38,
+        "spAttack": 30,
+        "spDefense": 24
+      }
+    },
+    {
+      "slot": 1,
+      "species": 121,
+      "moves": [
+        129,
+        105,
+        229,
+        352
+      ],
+      "pp": [
+        20,
+        20,
+        40,
+        20
+      ],
+      "level": 21,
+      "hp": 56,
+      "maxHp": 56,
+      "stats": {
+        "attack": 39,
+        "defense": 40,
+        "speed": 53,
+        "spAttack": 47,
+        "spDefense": 36
+      }
+    }
+  ]
+}

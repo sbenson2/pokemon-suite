@@ -1,0 +1,11 @@
+Model Information:
+* title:	Gameboy Advance Blank Cartridge
+* source:	https://sketchfab.com/3d-models/gameboy-advance-blank-cartridge-d5527f8b66014c17b38c6c299b101a3e
+* author:	ewaldc2028 (https://sketchfab.com/ewaldc2028)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Gameboy Advance Blank Cartridge" (https://sketchfab.com/3d-models/gameboy-advance-blank-cartridge-d5527f8b66014c17b38c6c299b101a3e) by ewaldc2028 (https://sketchfab.com/ewaldc2028) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

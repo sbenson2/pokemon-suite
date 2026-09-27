@@ -1,0 +1,292 @@
+"""Extracted Suite API routes; host application endpoints are excluded."""
+from http import HTTPStatus
+from urllib.parse import parse_qs
+import subprocess
+
+
+class SuiteRoutes:
+    def route_get(self, path, parsed, head=False):
+        if path == '/api/pokemon-suite/pokedex':
+            if not self._authenticated():self._error(HTTPStatus.FORBIDDEN,'owner authentication required');return
+            try:
+                from .data_provider import DataProvider
+                from .pokedex_database import Pokedex
+                query=parse_qs(parsed.query,keep_blank_values=True)
+                allowed={'resource','id','q','game','generation','version_group','version','attack','defenders'}
+                if set(query)-allowed or any(len(v)!=1 for v in query.values()):raise ValueError('Choose one value per Pokédex setting.')
+                q={k:v[0] for k,v in query.items()};game=q.get('game','firered')
+                from .pokemon_main_series import MAIN_GAMES
+                if game not in MAIN_GAMES:raise ValueError('Choose a supported game.')
+                with DataProvider(self.server.directory).snapshot():
+                    dex=Pokedex(game=game if game in {'firered','leafgreen','emerald','crystal'} else 'firered');resource=q.get('resource','coverage');key=q.get('id')
+                    context=dex.game_context(game) if 'game' in q else {}
+                    generation=int(q.get('generation',context.get('generation',9)));version_group=q.get('version_group',context.get('version_group'))
+                    if context and generation!=context['generation']:raise ValueError('Game and generation disagree.')
+                    if resource=='coverage':result=dex.coverage()
+                    elif resource=='search':result=dex.search(q.get('q',''))
+                    elif resource=='type':result={'multiplier':dex.type_matchup(q.get('attack',''),q.get('defenders','').split(','),generation=generation)}
+                    elif resource=='pokemon':result=dex.pokemon(key,generation=generation,version_group=version_group,game=game if context else None)
+                    elif resource=='move':result=dex.move(key,generation=generation,version_group=version_group)
+                    elif resource=='forms':result=dex.forms(key,generation=generation)
+                    elif resource in {'species','evolutions','item'}:result=getattr(dex,resource)(key)
+                    elif resource=='encounters':result=dex.encounters(key,q.get('version',context.get('version')))
+                    else:raise ValueError('Unknown Pokédex resource.')
+            except (ValueError,TypeError,KeyError,OSError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True,'result':result},head=head);return
+        if path == '/api/pokemon-suite/reports':
+            if not self._authenticated():self._error(HTTPStatus.FORBIDDEN,'owner authentication required');return
+            try:
+                from .reports import support_report
+                query=parse_qs(parsed.query,keep_blank_values=True);game=query.get('game',[])
+                if set(query)!={'game'} or len(game)!=1:raise ValueError('Choose one game for its report.')
+                from .pokemon_main_series import MAIN_GAMES
+                if game[0] not in MAIN_GAMES:raise ValueError('Choose a supported game for its report.')
+                sessions=self.server.pokemon_sessions
+                report=support_report(sessions.directory,game[0],sessions._live(game[0]))
+            except (ValueError,TypeError,KeyError,OSError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True,'report':report},head=head);return
+        if path == '/api/pokemon-suite/training-pokemon':
+            if not self._authenticated():self._error(HTTPStatus.FORBIDDEN,'owner authentication required');return
+            try:
+                from .pokemon_player_tasks import effort_inventory
+                query=parse_qs(parsed.query,keep_blank_values=True)
+                if set(query)!={'game'} or len(query['game'])!=1:raise ValueError('Choose one game.')
+                result=effort_inventory(self.server.trading,query['game'][0])
+            except (ValueError,TypeError,KeyError,OSError,subprocess.SubprocessError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True,**result},head=head);return
+        if path == '/api/pokemon-suite/inventory':
+            if not self._authenticated():self._error(HTTPStatus.FORBIDDEN,'owner authentication required');return
+            try:
+                query=parse_qs(parsed.query,keep_blank_values=True);game=query.get('game',[]);source=query.get('source',[])
+                if set(query)-{'game','source'} or len(game)!=1 or len(source)>1 or source==['']:raise ValueError('Choose one game and save for its PC inventory.')
+                result=self.server.trading.inventory(game[0],source[0] if source else None)
+            except (ValueError,TypeError,KeyError,OSError,subprocess.SubprocessError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True,**result},head=head);return
+        if path in {"/api/pokemon-suite/bot-settings","/api/pokemon-suite/player-tasks","/api/pokemon-suite/campaign-runs"}:
+            if not self._control_request() and not self._authenticated():
+                self._error(HTTPStatus.FORBIDDEN,"owner token required");return
+            try:
+                game=parse_qs(parsed.query).get('game',[])
+                if len(game)!=1:raise ValueError('Choose one game for bot settings.')
+                method={'/api/pokemon-suite/player-tasks':'player_task_options','/api/pokemon-suite/bot-settings':'bot_settings','/api/pokemon-suite/campaign-runs':'campaign_runs'}[path]
+                result=getattr(self.server.pokemon_sessions,method)(game[0])
+            except (ValueError,TypeError,KeyError,OSError,subprocess.SubprocessError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True,**result},head=head);return
+        if path in {"/api/pokemon-suite/sessions", "/api/pokemon-suite/shinies"}:
+            if not self._control_request() and not self._authenticated():
+                self._error(HTTPStatus.FORBIDDEN, "owner token required")
+                return
+            result={"shinies":self.server.pokemon_sessions.shinies()} if path.endswith('/shinies') else {"sessions":self.server.pokemon_sessions.snapshots(),"library":self.server.pokemon_sessions.library()}
+            self._json(HTTPStatus.OK, {"ok": True, **result}, head=head)
+            return
+        if path == "/api/pokemon-suite/goals":
+            if not self._control_request() and not self._authenticated():
+                self._error(HTTPStatus.FORBIDDEN, "owner token required");return
+            try:
+                if parse_qs(parsed.query):raise ValueError('The goal list takes no parameters.')
+                result=self.server.goals.goals()
+            except (ValueError,TypeError,KeyError,OSError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True,**result},head=head);return
+        if path == "/api/pokemon-farming/requests":
+            if not self._authenticated() and not self._control_request():
+                self._error(HTTPStatus.FORBIDDEN, "owner authentication required")
+                return
+            self._json(HTTPStatus.OK, {"ok": True, "requests": self.server.pokemon_farming.list_requests()}, head=head)
+            return
+        return False
+
+    def route_post(self, path, payload):
+        if path == '/api/pokemon-suite/trade-plan':
+            try:
+                if set(payload)!={'game','pokemonId','sourceId'} or any(not isinstance(v,str) for v in payload.values()):raise ValueError('Choose a Pokémon and its saved collection.')
+                result=self.server.trading.trade_plan(payload['game'],payload['pokemonId'],payload['sourceId'])
+            except (ValueError,TypeError,KeyError,OSError,subprocess.SubprocessError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True,'plan':result});return
+        if path in {'/api/pokemon-suite/inventory-source','/api/pokemon-suite/inventory-sources'}:
+            try:
+                field='sourceId' if path.endswith('/inventory-source') else 'path'
+                if set(payload)!={'game',field} or any(not isinstance(payload[k],str) for k in payload):raise ValueError('Choose this game and its saved collection.')
+                if field=='sourceId':self.server.trading.select_source(payload['game'],payload[field])
+                else:self.server.trading.add_source(payload['game'],payload[field])
+            except (ValueError,TypeError,KeyError,OSError,subprocess.SubprocessError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True});return
+        if path == '/api/pokemon-suite/radio-settings':
+            try:
+                if set(payload)!={'game','keysPath'} or not all(isinstance(v,str) for v in payload.values()):raise ValueError('Choose the console key file for this game.')
+                self.server.trading.set_radio_keys(payload['game'],payload['keysPath'])
+            except (ValueError,TypeError,KeyError,OSError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True});return
+        if path in {'/api/pokemon-suite/trade-pokemon','/api/pokemon-suite/check-radio'}:
+            try:
+                if path.endswith('/check-radio'):
+                    if set(payload)!={'game'}:raise ValueError('Choose a game for the radio check.')
+                    result={'radio':self.server.trading.check_radio(payload['game'])}
+                else:
+                    if set(payload)-{'game','pokemonId','sessionId','sourceId'} or not {'game','pokemonId','sessionId'}<=set(payload):raise ValueError('Choose an individual from the current game session.')
+                    result={'session':self.server.trading.trade(payload['game'],payload['pokemonId'],payload['sessionId'],source_id=payload.get('sourceId','current'))}
+            except (ValueError,TypeError,KeyError,OSError,subprocess.SubprocessError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True,**result});return
+        if path == '/api/pokemon-suite/updates':
+            from pathlib import Path
+            import zipfile
+            try:
+                action=payload.get('action')
+                fields={'import':{'path'},'trust-key':{'publicKey','label'},'configure-feed':{'url','rootPath'},
+                        'check':set(),'recover':{'id'},'download':{'target'},'activate':{'game','digest'},
+                        'apply':{'game','digest','requestId','allowIntervention'}}
+                if action not in fields or set(payload)!=(fields[action]|{'action'}):raise ValueError('Choose a software update action and its required fields.')
+                manager=self.server.updates;feed=self.server.update_feed
+                if action=='import':result=manager.install(payload['path'])
+                elif action=='trust-key':result={'keyId':manager.store.trust_key(payload['publicKey'],label=payload['label'])}
+                elif action=='configure-feed':
+                    root=Path(payload['rootPath'])
+                    if not root.is_file() or root.stat().st_size>1024*1024:raise ValueError('Choose a local TUF root metadata file.')
+                    result=feed.configure(payload['url'],root.read_bytes())
+                elif action=='check':result=feed.check()
+                elif action=='recover':result=manager.recover(payload['id'])
+                elif action=='download':result=feed.install(payload['target'])
+                elif action=='activate':result=manager.activate(payload['game'],payload['digest'])
+                else:
+                    if type(payload['allowIntervention']) is not bool:raise ValueError('Choose whether to record an intervention.')
+                    result=manager.apply(payload['game'],payload['digest'],payload['requestId'],allow_intervention=payload['allowIntervention'])
+            except Exception as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True,'result':result});return
+
+        if path in {'/api/pokemon-suite/goals','/api/pokemon-suite/goals/cancel'}:
+            # Goals (schema pokemon-suite/goal/v1) are validated and queued; the
+            # goal supervisor executes them with the Suite's existing controls.
+            try:
+                if path.endswith('/cancel'):
+                    if set(payload)!={'id'} or not isinstance(payload['id'],str):raise ValueError('Choose a goal to cancel.')
+                    result=self.server.goals.cancel(payload['id'])
+                else:result=self.server.goals.submit(payload)
+            except (ValueError,TypeError,KeyError,OSError,subprocess.SubprocessError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True,'goal':result});return
+        if path in {"/api/pokemon-suite/campaign-runs/preview","/api/pokemon-suite/campaign-runs/start"}:
+            try:
+                if path.endswith('/preview'):
+                    if set(payload)!={'game','settings'} or not isinstance(payload['game'],str) or not isinstance(payload['settings'],dict):raise ValueError('Choose a game and run settings.')
+                    result=self.server.pokemon_sessions.preview_campaign(payload['game'],payload['settings'])
+                else:
+                    if set(payload)!={'game','previewId'} or any(not isinstance(v,str) for v in payload.values()):raise ValueError('Choose the reviewed run to start.')
+                    result={'session':self.server.pokemon_sessions.start_campaign(payload['game'],payload['previewId'])}
+            except (ValueError,TypeError,KeyError,OSError,subprocess.SubprocessError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True,**result});return
+        if path == "/api/pokemon-suite/scan-library":
+            try:
+                if set(payload)-{'folder'}:raise ValueError('Library scan accepts only an optional ROM folder.')
+                if 'folder' in payload and (not isinstance(payload['folder'],str) or not payload['folder']):raise ValueError('Choose a ROM folder.')
+                result=self.server.pokemon_sessions.scan_library(payload.get('folder'))
+            except (ValueError,TypeError,OSError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True,'library':result});return
+        if path == "/api/pokemon-suite/bot-settings":
+            try:
+                if set(payload)!={'game','preferences'} or not isinstance(payload['game'],str):raise ValueError('Choose a game and its settings.')
+                result=self.server.pokemon_sessions.save_bot_settings(payload['game'],payload['preferences'])
+            except (ValueError,TypeError,KeyError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True,**result});return
+        if path == "/api/pokemon-suite/stop-game":
+            try:
+                if set(payload)!={'game','sessionId'} or any(not isinstance(v,str) for v in payload.values()):raise ValueError('Choose the game session to stop.')
+                result=self.server.pokemon_sessions.stop_game(payload['game'],payload['sessionId'])
+            except (ValueError,TypeError,OSError,subprocess.SubprocessError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True,'session':result});return
+        if path == "/api/pokemon-suite/player-tasks":
+            try:
+                if set(payload)-{'game','action','task'} or not {'game','action'}<=set(payload):raise ValueError('Choose a game and bot task.')
+                result=self.server.pokemon_sessions.player_task(payload['game'],payload['action'],payload.get('task'))
+            except (ValueError,TypeError,KeyError,OSError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True,'session':result});return
+        if path == "/api/pokemon-suite/console-presented":
+            try:
+                if set(payload)!={'game','sessionId','presentationId'} or any(not isinstance(v,str) for v in payload.values()):raise ValueError('Choose the console startup to complete.')
+                result=self.server.pokemon_sessions.finish_presentation(payload['game'],payload['sessionId'],payload['presentationId'])
+            except (ValueError,TypeError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True,'session':result});return
+        if path == "/api/pokemon-suite/start-game":
+            try:
+                if set(payload)-{'game','waitForPresentation'} or not isinstance(payload.get('game'),str) or type(payload.get('waitForPresentation',False)) is not bool:raise ValueError('Choose a game to start.')
+                result=self.server.pokemon_sessions.start_game(payload['game'],**({'wait_for_presentation':True} if payload.get('waitForPresentation') else {}))
+            except (ValueError,TypeError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True,'session':result});return
+        if path == "/api/pokemon-suite/lifecycle":
+            try:
+                if set(payload)!={'game','sessionId','action'} or any(not isinstance(payload[k],str) for k in payload):raise ValueError('Choose a game session and action.')
+                if payload['action'] not in {'close','retry-video','permissions'}:raise ValueError('Unknown game action.')
+                sessions=self.server.pokemon_sessions
+                result=sessions.close_game(payload['game'],payload['sessionId']) if payload['action']=='close' else sessions.lifecycle(payload['game'],payload['sessionId'],payload['action'])
+            except (ValueError,TypeError,OSError,subprocess.SubprocessError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True,'session':result});return
+        if path == "/api/pokemon-suite/input":
+            try:
+                if set(payload)-{'game','buttons','touch','axes','requestId','text'} or 'game' not in payload:raise ValueError('Choose a game and its controller input.')
+                result=self.server.pokemon_sessions.input(payload['game'],{k:v for k,v in payload.items() if k!='game'})
+            except (ValueError,TypeError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True,'control':result});return
+        if path == "/api/pokemon-suite/set-bot":
+            try:
+                if set(payload)!={"game","enabled"}:raise ValueError('Choose a game and whether its bot should run.')
+                result=self.server.pokemon_sessions.set_bot(payload['game'],payload['enabled'])
+            except (ValueError,TypeError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{"ok":True,"session":result});return
+        if path in {"/api/pokemon-suite/trade-shiny", "/api/pokemon-suite/stop-trade"}:
+            try:
+                expected={"game","shinyId"} if path.endswith('/trade-shiny') else {"game"}
+                if set(payload)!=expected:raise ValueError('Choose the game and saved shiny to trade.')
+                result=self.server.pokemon_sessions.trade_shiny(payload['game'],payload['shinyId']) if 'shinyId' in payload else self.server.pokemon_sessions.stop_trade(payload['game'])
+            except (ValueError,TypeError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{"ok":True,"session":result});return
+        if path == "/api/pokemon-suite/save":
+            try:
+                if set(payload) != {"game"} or not isinstance(payload["game"],str):raise ValueError("Choose a game to save.")
+                result = self.server.pokemon_sessions.command(payload["game"], {"type":"save"})
+            except (ValueError, TypeError) as error:
+                self._error(HTTPStatus.BAD_REQUEST, str(error));return
+            self._json(HTTPStatus.OK, {"ok":True,"session":result});return
+        if path in {"/api/pokemon-farming/preview", "/api/pokemon-farming/requests", "/api/pokemon-farming/remove", "/api/pokemon-farming/start", "/api/pokemon-farming/stop"}:
+            try:
+                if path.endswith("/preview"):
+                    result = {"plan": self.server.pokemon_farming.preview(payload)}
+                elif path.endswith("/requests"):
+                    if set(payload) != {"request", "idempotencyKey"}:
+                        raise ValueError("Request and idempotency key are required.")
+                    result = {"request": self.server.pokemon_farming.save(payload["request"], payload["idempotencyKey"])}
+                else:
+                    if set(payload) != {"id"} or not isinstance(payload["id"], str):
+                        raise ValueError("A saved request identifier is required.")
+                    if path.endswith("/start"):
+                        result = self.server.pokemon_farming.start(payload["id"], retry_blocked_policy=True)
+                    elif path.endswith("/stop"):
+                        result = self.server.pokemon_farming.stop(payload["id"])
+                    else:
+                        self.server.pokemon_farming.remove(payload["id"])
+                        result = {}
+            except (ValueError, TypeError) as error:
+                self._error(HTTPStatus.BAD_REQUEST, str(error))
+                return
+            self._json(HTTPStatus.OK, {"ok": True, **result})
+            return
+        return False

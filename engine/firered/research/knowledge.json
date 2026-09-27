@@ -1,0 +1,186 @@
+{
+  "schema": "master-red/knowledge/v1",
+  "cartridgeProfileId": "firered-rev1-stock",
+  "policy": {
+    "authority": "Cartridge-derived data outranks normalized databases and advisory simulators.",
+    "generation": "A runtime dataset needs an immutable source, immutable generator, content digest, validation receipt, and explicit runtime eligibility.",
+    "separation": "Extracted cartridge facts and authored strategy remain distinct datasets with distinct provenance.",
+    "runtime": "No remote API calls during an episode."
+  },
+  "datasets": [
+    {
+      "id": "firered-world-structure",
+      "priority": "implementation-prerequisite",
+      "authority": "cartridge",
+      "sourceId": "pret-pokefirered",
+      "sourceRevision": "c75f352304d529f6ba92d4f74b9cf8b5c3810788",
+      "status": "generated",
+      "runtimeEligible": true,
+      "artifact": {
+        "sha256": "d70e4eeda26b6784939973bbac2f5cae0d04a12f1cb6bff6659479ad7e12f41b",
+        "bytes": 90601583,
+        "dataSha256": "d4a39bab4fab2b4ce7bdcc4cac5e0fe4b83de971ccc2182ef07b343bb8bdc3b2",
+        "counts": {
+          "backgroundEvents": 702,
+          "cells": 233741,
+          "connections": 120,
+          "coordinateEvents": 228,
+          "layouts": 309,
+          "maps": 425,
+          "objectEvents": 1648,
+          "warps": 1294,
+          "wildEncounterMaps": 132
+        }
+      },
+      "evidenceCompatibleArtifacts": [
+        {
+          "sha256": "65dea58c7aae990c8ee675d471dfa3b7eeb0f35c245248717a8926077f05601f",
+          "bytes": 90601583,
+          "dataSha256": "d4a39bab4fab2b4ce7bdcc4cac5e0fe4b83de971ccc2182ef07b343bb8bdc3b2",
+          "compatibility": "observer-data-identical"
+        }
+      ],
+      "generator": {
+        "kind": "source-bundle-sha256",
+        "revision": "15026bba2a6f25717c4b1fbf9d7c37c0cb873d05cc8ebc7d3d7f8f9924b8a1fb"
+      },
+      "coverage": ["map groups and IDs", "layouts", "collision", "connections", "warps", "events", "wild encounters"],
+      "nextProof": "Cross-check live map, position, collision, and transition observations against real mGBA frames."
+    },
+    {
+      "id": "firered-story-state",
+      "priority": "implementation-prerequisite",
+      "authority": "cartridge",
+      "sourceId": "pret-pokefirered",
+      "sourceRevision": "c75f352304d529f6ba92d4f74b9cf8b5c3810788",
+      "status": "generated",
+      "runtimeEligible": true,
+      "artifact": {
+        "sha256": "eff9c5db923d8ec4f0b1b8896a85d4551f2a58cebc9415b4c8e9937596740c77",
+        "bytes": 6097382,
+        "counts": {
+          "flagReferences": 857,
+          "flagSymbols": 1470,
+          "hallOfFameEntryReferences": 1,
+          "instructions": 24618,
+          "itemReferences": 529,
+          "itemSymbols": 433,
+          "scripts": 5285,
+          "trainerReferences": 804,
+          "trainerSymbols": 743,
+          "unresolvedReferences": 0,
+          "variableReferences": 2432,
+          "variableSymbols": 274
+        }
+      },
+      "generator": {
+        "kind": "source-bundle-sha256",
+        "revision": "15026bba2a6f25717c4b1fbf9d7c37c0cb873d05cc8ebc7d3d7f8f9924b8a1fb"
+      },
+      "coverage": ["scripts", "flags", "variables", "trainer defeat state", "items", "story gates", "Hall of Fame evidence"],
+      "nextProof": "Validate decoded flags and variables against visible story milestones on real mGBA."
+    },
+    {
+      "id": "firered-runtime-symbols",
+      "priority": "implementation-prerequisite",
+      "authority": "cartridge",
+      "sourceId": "pret-pokefirered",
+      "sourceRevision": "c75f352304d529f6ba92d4f74b9cf8b5c3810788",
+      "status": "generated",
+      "runtimeEligible": true,
+      "artifact": {
+        "sha256": "b5920926b32059c715de21eaa72e43c09931ecf9b5fdeac2563b9e204a920346",
+        "bytes": 9225671,
+        "dataSha256": "68c7afa95cfa7428cb9bbbf7f358dcefa2802dbf939320fcdfac2ec3e3cbe1f9",
+        "counts": {
+          "missingRequiredSymbols": 0,
+          "requiredSymbols": 15,
+          "structureFields": 129,
+          "structures": 4,
+          "symbols": 50807
+        }
+      },
+      "evidenceCompatibleArtifacts": [
+        {
+          "sha256": "0663395a612a2ab691caa24fe924d3c16a43ca66040ecd5eb11cac3fad8f88de",
+          "bytes": 9225671,
+          "dataSha256": "68c7afa95cfa7428cb9bbbf7f358dcefa2802dbf939320fcdfac2ec3e3cbe1f9",
+          "compatibility": "observer-data-identical"
+        }
+      ],
+      "generator": {
+        "kind": "source-bundle-sha256",
+        "revision": "15026bba2a6f25717c4b1fbf9d7c37c0cb873d05cc8ebc7d3d7f8f9924b8a1fb"
+      },
+      "coverage": ["stock Rev 1 symbols", "save blocks", "callbacks and tasks", "player and map state", "party", "bag", "battle state"],
+      "nextProof": "Cross-check atomic decoded observations against visible state and an independent save oracle."
+    },
+    {
+      "id": "firered-battle-mechanics",
+      "priority": "implementation-prerequisite",
+      "authority": "cartridge",
+      "sourceId": "pret-pokefirered",
+      "sourceRevision": "c75f352304d529f6ba92d4f74b9cf8b5c3810788",
+      "status": "generated",
+      "runtimeEligible": true,
+      "artifact": {
+        "sha256": "b61618b0ec5ae9921e4c82f4cbcc060aa4095e07c060c7f478c754624baf68a0",
+        "bytes": 1691468,
+        "counts": {
+          "moves": 355,
+          "parties": 742,
+          "partyMembers": 1754,
+          "rematches": 221,
+          "species": 412,
+          "trainers": 743,
+          "typeChartEntries": 111
+        }
+      },
+      "generator": {
+        "kind": "source-bundle-sha256",
+        "revision": "15026bba2a6f25717c4b1fbf9d7c37c0cb873d05cc8ebc7d3d7f8f9924b8a1fb"
+      },
+      "coverage": ["moves", "types", "abilities", "items", "trainer parties", "damage constants", "battle menu legality"],
+      "nextProof": "Pass literal cartridge differential cases before accepting any secondary simulator advice."
+    },
+    {
+      "id": "normalized-pokemon-metadata",
+      "priority": "deferred-secondary",
+      "authority": "normalized-secondary",
+      "sourceId": "pokeapi",
+      "sourceRevision": null,
+      "status": "deferred",
+      "runtimeEligible": false,
+      "artifact": null,
+      "generator": null,
+      "coverage": ["species", "moves", "types", "evolutions", "FireRed and LeafGreen learnsets"],
+      "nextProof": "Pin an immutable revision, generate an offline subset, and reconcile conflicts against cartridge facts."
+    },
+    {
+      "id": "gen3-battle-counterfactuals",
+      "priority": "deferred-secondary",
+      "authority": "advisory-oracle",
+      "sourceId": "pokemon-showdown",
+      "sourceRevision": null,
+      "status": "deferred",
+      "runtimeEligible": false,
+      "artifact": null,
+      "generator": null,
+      "coverage": ["ranked legal battle choices", "damage ranges", "switch comparisons"],
+      "nextProof": "Pin a revision and pass a FireRed cartridge differential suite before exposing advice."
+    },
+    {
+      "id": "firered-save-validation",
+      "priority": "deferred-secondary",
+      "authority": "external-validator",
+      "sourceId": "pkhex",
+      "sourceRevision": null,
+      "status": "deferred",
+      "runtimeEligible": false,
+      "artifact": null,
+      "generator": null,
+      "coverage": ["save checksum", "party", "bag", "Pokédex", "box data"],
+      "nextProof": "Pin a release and run it separately against sanitized generated save fixtures."
+    }
+  ]
+}

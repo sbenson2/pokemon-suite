@@ -1,0 +1,10 @@
+{
+  "name": "pokemon-suite",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "description": "Standalone Pokémon emulation, game data and bot automation",
+  "engines": { "node": ">=22" },
+  "scripts": { "test:engine": "node scripts/test-engine.mjs", "test:browser": "node --test tests/browser.test.mjs", "test": "node --test tests/cold-save.test.mjs tests/adapter-resources.test.mjs tests/rom-art.test.mjs" }
+}

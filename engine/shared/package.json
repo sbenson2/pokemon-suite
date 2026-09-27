@@ -1,0 +1,14 @@
+{
+  "name": "pokemon-research-bots",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Source-authoritative autonomous research bots for Pokemon Crystal and Emerald.",
+  "scripts": {
+    "test": "node --test ../../tests/adapter-resources.test.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT"
+}

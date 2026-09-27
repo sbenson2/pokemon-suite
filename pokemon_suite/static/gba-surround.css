@@ -1,0 +1,13 @@
+/* Source photographs are aligned to the opaque native game aperture in JS.
+   Only the photo is perspective-corrected. The game remains flat and complete. */
+#stage.gba-stage {isolation:isolate;overflow:hidden;background:#dce6ee;}
+.gba-surround {position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:#dce6ee;}
+.hardware-shell {position:absolute;left:0;top:0;height:auto;max-width:none;transform-origin:0 0;pointer-events:none;}
+.hardware-lcd {position:absolute;background:#000;}
+.gba-stage>.stream {position:absolute;z-index:1;left:var(--game-left);top:var(--game-top);width:var(--game-width);height:var(--game-height);max-width:none;max-height:none;transform:none;margin:0;object-fit:contain;background:#000;border:0;border-radius:0;box-shadow:none;image-rendering:pixelated;}
+.hardware-controls {display:grid;justify-items:start;gap:18px;padding:18px 0 0;color:var(--ps-ink,#344660);font:600 14px 'Trebuchet MS',sans-serif;}
+.hardware-controls label {display:grid;gap:8px;width:min(100%,360px);}
+.hardware-controls select {width:100%;min-height:44px;background:var(--ps-surface,#fff);color:var(--ps-ink,#344660);border:1px solid var(--ps-border,#8198af);border-radius:3px;padding:8px;font:inherit;}
+.hardware-credit {color:var(--ps-muted,#53697e);font-size:13px;text-underline-offset:3px;padding:5px 0;}
+.hardware-controls :is(select,a):focus-visible {outline:3px solid #bc3b46;outline-offset:2px;}
+.gba-stage .fleet-stopped-stage {position:absolute;z-index:3;left:var(--game-left);top:var(--game-top);width:var(--game-width);height:var(--game-height);transform:none;background:#17211e;}

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Master Red — Live Campaigns</title>
+<style>
+  :root{color-scheme:dark;font-family:Segoe UI,system-ui,sans-serif;color:#eaf1ef;background:#0c1115}
+  *{box-sizing:border-box}body{margin:0;padding:20px 26px;height:100vh;display:flex;flex-direction:column;gap:16px}
+  header{display:flex;justify-content:space-between;gap:18px;align-items:center}h1{font-size:24px;letter-spacing:.08em;margin:0 0 5px;font-weight:750}h1 span{color:#ff756e}
+  p{margin:0;color:#9caca9;font-size:13px}.view-only{font:600 11px ui-monospace,monospace;color:#77e6b5;border:1px solid #315347;border-radius:20px;padding:8px 12px;white-space:nowrap}
+  .workspace{min-height:0;flex:1;display:grid;grid-template-columns:minmax(0,1fr) clamp(260px,24vw,330px);gap:18px}.videos{min-height:0;min-width:0;position:relative;display:flex}
+  #games{min-height:0;min-width:0;flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:minmax(0,1fr);gap:16px}
+  #games:has(.game:only-child){grid-template-columns:1fr}
+  @media(min-width:1100px){#games:has(.game:nth-child(5)){grid-template-columns:repeat(3,minmax(0,1fr))}}
+  .game{min-height:0;border:1px solid #2b383b;border-radius:12px;overflow:hidden;background:#121c21;display:flex;flex-direction:column}
+  .bar{padding:10px 14px;display:flex;justify-content:space-between;gap:10px;align-items:center;font:600 12px ui-monospace,monospace}.target{font-size:10px;color:#8fa39d;margin-top:4px}.connection{font-size:10px;color:#77e6b5;white-space:nowrap}
+  .screen{background:#030605;flex:1;min-height:0;position:relative;display:flex;align-items:center;justify-content:center}.screen canvas{display:block;width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+  .waiting{position:absolute;color:#60736f;font:12px ui-monospace,monospace}.details{padding:9px 14px;display:flex;justify-content:space-between;gap:12px;font:11px ui-monospace,monospace}.location{color:#d2dfda;font-weight:600}.party,.badges{color:#8da19a;margin-top:5px}.right{text-align:right;white-space:nowrap}.clock{color:#9bf0c8;font-weight:600}
+  footer{display:flex;justify-content:space-between;gap:16px;color:#6f8981;font:10px ui-monospace,monospace}#empty{position:absolute;top:48%;left:12px;right:12px;text-align:center;color:#9caca9}[hidden]{display:none!important}
+  #test-sidebar{min-width:0;min-height:0;display:flex;flex-direction:column;background:#121c21;border:1px solid #2b383b;border-radius:12px;overflow:hidden}
+  .tracker-heading{padding:15px 16px 12px;border-bottom:1px solid #2b383b}.tracker-heading h2{font-size:14px;letter-spacing:.08em;margin:0 0 6px}.tracker-heading p{font-size:11px;line-height:1.5}
+  #tracker-freshness{margin-top:6px;color:#77958b;font:10px/1.5 ui-monospace,monospace}
+  #test-list{list-style:none;margin:0;padding:0 14px;min-height:0;flex:1;overflow-y:auto;overscroll-behavior:contain;scrollbar-color:#3b5850 transparent}
+  .test-entry{padding:14px 0;border-bottom:1px solid #2b383b;overflow-wrap:anywhere}.test-entry:last-child{border-bottom:0}.test-name{margin:0 0 4px;font:650 12px/1.4 ui-monospace,monospace}.test-id{font:10px ui-monospace,monospace;color:#78958b;margin-bottom:7px}
+  .test-status{display:inline-block;font:650 10px/1.5 ui-monospace,monospace;color:#9caca9;background:#213037;border-radius:4px;padding:2px 6px}.test-entry[data-status=running] .test-status{color:#8ef0c1;background:#1c3b32}.test-entry[data-status=passed] .test-status{color:#a9cfff;background:#20314c}.test-entry[data-status=failed] .test-status,.test-entry[data-status=interrupted] .test-status{color:#ffb0a5;background:#452923}
+  .test-purpose{font-size:12px;line-height:1.5;margin:8px 0;color:#c0cfca}.test-progress-label{font:600 11px/1.5 ui-monospace,monospace;color:#e4eee9}.test-entry progress{display:block;width:100%;height:6px;margin:7px 0;accent-color:#77e6b5;border:0;border-radius:3px;overflow:hidden}.test-entry progress::-webkit-progress-bar{background:#293c3e}.test-entry progress::-webkit-progress-value{background:#77e6b5}
+  .test-milestones,.test-map,.test-time,.test-update,.test-stop{font:10px/1.5 ui-monospace,monospace;margin-top:5px}.test-map{color:#c9d7d1}.test-update{color:#77958b}.test-stop{color:#ffb0a5}
+  @media(max-width:1100px){.bar{padding:8px 10px}.details{padding:7px 10px;font-size:10px}.throughput{font-size:9px}}
+  @media(max-width:700px){body{height:auto;min-height:100vh;padding:12px}.workspace{grid-template-columns:1fr;flex:none}.videos{display:block}#games{grid-template-columns:1fr;grid-template-rows:none;flex:none}.game{height:380px}#test-sidebar{max-height:70vh}header{align-items:flex-start}h1{font-size:19px}footer{flex-direction:column}}
+</style></head>
+<body>
+<header><div><h1>MASTER <span>RED</span></h1><p id="summary">Connecting to the campaign queue…</p></div><span class="view-only">LIVE VIDEO · VIEW ONLY</span></header>
+<div class="workspace"><section class="videos" aria-label="Game previews"><main id="games" aria-label="Live campaign games"></main><div id="empty">Waiting for games to start…</div></section>
+<aside id="test-sidebar" aria-labelledby="test-tracker-title"><div class="tracker-heading"><h2 id="test-tracker-title">TEST TRACKER</h2><p>Purpose, confirmed progress and results for every test.</p><p id="tracker-freshness">Connecting to test reports…</p></div><ol id="test-list" aria-label="All campaign tests"></ol></aside></div>
+<footer><span id="suite"></span><span>Native Trainer Card time · Bot controls only · Safe to close this window</span></footer>
+<template id="game-template"><article class="game"><div class="bar"><div><div class="title"></div><div class="target"></div></div><span class="connection">CONNECTING</span></div><div class="screen"><canvas width="240" height="160" aria-label="Live game screen"></canvas><span class="waiting">Waiting for live video…</span></div><div class="details"><div><div class="location"></div><div class="party"></div><div class="throughput"></div><div class="stop-reason"></div></div><div class="right"><div class="clock"></div><div class="badges"></div></div></div></article></template>
+<template id="test-template"><li class="test-entry"><h3 class="test-name"></h3><div class="test-id"></div><span class="test-status"></span><p class="test-purpose"></p><div class="test-progress-label"></div><progress max="8" value="0"></progress><p class="test-milestones"></p><p class="test-map"></p><p class="test-time"></p><p class="test-update"></p><p class="test-stop" hidden></p></li></template>
+<script type="module" src="/viewer.js"></script>
+</body></html>

@@ -1,0 +1,34 @@
+{
+  "schema": "pokemon-suite/macos-runtimes/v1",
+  "pythonVersion": "3.13.15",
+  "nodeVersion": "22.23.2",
+  "arm64": {
+    "python": {
+      "url": "https://github.com/astral-sh/python-build-standalone/releases/download/20260901/cpython-3.13.15%2B20260901-aarch64-apple-darwin-install_only_stripped.tar.gz",
+      "sha256": "d3904bd6a072246e07aa0bdadee9a14e80521e42a943c0848059feb16a2816dc"
+    },
+    "node": {
+      "url": "https://nodejs.org/download/release/v22.23.2/node-v22.23.2-darwin-arm64.tar.gz",
+      "sha256": "61130f394c1630d211dd50aecc4353d379480f36d3ac913cd85dbba1aed585c6"
+    },
+    "pillow": {
+      "url": "https://files.pythonhosted.org/packages/10/76/8803c13605b763d33d156c4678fc77f8443389c0c51c8aef707bb02015f4/pillow-12.3.0-cp313-cp313-macosx_11_0_arm64.whl",
+      "sha256": "d69141514cc30b774ceea5e3ed3a6635c8d8a96edf664689b890f4089111fb35"
+    }
+  },
+  "x86_64": {
+    "python": {
+      "url": "https://github.com/astral-sh/python-build-standalone/releases/download/20260901/cpython-3.13.15%2B20260901-x86_64-apple-darwin-install_only_stripped.tar.gz",
+      "sha256": "f712a9143c8a5d248438ec7921a0b48d548bca4f1337d33c690d28c2d0504137"
+    },
+    "node": {
+      "url": "https://nodejs.org/download/release/v22.23.2/node-v22.23.2-darwin-x64.tar.gz",
+      "sha256": "58e99022c2ff89395576cc7fd4d98cea24bb68081475d5f88b801ee8729fb026"
+    },
+    "pillow": {
+      "url": "https://files.pythonhosted.org/packages/42/92/2fc3ffad878ae8dd5469ec1bc8eb83b71f48e13efdf68f02709003982a32/pillow-12.3.0-cp313-cp313-macosx_10_13_x86_64.whl",
+      "sha256": "7a743ff716f746fc19a9557f60dab1600d4613255f8a7aeb3cdde4db7eb15a66"
+    }
+  },
+  "pillowVersion": "12.3.0"
+}

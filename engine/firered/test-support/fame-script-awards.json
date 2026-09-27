@@ -1,0 +1,699 @@
+{
+ "schema": "pokemon-suite/fame-script-awards/v1",
+ "source": {
+  "project": "pokefirered",
+  "commit": "c75f352304d529f6ba92d4f74b9cf8b5c3810788",
+  "generator": "scripts/extract-fame-script-awards.py"
+ },
+ "people": [
+  "OAK",
+  "DAISY",
+  "BROCK",
+  "MISTY",
+  "LTSURGE",
+  "ERIKA",
+  "KOGA",
+  "SABRINA",
+  "BLAINE",
+  "LORELEI",
+  "BRUNO",
+  "AGATHA",
+  "LANCE",
+  "BILL",
+  "MRFUJI",
+  "GIOVANNI"
+ ],
+ "scripts": {
+  "CeladonCity_Condominiums_1F_EventScript_TeaWoman": [
+   [
+    1,
+    4,
+    "conditional"
+   ]
+  ],
+  "CeladonCity_Condominiums_1F_MapScripts": [],
+  "CeladonCity_Condominiums_2F_EventScript_PokemonJournalErika": [
+   [
+    5,
+    5,
+    "unconditional"
+   ]
+  ],
+  "CeladonCity_DepartmentStore_2F_EventScript_Woman": [
+   [
+    12,
+    3,
+    "unconditional"
+   ]
+  ],
+  "CeladonCity_EventScript_GymSign": [
+   [
+    5,
+    0,
+    "unconditional"
+   ]
+  ],
+  "CeladonCity_Gym_EventScript_Erika": [
+   [
+    5,
+    1,
+    "conditional"
+   ],
+   [
+    5,
+    4,
+    "conditional"
+   ]
+  ],
+  "CeladonCity_Gym_EventScript_Lisa": [
+   [
+    5,
+    2,
+    "conditional"
+   ]
+  ],
+  "CeladonCity_Gym_EventScript_Tamia": [
+   [
+    5,
+    3,
+    "conditional"
+   ]
+  ],
+  "CeladonCity_Gym_MapScripts": [],
+  "CeruleanCity_EventScript_GymSign": [
+   [
+    3,
+    0,
+    "unconditional"
+   ]
+  ],
+  "CeruleanCity_EventScript_RivalTriggerLeft": [
+   [
+    13,
+    0,
+    "conditional"
+   ]
+  ],
+  "CeruleanCity_EventScript_RivalTriggerMid": [
+   [
+    13,
+    0,
+    "conditional"
+   ]
+  ],
+  "CeruleanCity_EventScript_RivalTriggerRight": [
+   [
+    13,
+    0,
+    "conditional"
+   ]
+  ],
+  "CeruleanCity_Gym_EventScript_Luis": [
+   [
+    3,
+    2,
+    "conditional"
+   ]
+  ],
+  "CeruleanCity_Gym_EventScript_Misty": [
+   [
+    3,
+    1,
+    "conditional"
+   ]
+  ],
+  "CeruleanCity_Gym_MapScripts": [],
+  "CeruleanCity_PokemonCenter_1F_EventScript_PokemonJournalMisty": [
+   [
+    3,
+    5,
+    "unconditional"
+   ]
+  ],
+  "CeruleanCity_PokemonCenter_1F_EventScript_Youngster": [
+   [
+    13,
+    1,
+    "unconditional"
+   ]
+  ],
+  "CinnabarIsland_EventScript_GymSign": [
+   [
+    8,
+    0,
+    "unconditional"
+   ]
+  ],
+  "CinnabarIsland_EventScript_Woman": [
+   [
+    8,
+    3,
+    "unconditional"
+   ]
+  ],
+  "CinnabarIsland_Gym_EventScript_Blaine": [
+   [
+    8,
+    1,
+    "conditional"
+   ]
+  ],
+  "CinnabarIsland_Gym_EventScript_BlaineFujiPhoto": [
+   [
+    8,
+    4,
+    "unconditional"
+   ],
+   [
+    14,
+    4,
+    "unconditional"
+   ]
+  ],
+  "CinnabarIsland_Gym_EventScript_Derek": [
+   [
+    8,
+    2,
+    "conditional"
+   ]
+  ],
+  "CinnabarIsland_PokemonCenter_1F_EventScript_PokemonJournalMrFuji": [
+   [
+    14,
+    5,
+    "unconditional"
+   ]
+  ],
+  "FiveIsland_PokemonCenter_1F_EventScript_PokemonJournal": [
+   [
+    9,
+    3,
+    "unconditional"
+   ]
+  ],
+  "FiveIsland_ResortGorgeous_House_EventScript_PokemonJournal": [
+   [
+    8,
+    5,
+    "unconditional"
+   ]
+  ],
+  "FiveIsland_RocketWarehouse_EventScript_Gideon": [
+   [
+    15,
+    5,
+    "conditional"
+   ]
+  ],
+  "FiveIsland_WaterLabyrinth_EventScript_EggGentleman": [
+   [
+    1,
+    2,
+    "conditional"
+   ]
+  ],
+  "FiveIsland_WaterLabyrinth_MapScripts": [],
+  "FourIsland_EventScript_LittleGirl": [
+   [
+    9,
+    4,
+    "unconditional"
+   ]
+  ],
+  "FourIsland_EventScript_OldWoman": [
+   [
+    9,
+    5,
+    "conditional"
+   ]
+  ],
+  "FourIsland_Mart_EventScript_OldMan": [
+   [
+    9,
+    2,
+    "unconditional"
+   ]
+  ],
+  "FourIsland_PokemonCenter_1F_EventScript_PokemonJournal": [
+   [
+    1,
+    5,
+    "unconditional"
+   ]
+  ],
+  "FuchsiaCity_EventScript_GymSign": [
+   [
+    6,
+    0,
+    "unconditional"
+   ]
+  ],
+  "FuchsiaCity_EventScript_Lass": [
+   [
+    6,
+    3,
+    "unconditional"
+   ]
+  ],
+  "FuchsiaCity_Gym_EventScript_Kirk": [
+   [
+    6,
+    2,
+    "conditional"
+   ]
+  ],
+  "FuchsiaCity_Gym_EventScript_Koga": [
+   [
+    6,
+    1,
+    "conditional"
+   ]
+  ],
+  "FuchsiaCity_Gym_MapScripts": [],
+  "FuchsiaCity_House1_EventScript_OldMan": [
+   [
+    13,
+    2,
+    "unconditional"
+   ]
+  ],
+  "FuchsiaCity_WardensHouse_EventScript_PokemonJournalKoga": [
+   [
+    6,
+    4,
+    "unconditional"
+   ]
+  ],
+  "IndigoPlateau_PokemonCenter_1F_EventScript_BlackBelt": [
+   [
+    11,
+    1,
+    "unconditional"
+   ],
+   [
+    11,
+    2,
+    "unconditional"
+   ]
+  ],
+  "IndigoPlateau_PokemonCenter_1F_EventScript_CooltrainerM": [
+   [
+    12,
+    5,
+    "unconditional"
+   ]
+  ],
+  "IndigoPlateau_PokemonCenter_1F_EventScript_PokemonJournal": [
+   [
+    12,
+    4,
+    "unconditional"
+   ]
+  ],
+  "LavenderTown_PokemonCenter_1F_EventScript_BaldingMan": [
+   [
+    14,
+    3,
+    "unconditional"
+   ]
+  ],
+  "LavenderTown_VolunteerPokemonHouse_EventScript_LittleGirl": [
+   [
+    14,
+    0,
+    "unconditional"
+   ]
+  ],
+  "LavenderTown_VolunteerPokemonHouse_EventScript_PokemonFanMagazine": [
+   [
+    14,
+    2,
+    "unconditional"
+   ]
+  ],
+  "MtMoon_1F_EventScript_BaldingMan": [
+   [
+    2,
+    4,
+    "unconditional"
+   ]
+  ],
+  "OneIsland_KindleRoad_EmberSpa_EventScript_BlackBelt": [
+   [
+    10,
+    3,
+    "unconditional"
+   ]
+  ],
+  "OneIsland_PokemonCenter_1F_EventScript_Celio": [
+   [
+    13,
+    3,
+    "conditional"
+   ],
+   [
+    13,
+    4,
+    "conditional"
+   ],
+   [
+    13,
+    5,
+    "conditional"
+   ]
+  ],
+  "PalletTown_EventScript_OaksLabSign": [
+   [
+    0,
+    0,
+    "unconditional"
+   ]
+  ],
+  "PalletTown_ProfessorOaksLab_EventScript_Aide1": [
+   [
+    0,
+    5,
+    "conditional"
+   ]
+  ],
+  "PalletTown_ProfessorOaksLab_EventScript_Aide2": [
+   [
+    1,
+    0,
+    "conditional"
+   ]
+  ],
+  "PalletTown_ProfessorOaksLab_EventScript_Aide3": [
+   [
+    0,
+    2,
+    "unconditional"
+   ]
+  ],
+  "PalletTown_ProfessorOaksLab_EventScript_ProfOak": [
+   [
+    0,
+    1,
+    "conditional"
+   ]
+  ],
+  "PewterCity_EventScript_FatMan": [
+   [
+    2,
+    2,
+    "unconditional"
+   ]
+  ],
+  "PewterCity_EventScript_GymSign": [
+   [
+    2,
+    0,
+    "unconditional"
+   ]
+  ],
+  "PewterCity_EventScript_MuseumGuide": [],
+  "PewterCity_Gym_EventScript_Brock": [
+   [
+    2,
+    1,
+    "conditional"
+   ]
+  ],
+  "PewterCity_Gym_MapScripts": [],
+  "PewterCity_Museum_1F_EventScript_PokemonJournalBrock": [
+   [
+    2,
+    5,
+    "unconditional"
+   ]
+  ],
+  "PokemonLeague_AgathasRoom_EventScript_Agatha": [
+   [
+    0,
+    4,
+    "conditional"
+   ],
+   [
+    11,
+    0,
+    "conditional"
+   ],
+   [
+    11,
+    4,
+    "conditional"
+   ]
+  ],
+  "PokemonLeague_BrunosRoom_EventScript_Bruno": [
+   [
+    10,
+    0,
+    "conditional"
+   ],
+   [
+    10,
+    1,
+    "conditional"
+   ]
+  ],
+  "PokemonLeague_LancesRoom_EventScript_Lance": [
+   [
+    12,
+    0,
+    "conditional"
+   ],
+   [
+    12,
+    1,
+    "conditional"
+   ]
+  ],
+  "PokemonLeague_LoreleisRoom_EventScript_Lorelei": [
+   [
+    9,
+    0,
+    "conditional"
+   ],
+   [
+    9,
+    1,
+    "conditional"
+   ]
+  ],
+  "PokemonTower_7F_EventScript_Grunt2": [
+   [
+    14,
+    1,
+    "conditional"
+   ]
+  ],
+  "RocketHideout_B4F_EventScript_Giovanni": [
+   [
+    15,
+    0,
+    "unconditional"
+   ]
+  ],
+  "Route20_EventScript_Camper": [
+   [
+    3,
+    3,
+    "unconditional"
+   ]
+  ],
+  "Route25_EventScript_Beauty": [
+   [
+    3,
+    4,
+    "unconditional"
+   ]
+  ],
+  "Route4_EventScript_Boy": [
+   [
+    2,
+    3,
+    "unconditional"
+   ]
+  ],
+  "SafariZone_North_RestHouse_EventScript_BaldingMan": [
+   [
+    6,
+    5,
+    "unconditional"
+   ]
+  ],
+  "SaffronCity_EventScript_CrushGirl": [
+   [
+    12,
+    2,
+    "unconditional"
+   ]
+  ],
+  "SaffronCity_EventScript_GymSign": [
+   [
+    7,
+    0,
+    "unconditional"
+   ]
+  ],
+  "SaffronCity_Gym_EventScript_Sabrina": [
+   [
+    7,
+    2,
+    "conditional"
+   ],
+   [
+    7,
+    3,
+    "conditional"
+   ]
+  ],
+  "SaffronCity_Gym_EventScript_Tyron": [
+   [
+    7,
+    5,
+    "conditional"
+   ]
+  ],
+  "SaffronCity_Gym_MapScripts": [],
+  "SaffronCity_PokemonCenter_1F_EventScript_PokemonJournalSabrina": [
+   [
+    7,
+    4,
+    "unconditional"
+   ]
+  ],
+  "SaffronCity_PokemonTrainerFanClub_EventScript_PokemonJournalBruno": [
+   [
+    10,
+    2,
+    "unconditional"
+   ]
+  ],
+  "SevenIsland_PokemonCenter_1F_EventScript_PokemonJournal": [
+   [
+    11,
+    3,
+    "unconditional"
+   ]
+  ],
+  "SevenIsland_SevaultCanyon_EventScript_BlackBelt": [
+   [
+    10,
+    5,
+    "unconditional"
+   ]
+  ],
+  "SilphCo_5F_EventScript_Scientist": [
+   [
+    15,
+    1,
+    "unconditional"
+   ]
+  ],
+  "SilphCo_8F_EventScript_Scientist": [
+   [
+    15,
+    2,
+    "unconditional"
+   ]
+  ],
+  "SixIsland_Mart_EventScript_OldWoman": [
+   [
+    11,
+    5,
+    "unconditional"
+   ]
+  ],
+  "ThreeIsland_House2_EventScript_Man": [
+   [
+    7,
+    1,
+    "unconditional"
+   ]
+  ],
+  "ThreeIsland_House2_MapScripts": [],
+  "TwoIsland_EventScript_Beauty": [
+   [
+    10,
+    4,
+    "unconditional"
+   ]
+  ],
+  "VermilionCity_EventScript_GymSign": [
+   [
+    4,
+    0,
+    "unconditional"
+   ]
+  ],
+  "VermilionCity_Gym_EventScript_Dwayne": [
+   [
+    4,
+    4,
+    "conditional"
+   ]
+  ],
+  "VermilionCity_Gym_EventScript_LtSurge": [
+   [
+    4,
+    1,
+    "conditional"
+   ]
+  ],
+  "VermilionCity_Gym_EventScript_Tucker": [
+   [
+    4,
+    2,
+    "conditional"
+   ],
+   [
+    4,
+    3,
+    "conditional"
+   ]
+  ],
+  "VermilionCity_PokemonCenter_1F_EventScript_PokemonJournalLtSurge": [
+   [
+    4,
+    5,
+    "unconditional"
+   ]
+  ],
+  "VermilionCity_PokemonFanClub_EventScript_WorkerF": [
+   [
+    1,
+    1,
+    "conditional"
+   ]
+  ],
+  "ViridianCity_Gym_EventScript_Giovanni": [
+   [
+    15,
+    3,
+    "conditional"
+   ]
+  ],
+  "ViridianCity_Gym_EventScript_GymGuy": [
+   [
+    15,
+    4,
+    "conditional"
+   ]
+  ],
+  "ViridianCity_Gym_MapScripts": [],
+  "ViridianCity_School_EventScript_PokemonJournal": [
+   [
+    0,
+    3,
+    "unconditional"
+   ],
+   [
+    1,
+    3,
+    "unconditional"
+   ]
+  ]
+ },
+ "missingLabels": []
+}

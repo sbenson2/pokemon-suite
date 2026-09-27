@@ -1,0 +1,4629 @@
+{
+  "schema": "pokemon-suite/release-files/v1",
+  "files": [
+    {
+      "path": ".gitignore",
+      "sha256": "424f7d698a5d4d69fd02c9ad6b01cca74e1fc13c7a66c62726509b9ea2ab76b7"
+    },
+    {
+      "path": "DATA_SOURCES.md",
+      "sha256": "aec0dcf533d35b1f1f2c70497fe5dfc736f9133d5c9ca47d9aa7b47da4ab76db"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "2f3edf4bbe540060d3cbff3a9a6e2f996a780cf4a345d74003afaf58679afa8a"
+    },
+    {
+      "path": "README.md",
+      "sha256": "3f7921631b6930a7f7374e13eb0ffb382d4c8700f662065e308b8362f85bae67"
+    },
+    {
+      "path": "SECURITY.md",
+      "sha256": "fad3e72f183e82cfb756da99daf156eedc1bfe1bdf4d083d5ff7441b33b74824"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "sha256": "f2693769b6e8a7c72ebb4b63bd5f909e8ca561c06775c42a434ce1e6b77fab79"
+    },
+    {
+      "path": "docs/ARCHITECTURE-AND-UPDATES.md",
+      "sha256": "1d68732d0199a8a15e24aa7779672b0ad31ca15099ffddbfa5f720d9dfb74ecb"
+    },
+    {
+      "path": "docs/BOT-ACTION-CONTRACTS.md",
+      "sha256": "7d1f66a69b6ab30f61183f065b0a9c12148e13a54473724660c832c7cbfb1778"
+    },
+    {
+      "path": "docs/BOT-RECONCILIATION.md",
+      "sha256": "1bfcc10d6d6ca09874ec3f937f551cd40945de5eec47f806ba8560e9a76a07da"
+    },
+    {
+      "path": "docs/BOT-RECOVERY-BOUNDARIES.md",
+      "sha256": "c25b8e78b50480459b2f17e07277519e99e62c09445aec55de34bc1035f599dc"
+    },
+    {
+      "path": "docs/BOT-RECOVERY.md",
+      "sha256": "c6ef79dbf690df2ad964757336309d161b70bbaf0ac705e27c630b31b3d9aa48"
+    },
+    {
+      "path": "docs/BOT-REGRESSION-GATE.md",
+      "sha256": "6c822474bfb6fe74a00f231b72f6104c2f8a717907d8874762eba41bf7da3688"
+    },
+    {
+      "path": "docs/CAMPAIGN-PERFORMANCE.md",
+      "sha256": "5e8e83d4e5b2036ec2f34431dad5b03c26cb1cd2c841281ce75eb86baa292469"
+    },
+    {
+      "path": "docs/EMULATOR-TRADING-TESTS-20260912.md",
+      "sha256": "53815e8fd0a6d83d226d6e70b27c08551f4d3b92cb3c2d6caf7faba16564e85f"
+    },
+    {
+      "path": "docs/FIRERED-COMPANION-THEME.md",
+      "sha256": "d92f576f9ef707e0061fca3cbbdea2a112033053ddbd8a0bd4fe6f8a98e5c9fd"
+    },
+    {
+      "path": "docs/FIRERED-POSTGAME.md",
+      "sha256": "eb1aec540d58bceb3937b93d20fef4fecb18fce6a01bb8824cff7bda4dbcc816"
+    },
+    {
+      "path": "docs/FIRERED-STORY-CHECKPOINTS.md",
+      "sha256": "d39d9fafdbe44275c8eb87bab9df476b23c9e6776e2791ca3ba55486d59a4438"
+    },
+    {
+      "path": "docs/GENERATION-TRANSFERS.md",
+      "sha256": "3a7e5ac6523a0b70fbf6cef25dc84c23e8876cc27c38c8600411facc0e5b9239"
+    },
+    {
+      "path": "docs/HARDWARE.md",
+      "sha256": "49d6d6097e49d7684e39338da9e5d7669afe43aefc9fc0312b50018eaa08656d"
+    },
+    {
+      "path": "docs/ITEMS-AND-OFFLINE-POKEDEX.md",
+      "sha256": "660e012d2fdc438e632f9483dfc0f0cea05af32d8755e4d256abb4551eb0891a"
+    },
+    {
+      "path": "docs/JEV-OPPORTUNITIES.md",
+      "sha256": "ae41a7c2560e5261ccd14d901d41291d5fb23d69693dd357b3b12aa6e9f93796"
+    },
+    {
+      "path": "docs/LAYA.md",
+      "sha256": "bc8b3b6334321ea3672e13af6d14d5a5334cbd678afd6b7e8369956bece47b99"
+    },
+    {
+      "path": "docs/MAC-TRADING.md",
+      "sha256": "421b287eb6a5d918010100ee084ec0e21a9b94f767c3e785f54ffd75d61382d4"
+    },
+    {
+      "path": "docs/MACOS-HIG-REVIEW.md",
+      "sha256": "2e69d3f47cf87567d600ec561ec2788f2d5982474af32595b3ac8dc670de8f0d"
+    },
+    {
+      "path": "docs/MACOS.md",
+      "sha256": "31ee93c49523c52de689ac229d211b512f92b5fb43a1d88a956bd2dda1a72cc7"
+    },
+    {
+      "path": "docs/MOBILE-ARCHITECTURE.md",
+      "sha256": "371134834aca993659eb2c1c8cb6552bb12a10ba82b0d5d57517025c45f5f204"
+    },
+    {
+      "path": "docs/MOBILE-COMPANION.md",
+      "sha256": "d5c53697069a8b0fd3629a038223ee01dcce35dfcd9f9bf39cc7d3a095d22184"
+    },
+    {
+      "path": "docs/MOVE-KNOWLEDGE.md",
+      "sha256": "91f55acfc4d628a980e7306f19670f21bffc16197747f0e74cccf1d39123b856"
+    },
+    {
+      "path": "docs/RADIO-APPLIANCE.md",
+      "sha256": "9f6052001fcaae21490c3e7ee1ef426820621f3c9dc459c652175f9b62e47299"
+    },
+    {
+      "path": "docs/RADIO-RELAY-INTEGRATION.md",
+      "sha256": "73376b5697c1908fa16f561462213651e050611122590faac266e64f53ee87d2"
+    },
+    {
+      "path": "docs/RELEASING.md",
+      "sha256": "c74f6d39baab9c7634a058b91545c8ef961bb49b87f38051133965c80d61065c"
+    },
+    {
+      "path": "docs/ROM-RESOURCES.md",
+      "sha256": "a2078a14baef29beac18d439f3bd271518161651c7e9baec7a1cf4906f57e3c3"
+    },
+    {
+      "path": "docs/SOFTWARE-UPDATES.md",
+      "sha256": "92c8177fea2dbe481c77ded537845009364193d3a6b58c7807bb325ff20a04d1"
+    },
+    {
+      "path": "docs/STANDALONE.md",
+      "sha256": "85e01bc8ab2672ece40dcf9177b9e911f808b57c8d2f5cdcfb7da4c9c4303872"
+    },
+    {
+      "path": "docs/STOP-TRIAGE.md",
+      "sha256": "a7942252132e6fb916c08a6da72d1bb92b3c4ac2d9bbb6c8af35ca6faa11ac11"
+    },
+    {
+      "path": "docs/SUICUNE-HUNT.md",
+      "sha256": "c7108ac78b5b372d82917bef10738eaf115df284a607ad00a23c611172af34b2"
+    },
+    {
+      "path": "docs/TRAINING-AND-COMPETITIVE-PREPARATION.md",
+      "sha256": "50699dd7bbac2b9ba80e05456d730af102ae1931c5bd5f00da78985cabea6889"
+    },
+    {
+      "path": "docs/images/hero.gif",
+      "sha256": "bad76dc1846cd42462b340980f714c5810ba0a94706b1d2a0369927a418a6378"
+    },
+    {
+      "path": "docs/images/icon.png",
+      "sha256": "1c32f8c6717e9093f826991ed1a1627c145e7123b7b6e3f7dabe9cc876395929"
+    },
+    {
+      "path": "docs/images/ipad-live.png",
+      "sha256": "0bdae5af9e9fe96dc41e2f511d007973f503f81fe1c98979503519a3a9ce0f51"
+    },
+    {
+      "path": "docs/images/iphone-ask.png",
+      "sha256": "7dd660cc33eaa270e330e8bb2825175c4d9c0270ba30d0f13352a6264ccbaeb8"
+    },
+    {
+      "path": "docs/images/iphone-live.png",
+      "sha256": "c8c410c4c2de069e72c36c2ff9f9021cf6d53dc0cdc90af51270e93b0f2e321a"
+    },
+    {
+      "path": "docs/images/iphone-trading.png",
+      "sha256": "e8bb212d6bf146cd43ef48b6c0f99aeb1f8685a0436ceb379124255f5a6bd982"
+    },
+    {
+      "path": "docs/images/mac-live.png",
+      "sha256": "dda56d871ccbf6ed28b22a23f118e3273bd9ce08056706edf2237df20dacedc3"
+    },
+    {
+      "path": "engine/firered/package.json",
+      "sha256": "9285907833d81a5d94753ea2ee023fff35e0c66101fbee7ed19d67860128444d"
+    },
+    {
+      "path": "engine/firered/research/README.md",
+      "sha256": "07df129296d139172d76871754591a37841ce7af19baffd326074b43697394fd"
+    },
+    {
+      "path": "engine/firered/research/acceptance.json",
+      "sha256": "8aa5b2d02b1e6fb1607cf8daf9b61b793d2491d1931eeb6266fe1380d2db171d"
+    },
+    {
+      "path": "engine/firered/research/architecture.json",
+      "sha256": "eb7c69b78d6e9b45651e11b33d4988196abdb000e1c8adb1c2fada52d1b5f37a"
+    },
+    {
+      "path": "engine/firered/research/cartridges.json",
+      "sha256": "2a6024d8198818fe09f96f324b59cfd2e003b75228bba8a653901e965d085b28"
+    },
+    {
+      "path": "engine/firered/research/evidence.json",
+      "sha256": "e250678e40bdb0ed87e4d2ac8738333da3396eebb8d41bc8ccee43059921b61b"
+    },
+    {
+      "path": "engine/firered/research/knowledge.json",
+      "sha256": "353335f990607e12f0aba325d175b724213275b5ff6ea50eade3567dba05f686"
+    },
+    {
+      "path": "engine/firered/research/sources.json",
+      "sha256": "e55d9252fbe11868fc5f1569f79f0bbdc729b5f03aa98521164543a7c03a7bbd"
+    },
+    {
+      "path": "engine/firered/research/transitions.json",
+      "sha256": "4c60f0cd70a429695a54308f511f6d6fd222514caf7fd3d9455b328bb9bcebf1"
+    },
+    {
+      "path": "engine/firered/src/cli/catalog-stock-saves.js",
+      "sha256": "453d2ccf5818f1ddd0447bcfb64be0c59ceb4efea0c4024a398580a0459318a2"
+    },
+    {
+      "path": "engine/firered/src/cli/check-foundation.js",
+      "sha256": "53a383172194c295bbe2ab0df9ca4df1d025538fa6dc3f782f56d96c99fff4a2"
+    },
+    {
+      "path": "engine/firered/src/cli/extract-knowledge.js",
+      "sha256": "6711df1b5aaf2833c6a6912097aa76681c46ccf10db3ef42bbe9ee8052d747e0"
+    },
+    {
+      "path": "engine/firered/src/cli/prepare-mart-seed.js",
+      "sha256": "98bbfe04ebd0598e9f436d8265126522ad1c7638eaf46d7c6c7692500f4f080b"
+    },
+    {
+      "path": "engine/firered/src/cli/prepare-scenario-seed.js",
+      "sha256": "687a716156fb3c716510978ea1fd455a893c70d323125878712483b978fd0b61"
+    },
+    {
+      "path": "engine/firered/src/cli/qualify-emulator.js",
+      "sha256": "3d4be4bff46d47616600e93748ab12383f2130511eceeb246cc9a2d1861fe885"
+    },
+    {
+      "path": "engine/firered/src/cli/qualify-scenario.js",
+      "sha256": "0176fa98efabbe0afc46a1dce69be74e8bdbef70b1392c2b927ff533e0b89ee9"
+    },
+    {
+      "path": "engine/firered/src/cli/run-campaign-suite.js",
+      "sha256": "f7b6a617839700c6d871e6ab1e086853263abbd779f1f83669b431973ed6d2e0"
+    },
+    {
+      "path": "engine/firered/src/cli/run-player-service.js",
+      "sha256": "ae93a81e6887ee365c540639f2792377ce9a40e0448378a41520655a4ea1c9e0"
+    },
+    {
+      "path": "engine/firered/src/cli/run-player.js",
+      "sha256": "cb513a368b58c3a82ab4dc2c8f0a80c26a41e809cd9d7dd245ef54de66812c0e"
+    },
+    {
+      "path": "engine/firered/src/cli/run-rng-experiment.js",
+      "sha256": "921da8fcfa53b0752a44b7953f24430598f76ac1793b49958771a01afeb0ab77"
+    },
+    {
+      "path": "engine/firered/src/cli/serve-campaign-viewer.js",
+      "sha256": "0f0f3cb567d8eb1b99677c92d52590c879cdc31a7c757ae8ee432b8ec46fe0ee"
+    },
+    {
+      "path": "engine/firered/src/data/item-catalog.js",
+      "sha256": "3c13a83a913a73246994a57b00fec7c4b448130efd44cd884d789d72fde7eed1"
+    },
+    {
+      "path": "engine/firered/src/data/move-catalog.js",
+      "sha256": "5d3d0ee3bdcd50d6d5f4a054b81ae77f1080fac2986c8abf24d238fe6eafa175"
+    },
+    {
+      "path": "engine/firered/src/data/native-layout-variants.js",
+      "sha256": "9ca853f200fe081e683875bd63b24025bfd906c342daa2f7d7a36fca0552728f"
+    },
+    {
+      "path": "engine/firered/src/data/pokeapi-move-reference.json",
+      "sha256": "0fc9745f1ff76000100be97ebf215f0b931b5f18ba6166a3ba498a89a1ff15cd"
+    },
+    {
+      "path": "engine/firered/src/emulator/action-precondition.js",
+      "sha256": "518783f829f9953fa3df2f367995731e07cd6172eaf8e84c523d341f023c6c91"
+    },
+    {
+      "path": "engine/firered/src/emulator/autonomous-emulator-client.js",
+      "sha256": "f527f23fdf470fd0f7a9e9af478b60181ffea29cb1ad7bbba7b2cd195a0164a1"
+    },
+    {
+      "path": "engine/firered/src/emulator/autonomous-emulator-worker-runtime.js",
+      "sha256": "eb0613ef41c214e3be10fd19d1bac0a9caa031409496582188da643203fc2acb"
+    },
+    {
+      "path": "engine/firered/src/emulator/autonomous-emulator-worker.js",
+      "sha256": "22ce91d072d6a1696228ce9c65c749e13d4965c991992b0266c33ddce01725c3"
+    },
+    {
+      "path": "engine/firered/src/emulator/autonomous-emulator.js",
+      "sha256": "68219c669028cdff86095287b0cbeb9b4117573b44557e7bb74eb832302750fc"
+    },
+    {
+      "path": "engine/firered/src/emulator/mgba-session.js",
+      "sha256": "1eae39e8695b7348f3556a13d58a6ce9f3126a38f53c96a7d646022fa482c324"
+    },
+    {
+      "path": "engine/firered/src/emulator/native-rfu.js",
+      "sha256": "fa965ce6df86c40a7a9b15f93cd2022780617507764b066ee6b97e92bb22a19f"
+    },
+    {
+      "path": "engine/firered/src/emulator/pinned-mgba.js",
+      "sha256": "f4575b7bd4369e7797d53edc3232c10418afeab4e2fd53ea7b03077f45b822af"
+    },
+    {
+      "path": "engine/firered/src/evidence/artifact.js",
+      "sha256": "49365d33fd1f1491a8d8cc91b79eebc9f57a65c71d2c187d2962a44c7aec33ac"
+    },
+    {
+      "path": "engine/firered/src/evidence/field-heap.js",
+      "sha256": "1e99fa11f823464db183762c6c67921cd21e7c8720f0767d0a9121e0243a5929"
+    },
+    {
+      "path": "engine/firered/src/evidence/fire-red-observer.js",
+      "sha256": "2448813cf2182c03981dd9489f68026959fde884adb7c7d2e88df49a07c98206"
+    },
+    {
+      "path": "engine/firered/src/evidence/gen3-abilities.js",
+      "sha256": "80144445bb9d6ece30fe95f7a6facba905a2384755539f07947600fb6d533e51"
+    },
+    {
+      "path": "engine/firered/src/evidence/gen3-national-species.js",
+      "sha256": "6801fc85469280f89a63a0c4de2a8c124a96fb513f6e3d924c81d9c167714ee6"
+    },
+    {
+      "path": "engine/firered/src/evidence/knowledge-artifact.js",
+      "sha256": "cdf40afa986da601db96520e82eda64af507226df4c7e164bda47b98eb38cf06"
+    },
+    {
+      "path": "engine/firered/src/evidence/mail-state.js",
+      "sha256": "3fc757e8d2ac8a258decb0cd90080394d17e254d12232fd1e6642d44665117c0"
+    },
+    {
+      "path": "engine/firered/src/evidence/mart-seed.js",
+      "sha256": "444ac963ebfd3383cd312b7bf01902b70fd7457003a989df53a5303d5c3ff208"
+    },
+    {
+      "path": "engine/firered/src/evidence/pokemon-record.js",
+      "sha256": "9430d824a5b1681a277c8ee75f2b4cf79fc0c644432f830830c58d3bb52e6765"
+    },
+    {
+      "path": "engine/firered/src/evidence/qualification.js",
+      "sha256": "b6f4d1e6b313f391802f2a2e65b77a8e697aeb0cb82df7263e84091bfbd5acbf"
+    },
+    {
+      "path": "engine/firered/src/evidence/save-intake.js",
+      "sha256": "5917d44cf21c0b937aca938f7533f6171000fe71d26df139ade20d72969d0c6e"
+    },
+    {
+      "path": "engine/firered/src/evidence/scenario.js",
+      "sha256": "ba1052f1a594b274746d56e613cfb83af9007651be934cc338fb4398ae946717"
+    },
+    {
+      "path": "engine/firered/src/evidence/snapshot.js",
+      "sha256": "36b1684eb389d3adbfc35e2b79f33662c4a80f37123c165365eac3972e99cefb"
+    },
+    {
+      "path": "engine/firered/src/evidence/unown-form.js",
+      "sha256": "b2266982fed7d57eb07086d63a2ce70c349db188c6892e4e7e8470a56f0b1ac2"
+    },
+    {
+      "path": "engine/firered/src/extractor/artifact.js",
+      "sha256": "972c5103d42149f943f712b5c3f926428cc64d7b5ac768009ad3fcdb4f30b247"
+    },
+    {
+      "path": "engine/firered/src/extractor/battle.js",
+      "sha256": "446490e002c32321cc697e6ae01d81160afe9f18c769cfac92cf8cbbd3684c20"
+    },
+    {
+      "path": "engine/firered/src/extractor/knowledge-pack.js",
+      "sha256": "d7574d6439648570c43e0a214487f986a1e31e0abbe08f9f5f8ded5ab0b6250b"
+    },
+    {
+      "path": "engine/firered/src/extractor/primitives.js",
+      "sha256": "e4084c24dfbfec833a50a8039974debd1ae36d440a525476ccae2bb390062044"
+    },
+    {
+      "path": "engine/firered/src/extractor/runtime.js",
+      "sha256": "36da2233d54688470360ba1b199b42e256cd74e4b9f320f1b90fcbe38405fd5f"
+    },
+    {
+      "path": "engine/firered/src/extractor/story.js",
+      "sha256": "9aebe791d1d2e4d3c7f79205593716b77a14b50c214241e637c899e071816ec7"
+    },
+    {
+      "path": "engine/firered/src/extractor/world.js",
+      "sha256": "ce904b8b5fe0163d8a200e8ab8afbaabb7faf81d69ccc0873dd7139f365e5367"
+    },
+    {
+      "path": "engine/firered/src/foundation.js",
+      "sha256": "5f81f0b6b5667c988078013f4345dde0e79adf3e43dd6495c877058b4282d899"
+    },
+    {
+      "path": "engine/firered/src/player/advisors.js",
+      "sha256": "446eeb28aef27c48d3afd5e7922b70c9662bde953ce3632d9081b5255d03f6ed"
+    },
+    {
+      "path": "engine/firered/src/player/battle-effectiveness.js",
+      "sha256": "0a996d6872943b3ffbd5ee8b0c553ff0d0d65a3fd076922ad98e0ea3da75bb5f"
+    },
+    {
+      "path": "engine/firered/src/player/battle-foresight.js",
+      "sha256": "acda1c45c0ccc46cf476ec7f6c56a88eb3bba143283758aa0cc751b36819f637"
+    },
+    {
+      "path": "engine/firered/src/player/battle-legality.js",
+      "sha256": "bf4da8e504f06aed61f485bc682ff451648827f109baccc4981c4928d95d33a5"
+    },
+    {
+      "path": "engine/firered/src/player/battle-model.js",
+      "sha256": "03a2b34e1a860e1785001cb3a52dfa7ce6b79dc2f1858b1120fd64d48a192e6b"
+    },
+    {
+      "path": "engine/firered/src/player/battle-modifiers.js",
+      "sha256": "1f60ed4af829b6d861a593054203a3d176c9947d1617cfdba7b451ef4a8330b3"
+    },
+    {
+      "path": "engine/firered/src/player/battle-tape.js",
+      "sha256": "90bc1610df93277e757def856f292708ff6b9d4a4258138b22f083177bc69ffc"
+    },
+    {
+      "path": "engine/firered/src/player/bounded-journal.js",
+      "sha256": "a28fbcaee72bc179ae860244ac412646488fd170807eb46855e91eaa65fbb76e"
+    },
+    {
+      "path": "engine/firered/src/player/campaign-episode.js",
+      "sha256": "34747c7faff6e685f4990c6c9740e1c68bbeee7fa0c3122e23e9756e50b11971"
+    },
+    {
+      "path": "engine/firered/src/player/campaign-search-progress.js",
+      "sha256": "90fc1786b68e7ab38f7ccff614079231def7656359adb91288482c13863ac460"
+    },
+    {
+      "path": "engine/firered/src/player/campaign-suite.js",
+      "sha256": "0f326d20871797aed718e8fbf60f8d5e2c54d9c906e16ec59dfb5a4bb83efbcc"
+    },
+    {
+      "path": "engine/firered/src/player/campaign-supervisor.js",
+      "sha256": "421c5259d9e7bda96789487ece081093cd03b19bb9e07743fbfada173f136c3c"
+    },
+    {
+      "path": "engine/firered/src/player/campaign-suspension.js",
+      "sha256": "27a4fba747a85b01ca34ab3fb91fdbb8ef70b5508976ea9b22c4e8b41e93605e"
+    },
+    {
+      "path": "engine/firered/src/player/campaign-tasks.js",
+      "sha256": "79e989580a25f671ba7e3cc2466f4dfcbb6a17c25a8ab2dbf41d1207c492ae88"
+    },
+    {
+      "path": "engine/firered/src/player/campaign.js",
+      "sha256": "68f2a339011b83068da36d40e4040940fe2579ebfdd2d69c2f85a1eff7c06286"
+    },
+    {
+      "path": "engine/firered/src/player/capture-balls.js",
+      "sha256": "5cdb676db59f88033142248f8c446398fd15f30037326e198297b9fa39a0afe9"
+    },
+    {
+      "path": "engine/firered/src/player/checkpoint.js",
+      "sha256": "f0b71713f7f346c2487b28dec1daef67e808a2911a649a68f3e9649f81922d05"
+    },
+    {
+      "path": "engine/firered/src/player/continuous-player.js",
+      "sha256": "154d1bd8578216708a717a97f6db4d44e0cafbf981648b563537ecd9ecbe4f91"
+    },
+    {
+      "path": "engine/firered/src/player/delegator.js",
+      "sha256": "4e4e686d73d138008935c0b1b45ee9506a8251c22c77bf8143dd6a7a069a102d"
+    },
+    {
+      "path": "engine/firered/src/player/diagnostics.js",
+      "sha256": "9107ea26887b882ba31ed6c69a547a712d6f5bd7507f57f2278ee6be6e2b0d47"
+    },
+    {
+      "path": "engine/firered/src/player/effort-values.js",
+      "sha256": "1d7c545a366cb19a9205ddece2cf786cda4b1113779a68e5562f59dd3b6ca419"
+    },
+    {
+      "path": "engine/firered/src/player/encounter-safety.js",
+      "sha256": "2cd0f3d21eb8a9872b789beb5c3ea569880b8b0d34faa52f6777242c0ffd9506"
+    },
+    {
+      "path": "engine/firered/src/player/encounter-tracker.js",
+      "sha256": "58603f4eafaf37bf4fe4001e8d6ec75846b9c78f2e2868c43de092e2017748a4"
+    },
+    {
+      "path": "engine/firered/src/player/fire-red-roster-facts.js",
+      "sha256": "9fcb065d3e7fc0c87cd73cf6272eb4c3a20daf7b84e7edac8395a2f595862d88"
+    },
+    {
+      "path": "engine/firered/src/player/fire-red-roster.js",
+      "sha256": "05f334efb67a153f6887f423d37094d574782f8f58366bc96e96766395936fef"
+    },
+    {
+      "path": "engine/firered/src/player/frame-pacer.js",
+      "sha256": "c52414d46f7e1a44447d9bf5d864190dccacdbb328eca86f3d5f259dd2b71aea"
+    },
+    {
+      "path": "engine/firered/src/player/held-items.js",
+      "sha256": "7ab687c26f73c34a1a284353fae0e8cbef4a17b51f9d43f5dc87511b438e1cdf"
+    },
+    {
+      "path": "engine/firered/src/player/hm-policy.js",
+      "sha256": "6043be20f9fcde838ab666ce3d1d1c68bcd810bbcabd056c22271c48eb7af3cd"
+    },
+    {
+      "path": "engine/firered/src/player/hunt-config.js",
+      "sha256": "c5820c3c1161caf641158760dfe5e025bdf8d4e5ad97fc0bab0bbd36dc558f33"
+    },
+    {
+      "path": "engine/firered/src/player/hunt-planner.js",
+      "sha256": "e636ede9ec6fea8092c2c6b4ab8b0c2ebbe5b1861901b32f0e1630397752a55c"
+    },
+    {
+      "path": "engine/firered/src/player/in-game-trade.js",
+      "sha256": "f91b5ae9bb761e8a3b8743165ef2c478b85b6459d8fe01acea4a8bf9665eba79"
+    },
+    {
+      "path": "engine/firered/src/player/league-recovery.js",
+      "sha256": "b22c87dcc2c6760493cd68d2fbdee2437f1e4f4e5f9f93184bfc3ccbe9c041fe"
+    },
+    {
+      "path": "engine/firered/src/player/limit-cycle.js",
+      "sha256": "ab9c1d0515dc2d40994be9b6271c7290e14885b8d3602b1e5f14677e49e52183"
+    },
+    {
+      "path": "engine/firered/src/player/live-audio.js",
+      "sha256": "bbcdca9c279a322dfed0ba6133c7616925872e036b61d681c05e525ab9bde7bc"
+    },
+    {
+      "path": "engine/firered/src/player/live-video.js",
+      "sha256": "aff619fc61ec3359a88c7cf57eb99e4eb76831b68cb9deeeeca10f6f04327985"
+    },
+    {
+      "path": "engine/firered/src/player/major-battles.js",
+      "sha256": "0ddcb16d8e7a70ae12079795ada41b1f7da5be58dec9affbab104d49e59417e4"
+    },
+    {
+      "path": "engine/firered/src/player/mechanics-data.js",
+      "sha256": "72932163b1f5774746f7f808b989f724eb7533266440c1161f812b1c220cc164"
+    },
+    {
+      "path": "engine/firered/src/player/menu-navigation.js",
+      "sha256": "572bea9f9d714cd5a58c9c65bd6dbece5663b79cfc97b940743ba7081ea42b86"
+    },
+    {
+      "path": "engine/firered/src/player/move-damage.js",
+      "sha256": "c895391db0ac41fb9cff3836e18873d1c84762764adba9a558f70c986421c50b"
+    },
+    {
+      "path": "engine/firered/src/player/move-knowledge.js",
+      "sha256": "9d8cdabb4aa91d8803456093ed6957c0ec7cbc7c2a12059ba777f038aa450127"
+    },
+    {
+      "path": "engine/firered/src/player/movement-recovery.js",
+      "sha256": "4bb70d9a6885b990d99aa30249f7c08ee42b55661bf7d42de8bfa225d47afa6e"
+    },
+    {
+      "path": "engine/firered/src/player/origins-team.js",
+      "sha256": "e7becc339a6b10939e4002debcfed47d068726666387995fc6137751f588fd7f"
+    },
+    {
+      "path": "engine/firered/src/player/planning-context.js",
+      "sha256": "f9e85efd54e32d85a8a7d41ee9e306640c8ec6e1f179c8ab2c013b35fa0a7fdd"
+    },
+    {
+      "path": "engine/firered/src/player/progress-observation.js",
+      "sha256": "2b297f24bdd3a28eb697d6e250d2cb08d11882a3a9b3f3b3cb8beae1dc12112e"
+    },
+    {
+      "path": "engine/firered/src/player/recovery.js",
+      "sha256": "e90e65a9709acaa3a40ca5455d9e83937fe41674864ffce49ed250705464b2e5"
+    },
+    {
+      "path": "engine/firered/src/player/roster-generator.js",
+      "sha256": "64f1ebbf5da971e03823ce2dda4d14622a148dc448ae5d1e39e7a7e8cc74cf83"
+    },
+    {
+      "path": "engine/firered/src/player/roster-selection.js",
+      "sha256": "5b5ac218fe1db1f1b2514e33ff80d6d899a295ceadcff07cadc70580b8b9cd86"
+    },
+    {
+      "path": "engine/firered/src/player/run-profile.js",
+      "sha256": "70312245434e8c52912bcd2e7bce227c7987172d46c7b4f17ff3d11599ebf30d"
+    },
+    {
+      "path": "engine/firered/src/player/run-timer.js",
+      "sha256": "94acde6837a5b073e349dcdd973bad5e04fb818bee968158894a6de602307b05"
+    },
+    {
+      "path": "engine/firered/src/player/safari-capture.js",
+      "sha256": "9aba022d9ba74be96f3b70f989274c0d3ebf30d21afbdc570e3d4493fefec39c"
+    },
+    {
+      "path": "engine/firered/src/player/story-checkpoints.js",
+      "sha256": "d97424413898725b055d7c8681862bb67c80c19493ecd396394def9bb9d54a66"
+    },
+    {
+      "path": "engine/firered/src/player/trainer-economics.js",
+      "sha256": "5a2a6a727b665ce8d272d927e2b62ad22d5b4b3787d80125e9ddf6e2b6013132"
+    },
+    {
+      "path": "engine/firered/src/player/training-policy.js",
+      "sha256": "8eabf17d035d5facd35bb25dbc460d744f26d368a187f82de0d56e09193e1fa3"
+    },
+    {
+      "path": "engine/firered/src/player/training-quality.js",
+      "sha256": "469a305cf3ed0e6a87563dc354246dfacd7988e1d7a415227457e5eeb662d115"
+    },
+    {
+      "path": "engine/firered/src/player/transaction-recovery.js",
+      "sha256": "67e81410b2f8cac9de3035b32b6082cfea3578fab216d39a8390b714db3c63fa"
+    },
+    {
+      "path": "engine/firered/src/presentation/agenttv-fleet-client.js",
+      "sha256": "0229905984fd16453cec1dc18344b6ca59d9e44c66414ddda0cfa1a91d2b318f"
+    },
+    {
+      "path": "engine/firered/src/presentation/campaign-stop-report.js",
+      "sha256": "5584798d6aad462884c54a96d46bca58b7a0fbc48dcde80fd056196fc74a2fcb"
+    },
+    {
+      "path": "engine/firered/src/presentation/campaign-video-client.js",
+      "sha256": "764d3788ca9ccc596f0b47c45cd47114c391d560c4e1ff4ca3e523a1f7b35ff6"
+    },
+    {
+      "path": "engine/firered/src/presentation/campaign-viewer.html",
+      "sha256": "8b00f9c60df9db388351bfceaa61f10577580aa80ccdffd7624641a5ceadb55e"
+    },
+    {
+      "path": "engine/firered/src/presentation/campaign-viewer.js",
+      "sha256": "18a1120432b0fe2535c4e54924d54a4e46876437d67da40084965082ba565cf4"
+    },
+    {
+      "path": "engine/firered/src/presentation/cartridge-display.js",
+      "sha256": "e4b6689e83e9f9aef5b8fc126bbfed29a22c33a6defed94b42aa1b84acb07277"
+    },
+    {
+      "path": "engine/firered/src/presentation/player-status.js",
+      "sha256": "ad53df4cf3a73edd8347998c4909c6a3592daa8c6b0a42d5d293f78585c4dc92"
+    },
+    {
+      "path": "engine/firered/src/presentation/region-map-facts.js",
+      "sha256": "dbdfca509cce8c504c8b9133bc6d8ed1da82841e401e25d73a194b4cec0b968d"
+    },
+    {
+      "path": "engine/firered/src/presentation/region-map.js",
+      "sha256": "782e0329c9c7f5b441c3a93c6cd7ca9bff0dde136d12e2dbfa2038f3e6a1aa81"
+    },
+    {
+      "path": "engine/firered/src/research.js",
+      "sha256": "c4db1694950257c2dad6b0d6693d454454ec6df8b190651ed96aba687292cec1"
+    },
+    {
+      "path": "engine/firered/src/rng/fire-red-rng.js",
+      "sha256": "6e265ccda63afad80ad163dee496ffea486ce44a38ff1fb2ed5d6fb589506f4c"
+    },
+    {
+      "path": "engine/firered/src/rng/input-methods.js",
+      "sha256": "acfe5dbd204072ca340d9cb394cf390fcffbac01370b59a1e87186775b81cb7c"
+    },
+    {
+      "path": "engine/firered/src/rng/prediction-monitor.js",
+      "sha256": "4c6f03edc7938e10dc9b29dc13c162b1b639b108072155e38c293d139cfa3a8e"
+    },
+    {
+      "path": "engine/firered/src/rng/protected-capture-plan.js",
+      "sha256": "f11040161166a63448cadef050d90e26d7579dcda910393238753b365836a64d"
+    },
+    {
+      "path": "engine/firered/src/rng/replay-experiment.js",
+      "sha256": "6ec723566383e817c19156a6f0f077d4acaf698dbfc87a6bfa7f96c5ca126f34"
+    },
+    {
+      "path": "engine/firered/src/rng/safari-capture-plan.js",
+      "sha256": "e55456bf4d996d8541f548842198d3a7138ea741607a2853ad00b6fb0ebf2972"
+    },
+    {
+      "path": "engine/firered/src/rng/target-traits.js",
+      "sha256": "8826296cf600a86b4b1312aa3ed1ef3605f2e50c8ab77accb5e53f322bd36900"
+    },
+    {
+      "path": "engine/firered/src/rng/timing-calibration.js",
+      "sha256": "6ae1f6b98bfb35fdeb6183e01e499eaddd35d520a51b570820d1e2824d4a3585"
+    },
+    {
+      "path": "engine/firered/src/rng/wild-search.js",
+      "sha256": "c949ed4b17df8418c94958db1593fd532143900dcd6f62c12298ad6b923d495a"
+    },
+    {
+      "path": "engine/firered/src/suite/acquisition-evidence.js",
+      "sha256": "e057cd631215edce01da7f0f1f1d9e067ab63d966ef9ebbf072321b8603c56cb"
+    },
+    {
+      "path": "engine/firered/src/suite/acquisition-task.js",
+      "sha256": "1252f23b09e1439a2f0941f20d8e6809884b68b1d0364ae534a2ea7ce484549c"
+    },
+    {
+      "path": "engine/firered/src/suite/ball-supplies.js",
+      "sha256": "a42c47ff536503f865ce57d67739d1eea607864c436b05159cfc266050bfb55a"
+    },
+    {
+      "path": "engine/firered/src/suite/campaign-benchmark.js",
+      "sha256": "669105492418704b44b9c1dd395a7287fe566957e4d8f8589ee5f413c8d29c63"
+    },
+    {
+      "path": "engine/firered/src/suite/campaign-config-cli.js",
+      "sha256": "1710eb650a41dee036a1c237c74661e0275a95251eccfb726abcd2e11d11aa0a"
+    },
+    {
+      "path": "engine/firered/src/suite/campaign-context.js",
+      "sha256": "824759f6d19bfae66e2a4b03ba156a77e1689c169a68878395d7240487f1ed40"
+    },
+    {
+      "path": "engine/firered/src/suite/campaign-continuation.js",
+      "sha256": "8e00774dfda7e156b5f17f33c3ed6ab8c75b40cb1f3917d5ba8a51e8000689c5"
+    },
+    {
+      "path": "engine/firered/src/suite/campaign-diagnostics.js",
+      "sha256": "ad9bff41df66d1df53bdeb643019af055f26c74e8010da4f709bdb95f132d1ef"
+    },
+    {
+      "path": "engine/firered/src/suite/campaign-recovery.js",
+      "sha256": "beae08a5c6888c6528de770c5850849477ce1bbf7fe8f95204b83fc230695beb"
+    },
+    {
+      "path": "engine/firered/src/suite/campaign-run.js",
+      "sha256": "4b8f39ab7e81482130d4ab2095ca822b849a0f55574e39b58b52b69f386158d6"
+    },
+    {
+      "path": "engine/firered/src/suite/console-power.js",
+      "sha256": "5c041aeef5c0b7519601562378c64e49477b5d7da2cef90026026011167d7b90"
+    },
+    {
+      "path": "engine/firered/src/suite/emerald-companion.js",
+      "sha256": "f0a662ec26f7b4cf139293b9da076ecfbef096c592b08800467df99c9382882b"
+    },
+    {
+      "path": "engine/firered/src/suite/emerald-native-trade.js",
+      "sha256": "b18ead7272501b18f612efdf626cca95b0ec53d6b5bcad9445fb27b515adab42"
+    },
+    {
+      "path": "engine/firered/src/suite/ev-training.js",
+      "sha256": "6b831184759c84cff3a2c2e6c5c61ba8ca4f76840ff1a2654aabb469cbeac9dd"
+    },
+    {
+      "path": "engine/firered/src/suite/field-recovery.js",
+      "sha256": "e193cb4a4ed29fb4a2a56cd2d5de20761dca57dfb07f68bfc3c1c434c59b6809"
+    },
+    {
+      "path": "engine/firered/src/suite/fire-red-evolution-rules.json",
+      "sha256": "397a57d5a1d0e3a76ec3c7dec7f3347552072e73ec6910d20b5bd73f3ed46f2d"
+    },
+    {
+      "path": "engine/firered/src/suite/fire-red-evolution.js",
+      "sha256": "619fb57fd206d7d457864017f1bb6b3119d60e1c4355dfb047b5c5fffaeced7b"
+    },
+    {
+      "path": "engine/firered/src/suite/fire-red-link-quest.js",
+      "sha256": "1a7fbb60a3ebc33af0fd7cb2b9af87aa00b4a622918738f48dd92d8d10ed540d"
+    },
+    {
+      "path": "engine/firered/src/suite/firered-hm-learners.json",
+      "sha256": "0105d719df4d8094474cff202c6888be15cdf6c1aba04a5900abc7f1d599796e"
+    },
+    {
+      "path": "engine/firered/src/suite/firered-partner.js",
+      "sha256": "8eff1a72e3a9156b270fdf443335d5e3b406c762b562a72c802beb964f965685"
+    },
+    {
+      "path": "engine/firered/src/suite/game-progress.js",
+      "sha256": "fa64a05664e25779fc188c41ec1aae5a8a54b9ec590557f82b4d5c873da5f14c"
+    },
+    {
+      "path": "engine/firered/src/suite/gift-mission.js",
+      "sha256": "2fef2361eddc367cabbf7ff5c6f26d2814b0bbf5e23659a1f439915b72355af7"
+    },
+    {
+      "path": "engine/firered/src/suite/hunt-timing.js",
+      "sha256": "b3f0b6ee983adffef7883f62ee52552a3b92f137d08a9448376b30581af2171b"
+    },
+    {
+      "path": "engine/firered/src/suite/initial-save.js",
+      "sha256": "b8213efdfb37169748c5cd1be7ab49ffdc75ddde05742bc80650929307237fd3"
+    },
+    {
+      "path": "engine/firered/src/suite/inventory-cli.js",
+      "sha256": "2dd1a7a5b93f2bc47bba9085a2bb88c9d6b15dbc2cb861e84584fdd592523a11"
+    },
+    {
+      "path": "engine/firered/src/suite/inventory-snapshot.js",
+      "sha256": "dfbfaee0bdbc9cc94a0d80e669e98a1ad8bc818736a6d26e6fb195f8a9875940"
+    },
+    {
+      "path": "engine/firered/src/suite/league-ball-prize.js",
+      "sha256": "fb5752ddca354e9971ce8c50e1e67bd5c435940b05cf3aae8b48faa0eb500a09"
+    },
+    {
+      "path": "engine/firered/src/suite/league-exp-share.js",
+      "sha256": "a292eb47591e8002099fd3dd8da0e61e53db2a493714ddf808262951e45e79a8"
+    },
+    {
+      "path": "engine/firered/src/suite/local-evolution-worker.js",
+      "sha256": "3fa6501a528def0fb465db0da9aa08dcdc2b315d830f49b83963fd679eb2ac13"
+    },
+    {
+      "path": "engine/firered/src/suite/local-evolution.js",
+      "sha256": "7d5499ab655fc0e1ed2c583c840d9630060547e62bce6e329d13bcb2401a9fec"
+    },
+    {
+      "path": "engine/firered/src/suite/mission.js",
+      "sha256": "7cfe3de3c9d4e01ee79e23dc41cc5c8ab1112a7845443a122392aa2fe91c2180"
+    },
+    {
+      "path": "engine/firered/src/suite/moltres-route.js",
+      "sha256": "df17b7dcab28f14f40a7e1ed37e5186e64a871593c318621ec5cf4c39f3baf9e"
+    },
+    {
+      "path": "engine/firered/src/suite/national-dex-agenda.js",
+      "sha256": "8236980cc43e87c9ebc911202e3f44754e31d5f5762a58d2e0a98a6cfd042258"
+    },
+    {
+      "path": "engine/firered/src/suite/native-acquisition.js",
+      "sha256": "47a265723dd3ddacd6168b42ce8fca6c46ae469b4ba8c4040a6de0e542848bf4"
+    },
+    {
+      "path": "engine/firered/src/suite/native-breeding.js",
+      "sha256": "0e9f28888fd87467cbe24fc549b0d3ca50be0c50ff6ad1ba4170fc9ae23bfdee"
+    },
+    {
+      "path": "engine/firered/src/suite/native-cold-boot.js",
+      "sha256": "9e1302f4801deb97359ce7e6810b3b10660ac00b46bef7d704241f392f596204"
+    },
+    {
+      "path": "engine/firered/src/suite/native-local-link.js",
+      "sha256": "b05bb42922a0ec75380ab6e71a7c33a415d381668f74a9c7061d104044e91477"
+    },
+    {
+      "path": "engine/firered/src/suite/native-radio.js",
+      "sha256": "c979da9cf9653b240eeea62bf8d60d5acf585e6eb8833bcdb38218bc39f6117a"
+    },
+    {
+      "path": "engine/firered/src/suite/native-trade-host.js",
+      "sha256": "04fb67404b1df75ccf405c5ad5814c3b5f2babe27d30687fec23833e004e27bf"
+    },
+    {
+      "path": "engine/firered/src/suite/native-trade-recovery.js",
+      "sha256": "92b2d34129a6830bfb32ddee5ef98f0c17af53302fa59ec4506d5c3e321bb69d"
+    },
+    {
+      "path": "engine/firered/src/suite/native-trade-room.js",
+      "sha256": "667a5621ab598c1f4af068b04e71caef22a6860d06652361a37b823253984e13"
+    },
+    {
+      "path": "engine/firered/src/suite/navigation-cycle.js",
+      "sha256": "8a63675bb8b0e2969e9e7ed57ad85f5d583a2de7b6509b1a87821321dc5474ed"
+    },
+    {
+      "path": "engine/firered/src/suite/planner-client.js",
+      "sha256": "f5a1366fc87c3e08a5ff36e23be4e028a6f9a8779f10613081ac21f5a5741a9a"
+    },
+    {
+      "path": "engine/firered/src/suite/planner-worker.js",
+      "sha256": "eb2a375cf662a15cbfc961b6500ba1cce35be56ff033218de7c24b616d5f7e56"
+    },
+    {
+      "path": "engine/firered/src/suite/player-task.js",
+      "sha256": "c7ab5928283c05db614b9fd40e0721360585c15970d0465b6dca337c062003cc"
+    },
+    {
+      "path": "engine/firered/src/suite/pokemon-inventory.js",
+      "sha256": "6e3feebf8cb335c7228b87c6dacfbd9dde61151a2a72ca976760340e367e620a"
+    },
+    {
+      "path": "engine/firered/src/suite/postgame-agenda.js",
+      "sha256": "8f0d281445352a3025a0169d5ae448e4d1eb7d8a5ac678ebdda7b5dd23f827ed"
+    },
+    {
+      "path": "engine/firered/src/suite/postgame-care.js",
+      "sha256": "b13e7a57dcfcd200a6a829aee964152755bfab0a893e28a2f8f1caa68fe8c1ae"
+    },
+    {
+      "path": "engine/firered/src/suite/postgame-client.js",
+      "sha256": "6b44bc5c90a48fd909fd64fe1a7f4cb7ab456a97d58467c43653c8f109883e53"
+    },
+    {
+      "path": "engine/firered/src/suite/postgame-collection-extras.js",
+      "sha256": "ddab73352891380cf069622e7e319e8ee794135b492438871a1c74bbe2c8f267"
+    },
+    {
+      "path": "engine/firered/src/suite/postgame-completion.js",
+      "sha256": "fc63a7db06582da91e410d93674c2b2701a46ced926617bee5bb10e2d0e8ad8e"
+    },
+    {
+      "path": "engine/firered/src/suite/postgame-fame-facts.json",
+      "sha256": "21fa555ad02b774a873775572ecb2dd472e9a362bce3d60a15332b78e543fcf1"
+    },
+    {
+      "path": "engine/firered/src/suite/postgame-gates.js",
+      "sha256": "2f75934fda0fb92668589a14a136cb26edbe2e927583b49db44e0ee5fa75357e"
+    },
+    {
+      "path": "engine/firered/src/suite/postgame-progress.js",
+      "sha256": "57513ff6824a2703607012c779e8c74af57dc999600c8d103ddd9202f7835e7d"
+    },
+    {
+      "path": "engine/firered/src/suite/postgame-records.js",
+      "sha256": "7555df345c8fd87793e7c1147cb1f3f91b96ee1fa85590938c07d65b232eb81d"
+    },
+    {
+      "path": "engine/firered/src/suite/postgame-shopping.js",
+      "sha256": "ae69d3e6d4b4d6d6be471c7ed973688264e8e5acf71f9b9c1d757dd3faade3c6"
+    },
+    {
+      "path": "engine/firered/src/suite/postgame-watchdog.js",
+      "sha256": "f3aaadeefc9f42f378fdbfef04a40c395f5991b739f4402f660db3f76dbf713a"
+    },
+    {
+      "path": "engine/firered/src/suite/postgame-workflows.js",
+      "sha256": "e8ce70a8b73ec262bbc79b9aaf781d0e413dfe277c823a67cbae5da34b4b334a"
+    },
+    {
+      "path": "engine/firered/src/suite/postgame.js",
+      "sha256": "fefa5252e7f7c6ab72b960615bad1449ff030d5da3e2c4e2330f01c442e3da72"
+    },
+    {
+      "path": "engine/firered/src/suite/qmm-supply.js",
+      "sha256": "10fa28c255554b656b373b97543d7f8a5df410d7c9dffe12b34682af4ed58737"
+    },
+    {
+      "path": "engine/firered/src/suite/recovery.js",
+      "sha256": "3a042dd23e92bfa70fc03bf1437e39711755eafa106056cc4ffc81592e5b10a1"
+    },
+    {
+      "path": "engine/firered/src/suite/roamer-flight.js",
+      "sha256": "776e1b6aeb0e78ac7de3513eadee131d4d56725819ac8bf5b5f40396958b41cb"
+    },
+    {
+      "path": "engine/firered/src/suite/roamer-mission.js",
+      "sha256": "264ba51c8ba3ee8288782f29ed2943ba2e1c064e70c51d1863768df9d5d06519"
+    },
+    {
+      "path": "engine/firered/src/suite/safari-mission.js",
+      "sha256": "341496b03d9f194257a2f91a730c0b75d5c3735b60fbb2c7a4b19010396f06e9"
+    },
+    {
+      "path": "engine/firered/src/suite/save-preview.js",
+      "sha256": "4cd528d2a55cf35c8cfafb2dc6e2cae7718fb8022f8aab55fb8a2abfe537b1d7"
+    },
+    {
+      "path": "engine/firered/src/suite/save-profiles.js",
+      "sha256": "78c416068747afc30730305c80b1179802265dbfceb21e535832009b73308758"
+    },
+    {
+      "path": "engine/firered/src/suite/save-vault.js",
+      "sha256": "830ea376dc8c1bdf03c6a4a346b22665667883030bd547d10d3181259ff04b86"
+    },
+    {
+      "path": "engine/firered/src/suite/session-speed.js",
+      "sha256": "7482888b11048880bcfb01eada81d0055d85c2d70099171cd968870e466b4849"
+    },
+    {
+      "path": "engine/firered/src/suite/session-worker.js",
+      "sha256": "505e8ea3dbfac10aad1dfe0bf56fed163c9cc6d65ca58eb89315f99f48113e0e"
+    },
+    {
+      "path": "engine/firered/src/suite/shiny-collection.js",
+      "sha256": "3149803dc011ced03486e7650cc4b5ae6328c419e279ffe73eeae3003dc65fcc"
+    },
+    {
+      "path": "engine/firered/src/suite/snorlax-mission.js",
+      "sha256": "44649b25aa2afc3929704e195fa92f383fdc48ed7a94ba5bb25153c4500b6bba"
+    },
+    {
+      "path": "engine/firered/src/suite/static-availability.js",
+      "sha256": "7df26ace0a3f88f371adfe60ea6654c99502d70d4f159733a099868bc8e1c174"
+    },
+    {
+      "path": "engine/firered/src/suite/static-mission.js",
+      "sha256": "fb08e7e2dd0a8e3e459e7e57be9d717d1ecf6f0787846064fca7ed04efa15aff"
+    },
+    {
+      "path": "engine/firered/src/suite/storage-capacity.js",
+      "sha256": "4f8c28a031ec6b1a0f671c129ea2839dd180729254ad9198accb0b1c9937be64"
+    },
+    {
+      "path": "engine/firered/src/suite/suite-owner.js",
+      "sha256": "2cc3182486651f2cd1c6ff2b80da58def49a832f4e9013a5569dbc3823da83a6"
+    },
+    {
+      "path": "engine/firered/src/suite/trade-preparation.js",
+      "sha256": "09f84e86829a79a2aac9e3d72fa9b0b1d67f1df02fdd4c0a52dd8b1e62a9dfa8"
+    },
+    {
+      "path": "engine/firered/src/suite/update-boundary.js",
+      "sha256": "f90875710f88489df06fe9106b8acb2cdcc66b99f4839daa7817db5b46f8c3a7"
+    },
+    {
+      "path": "engine/firered/src/suite/wild-mission.js",
+      "sha256": "b5e997608bcf719b9b66e8325d6c990d1d716774e5b05a82692c0843f46d026d"
+    },
+    {
+      "path": "engine/firered/src/testing/firered-replay.js",
+      "sha256": "8d85db08f0ad836ff375486f6d86c5031189bfa3b5a4e737ff566a2914f190ef"
+    },
+    {
+      "path": "engine/firered/src/testing/fleet-plan.js",
+      "sha256": "dbd41fc92959532ace1054b671e5e1fec05fb13d7711e6986897f4deaf7900c3"
+    },
+    {
+      "path": "engine/firered/src/testing/game-adapters.js",
+      "sha256": "4c8bea54b7ac6e8af3889e6951269ffc241d51ade7c68bfec467ac58f848832d"
+    },
+    {
+      "path": "engine/firered/src/testing/training-experiment.js",
+      "sha256": "ee7aa567fb52629d4ae31471a875db8fc3ac917a9315b9691f549bd8a4ad6483"
+    },
+    {
+      "path": "engine/firered/test-support/autonomous-emulator-rpc-worker.js",
+      "sha256": "90b01e00b7e2a018160c08cd302ccd240c163f87109425c17059e483a16fff1a"
+    },
+    {
+      "path": "engine/firered/test-support/campaign-task-fixture.js",
+      "sha256": "c58230c1253987973c744bf1414ef6a5a471101c387ec2001d590617e05f5f89"
+    },
+    {
+      "path": "engine/firered/test-support/champion-rematch-tactics.json",
+      "sha256": "69afa45f16b49733c94f5e225c61eb545245c26fde183639e86e6e1b11e4e0c2"
+    },
+    {
+      "path": "engine/firered/test-support/fame-script-awards.json",
+      "sha256": "b5bd5b205cddc5c149122f07616a148ec70d6a93e6eb776d566d4bdf281cdcf3"
+    },
+    {
+      "path": "engine/firered/test-support/interruption-schedule.js",
+      "sha256": "65dbee7e466df5fcbeb5bbd04d89cf4d034e058807c75f03b55ab714c9d6b556"
+    },
+    {
+      "path": "engine/firered/test-support/league-heal-finish.json",
+      "sha256": "eddd660f3c1c6b3bcc9175d85a1773bc11e9d4d9b23425ba28656b7f05e8b056"
+    },
+    {
+      "path": "engine/firered/test-support/league-tactics.json",
+      "sha256": "3156568dcda1e6fc51215e791b36ccebd0395a3657ce91ce4e07eed9cb774522"
+    },
+    {
+      "path": "engine/firered/test-support/misty-battle.json",
+      "sha256": "c784aca8c638629bdd86d599d24680de0f621e06dfea57895e0da18fb42abe61"
+    },
+    {
+      "path": "engine/firered/test-support/native-regressions.json",
+      "sha256": "a0fb918961f27854d011b9bd9af2ba6352e9cddf2480bb02eb752bcc794bcde4"
+    },
+    {
+      "path": "engine/firered/test-support/native-transform-planner.js",
+      "sha256": "6c1a2c1af4a0f6e777d14f9a5f5873f39f67480556f1f1fc4749ee9d16897c71"
+    },
+    {
+      "path": "engine/firered/test-support/roster-context-fixture.js",
+      "sha256": "520de21d3e8adf4e9c211cca676f3ceb885386530a34daac3c1678d3698500ae"
+    },
+    {
+      "path": "engine/firered/test-support/temp-dir.mjs",
+      "sha256": "43e58e2e354b96a7af16a0cc62e3e257aadef43fcf8e8f5c8025a4d3b7bdbf3a"
+    },
+    {
+      "path": "engine/firered/test/acquisition-evidence.test.js",
+      "sha256": "2abc2c13cc6ccd9b5b94309797fce87f13f8823d7c66ec640dc4daeec01576f9"
+    },
+    {
+      "path": "engine/firered/test/action-contracts.test.js",
+      "sha256": "25ceaf65a6f2da682cde308b675948f41e70a2a25b55194ddb6799f33e3b16c5"
+    },
+    {
+      "path": "engine/firered/test/action-precondition.test.js",
+      "sha256": "3b2349c4e7e69ba274dc0a0d9e9d4273fa40457e0d1a767944cca98c09b2a3e2"
+    },
+    {
+      "path": "engine/firered/test/adaptive-emulator.test.js",
+      "sha256": "79d88cb1e4de3187f31c393c276747d84c40555d1898943edb4b1f8a29492ba5"
+    },
+    {
+      "path": "engine/firered/test/advisor-contract.test.js",
+      "sha256": "7b0e14b156ef260ad1304298268f7c51d6a86728d8d487158273f6756f8677c7"
+    },
+    {
+      "path": "engine/firered/test/artifact-writer.test.js",
+      "sha256": "8f1b4b66e6da76f805eaf25846bb2906fa23c7e58fa052193e090baf6f89c826"
+    },
+    {
+      "path": "engine/firered/test/automatic-evolution.test.js",
+      "sha256": "45ac08c4c9d93244edcbe1de93c82947e3245e7962535bdb8d89861add34daab"
+    },
+    {
+      "path": "engine/firered/test/autonomous-emulator-client.test.js",
+      "sha256": "47cca77227b95bc177c5af2af79f1476b3a9bdfb431a27e0cc79b8f876c8dde6"
+    },
+    {
+      "path": "engine/firered/test/autonomous-emulator-worker-runtime.test.js",
+      "sha256": "881a2159eb496e1f5126b1acd1f845ad10bc006145426263fcd41045eb107a45"
+    },
+    {
+      "path": "engine/firered/test/autonomous-emulator.test.js",
+      "sha256": "f4f86df55abdc993b35cff41b0c39acce62cb9841e6c57bf8df30c5f9adae1c2"
+    },
+    {
+      "path": "engine/firered/test/balanced-progression.test.js",
+      "sha256": "01a1465f69fbedeab90c45c88f2ef215dc78a73c4668d95c55fdd96f3bfaa63d"
+    },
+    {
+      "path": "engine/firered/test/ball-supplies.test.js",
+      "sha256": "fe3da9677bacbdaa063f705d61b62d439c406efd204010eabc8b76b90cecc53b"
+    },
+    {
+      "path": "engine/firered/test/battle-extractor.test.js",
+      "sha256": "0be79683793cd2e51eafce8bc8976170ee25e9a95ece98895f9210c2e0e48f05"
+    },
+    {
+      "path": "engine/firered/test/battle-legality.test.js",
+      "sha256": "1d3fa6363ca37c442ce145ba0f527ded0fced598a0503ddb48f54a6d408c2244"
+    },
+    {
+      "path": "engine/firered/test/battle-model.test.js",
+      "sha256": "529457b2e8ced1cc1ff701891064ba93560294dc37c11ce558d873f85cf3c922"
+    },
+    {
+      "path": "engine/firered/test/battle-race.test.js",
+      "sha256": "45694e25891713074ee1ac2880beba8433dc702bdec983eb9725655dc183f79c"
+    },
+    {
+      "path": "engine/firered/test/battle-sense.test.js",
+      "sha256": "9a2b8b4a218452c8ccbbda4bdd13be55eb5c2e020ed0dd71bd597f4752c16e59"
+    },
+    {
+      "path": "engine/firered/test/battle-tape.test.js",
+      "sha256": "49fa2a01bfffd21da7d94a8a97800e7d3b35e7947279a401aa6566662a82b54e"
+    },
+    {
+      "path": "engine/firered/test/bot-start-ready.test.js",
+      "sha256": "1075320d2d2a2fedc036b9b095f9b66ce71f2550f4c7f5cc200983c088e80c8b"
+    },
+    {
+      "path": "engine/firered/test/campaign-after-league-wait.test.js",
+      "sha256": "b9f932fc328f42ead2f2ec873fa3ad3e7adc028acda8252a8b30df7f69c7f4c7"
+    },
+    {
+      "path": "engine/firered/test/campaign-benchmark.test.js",
+      "sha256": "b6ebc0f51c0146b7c5ed81656070454e934d524da4b54759ca693fd310526bda"
+    },
+    {
+      "path": "engine/firered/test/campaign-context.test.js",
+      "sha256": "75ba52b33d4c772bc4038e822f5d9f2d63ac08cd8a2428637796708068a54b33"
+    },
+    {
+      "path": "engine/firered/test/campaign-diagnostics.test.js",
+      "sha256": "07538ddec99bcb4dd8b5500f00a584b7800f0cf4f5476c44798857db4c2c41ad"
+    },
+    {
+      "path": "engine/firered/test/campaign-episode.test.js",
+      "sha256": "b5397f88a94911a5d70195417b85027c80caa545d70d12b9cec2154234b8c70d"
+    },
+    {
+      "path": "engine/firered/test/campaign-planner.test.js",
+      "sha256": "40edb864555343c306e3d9b15a3dc629285643e3e4aca82c1beeb66c836e7e9c"
+    },
+    {
+      "path": "engine/firered/test/campaign-recovery-progress.test.js",
+      "sha256": "c5211e729eb6f0a0747c686b5dfe6dce92b43933fc2d96c53a283a624063a52e"
+    },
+    {
+      "path": "engine/firered/test/campaign-reviewed-retry.test.js",
+      "sha256": "9a25d9b5ea3859b3dc42fa14cfbb1e0afafad63be5e449f05b9eab7cd75a04f7"
+    },
+    {
+      "path": "engine/firered/test/campaign-roster-order.test.js",
+      "sha256": "a1a5d8ae3cad7317a482ce2e7bd4546534b145e91af64fdd533049903fec5556"
+    },
+    {
+      "path": "engine/firered/test/campaign-run-settings.test.js",
+      "sha256": "4a0643443c0ff5fc0589d2d035e744024bbf4daa5891405ccc4958a02502c8f2"
+    },
+    {
+      "path": "engine/firered/test/campaign-search-progress.test.js",
+      "sha256": "0d56601b066697896aa439589c6ab38cbf2283def67a4586e9f472436b302771"
+    },
+    {
+      "path": "engine/firered/test/campaign-stop-report.test.js",
+      "sha256": "ea9368cf618c6c15a43f643ad930abf042499f9f96cf867fb1bc340b73b1d552"
+    },
+    {
+      "path": "engine/firered/test/campaign-suite.test.js",
+      "sha256": "1fddba005196319a660734b3c36e85012eedbec4076855311a6d04cfa628154e"
+    },
+    {
+      "path": "engine/firered/test/campaign-supervision.test.js",
+      "sha256": "92d8ccd3d9be31d9bf5371b8d3f56b20ee35704870d839700d1115e67a21f0fc"
+    },
+    {
+      "path": "engine/firered/test/campaign-tasks.test.js",
+      "sha256": "e934475bdb910d2e9c744275ab2eb5785ef219e719d1979a1cac1723702733d3"
+    },
+    {
+      "path": "engine/firered/test/campaign-teaching.test.js",
+      "sha256": "2646f2531ab4c9302add968f068eafaab41732f5d66466ae93f096af657ca735"
+    },
+    {
+      "path": "engine/firered/test/campaign-timeout-default.test.js",
+      "sha256": "514acaae2be8fc23371f69f3285ed6214fc1f9cf44d825ba18df77f5856553d7"
+    },
+    {
+      "path": "engine/firered/test/campaign-viewer-layout.test.js",
+      "sha256": "10b5bcd0b7f1e328cfc29d54e2ebf86958e270fe04883f7ef2f211f9b6105846"
+    },
+    {
+      "path": "engine/firered/test/campaign-viewer.test.js",
+      "sha256": "0867251a0d3325f90733dc81e72fc4f9abd7ab58c710d6ebaad0f3cdaa235334"
+    },
+    {
+      "path": "engine/firered/test/cartridge-contract.test.js",
+      "sha256": "d4db43fd6f32fcd61ebe30fe4c5a75681943fbd11a9ca6302f283c355e9d9e73"
+    },
+    {
+      "path": "engine/firered/test/cartridge-display.test.js",
+      "sha256": "d8f9f22b6c6033f30715907baf5e9a52a163cca7b4931e4e53ddb832bbd9fd8d"
+    },
+    {
+      "path": "engine/firered/test/catalog-stock-saves-command.test.js",
+      "sha256": "1b4637a8cec75ee00a441541c0c4d7679d904f78150a491590e2e124f86aed21"
+    },
+    {
+      "path": "engine/firered/test/check-command.test.js",
+      "sha256": "3362b15383f5b42cb50e2d38535b2577244e1e43f006943c2dc96d92ec044cea"
+    },
+    {
+      "path": "engine/firered/test/console-power.test.js",
+      "sha256": "948218c9504eb0fef95df9e6c3ade768bc404f25f0ccc1635a1628f8b11183c2"
+    },
+    {
+      "path": "engine/firered/test/continuous-player.test.js",
+      "sha256": "d7f29b7e110398a0d1ab23ba3d078e21350ac1ad1f86549d6a9ec6eedb51f3cf"
+    },
+    {
+      "path": "engine/firered/test/deferred-action.test.js",
+      "sha256": "70afc84dd192fab16fde822d61c48bcfc2b0b02c06084d7a713fd122b84a8b2d"
+    },
+    {
+      "path": "engine/firered/test/direct-training.test.js",
+      "sha256": "c369001be307b15bf1f548069eaa2ddb443eb053e09e893b98ad6f95d87af03b"
+    },
+    {
+      "path": "engine/firered/test/dunsparce-tunnel-rng.test.js",
+      "sha256": "ad9b810a63a629cd2c8168765f8db1644cd44396bbf106f14ba55743cbf32dc9"
+    },
+    {
+      "path": "engine/firered/test/emerald-companion.test.js",
+      "sha256": "06109e9ec21226449b0dc00049e0f7eb42e66259e6ce334be7cfe03bd6ed560e"
+    },
+    {
+      "path": "engine/firered/test/emerald-native-trade.test.js",
+      "sha256": "f7e1cc7ad1be82604a961753c48651cdad0916767567849052b8c40f970cdb34"
+    },
+    {
+      "path": "engine/firered/test/emulator-qualification.test.js",
+      "sha256": "561f0c5dcced79d9396683fb33b29abc00bdc1d654f240eba0630699a1b42ac6"
+    },
+    {
+      "path": "engine/firered/test/encounter-safety.test.js",
+      "sha256": "8bb9b4108410b0299235356e8844c48a9f774964b77230821328a15cab7a68c6"
+    },
+    {
+      "path": "engine/firered/test/encounter-tracker.test.js",
+      "sha256": "12978ffa7ee81a32e67a7b5a2b81c06e2a8fcf85d2c6af8eeb0419223096d938"
+    },
+    {
+      "path": "engine/firered/test/ev-training.test.js",
+      "sha256": "f413c795bd8e68cf406e57e19738284e8d8817156b9a33db8b6f89901b886237"
+    },
+    {
+      "path": "engine/firered/test/evidence-artifact.test.js",
+      "sha256": "41bdd106d2dbe9b419d44ea2108eed769a1e89cf135494dfe731a5f1145c1013"
+    },
+    {
+      "path": "engine/firered/test/evolution-preparation.test.js",
+      "sha256": "3f29895314f66b23be97dff7de07596dc2b405f12cfbad6e4ad7b430df431ac1"
+    },
+    {
+      "path": "engine/firered/test/evolution-training-acceleration.test.js",
+      "sha256": "a14df0c8f011a95f7ac55204758beb0ded9733d5028f21fb58f244014cda6f6f"
+    },
+    {
+      "path": "engine/firered/test/extract-command.test.js",
+      "sha256": "56adc867c59bf4c1c16ec22a27256a22ace687c9704cc80e4dffd854f8522393"
+    },
+    {
+      "path": "engine/firered/test/extractor-primitives.test.js",
+      "sha256": "41baef377976e56e6c7db53e8f6ee410ac7b91fba8ec239eb71623f43293b9a2"
+    },
+    {
+      "path": "engine/firered/test/fame-facts-sources.test.js",
+      "sha256": "06e575abb34794294491c826f5e8e3b94176fb4578ea41166f2dc8179722563b"
+    },
+    {
+      "path": "engine/firered/test/field-heap.test.js",
+      "sha256": "3ec336d5df72695623b2e4084bdf646a0d2c07c448e532f71daa3cc07d8199c9"
+    },
+    {
+      "path": "engine/firered/test/fire-red-evolution.test.js",
+      "sha256": "8987396d05256e9c2fbd2f3a38c3aeee463ae3ab1b5ffd7731fbad4b9cd4fbb9"
+    },
+    {
+      "path": "engine/firered/test/fire-red-link-quest.test.js",
+      "sha256": "11028ae97df75d502685d5d814b12180a52b48ec63f81dff217f8492fcce12dc"
+    },
+    {
+      "path": "engine/firered/test/fire-red-observer.test.js",
+      "sha256": "cb30ee7484c053a78097d1891b8c390807e6018f61a35dc64ff6f292d269a211"
+    },
+    {
+      "path": "engine/firered/test/fire-red-rng.test.js",
+      "sha256": "328e41c81b1283c931a1f36e6d2b6d8e481857d38c6a731d68cae21eea58b541"
+    },
+    {
+      "path": "engine/firered/test/fire-red-roster-facts.test.js",
+      "sha256": "efb53e36b729d2be4f07eb8f68044cd88668c64efe182ab900fac39b7330dc07"
+    },
+    {
+      "path": "engine/firered/test/fire-red-roster.test.js",
+      "sha256": "60e139890f665de0e40fa3f48b4e76b72063d0fed4506649dac98aafbd3a826b"
+    },
+    {
+      "path": "engine/firered/test/firered-partner-worker.test.js",
+      "sha256": "b8132adf45cd7c0153d5a434866d65a1bee1e2b74de953961416024e81345aad"
+    },
+    {
+      "path": "engine/firered/test/firered-partner.test.js",
+      "sha256": "88e2db1fe82644a2dae361c4e1919f459ec74f75a3d837122807035aef28e540"
+    },
+    {
+      "path": "engine/firered/test/fixtures/episode-17-transient-badges.json",
+      "sha256": "354129b6ab6db4d43966842f35465420a178c585e4deae460dc891414a530c40"
+    },
+    {
+      "path": "engine/firered/test/fly-region.test.js",
+      "sha256": "229618f06f5abb3a307bcf05159ad9ae1ea5d94adb4e8f6a36539ff143abb57b"
+    },
+    {
+      "path": "engine/firered/test/foundation.test.js",
+      "sha256": "985036dcc32389f520c3ca5ff88f4773e6655347ced537e417f16bd1ad317063"
+    },
+    {
+      "path": "engine/firered/test/frame-pacer.test.js",
+      "sha256": "ff6a2b2ae05b6f78d68e2299733a295f70368161c8a6df87e6b6efd4644d3503"
+    },
+    {
+      "path": "engine/firered/test/generated-action-workflows.test.js",
+      "sha256": "aae351a6ffb32099f23f08bf99d2876f40d8171c2f22877845523b487574d00b"
+    },
+    {
+      "path": "engine/firered/test/gift-hunt.test.js",
+      "sha256": "c42afacae0f1413079cb615331bb4b50713524b3d41fcc610ff140477878b8f7"
+    },
+    {
+      "path": "engine/firered/test/goal-request-foundations.test.js",
+      "sha256": "6ef734e76cc66022ba86dc1ad0d57c161e84f1d3fdb4e4c3fc953584262bb444"
+    },
+    {
+      "path": "engine/firered/test/goal-trainer-name.test.js",
+      "sha256": "34e8004c349ac8729bf0d21849051024f5db603a8c0cc099eb49b13a2b1254e4"
+    },
+    {
+      "path": "engine/firered/test/held-item-partner-evolution.test.js",
+      "sha256": "06b7ab8a4f600f943c99572c57f276f292895947b3d217d3db895f07e943db18"
+    },
+    {
+      "path": "engine/firered/test/held-items-types.test.js",
+      "sha256": "3b829ce06f1db4b5fa3fd8c0cc39dc705838288387f31fa663ae1b0fad451d2a"
+    },
+    {
+      "path": "engine/firered/test/hm-policy.test.js",
+      "sha256": "0455443fa7a5f298adc9aa9d471905261e9f0eb3112ce0002a8f13e5a0f86613"
+    },
+    {
+      "path": "engine/firered/test/hunt-config.test.js",
+      "sha256": "a17f7b3a41d1306792741e287ed83385142bd03bd9ca1d1e1bcd8798afcb07e5"
+    },
+    {
+      "path": "engine/firered/test/hunt-island-travel.test.js",
+      "sha256": "727028c6b80f82b749c07696f11bb8d4aa4153cfc1553595b5e2aeb4ba0097bd"
+    },
+    {
+      "path": "engine/firered/test/hunt-planner.test.js",
+      "sha256": "2f027b3754345ccfe19107fb92c75e0165ffbb99fd9374e16a876acd046f2876"
+    },
+    {
+      "path": "engine/firered/test/hunt-timing.test.js",
+      "sha256": "278bbf9ddaa81f2be9dcb4077e668930fc510461fbd1803720c603acf402e628"
+    },
+    {
+      "path": "engine/firered/test/ineffective-recovery.test.js",
+      "sha256": "7fde17d09ce84e0019a654b05e10df3de55d79a0ad34aca6be36b6bd375b3a50"
+    },
+    {
+      "path": "engine/firered/test/inventory-snapshot.test.js",
+      "sha256": "030d74af57f792e8b5a96c730b71c66f2e58a615be20e87942f68bd22d6c7276"
+    },
+    {
+      "path": "engine/firered/test/knowledge-artifact-identity.test.js",
+      "sha256": "87fd41817eac624a550bc5cb487b18d2aa166d232b3f777184a2c3b30a495696"
+    },
+    {
+      "path": "engine/firered/test/knowledge-pack.test.js",
+      "sha256": "62cc8a53298bc6a33d331692b8d31d3d845784e7650224be12c2295c5e8b20b9"
+    },
+    {
+      "path": "engine/firered/test/league-ball-prize.test.js",
+      "sha256": "733082cb5f6413748636ca933135ef8ebf05dafe422bf0a4ea4d3d79e9f64c91"
+    },
+    {
+      "path": "engine/firered/test/league-exp-share.test.js",
+      "sha256": "20bf9627550f9d95b6322274025e4e80b7fee8c4adae3985778c5efcf83036aa"
+    },
+    {
+      "path": "engine/firered/test/league-heal-finish.test.js",
+      "sha256": "500c6a209242152e6fea2e3a099a4c7a6233fbf3edc7f6557062c25310c9198d"
+    },
+    {
+      "path": "engine/firered/test/league-recovery.test.js",
+      "sha256": "7073f26a9469b8c820ea21521242c4a787727ce96bcddcc0fe4d3ff82d5fb9e8"
+    },
+    {
+      "path": "engine/firered/test/league-tactics.test.js",
+      "sha256": "0de19da9924cc89cc8986d5074555b9198f70e870085f6156d9a35e2bb535be3"
+    },
+    {
+      "path": "engine/firered/test/league-training.test.js",
+      "sha256": "e50565608d3fd75c1acb0351331b13bfa18561db9fca1110c208551c29e962d7"
+    },
+    {
+      "path": "engine/firered/test/limit-cycle.test.js",
+      "sha256": "ea3a7fa5e4b8a92c2ebb372fb62c58a916656a65ce7683932e9c73470715af95"
+    },
+    {
+      "path": "engine/firered/test/live-audio.test.js",
+      "sha256": "f0a5aa5c76b95bd4234fe8c0dc8a7ebb818ee4450f2cb5c409e47b3929d4be2d"
+    },
+    {
+      "path": "engine/firered/test/live-video.test.js",
+      "sha256": "4c36cae0e3759799eaba637ba2416c44f48d95343a1273f3cf12ef3cae3dae94"
+    },
+    {
+      "path": "engine/firered/test/local-evolution-link-recovery.test.js",
+      "sha256": "60d023e5809a9d76ed8f4e393433be02f186f835ff0ecd1e6f722c57a24eff20"
+    },
+    {
+      "path": "engine/firered/test/local-evolution-preparation-guard.test.js",
+      "sha256": "106d79f792a33987003d04db5771438ee21d8e98aa8381297a23101e5289b92b"
+    },
+    {
+      "path": "engine/firered/test/local-evolution-worker.test.js",
+      "sha256": "9e3aabe843979bb59de4860d28ae5750769ca78851deb3c6db025d250e87c576"
+    },
+    {
+      "path": "engine/firered/test/local-evolution.test.js",
+      "sha256": "bc4133c92d238ed7288badfeea71e85f1c3985e1b83fa8255cf9e85ad282f24d"
+    },
+    {
+      "path": "engine/firered/test/major-battle-policy.test.js",
+      "sha256": "0119a2e3acd7fc951966aae143f5ea43fb8dadff2eb69811c77d095d8bc3a40e"
+    },
+    {
+      "path": "engine/firered/test/mart-seed.test.js",
+      "sha256": "a7de86782a1bc458741744483a866f1794e2fe91ebba2c8ef3278078dfaa9be4"
+    },
+    {
+      "path": "engine/firered/test/master-team.test.js",
+      "sha256": "09f1486df03a0ea168d6c08e433c2437a3e26f4e9a6ebb5ed9949151073203e6"
+    },
+    {
+      "path": "engine/firered/test/menu-navigation.test.js",
+      "sha256": "ab6b0d5f0e3160614001960172e6efc50ddfc01dad71b6599ed5bfb4d9db2ae6"
+    },
+    {
+      "path": "engine/firered/test/mgba-session.test.js",
+      "sha256": "de8d75af6b4d3d14eacfca52d8dfd7ee1f8dd4a8d42457126e6800dcbc478b8c"
+    },
+    {
+      "path": "engine/firered/test/moltres-route.test.js",
+      "sha256": "f703a4a095f017efbe392333afd251e0224ee717c8863f74e483560035bdd9af"
+    },
+    {
+      "path": "engine/firered/test/move-understanding.test.js",
+      "sha256": "88b14490c79a951ae3968597effea199525dbd37fc0fcebdc7ed6acd2d4e8b05"
+    },
+    {
+      "path": "engine/firered/test/movement-recovery.test.js",
+      "sha256": "9662e47ba487799bc2a4d5a6fed55d8361048ba7ea1b3af71de0f6fc4865ebeb"
+    },
+    {
+      "path": "engine/firered/test/national-dex-agenda.test.js",
+      "sha256": "30dd46d31d604bab53f975d9c900794dcef2efcb57ab5a8b41b318c3b78f28f2"
+    },
+    {
+      "path": "engine/firered/test/native-acquisition.test.js",
+      "sha256": "44ed3f6316a4584cd5e1f3280c3e604a07f4d937fd70142034c8e93a9ce32b31"
+    },
+    {
+      "path": "engine/firered/test/native-breeding.test.js",
+      "sha256": "68b5a28cdbcdd2405fdd6f8b301d71487b0f6697e31624e2fefae5bc378baa31"
+    },
+    {
+      "path": "engine/firered/test/native-evolution-continuation.test.js",
+      "sha256": "8fbfb8def37a04f17dff69a983f85a9ee7e440d6d7e00b678a727c401664a1af"
+    },
+    {
+      "path": "engine/firered/test/native-local-link.test.js",
+      "sha256": "ecb9e32e804da99c73dd7fb4f41854cc5e7190ad0881a9cfb0a0bf0afb563ae7"
+    },
+    {
+      "path": "engine/firered/test/native-radio.test.js",
+      "sha256": "68240e4d8aab3b6bb502a53332b4b257a2be53ce9afee1bb0227bd754aa04c4a"
+    },
+    {
+      "path": "engine/firered/test/native-save-area.test.js",
+      "sha256": "6065625e9f2603edbc97db0ba82d870c1e6d0f6ff87a502aba98978f42077e33"
+    },
+    {
+      "path": "engine/firered/test/native-save-menu.test.js",
+      "sha256": "f0b4b03fd762051a77e750f25f47a96519e7f8b803a64383b326622444920f1b"
+    },
+    {
+      "path": "engine/firered/test/native-trade-host.test.js",
+      "sha256": "456b100b9f78a947fb847182935796d1862006401cdfc676c0bfa1d0d5fd81f9"
+    },
+    {
+      "path": "engine/firered/test/native-trade-recovery.test.js",
+      "sha256": "94b11327513fa3e474d8813e8dc00639915a67fc4a8d98936443ebad841fa333"
+    },
+    {
+      "path": "engine/firered/test/navigation-cycle.test.js",
+      "sha256": "ed8c85367b69f9e52791d5114b094bbb3471e415318e39f26647e7eb7b3060c7"
+    },
+    {
+      "path": "engine/firered/test/observation-contract.test.js",
+      "sha256": "0ada7296aa8cb469aaa5e89b4f1824216d684aa30ad7b3af1cb2ef139e0be863"
+    },
+    {
+      "path": "engine/firered/test/origins-team.test.js",
+      "sha256": "29ff81b44ab3cf1d38bdd1b77214f664e69db69641b53592c677bf41dc750098"
+    },
+    {
+      "path": "engine/firered/test/owned-trade.test.js",
+      "sha256": "42ba323e50a16e203c7eec63f188afa5fc9b3f818252eae267db8a99e970cf13"
+    },
+    {
+      "path": "engine/firered/test/pc-roster-constraints.test.js",
+      "sha256": "44dae2af0f25d2383a7b3b0d3e488d38bff838a7d57599ab10b50e2da4c3b75a"
+    },
+    {
+      "path": "engine/firered/test/pinned-mgba.test.js",
+      "sha256": "7a7561db138f07c9e295f5bea6a241c8c3fbef6ba19d16e6afa02c41da273072"
+    },
+    {
+      "path": "engine/firered/test/planner-worker.test.js",
+      "sha256": "21cc4d3c1b0a88447f8faebd79c725bb431789875230beacf4781302b25b7b8d"
+    },
+    {
+      "path": "engine/firered/test/player-checkpoint.test.js",
+      "sha256": "30c7dc31141245a210d427108fe31ca2cc53f7b1781f974cd2d3eccae06d24e9"
+    },
+    {
+      "path": "engine/firered/test/player-delegator.test.js",
+      "sha256": "636f6875f04fb040c2b4df02068da7eb0ba71976bc74f62110137df447df0aaa"
+    },
+    {
+      "path": "engine/firered/test/player-diagnostics.test.js",
+      "sha256": "99eba9b9447bab4f98393eb0b6b03af36a04fb3e13591b04cda65a25afb6f937"
+    },
+    {
+      "path": "engine/firered/test/player-service.test.js",
+      "sha256": "d3938bb314f3b1b2af44d90db7f841f23c03e084ab0fd8d0d13059d9212587b3"
+    },
+    {
+      "path": "engine/firered/test/player-status.test.js",
+      "sha256": "52035e5ca3e770d3e5ff8798f7e08bdbe9718eeb8cf404ee5f6aad330db8bee7"
+    },
+    {
+      "path": "engine/firered/test/player-task.test.js",
+      "sha256": "07925065c0a69eba8e494716f1dd6e81edaa88443ea7ad1586b2f35d2815b2e2"
+    },
+    {
+      "path": "engine/firered/test/player-workflow.test.js",
+      "sha256": "a5cb1fb8f75cb35d30018b0bbfcbd10ae1bafcb7d930a0e942bca880b32c5a82"
+    },
+    {
+      "path": "engine/firered/test/pokemon-inventory.test.js",
+      "sha256": "f25fceaf4c36d77ac9f6a8aceb00845ede80b1e2e2323903e518d08cfbf00269"
+    },
+    {
+      "path": "engine/firered/test/pokemon-record.test.js",
+      "sha256": "725d156a576d2fa2c45025107f11bd531bd6d0d662da1a2a041b4bd55a539f2e"
+    },
+    {
+      "path": "engine/firered/test/postgame-agenda.test.js",
+      "sha256": "2009c3e2cbd27790d5c73f6d86662ed51a26b7968b9eeb5dedb777cfc518f1ff"
+    },
+    {
+      "path": "engine/firered/test/postgame-care-interruption.test.js",
+      "sha256": "148385b8b1bf91d6cc5b7463b1df3b0881dd246966662a4b3c95c2d4f2e24fbf"
+    },
+    {
+      "path": "engine/firered/test/postgame-collection-extras.test.js",
+      "sha256": "2cb070d40fe10b5f6a9da1f491ad157f4e0b58922b3bd2e9bf21414245ce2a61"
+    },
+    {
+      "path": "engine/firered/test/postgame-combat-roster.test.js",
+      "sha256": "4ae8d9e89f67db4e2ccc66991078cbd169597ba2dff26fbc186cb6797e228bb0"
+    },
+    {
+      "path": "engine/firered/test/postgame-completion.test.js",
+      "sha256": "22d256f89c58afdaa21d4016043ddb14c21c5532bae3bd0c6175d560ac6f70f2"
+    },
+    {
+      "path": "engine/firered/test/postgame-continuation.test.js",
+      "sha256": "952ab4f2be21ffb584d95b967a27d58bf42224d0ec44f510886d358b73ccdbab"
+    },
+    {
+      "path": "engine/firered/test/postgame-egg-budget.test.js",
+      "sha256": "7910794e13fb5f49447f965da16b2e534e37c938984b515315207692a2fc2fa0"
+    },
+    {
+      "path": "engine/firered/test/postgame-egg-wait-watchdog.test.js",
+      "sha256": "c432a91f893f1bf57532f0d617eba026fbdfa5996ae708db4044f856bb60e8e3"
+    },
+    {
+      "path": "engine/firered/test/postgame-fame-evidence.test.js",
+      "sha256": "a3e7f29464e9eb507bdcc4010febc4db8e5985b924fcb56dca0d71a527239f15"
+    },
+    {
+      "path": "engine/firered/test/postgame-fame-roster.test.js",
+      "sha256": "77bc945bd2492fb521b2d261ae95fe55df3abc8265dc981dfa64adef6b825996"
+    },
+    {
+      "path": "engine/firered/test/postgame-maintenance-capture.test.js",
+      "sha256": "91f47e3e4ca0c67f438bb4c9b2fee04003ab9f65d88935358042bd1de212f1b9"
+    },
+    {
+      "path": "engine/firered/test/postgame-milestone-save.test.js",
+      "sha256": "806199e1ea911a10cff4b4fe006abc4f896796ebbbcaeeca97b46ccfd096d8ce"
+    },
+    {
+      "path": "engine/firered/test/postgame-records.test.js",
+      "sha256": "71abd07757761992c709e4b9bb436f6a18533cb1ff753bd63db97b52dd7d6617"
+    },
+    {
+      "path": "engine/firered/test/postgame-selection.test.js",
+      "sha256": "9da3bcd22476e013292f104f3706e0278338bf6d5c514df44a6cd85e581e10cc"
+    },
+    {
+      "path": "engine/firered/test/postgame-shopping-recovery.test.js",
+      "sha256": "da9a9be8f248cb1b2de9cada7009a2589c1d5b7541c686e0a95f7239d554280c"
+    },
+    {
+      "path": "engine/firered/test/postgame-slope-transition.test.js",
+      "sha256": "7fda8a2a2b73d6e36010d2fe67b1ce980a21bcaf7e1e91e386cda9e1f0ceecf5"
+    },
+    {
+      "path": "engine/firered/test/postgame-static.test.js",
+      "sha256": "7a52a96a757577d4985b163ee0215123f5de95246168189d8281f88f4f9938d6"
+    },
+    {
+      "path": "engine/firered/test/postgame-supplies.test.js",
+      "sha256": "dd072d44d01561a7c67be3733b1b717e23962ca8dec7e3f6416fe25ecff8d15f"
+    },
+    {
+      "path": "engine/firered/test/postgame-supply-replan.test.js",
+      "sha256": "bb6c2b12199f576918e82d37447f633903ee10b6e146a68c9d655ce360d55ad9"
+    },
+    {
+      "path": "engine/firered/test/postgame-watchdog.test.js",
+      "sha256": "d048468745bd4dc69acd1a801d4f54d62c16f371f415dff20d4c2d06e8462f92"
+    },
+    {
+      "path": "engine/firered/test/postgame-workflows.test.js",
+      "sha256": "2bc814180e25cfd84a33361cc53313c8556352674774cff8b5ab6ff8284fc0df"
+    },
+    {
+      "path": "engine/firered/test/prepare-mart-seed-command.test.js",
+      "sha256": "f7173f97d2a807e2661dbdfb480e791d135be02075ebb6be13632ab10e0c52d9"
+    },
+    {
+      "path": "engine/firered/test/prepare-scenario-seed-command.test.js",
+      "sha256": "9f9bbb2008f8b76db23ea535015338008990859818fa176775f2c56711fea5b0"
+    },
+    {
+      "path": "engine/firered/test/protected-capture-plan.test.js",
+      "sha256": "d040d0aef9507c6d5de161192afb2ee9b059969d2a6875a23c8ec8f49bd44231"
+    },
+    {
+      "path": "engine/firered/test/protected-diagnostics.test.js",
+      "sha256": "d98e03876d47d59a8752bc18f92eaa2b3a261ebf77b7d5eb7a5f08691481bc6c"
+    },
+    {
+      "path": "engine/firered/test/qmm-advisors.test.js",
+      "sha256": "2d4de4a7cc43b9e8fc4c4ca23fa8f1686cde874e379e5e9b726c1200afe97c00"
+    },
+    {
+      "path": "engine/firered/test/qmm-postgame.test.js",
+      "sha256": "ab9d9c4f18ec6bc9c4667824faafbf9e2f80d113430c63d5c0cfdbee36f6bd0e"
+    },
+    {
+      "path": "engine/firered/test/qmm-supply.test.js",
+      "sha256": "dec6239d24cc0c899918be484527840154c62843e245a03c8c69e79cf9b8f52e"
+    },
+    {
+      "path": "engine/firered/test/qualify-command.test.js",
+      "sha256": "25162ab1a27cdd61534da97779f60dec1330560dd9f360adecae8cd63a0a0ccf"
+    },
+    {
+      "path": "engine/firered/test/qualify-scenario-command.test.js",
+      "sha256": "e4137b80df6de9db2771123123998c7963249a2405439c123d67504305d2c7d8"
+    },
+    {
+      "path": "engine/firered/test/random-adventure.test.js",
+      "sha256": "6bedd47466018f0d0deac26f8c0fa819864bc24accdc2770e0cedfd883d9abed"
+    },
+    {
+      "path": "engine/firered/test/region-map.test.js",
+      "sha256": "72dda3e5d585c1063bb7db7618d24f11b0b33ae3bbb574022357e8282d0a6257"
+    },
+    {
+      "path": "engine/firered/test/released-hunt-resume.test.js",
+      "sha256": "a988d58bb7cd46b8b51e4dfa7554acd7cad517a95f680d50cd0c0ef54e97e498"
+    },
+    {
+      "path": "engine/firered/test/research-bundle.test.js",
+      "sha256": "498919bed53d2971bf5cb5c1a09568841a9cf0dac653eb5ef70d95b20118496e"
+    },
+    {
+      "path": "engine/firered/test/rng-experiment-command.test.js",
+      "sha256": "0aa1a901ce0bf48b84806b913dc31896070ec58f7f870822bebf4937a104fdc3"
+    },
+    {
+      "path": "engine/firered/test/rng-input-methods.test.js",
+      "sha256": "2e7a3455edc4c6fb5adb5c881d5936fc0b97a202d1e098c7571ff1bb712d6523"
+    },
+    {
+      "path": "engine/firered/test/rng-method-planner.test.js",
+      "sha256": "9c558e0bb7aa9c08fdb6e8a9b1b43e889aea6cd803b084d9275ec6c156ceff4e"
+    },
+    {
+      "path": "engine/firered/test/rng-plan-execution.test.js",
+      "sha256": "31ff70aeb06796c0541b82558872ac7157c7fc7b2921a26e3553e4ed7a483053"
+    },
+    {
+      "path": "engine/firered/test/rng-prediction-monitor.test.js",
+      "sha256": "0c02a55264dd33d4166bd9e08c81fc554c517d55b1a51abe0ecbd2bebb2a71d9"
+    },
+    {
+      "path": "engine/firered/test/rng-replay-experiment.test.js",
+      "sha256": "bf2e64addf58b025dec5fb516f9dfbbb12e4d3bb317031c2e199f0a31321b0bd"
+    },
+    {
+      "path": "engine/firered/test/rng-timing-calibration.test.js",
+      "sha256": "97d055168df4c5a2fd78f85a92f4a01fb6b357c892c8dfe2be3899bf81173198"
+    },
+    {
+      "path": "engine/firered/test/rng-traits.test.js",
+      "sha256": "fc8e5d4454381f27da7a87fd44b878aaa14fb6430f264b3ca3ad7a9b3d03e93a"
+    },
+    {
+      "path": "engine/firered/test/roamer-mission.test.js",
+      "sha256": "0dd6ba9fcacc50435ccbbea99eb5b7767ab605c095d89954667ca3a0dba49ca1"
+    },
+    {
+      "path": "engine/firered/test/roster-generator.test.js",
+      "sha256": "034cf8ec3df74ad99cf0449326be05c078d0e339bd21f24cd7c81d6b19a5b67e"
+    },
+    {
+      "path": "engine/firered/test/roster-selection.test.js",
+      "sha256": "ee5783d6bc7bca4716cb2e452d5fae937472ab666ca53a069938f334f5839cb9"
+    },
+    {
+      "path": "engine/firered/test/route23-badge-gates.test.js",
+      "sha256": "aaedd7d3ca89acfe54b172dff644a6316923c589dbb2e4f55eba736ecddc5c6f"
+    },
+    {
+      "path": "engine/firered/test/run-player-command.test.js",
+      "sha256": "0774efc155c98a40028ec9cb6b403a0a8f6008af9ec737b583e11fd75119c605"
+    },
+    {
+      "path": "engine/firered/test/run-profile.test.js",
+      "sha256": "63c195bef2c3fdd760f3aaa3d3679e02933b3a71c85ee838e34ca128a91f1979"
+    },
+    {
+      "path": "engine/firered/test/run-timer.test.js",
+      "sha256": "293d8e5a1dfaa3eef50ed8506d6299846a980b7c97811cf8991287b9120036f4"
+    },
+    {
+      "path": "engine/firered/test/runtime-extractor.test.js",
+      "sha256": "a7326848b92b5cc920c1cce4473270aa1276ecf5710fb1b4afad83dfaaab741e"
+    },
+    {
+      "path": "engine/firered/test/safari-capture-plan.test.js",
+      "sha256": "6de9ef94f66b19c61c6588ad961bd4dd551dad7777680312f66121d48bc55a14"
+    },
+    {
+      "path": "engine/firered/test/safari-dex-capture.test.js",
+      "sha256": "e1aa6220d0fa84d73ceb8c77bc79028a89d0fa0545653870d88a9f1dc639f19e"
+    },
+    {
+      "path": "engine/firered/test/safari-hunt.test.js",
+      "sha256": "693b0525dd5434734dc3f0d0d666842d418fb1d3a230bc6c0c401104ded0ec0c"
+    },
+    {
+      "path": "engine/firered/test/save-intake.test.js",
+      "sha256": "afc65742607c7152011b397bbf0d3324da302cfdaad67ee846bd08c143640864"
+    },
+    {
+      "path": "engine/firered/test/save-preview.test.js",
+      "sha256": "b96d45ef331cd0dbd668b2396e00bacea6ca27fa2a185ec9a73dd17070f07047"
+    },
+    {
+      "path": "engine/firered/test/save-profiles.test.js",
+      "sha256": "5a11fd1697a3fc38ad292e5d02c9295ea646e6e75d6ab8ef6082c47126cfc9c1"
+    },
+    {
+      "path": "engine/firered/test/scenario-development.test.js",
+      "sha256": "8529786394d2a9a66422940a01c2bddcb06f599c62759d3b0502afafd30f38f6"
+    },
+    {
+      "path": "engine/firered/test/scenario-harness.test.js",
+      "sha256": "387deb86ef3f3b7d3cb3bde4a974d20df2502e53608c7df695377a9fda14b6b1"
+    },
+    {
+      "path": "engine/firered/test/scripted-entrance.test.js",
+      "sha256": "b03a73d67e8af96628793419808a67d57d36e918684c680d17f98982cabc01ea"
+    },
+    {
+      "path": "engine/firered/test/session-speed.test.js",
+      "sha256": "e72ab02c948a953f776f7ba070a1f26275491d2dd44b8010ad1e721b2195440b"
+    },
+    {
+      "path": "engine/firered/test/shiny-collection.test.js",
+      "sha256": "f77881834bac8856332cd9dd242df5a09c2de12b1960613311078d2935aa11ec"
+    },
+    {
+      "path": "engine/firered/test/snapshot-roundtrip.test.js",
+      "sha256": "3d391688299f39adc771e9120fad0101e765961b57dd534d2c26e9726b603593"
+    },
+    {
+      "path": "engine/firered/test/snorlax-mission.test.js",
+      "sha256": "4c30fbeff53592b2d681a20b44fb71c5729992c6842e4f3a4120616d2bb06f0f"
+    },
+    {
+      "path": "engine/firered/test/static-rng.test.js",
+      "sha256": "13c7be24b097aac6471cf2c7dff51e5e354e4a3c7b2e90f8d2091d28a401634a"
+    },
+    {
+      "path": "engine/firered/test/story-checkpoints.test.js",
+      "sha256": "dd2761530ff7e10012bcee12effbcf083574c2fff9035c091e93b2837dc34ba7"
+    },
+    {
+      "path": "engine/firered/test/story-extractor.test.js",
+      "sha256": "70fdc6a1c1a01837498e0adf24d04d99f533d021c55e58484e37b760d555b2f6"
+    },
+    {
+      "path": "engine/firered/test/suite-continuation.test.js",
+      "sha256": "7dde8876ea8c9e57c7c768801b3cfdcf356788903ddd123ca5d2d888b6208d87"
+    },
+    {
+      "path": "engine/firered/test/suite-game-progress.test.js",
+      "sha256": "9310367a621701572337a0d4b0cb9ec8788811934d9bfffc3a0763d60083246d"
+    },
+    {
+      "path": "engine/firered/test/suite-mission.test.js",
+      "sha256": "056a6ad0f00b84cff27fe0efd546476f1a2eb88242109e80b8eb98eee56f6698"
+    },
+    {
+      "path": "engine/firered/test/suite-owner.test.js",
+      "sha256": "3fc9c7372255a8ec54e947ded4ea5cac57c3a2b1fa4043bfbeaa31cc30f6bde0"
+    },
+    {
+      "path": "engine/firered/test/suite-recovery.test.js",
+      "sha256": "5b29cc1e57a4b081b89e48eb838a2113164a41b83acf928f969be7b858feaf7a"
+    },
+    {
+      "path": "engine/firered/test/suite-save-vault.test.js",
+      "sha256": "9d34b58e277cab5d84085a7020e8faee5605082791dd37396da8eccdfaa8cb60"
+    },
+    {
+      "path": "engine/firered/test/surf-acquisition-prerequisites.test.js",
+      "sha256": "065096217ae9db597043c39d638159a2de88cbdfe329dc7ed4770021fa2a79f7"
+    },
+    {
+      "path": "engine/firered/test/team-trade-evolution.test.js",
+      "sha256": "a722fadf5bc1acfa4f8b92e4f587f8076cfbcf749db092dfac0ce5883a6b80e9"
+    },
+    {
+      "path": "engine/firered/test/tower-recovery-ownership.test.js",
+      "sha256": "9a29b77ab061640f5069c3d944c4db601703b438a1fa6e1112d2eacf687591e5"
+    },
+    {
+      "path": "engine/firered/test/trade-preparation.test.js",
+      "sha256": "fa0d3ad71543313506de17ff6ddc381ffce0629dfd27ef9703167977c0ea066b"
+    },
+    {
+      "path": "engine/firered/test/trainer-economics.test.js",
+      "sha256": "2f2742cf86e56140e0f8fa379438fe6a579c6e9d54dc00ebb974b81835da72be"
+    },
+    {
+      "path": "engine/firered/test/training-experiment.test.js",
+      "sha256": "61b6bce0433095b8f58e5645a47cd4280752a29aa3cf2fb3f49f4feb09107409"
+    },
+    {
+      "path": "engine/firered/test/training-finisher.test.js",
+      "sha256": "95afcf6e5a81ab7281c0b967f0562513e4de857376bef55fdd053e236549680f"
+    },
+    {
+      "path": "engine/firered/test/training-quality.test.js",
+      "sha256": "964293df666407275f6a95e47a6da7ca94eb111835f6de6bc38d28114e132cfc"
+    },
+    {
+      "path": "engine/firered/test/transaction-recovery.test.js",
+      "sha256": "49f8a8fd7c66b5379ed812a0871eba1e422c8f15ab51eb0a8b7e485e547bcd3f"
+    },
+    {
+      "path": "engine/firered/test/transform-policy.test.js",
+      "sha256": "0810f5f6abdd86af371f526b19740347e2a9227363637b12d8ff8d963305bc0f"
+    },
+    {
+      "path": "engine/firered/test/update-boundary.test.js",
+      "sha256": "3bb742f2ce2ff6311cdbe5e72a11c901a4f4e6fb170d27ae2c1fae267bc0eca7"
+    },
+    {
+      "path": "engine/firered/test/victory-road-first-floor-transit.test.js",
+      "sha256": "1500bb2bdd3ab9ac467df5510d2be3e23b32fd22850fecfd3d246ed3b43085c9"
+    },
+    {
+      "path": "engine/firered/test/victory-road-return.test.js",
+      "sha256": "4684ac1f76686c82d4db52e1067a2b323a1abc359fce3fccebb41ce904da8a5c"
+    },
+    {
+      "path": "engine/firered/test/wild-hunt.test.js",
+      "sha256": "5669ee6ffd4be8694896fcedb20c168d06f809e03b1d012cfc78fb5e4f30d644"
+    },
+    {
+      "path": "engine/firered/test/world-extractor.test.js",
+      "sha256": "275c558b104d47bc7f8508100913605faaadd7d68eb7d6988cb6b7b8ffaa4980"
+    },
+    {
+      "path": "engine/shared/games/crystal/cli/dry-run.mjs",
+      "sha256": "d4ef813186ae63aa94a2bf40b7af34dca68e8c372cad45d5f971910f8a831ccb"
+    },
+    {
+      "path": "engine/shared/games/crystal/cli/inspect-bundle.mjs",
+      "sha256": "293a4ca4bc4d9a8b4489795346a9ccb4dd0c4d7351c6bffc0b8c1f85d6b5f367"
+    },
+    {
+      "path": "engine/shared/games/crystal/cli/run-player-service.mjs",
+      "sha256": "2ac5c3da459a0975bd162d30f07d71ac1b4d92d09d65a8b07b85e5b732c846b6"
+    },
+    {
+      "path": "engine/shared/games/crystal/cli/run-player.mjs",
+      "sha256": "a8d47dde5b889a652a170440cd077c02301b73a859ca7fbced18e8d498e7c39d"
+    },
+    {
+      "path": "engine/shared/games/crystal/cli/score-teams.mjs",
+      "sha256": "272bf73b03a9b6ac00dc72072046f8bd88f1b277facecf8cb28bc2eb0d11369c"
+    },
+    {
+      "path": "engine/shared/games/crystal/index.mjs",
+      "sha256": "1728f0b78969b970fbfd9a930b5294afb3aa5f884ac2b68cc37581bd30c4d305"
+    },
+    {
+      "path": "engine/shared/games/crystal/knowledge.mjs",
+      "sha256": "2385bdc6766a975ed284f5c420dd8c5141b9d756b1013f912c2daeb944cf05c6"
+    },
+    {
+      "path": "engine/shared/games/crystal/observer.mjs",
+      "sha256": "40269110ddfc41469ff026451af919a9b50b1b6b90e9a1569cda37c5747bf0f7"
+    },
+    {
+      "path": "engine/shared/games/crystal/player/battle.mjs",
+      "sha256": "7131380891746f3c4a38a7703b353873ea018c5cce5f175bef6c4ac05b287e4c"
+    },
+    {
+      "path": "engine/shared/games/crystal/player/campaign.mjs",
+      "sha256": "0279d9818799e650a1864797ec63d421ce679836ea7c25fbca9dd01a7e320943"
+    },
+    {
+      "path": "engine/shared/games/crystal/player/checkpoint.mjs",
+      "sha256": "e43baa79d875225a6a70dc5867487e22ea27184160cd5c24cb45e63cbb1e56b0"
+    },
+    {
+      "path": "engine/shared/games/crystal/player/contracts.mjs",
+      "sha256": "a11c342c8279d8286cd8d5415b58517cbdb02872ef9664334c05b4fb05dfde9b"
+    },
+    {
+      "path": "engine/shared/games/crystal/player/delegator.mjs",
+      "sha256": "d888bad826da03c8c7d268a3e077939deede8d599c49a629a33ca984e4fd1229"
+    },
+    {
+      "path": "engine/shared/games/crystal/player/diagnostics.mjs",
+      "sha256": "3be410d16861d1755f51225b4ac4cd172635f64081034ca51c31664f94b70d18"
+    },
+    {
+      "path": "engine/shared/games/crystal/player/dialog.mjs",
+      "sha256": "c363d60c26dd477d16df10ff13ae151256ee8ff88f47b6b574dfaf0e9b240dfd"
+    },
+    {
+      "path": "engine/shared/games/crystal/player/field.mjs",
+      "sha256": "ec99f5e99ffaa7df934be1d9d8ba60a6f439109c34276087dfd2c39c9711fc54"
+    },
+    {
+      "path": "engine/shared/games/crystal/player/journal.mjs",
+      "sha256": "7be69dd5efd12bceb619b639b356183271b33160a6dcd4faad31ca02562b6c50"
+    },
+    {
+      "path": "engine/shared/games/crystal/player/locomotion.mjs",
+      "sha256": "ec597e752dda942f2fc6f13ce64ebf5e14d22deb80e8ad9f370a3e4fb8a85b85"
+    },
+    {
+      "path": "engine/shared/games/crystal/player/navigation.mjs",
+      "sha256": "3a99e55d9b971e08f6fc3b1d01b0710c3628ccf31de2a0df0f692af42c12f97a"
+    },
+    {
+      "path": "engine/shared/games/crystal/player/options.mjs",
+      "sha256": "8ba5699aec62743d3bc77bce3c9aead0f381db703051022534eac2bfdc579b51"
+    },
+    {
+      "path": "engine/shared/games/crystal/player/runtime.mjs",
+      "sha256": "16547fa9c53bcae9df522a699246a20328adba7572cafd8a8fe900d4bf77fd1a"
+    },
+    {
+      "path": "engine/shared/games/crystal/player/status.mjs",
+      "sha256": "b7691fc68f367192a4637a0666a85ea8657238c35161f3744e4d5213a9ba603d"
+    },
+    {
+      "path": "engine/shared/games/crystal/player/tactics.mjs",
+      "sha256": "11664f50794a8bd26ee50252a6b349316933791e35299eb4efef1dc5962b4e4c"
+    },
+    {
+      "path": "engine/shared/games/crystal/player/team-score.mjs",
+      "sha256": "fa2e2b7918f78d465317484026cd7ad19ac6fe986f9e00af78450135c3d2fb3e"
+    },
+    {
+      "path": "engine/shared/games/crystal/player/underground.mjs",
+      "sha256": "6e6460d45d8fd084f60ba8d4d102d20cbd24cc895e5e7978c7b27f8210c20b4d"
+    },
+    {
+      "path": "engine/shared/games/crystal/world/grid.mjs",
+      "sha256": "ed4b6826c3da6fd00048260757782a3d1a3885712a38fdf45e385c4f7a3837db"
+    },
+    {
+      "path": "engine/shared/games/crystal/world/source.mjs",
+      "sha256": "1a8929c0420f4b0fdfab9178d0ab407b932051f4683c656a3360b4814e482364"
+    },
+    {
+      "path": "engine/shared/games/emerald/addresses.mjs",
+      "sha256": "d3a72c364761d07be4ceace9717cb892932a952aacfeec2ff8fe7b4e0b9c1859"
+    },
+    {
+      "path": "engine/shared/games/emerald/battle.mjs",
+      "sha256": "a82a6e265da7e28f83b82ce048b23f2cc3959f1e9ca1600d4d40ddfe81814e99"
+    },
+    {
+      "path": "engine/shared/games/emerald/beauty-preparation.mjs",
+      "sha256": "30ca9d21da908648c7bad926cb8dccb379d994333d8d1ba214b999ca9ab01188"
+    },
+    {
+      "path": "engine/shared/games/emerald/beauty.mjs",
+      "sha256": "ccbce8429aacffa2f07ce6df7779c743cf581d36e369381a8603d71b2cc72211"
+    },
+    {
+      "path": "engine/shared/games/emerald/berry-blender.mjs",
+      "sha256": "f06a21e5951b3fa22ce545367eb0531f3f1c728fb97ea6aa691c66929d71d266"
+    },
+    {
+      "path": "engine/shared/games/emerald/catalog.mjs",
+      "sha256": "205c06e8f256729dea2949643b4ff85bb4a9a2fd2bafc74e49e0a12430120abc"
+    },
+    {
+      "path": "engine/shared/games/emerald/cli/run-player-service.mjs",
+      "sha256": "40274ac6b80271acdf9454e211270a90bcc2125d8b7e6333ffe584577d7e1fdc"
+    },
+    {
+      "path": "engine/shared/games/emerald/cli/run-player.mjs",
+      "sha256": "106d1828e77ef9ce08d37b2073fcbd0088a23d30e3a44b25e4933798bc6befec"
+    },
+    {
+      "path": "engine/shared/games/emerald/constants.mjs",
+      "sha256": "f0fac8e32abf0f58afa3c342936bdcafb84f00d2b06648474e40f2745d0c8748"
+    },
+    {
+      "path": "engine/shared/games/emerald/feebas.mjs",
+      "sha256": "dcac50eeec8b1e6268d9ab48d91126352e2a21b2ebb0f7e69a5b5b0e975af38a"
+    },
+    {
+      "path": "engine/shared/games/emerald/ice-puzzle.mjs",
+      "sha256": "5f4180aefef5a07e52c2c91371a3170e72e2f70f4676f3c30b0e419be9096fc5"
+    },
+    {
+      "path": "engine/shared/games/emerald/league.mjs",
+      "sha256": "31e061d20e4b8037295ffbb5e927eee3a315aa722a65b404350b345a01dae025"
+    },
+    {
+      "path": "engine/shared/games/emerald/navigation.mjs",
+      "sha256": "a01ffe2a4f87b655423a5dadd7ac30d85369c9335d49c29b98737f954f49b5ba"
+    },
+    {
+      "path": "engine/shared/games/emerald/observation.mjs",
+      "sha256": "8afb00d0a08bfea4e7c095c4ae36e492fe552def14f434f67a6d5f91b081c9f0"
+    },
+    {
+      "path": "engine/shared/games/emerald/observer.mjs",
+      "sha256": "09f337cd29443c8ff961c9261b2bcc0f3c3f2eb602c68fbcedf1740b33a90b02"
+    },
+    {
+      "path": "engine/shared/games/emerald/opening-diagnostics.mjs",
+      "sha256": "089fd714a839e69efcf33505ee704146ed467b02451316a6fa5ab041ec1007a3"
+    },
+    {
+      "path": "engine/shared/games/emerald/opening.mjs",
+      "sha256": "e3beee5161a7fb358217aadc9f12c524e3d64795d43d079a57e2e466d1468cd3"
+    },
+    {
+      "path": "engine/shared/games/emerald/player/beauty-evolution.mjs",
+      "sha256": "a590b9547660df6c8ce8636f26c4f6021a0c6823ab86a79d22341408fe469fd5"
+    },
+    {
+      "path": "engine/shared/games/emerald/player/checkpoint.mjs",
+      "sha256": "d242ea10642a2a14b881f952e9118b5d48ec170a9cd5032436256a287cd6f695"
+    },
+    {
+      "path": "engine/shared/games/emerald/player/controller.mjs",
+      "sha256": "c2e4c72c237856ee44bcc40fab8096f8cdec086d3a453861a1006fdc77ba2dae"
+    },
+    {
+      "path": "engine/shared/games/emerald/player/delegator.mjs",
+      "sha256": "b27e70fa411fa37d07646873f27fc24e6ae38da8c25124440cf5e85be553aadd"
+    },
+    {
+      "path": "engine/shared/games/emerald/player/field-travel.mjs",
+      "sha256": "bc2cb14e3beda05a182c3c3eb5d0b8f7c95c9415f156eff9adec750fe49982ad"
+    },
+    {
+      "path": "engine/shared/games/emerald/player/journal.mjs",
+      "sha256": "f5f7f1572835ab114cc1a19127e05bdeabed7109109120689adb35e203d65a34"
+    },
+    {
+      "path": "engine/shared/games/emerald/player/native-continue.mjs",
+      "sha256": "c1920edc8ca39f343b62bbd4498325d67e9525103f0ecbe032c4c24fa8441700"
+    },
+    {
+      "path": "engine/shared/games/emerald/player/native-items.mjs",
+      "sha256": "89df51449acc4c1cecf6b8022faff7494daff338cc87c050f36a9255eaae6cf5"
+    },
+    {
+      "path": "engine/shared/games/emerald/player/native-save.mjs",
+      "sha256": "75bf934e7282d6dad13374bb2842c640ea554e37f967340879303092c9af5723"
+    },
+    {
+      "path": "engine/shared/games/emerald/player/navigation-recovery.mjs",
+      "sha256": "514fb990f779af06b1a2169af0f51ef04c2fea713117c6e989b5818a428aa77e"
+    },
+    {
+      "path": "engine/shared/games/emerald/player/party-selection.mjs",
+      "sha256": "269cc3d03583f1f74fc33440240dde9f915ddd5955f655a0d7765bea104367e5"
+    },
+    {
+      "path": "engine/shared/games/emerald/player/run-profile.mjs",
+      "sha256": "a7637e4668dcb261ce9c5eb2df64492b6260d44e8994ce6bd4a2589f2961df8f"
+    },
+    {
+      "path": "engine/shared/games/emerald/player/runtime.mjs",
+      "sha256": "a9ad829cd0fd04929906d770c693f2c0d020c0640de93ebf9198c53366d16b63"
+    },
+    {
+      "path": "engine/shared/games/emerald/player/status.mjs",
+      "sha256": "ac2df36bd3a79205080cfca8b6732f889dcd917b0dad64e35d0ee944049c48b2"
+    },
+    {
+      "path": "engine/shared/games/emerald/player/time-evolution.mjs",
+      "sha256": "de8c381f70dd32a63f45ed14a17ba160d5683be21095dcedaf9faccaaa7466ee"
+    },
+    {
+      "path": "engine/shared/games/emerald/rom-tables.mjs",
+      "sha256": "93a0beff9d44698fdcd2cc6946dd3ddcd76c61f695b8ec4cb95500acdb69196e"
+    },
+    {
+      "path": "engine/shared/games/emerald/rotating-gates.mjs",
+      "sha256": "c7638ff0aa5d883414eb093f959a5109c8341fe83057978d1a767f5bb7ed2c29"
+    },
+    {
+      "path": "engine/shared/games/emerald/rotating-tiles.mjs",
+      "sha256": "d8585664a78745c6e7da1c34a98bb7393dd2be0fd1a92d5c04784d521b38a8f4"
+    },
+    {
+      "path": "engine/shared/games/emerald/routing-constraints.mjs",
+      "sha256": "49a9cfa243c66f6fc3eebcc828d4e5216727120a6b2059b716eb2c1f4b88fcf6"
+    },
+    {
+      "path": "engine/shared/games/emerald/runtime-symbols.mjs",
+      "sha256": "0ecaf727094d2d66158798b10c327b284a1f992887fcb87b2005d9ce833f6bef"
+    },
+    {
+      "path": "engine/shared/games/emerald/story.mjs",
+      "sha256": "7ce2fc74b969f1272c98eea8b13d71cd0adb615c44194c10149d1fa2f93c3faa"
+    },
+    {
+      "path": "engine/shared/games/emerald/strength.mjs",
+      "sha256": "7fc6dc612d1175052a307cb5b987d567e69be25013c72f5dd9986ff19c1b9774"
+    },
+    {
+      "path": "engine/shared/games/emerald/text.mjs",
+      "sha256": "64652207fc5dd8789c9754eaa2cc01349557eb9a4ecd960217f27cc5444fac98"
+    },
+    {
+      "path": "engine/shared/games/emerald/time-evolution.mjs",
+      "sha256": "6ee1dc4c58f215738f6619b1e4c6fa00b3d4998ea4411959b7bc9d5ac0241408"
+    },
+    {
+      "path": "engine/shared/games/emerald/world.mjs",
+      "sha256": "000b29f05b68b131dbd9d396333c8b9efb8db1d3cd6297ba6476244d6e501658"
+    },
+    {
+      "path": "engine/shared/package.json",
+      "sha256": "6eff61a76760546e77bae194007f2c4a6c22ab0e2eb7f9a3295410bcc800c671"
+    },
+    {
+      "path": "engine/shared/shared/adapter-resources.mjs",
+      "sha256": "33cd091145eb2d65f10ef96e5e7e97dd2207352021d6b902f97de0137283b5e8"
+    },
+    {
+      "path": "engine/shared/shared/cartridge.js",
+      "sha256": "b77ec1bec5e7abc4fcc2c9988ca3d1cc1a0446b3109eb9237aae6d64be207a6f"
+    },
+    {
+      "path": "engine/shared/shared/decision-log.js",
+      "sha256": "31a49462e9f7209fb00d5a321925a45c017be3a079d2db743aadef8af33239ee"
+    },
+    {
+      "path": "engine/shared/shared/emulation-runner.js",
+      "sha256": "e5121513d1270ee025fc85abf351e0dfc571481fdda6428bc2522838060582bd"
+    },
+    {
+      "path": "engine/shared/shared/fair-choice.js",
+      "sha256": "9c3caaa225b8194dfdd9972bf735d5b2e988377bf0606e0f07ea6307be54c709"
+    },
+    {
+      "path": "engine/shared/shared/live-feed.js",
+      "sha256": "3612d2314e195d2d3ad86b57f1e39c88b42b939f5c597c9b1344f6a0cd71d413"
+    },
+    {
+      "path": "engine/shared/shared/mgba-session.js",
+      "sha256": "5a35024441cd87019bd202ad9474c208784095e79fc2609b8ef691d1e8388799"
+    },
+    {
+      "path": "engine/shared/shared/pinned-mgba.js",
+      "sha256": "e8d792ff5e30a15824811b2608e8968b2650590c4662816a14588dae77045685"
+    },
+    {
+      "path": "engine/shared/shared/symbols.js",
+      "sha256": "6097eec0d1992bbc299fbccc6ef0a8090a54d4f8762c174c7b514e84a797e254"
+    },
+    {
+      "path": "engine/shared/shared/training-policy.js",
+      "sha256": "6849d8ae3eb03329ad53d7f0976b3aa10525893fddeac70792b669c0b8fb5ae3"
+    },
+    {
+      "path": "licenses/POKEAPI-BSD-3-CLAUSE.txt",
+      "sha256": "1c04595dc662981c20956ae4251dfa7b62b475c345eddf98bc9b904cb2373f2c"
+    },
+    {
+      "path": "licenses/Sparkle-LICENSE",
+      "sha256": "389a4e4e9a32f059775b13a06e25a591445ba229d2838d26dd3e7c0c45127cfe"
+    },
+    {
+      "path": "licenses/cartridge-models/README.md",
+      "sha256": "dc159d8f83f9cb9871a6485e71bcfa5a66a4eac3bffc6b809cbfe5a00ac16e9b"
+    },
+    {
+      "path": "licenses/cartridge-models/ds-source-notice.txt",
+      "sha256": "163875ff6218eea44f6eabc5c17bb1a980946bbfb0bad2b3e3419299690f72ac"
+    },
+    {
+      "path": "licenses/cartridge-models/gba-source-notice.txt",
+      "sha256": "a30bb00fd6cb8e4e897cdd50fcf1d62165d0113f20ebf4e2cbe6256cc104f97a"
+    },
+    {
+      "path": "licenses/cartridge-models/switch-source-notice.txt",
+      "sha256": "3fec52b6d0316197e1bd4407a60415aa4698bd9a6fd56d4126f18bc1fb0da877"
+    },
+    {
+      "path": "licenses/mgba/MPL-2.0.txt",
+      "sha256": "fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85"
+    },
+    {
+      "path": "licenses/mgba/README.md",
+      "sha256": "62636fa46679a9b6e00055f5492d366ef1d8e3a3128fe18716f9ae84f33d8d43"
+    },
+    {
+      "path": "licenses/mgba/mgba_shim.c",
+      "sha256": "1edc822b2a6c15b37e2a3a6039233531a67bd679479ba14d808cda80767dfe39"
+    },
+    {
+      "path": "licenses/mobile-runtime/base64-js-MIT.txt",
+      "sha256": "5b37224c080cdcc97c871ada971c224e9926370fe74f11b539aa1cf9f3b1aca1"
+    },
+    {
+      "path": "licenses/mobile-runtime/buffer-MIT.txt",
+      "sha256": "06bafa45fdad2579ba0e43b0c9b2c6290287c99c4203c300254a462b38a307f6"
+    },
+    {
+      "path": "licenses/mobile-runtime/esbuild-MIT.txt",
+      "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681"
+    },
+    {
+      "path": "licenses/mobile-runtime/ieee754-BSD-3-Clause.txt",
+      "sha256": "18d45466ba3253deae04667e267a91ea8de8548f18c1125264d1c9db28194cc1"
+    },
+    {
+      "path": "licenses/mobile-runtime/noble-hashes-MIT.txt",
+      "sha256": "4f221aee6e072336700c408c68ab3b96a3fc09f6aebe6f48f1bd99e5ef13faec"
+    },
+    {
+      "path": "licenses/python-runtime/LICENSE",
+      "sha256": "1f256ecad192880510e84ad60474eab7589218784b9a50bc7ceee34c2b91f1d5"
+    },
+    {
+      "path": "licenses/python-runtime/LICENSE.bdb.txt",
+      "sha256": "3bdff06e69991c94664f2ef5c5f8096f60b7dbec071756ea6cc26b445e06ec5b"
+    },
+    {
+      "path": "licenses/python-runtime/LICENSE.bzip2.txt",
+      "sha256": "1f38bbc7caacafd65169276d759c0d88c991b753b643ce35d0e45ea1971dd441"
+    },
+    {
+      "path": "licenses/python-runtime/LICENSE.cpython.txt",
+      "sha256": "86e61415828a8b5b06ec8d024e6f086ce155a8b85fd0c419c0ba4dc004e74fdd"
+    },
+    {
+      "path": "licenses/python-runtime/LICENSE.expat.txt",
+      "sha256": "122f2c27000472a201d337b9b31f7eb2b52d091b02857061a8880371612d9534"
+    },
+    {
+      "path": "licenses/python-runtime/LICENSE.libX11.txt",
+      "sha256": "2daec087a88e7c9b8082557cdeebad5bbb8155a4137472f0b22e269cd99d0c1e"
+    },
+    {
+      "path": "licenses/python-runtime/LICENSE.libXau.txt",
+      "sha256": "56abe29bb1d9806a9e04fa9f80fed2c0f18027594df3f098148d814aef6bddfa"
+    },
+    {
+      "path": "licenses/python-runtime/LICENSE.libedit.txt",
+      "sha256": "29cea33c32bbc9785142386377915612a2fa786482c46843383384aded2e09b1"
+    },
+    {
+      "path": "licenses/python-runtime/LICENSE.libffi.txt",
+      "sha256": "deaf3a42effb551a5b140fa9afefed183a27f1341c6d1bf430d106a5e6931fc0"
+    },
+    {
+      "path": "licenses/python-runtime/LICENSE.liblzma.txt",
+      "sha256": "9a4062de0a2c388a98cf35a35d348b62fa97c838a71c3c28ee1a2d7d0a565b02"
+    },
+    {
+      "path": "licenses/python-runtime/LICENSE.libuuid.txt",
+      "sha256": "122ee1f7e258f2c3c0e538a75c037684f420454bf3850ddc74ce750bbf5fe86b"
+    },
+    {
+      "path": "licenses/python-runtime/LICENSE.libxcb.txt",
+      "sha256": "c5ffbfeaa501071ceeb97b7de2c0d703fdaa35de01c0fb6cbac1c28453a3e9fd"
+    },
+    {
+      "path": "licenses/python-runtime/LICENSE.mpdecimal.txt",
+      "sha256": "669512af7219f58be03a398766d7c9da11a3b3df9d3f05cb74c5ceca25c8da3b"
+    },
+    {
+      "path": "licenses/python-runtime/LICENSE.ncurses.txt",
+      "sha256": "87a4c4442337b8968ef956031c406b74f9cb7149b7ba87311bdaba534816201c"
+    },
+    {
+      "path": "licenses/python-runtime/LICENSE.openssl-1.1.txt",
+      "sha256": "9c04cce50c4989d5601dd8b07f6ab922c40388b66ac736c9007cb1ed9d9dd560"
+    },
+    {
+      "path": "licenses/python-runtime/LICENSE.openssl-3.txt",
+      "sha256": "7d5450cb2d142651b8afa315b5f238efc805dad827d91ba367d8516bc9d49e7a"
+    },
+    {
+      "path": "licenses/python-runtime/LICENSE.sqlite.txt",
+      "sha256": "38bef3d28b24f145ea293bd3b6eb4b20396982abc8303128fb493986ea5bc719"
+    },
+    {
+      "path": "licenses/python-runtime/LICENSE.tcl.txt",
+      "sha256": "c0a69a2bfd757361ec7e6143973b103c90409316b49e9c88db26ad6388e79f16"
+    },
+    {
+      "path": "licenses/python-runtime/LICENSE.tix.txt",
+      "sha256": "3ac5cdd0bef6c43ce34c6a7ced452081d9e5a0bf94082b9f9147d23ec9e214f5"
+    },
+    {
+      "path": "licenses/python-runtime/LICENSE.zlib.txt",
+      "sha256": "818922b2620f12801a12bf78e399644a30990e66824abd8ca8ec24d451d6f92c"
+    },
+    {
+      "path": "licenses/python-runtime/README.md",
+      "sha256": "558c046f3692a719397bc99bc0af8790c4d43d84b97d160612b8820d98c44d26"
+    },
+    {
+      "path": "licenses/radio/README.md",
+      "sha256": "72a802865acafc0c694f9be53776f4791ae95996738f79f90c2ddbf911caf79c"
+    },
+    {
+      "path": "licenses/radio/app/NOTICE.md",
+      "sha256": "ab21740c594595dc7bc92c2be9c76e45fe4ca8df9aa1af2a7f7e8d1c046e3afa"
+    },
+    {
+      "path": "licenses/radio/app/licenses/AGPL-3.0.txt",
+      "sha256": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef"
+    },
+    {
+      "path": "licenses/radio/app/licenses/Apache-2.0.txt",
+      "sha256": "7d5450cb2d142651b8afa315b5f238efc805dad827d91ba367d8516bc9d49e7a"
+    },
+    {
+      "path": "licenses/radio/app/licenses/GCC-exception-3.1.txt",
+      "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
+    },
+    {
+      "path": "licenses/radio/app/licenses/GPL-2.0.txt",
+      "sha256": "dd3ce02338c3a48abb6ba59b48809f7108a8bd242cb0cc8be90daafa30707c28"
+    },
+    {
+      "path": "licenses/radio/app/licenses/GPL-3.0.txt",
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    {
+      "path": "licenses/radio/app/licenses/LGPL-2.1.txt",
+      "sha256": "31c90ce76b6f5aab90a205851e71d5c27e31c0aa3d7017a4383b98a6fe3f1faa"
+    },
+    {
+      "path": "licenses/radio/app/licenses/LGPL-3.0.txt",
+      "sha256": "a853c2ffec17057872340eee242ae4d96cbf2b520ae27d903e1b2fef1a5f9d1c"
+    },
+    {
+      "path": "licenses/radio/app/licenses/Linux-syscall-note.txt",
+      "sha256": "8e378ab93586eb55135d3bc119cce787f7324f48394777d00c34fa3d0be3303f"
+    },
+    {
+      "path": "licenses/radio/app/licenses/MPL-2.0.txt",
+      "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04"
+    },
+    {
+      "path": "licenses/radio/app/third-party/LDN-UPSTREAM.md",
+      "sha256": "4dd4bc30714c16e6226e3d92abc3bc2cb0f80bddc6dfd5cba5785b845d0c7cb3"
+    },
+    {
+      "path": "licenses/radio/app/third-party/attrs-LICENSE.txt",
+      "sha256": "882115c95dfc2af1eeb6714f8ec6d5cbcabf667caff8729f42420da63f714e9f"
+    },
+    {
+      "path": "licenses/radio/app/third-party/busybox-LICENSE.txt",
+      "sha256": "bbfc9843646d483c334664f651c208b9839626891d8f17604db2146962f43548"
+    },
+    {
+      "path": "licenses/radio/app/third-party/bzip2-LICENSE.txt",
+      "sha256": "c6dbbf828498be844a89eaa3b84adbab3199e342eb5cb2ed2f0d4ba7ec0f38a3"
+    },
+    {
+      "path": "licenses/radio/app/third-party/expat-COPYING.txt",
+      "sha256": "31b15de82aa19a845156169a17a5488bf597e561b2c318d159ed583139b25e87"
+    },
+    {
+      "path": "licenses/radio/app/third-party/idna-LICENSE.md",
+      "sha256": "1a9a4f0e3d479a27240ddd59a9137a66ab4a0f9dfdc8ca6188cc0bfd85187f04"
+    },
+    {
+      "path": "licenses/radio/app/third-party/iw-COPYING.txt",
+      "sha256": "5932fb70481e128940168a5fdf133e6454293c0865c7e757874b235cb6daa2af"
+    },
+    {
+      "path": "licenses/radio/app/third-party/libcap-License.txt",
+      "sha256": "68467e731f4744bd6e0bb69e8df9c3a994e09cd6b203d0c41327ac6d079c581d"
+    },
+    {
+      "path": "licenses/radio/app/third-party/libfdt-BSD-2-Clause.txt",
+      "sha256": "6313108c23efffa36948f8b2cff1560a5935373b527b0e1a837cc77e6ed1bacd"
+    },
+    {
+      "path": "licenses/radio/app/third-party/libfdt-README.license.txt",
+      "sha256": "8a516adc332c25503be9de4a511f9fce45370761a67046811b1c5a5268f2327a"
+    },
+    {
+      "path": "licenses/radio/app/third-party/libffi-LICENSE.txt",
+      "sha256": "d5699fa516968e3a1550e6c902b7441c78856f2603d61bedd0b0662a26655366"
+    },
+    {
+      "path": "licenses/radio/app/third-party/linux-COPYING.txt",
+      "sha256": "fb5a425bd3b3cd6071a3a9aff9909a859e7c1158d54d32e07658398cd67eb6a0"
+    },
+    {
+      "path": "licenses/radio/app/third-party/mpdecimal-COPYRIGHT.txt",
+      "sha256": "dba079e24a0286052f9f36a5e0b4f6cc95bc83ada657eb26bef8c0b6473f6512"
+    },
+    {
+      "path": "licenses/radio/app/third-party/musl-COPYRIGHT.txt",
+      "sha256": "b870108ec5e7790e9f9919064f1b9421d62d5f9b0e6c230c6adf7ea2da62e97b"
+    },
+    {
+      "path": "licenses/radio/app/third-party/ncurses-COPYING.txt",
+      "sha256": "a85ca5bef8ce71f013bc5f4306c681881b248450f3b63722589891f0b69ea52d"
+    },
+    {
+      "path": "licenses/radio/app/third-party/outcome-LICENSE.MIT.txt",
+      "sha256": "3e6dae555eb92787fc82d1d48355677f454c7f65aeb38d3f9e72bf9a3daf034b"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pcre2-LICENCE.md",
+      "sha256": "197d8a73ffee0d6b09adba2f9c677b5f5aede24edf89258a68e48248d010d811"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pip/AUTHORS.txt",
+      "sha256": "5b73479bffada0916044cb29c47ab20360215e3c838ff2e7562ecdfcb11645bd"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pip/LICENSE.txt",
+      "sha256": "634300a669d49aeae65b12c6c48c924c51a4cdf3d1ff086dc3456dc8bcaa2104"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pip/src/pip/_vendor/cachecontrol/LICENSE.txt",
+      "sha256": "86eeee87be2a43f3ff1f56496f451f69243926f025fedbb033666c304c4c161b"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pip/src/pip/_vendor/certifi/LICENSE",
+      "sha256": "e93716da6b9c0d5a4a1df60fe695b370f0695603d21f6f83f053e42cfc10caf7"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pip/src/pip/_vendor/distlib/LICENSE.txt",
+      "sha256": "808e10c8a6ab8deb149ff9b3fb19f447a808094606d712a9ca57fead3552599d"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pip/src/pip/_vendor/distro/LICENSE",
+      "sha256": "cb5e8e7e5f4a3988e1063c142c60dc2df75605f4c46515e776e3aca6df976e14"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pip/src/pip/_vendor/idna/LICENSE.md",
+      "sha256": "b7a336abf3b04e180ec065cdd16e705d079e1cc7a14f910aa6e9187f36b9cd87"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pip/src/pip/_vendor/msgpack/COPYING",
+      "sha256": "492dedba85da5872f78e6091bcd1fea474d660d35acb4dee964b8aab3f007427"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pip/src/pip/_vendor/packaging/LICENSE",
+      "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pip/src/pip/_vendor/packaging/LICENSE.APACHE",
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pip/src/pip/_vendor/packaging/LICENSE.BSD",
+      "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pip/src/pip/_vendor/pkg_resources/LICENSE",
+      "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pip/src/pip/_vendor/platformdirs/LICENSE",
+      "sha256": "29e0fd62e929850e86eb28c3fdccf0cefdf4fa94879011cffb3d0d4bed6d4db6"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pip/src/pip/_vendor/pygments/LICENSE",
+      "sha256": "a9d66f1d526df02e29dce73436d34e56e8632f46c275bbdffc70569e882f9f17"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pip/src/pip/_vendor/pyproject_hooks/LICENSE",
+      "sha256": "1b22b049b5267d6dfc23a67bf4a84d8ec04b9fdfb1a51d360e42b4342c8b4154"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pip/src/pip/_vendor/requests/LICENSE",
+      "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pip/src/pip/_vendor/resolvelib/LICENSE",
+      "sha256": "f388fd38cad13112c1dc0f669bbe80e7f84541edbafb72f3030d2ca7642c3c9d"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pip/src/pip/_vendor/rich/LICENSE",
+      "sha256": "deed7c17a4318158190a3ea239cc879a5a50271cebb98ae7025f48fbe58dca15"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pip/src/pip/_vendor/tomli/LICENSE",
+      "sha256": "b80816b0d530b8accb4c2211783790984a6e3b61922c2b5ee92f3372ab2742fe"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pip/src/pip/_vendor/tomli_w/LICENSE",
+      "sha256": "b80816b0d530b8accb4c2211783790984a6e3b61922c2b5ee92f3372ab2742fe"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pip/src/pip/_vendor/truststore/LICENSE",
+      "sha256": "33be7b7e8fa4fd19b1760e1a8ed8a668bdab852c91b692dd41424bcb725a9fca"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pip/src/pip/_vendor/urllib3/LICENSE.txt",
+      "sha256": "130e3a64d5fdd5d096a752694634a7d9df284469de86e5732100268041e3d686"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pokemon-suite-LICENSE.txt",
+      "sha256": "2f3edf4bbe540060d3cbff3a9a6e2f996a780cf4a345d74003afaf58679afa8a"
+    },
+    {
+      "path": "licenses/radio/app/third-party/pycryptodome-LICENSE.rst",
+      "sha256": "4e04660d77c1c64e89d79537919fb8240fa21484a7e3db29f358b2c7f84ea073"
+    },
+    {
+      "path": "licenses/radio/app/third-party/python-LICENSE.txt",
+      "sha256": "b0e25a78cffb43f4d92de8b61ccfa1f1f98ecbc22330b54b5251e7b6ba010231"
+    },
+    {
+      "path": "licenses/radio/app/third-party/qemu-LICENSE.txt",
+      "sha256": "139c64b7a9ae62858ff969aae622ecfcf4f1519655bd92d2e70a1a2fb615690e"
+    },
+    {
+      "path": "licenses/radio/app/third-party/realtek-LICENCE.rtlwifi_firmware.txt",
+      "sha256": "a61351665b4f264f6c631364f85b907d8f8f41f8b369533ef4021765f9f3b62e"
+    },
+    {
+      "path": "licenses/radio/app/third-party/realtek-WHENCE-rtw88.txt",
+      "sha256": "bb902bf709cb94480ad60e76f027b41347951c17033e11d8844cad3806940ce5"
+    },
+    {
+      "path": "licenses/radio/app/third-party/sniffio-LICENSE.MIT.txt",
+      "sha256": "3e6dae555eb92787fc82d1d48355677f454c7f65aeb38d3f9e72bf9a3daf034b"
+    },
+    {
+      "path": "licenses/radio/app/third-party/sortedcontainers-LICENSE.txt",
+      "sha256": "1db7cae7fce6452e2e608e401a0f953e0133e4c2d75db69fb8ae851d2086f5b6"
+    },
+    {
+      "path": "licenses/radio/app/third-party/trio-LICENSE.MIT.txt",
+      "sha256": "faa301d72dcc023b432bd77dc08a773ca3449e5c27440b9d66eb46fb8500b430"
+    },
+    {
+      "path": "licenses/radio/app/third-party/wireless-regdb-LICENSE.txt",
+      "sha256": "678b0df753c86198fc496d1f1033429bbd57f101472132ee7eaaf9f5e0a7fae1"
+    },
+    {
+      "path": "licenses/radio/app/third-party/xz-COPYING.0BSD.txt",
+      "sha256": "0b01625d853911cd0e2e088dcfb743261034a091bb379246cb25a14cc4c74bf1"
+    },
+    {
+      "path": "licenses/radio/app/third-party/xz-COPYING.txt",
+      "sha256": "616a3ad264ce29b8f1cb97e53037b139d406899ca8d1f799651e17bfa09830b8"
+    },
+    {
+      "path": "licenses/radio/app/third-party/zlib-LICENSE.txt",
+      "sha256": "e32ff4e00d9d94930537635291da39e7e612703334bf6fde8c7f1686fe8a45a2"
+    },
+    {
+      "path": "licenses/radio/app/third-party/zstandard-LICENSE.txt",
+      "sha256": "788fe85e53724a40b299051c4abc9cf74d42b27e7968325b80891c25f79adb4b"
+    },
+    {
+      "path": "licenses/radio/app/third-party/zstd-LICENSE.txt",
+      "sha256": "7055266497633c9025b777c78eb7235af13922117480ed5c674677adc381c9d8"
+    },
+    {
+      "path": "licenses/update-runtime/cffi/LICENSE",
+      "sha256": "5ba24ddc57067f9249add644c3afc41a5d6dc37e23433ef759d95df370b0af63"
+    },
+    {
+      "path": "licenses/update-runtime/cryptography/LICENSE",
+      "sha256": "3e0c7c091a948b82533ba98fd7cbb40432d6f1a9acbf85f5922d2f99a93ae6bb"
+    },
+    {
+      "path": "licenses/update-runtime/cryptography/LICENSE.APACHE",
+      "sha256": "aac73b3148f6d1d7111dbca32099f68d26c644c6813ae1e4f05f6579aa2663fe"
+    },
+    {
+      "path": "licenses/update-runtime/cryptography/LICENSE.BSD",
+      "sha256": "602c4c7482de6479dd2e9793cda275e5e63d773dacd1eca689232ab7008fb4fb"
+    },
+    {
+      "path": "licenses/update-runtime/pycparser/LICENSE",
+      "sha256": "0c846399369ea76ddd7b5c44fe6d16497415fcf015f5cbb508c24bf98b81c5b1"
+    },
+    {
+      "path": "licenses/update-runtime/securesystemslib/LICENSE",
+      "sha256": "6357addf59ba70a824bc678c35e0936916e1cc38182f503372147191ed227bd3"
+    },
+    {
+      "path": "licenses/update-runtime/tuf/LICENSE",
+      "sha256": "d3174ad63e721d4c9dccb8ad4320848992d314369bc46319720b5802c9153fe9"
+    },
+    {
+      "path": "licenses/update-runtime/tuf/LICENSE-MIT",
+      "sha256": "ad52fe92b0d21a9b3733b484eb6f865e83855f4a6f9b9b8812b9012dc4587d27"
+    },
+    {
+      "path": "licenses/update-runtime/urllib3/LICENSE.txt",
+      "sha256": "130e3a64d5fdd5d096a752694634a7d9df284469de86e5732100268041e3d686"
+    },
+    {
+      "path": "macos/Assets/Cartridges/3ds.blend",
+      "sha256": "3bd3e940daf7a31f17507eb1ef5b52c5b0627ed95287fbf9cc39b38a6d52a402"
+    },
+    {
+      "path": "macos/Assets/Cartridges/3ds.mtl",
+      "sha256": "134462309d2d72ef4cc69654d934f5474f04cf28bc1485ab29defb9bdb63b9c1"
+    },
+    {
+      "path": "macos/Assets/Cartridges/3ds.obj",
+      "sha256": "5d9c385bc076af3a40178783189bb924743105612e820a48524ef7fb1f602710"
+    },
+    {
+      "path": "macos/Assets/Cartridges/README.md",
+      "sha256": "af918f152bc037d1a42be8f55a442fb1672413c45d53878375c1142e2d1f5f7b"
+    },
+    {
+      "path": "macos/Assets/Cartridges/crystal.blend",
+      "sha256": "0260ecdeb99a9b05207e92a219bf8694c46a5960df0d658985abda1d2ebd4012"
+    },
+    {
+      "path": "macos/Assets/Cartridges/crystal.mtl",
+      "sha256": "3c316aef9f0e011b7d67219d75d56e1789e15438178e46e2d573bf2d4225a922"
+    },
+    {
+      "path": "macos/Assets/Cartridges/crystal.obj",
+      "sha256": "ec637bea4495ccb37f23451e5104d534cfb8f24c1775f35f13e870e1fbde4629"
+    },
+    {
+      "path": "macos/Assets/Cartridges/gb.blend",
+      "sha256": "776ac3ff0a8157d5df332383115b1276e04d065f544f108ffb964a9e0dd798d6"
+    },
+    {
+      "path": "macos/Assets/Cartridges/gb.mtl",
+      "sha256": "134462309d2d72ef4cc69654d934f5474f04cf28bc1485ab29defb9bdb63b9c1"
+    },
+    {
+      "path": "macos/Assets/Cartridges/gb.obj",
+      "sha256": "56bdf9427b570305d5b2f432ac8a30c5984824cff8ef2153cea81efcaac7efb5"
+    },
+    {
+      "path": "macos/Assets/Cartridges/gba.blend",
+      "sha256": "861e235bbe0edff653db6df42e79bb64b22bd8145283415bcaadbbe6a50a2d16"
+    },
+    {
+      "path": "macos/Assets/Cartridges/gba.mtl",
+      "sha256": "134462309d2d72ef4cc69654d934f5474f04cf28bc1485ab29defb9bdb63b9c1"
+    },
+    {
+      "path": "macos/Assets/Cartridges/gba.obj",
+      "sha256": "3e09260719ccfbc96eeea3f03fe51b61fa9f31a2ee9fd32121190c1cc6503cd0"
+    },
+    {
+      "path": "macos/Assets/Cartridges/geometry.json",
+      "sha256": "56a51babbb0af39ffa87a9fcd456e84c1bda226c9843b7c25c406b2cc79e503e"
+    },
+    {
+      "path": "macos/Assets/Cartridges/nds.blend",
+      "sha256": "c651ea17cf6bb1af2f378743c276ff95ec4c56c6cc75c627ccb933969a8d7317"
+    },
+    {
+      "path": "macos/Assets/Cartridges/nds.mtl",
+      "sha256": "5c808d391299a9923287e96388c17382cddc689c0734f74b493e213c8b312b80"
+    },
+    {
+      "path": "macos/Assets/Cartridges/nds.obj",
+      "sha256": "7097a6db551dc1960100abd99e6e8dd9b2d5d5245502a7c0c2f89e1aa0947eb9"
+    },
+    {
+      "path": "macos/Assets/Cartridges/switch.blend",
+      "sha256": "78edca992946f5e4c6ca6a174cc1e507f2078bc78d9d9a2e7e77b4211cf2ca21"
+    },
+    {
+      "path": "macos/Assets/Cartridges/switch.mtl",
+      "sha256": "5c808d391299a9923287e96388c17382cddc689c0734f74b493e213c8b312b80"
+    },
+    {
+      "path": "macos/Assets/Cartridges/switch.obj",
+      "sha256": "fa8bf07c596da3872120ac62379abc5e71f05a308ff1401dee914794bbf3d747"
+    },
+    {
+      "path": "macos/Assets/Icon.swift",
+      "sha256": "10859eac550de3866593f0e08202f3126990d0f7a5b8fa6259fdb47d9692f71b"
+    },
+    {
+      "path": "macos/Package.resolved",
+      "sha256": "031fafb33411fc9357f29ec49e97d1c2f36621987c6f82fc78c80c66384458df"
+    },
+    {
+      "path": "macos/Package.swift",
+      "sha256": "c7b6557f9b13c45f49f5f9c3cf606328c66302f87c3c7663b1058ff6d204bfd3"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/ActivityContent.swift",
+      "sha256": "ed738045e1bc814964b24dad7bdee6225a7512e23965d931a5300ae5f575d9e9"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/AppUpdater.swift",
+      "sha256": "41be0d707b2c183f63b63235fc685badbd8edf44e771797fa2dc14a07c0f12fb"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/BotAskView.swift",
+      "sha256": "ff1c98980b651cbb2dd989e20d32e380c7bb35ed48d78faf4166bc157fe90e32"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/BotProgressView.swift",
+      "sha256": "10e144716262b45f82e8c187276a1f03eae42af4a3289f3422969729f4747886"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/BotView.swift",
+      "sha256": "1ac12e547e0b68219ead5dfe7f9122cc1b3be4b0303170bfb5704fdee58bc248"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/CartridgeModels.swift",
+      "sha256": "3ad9f722e2737ea5b5326f0c7e40ebc1a4787244249587350ad79e0c6fb63bdb"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/CartridgePreviews.swift",
+      "sha256": "838d7e489ae2324ea44716e352b2c75ebba6c9ca9655e8dfe8592d66a171e577"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/CartridgeScene.swift",
+      "sha256": "c6b9d77bb36b76f11a22337f130d5de5e8d3a47b5d1c7d054de6e3c19a845041"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/CartridgeView.swift",
+      "sha256": "127014649a1fb7fb7170d42fb046b90cd1e3fb03f9f7c403354a430674ed577a"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/CompanionHost.swift",
+      "sha256": "307871748f84d2571156fe88de935ddbe9b1616d55c60ba40fa2abfd8575ab94"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/CompetitiveBuildView.swift",
+      "sha256": "fdc53758987f43c7efe21c270c35c054c76e917b00480e893d71049d484ebdfd"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/EffortTrainingForm.swift",
+      "sha256": "4b6f30abc79ea47f75ce18b189738f998bb39e0d4a130965408d40a43cbf637e"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/FarmingView.swift",
+      "sha256": "6998a1d4cce34604932bf1fd4056e272e45d9dcacd30b661caf40bd000d63837"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/GameControllerInput.swift",
+      "sha256": "64f84c7a2ec2768c7b361302a39c78cd5e7872488b9a9e1ed2b32f6b69850b84"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/GamePlayback.swift",
+      "sha256": "a531687f05ae7b15cc2044e48330ffeda2cbabe6a387e7c6a8b24c5eca07afa4"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/HuntDetailView.swift",
+      "sha256": "30488ab608421b05fbda6e55e63823e3af8c87d7ee63b7bae56aec749a03e215"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/HuntingDefaultsForm.swift",
+      "sha256": "adff75b87b65075250b6453e4de602035c3192a6a9e0d7aad524dd24f0f575e4"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/LibraryView.swift",
+      "sha256": "64585bd211ac7d398f10e2252a975129940a2c593b69f434f8d327ea253ccc73"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/LiveView.swift",
+      "sha256": "da88a8c649c9459f07e63a88a5a980b8d28c3440a28556390849290d053e99fd"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/PokedexView.swift",
+      "sha256": "6252c095d5101c9c6b26d4eb584212c0dd0b91402c252c119a9e7f13ef5e5cf7"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/ROMArtworkView.swift",
+      "sha256": "2e2a988d414fd42310efb34172f59e598e20221db5e1e9471e02bf7f20658251"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/ServiceHost.swift",
+      "sha256": "127601acf1981cbaf3c1964e41abc506d60d3727772fde33fa0375e7a70ee853"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/SettingsView.swift",
+      "sha256": "d8e57e57e6da924df88da527e5c463b9fba3bb48c77a67bb9f6f42445f91b244"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/SoftwareUpdatesView.swift",
+      "sha256": "37b5c375f98e479e7b96af20408322f248f4c83660ec61d3cbd7530cb939801b"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/SpeciesChooser.swift",
+      "sha256": "fe3b867aab2266ecc0d001e3ba2f9bbc9212002293a5d292029d4d774ffe81c7"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/SpeechDictation.swift",
+      "sha256": "0fdd45adeb3f6dad69239832d7f4dc8bd30aaa920883c18e4d3415950bc1b9b5"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/SuiteApp.swift",
+      "sha256": "78d49d97f4db4c65da59d3cee6bd0dbff01e4a885ee75d3e6a0c6485c202759d"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/SuiteModel.swift",
+      "sha256": "be674518cfd027e755ac0ad7efc6d7722e828059a398a6d7bd682258b0875cf0"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/TradingView.swift",
+      "sha256": "7029777d7869e71ad26e268cb0eded881eedbd480907ec4d0857d291ee567a72"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/ActivityOutline.swift",
+      "sha256": "a2f7a63f47e45c212db9083b4e6e409aa9e9353c88c6ee9ea492449a801d98fa"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/ActivityPresentation.swift",
+      "sha256": "1fbcf88ea8d387c1c15735baa5b71caa84fbf6a3f89723a76dc4a422a9c6bdbf"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/AsyncResourceCache.swift",
+      "sha256": "6afa006cefc07bcf7063cdc55c55accd4158ec88e94d8d2148bd02e07205ea9e"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/BotRequest.swift",
+      "sha256": "74b6267f9baf20135b4d374ed965344a1a9a123793c6018847918d5bf06d1c38"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/CartridgeArtwork.swift",
+      "sha256": "9830383a7e6745b881b4cd6cfe4edf135e3ba23ea7f0a77d1249fc498390eb1a"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/CartridgeItem.swift",
+      "sha256": "30be8f6d2ee1282288e7f8db1f28aea73092577f1213d649c2593d6f767bc0e0"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/CartridgeThumbnailKey.swift",
+      "sha256": "54d1403db2d913bbaf74d9ba21ea2d87ada002e62a83ae5a1138673d1b31a91b"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/CompanionSelection.swift",
+      "sha256": "8b2b53191da87f5f614c1ea4f002c64afd545c1059bd7e33d32fcbd2e895524e"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/DictationReadiness.swift",
+      "sha256": "7d236898609cef3fa7f5fcab2a68c8b6d5ec675c35c86bac1981766d780ed8f0"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/DictationVocabulary.swift",
+      "sha256": "730c7cb8f6de018080871ce5b0601afb6fe02a4622dbe46a9a4096fab68cc6b8"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/EffortTrainingDraft.swift",
+      "sha256": "c9f212a0ec78fc2f2d91d2d1212c655837d418214d5664142d5b5b7d77fbee7c"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/FieldPreviewGate.swift",
+      "sha256": "5a42537ada4e6557e5cb28fa312a7fdfa61377e0d4af69a04a9f2956d5d40901"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/FrameDecoder.swift",
+      "sha256": "1f7e5fe620414b9aaea92440363feaa90d4bbbd99b6727fbe5b267e430039b5f"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/GameInput.swift",
+      "sha256": "5ef84e859371853855c09a0f12946d128c5a8751d0b7b66e8329855f7487f16b"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/GameKeyboard.swift",
+      "sha256": "829ebe04ad1608b7c0ef8cfcc8cf09b283ada6fc97739fdc3333115af8131384"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/HuntDraft.swift",
+      "sha256": "46c57d1bb428577c8ad204877be6af0d620d7ad1c7617800269917f6f48cce5d"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/HuntProgress.swift",
+      "sha256": "b3390274c018b07e80162950f21a0ca48274bf40dd752e57572f36a39fe5b7f4"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/JSONValue.swift",
+      "sha256": "f8cc40f12d5fe0c006be62c14eec25b95dcce6816869846e16d6941824ec2961"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/PCInventory.swift",
+      "sha256": "a1cc295ce860b521299e9b85bac84f08b597757ffbc956a0732b4dc5833b045d"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/PartyMemberPresentation.swift",
+      "sha256": "a30c9ac34b2cc77cb89da0e9c9a1c0faaedad12123ed83f497d6494d2a7e87b8"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/PokedexFilter.swift",
+      "sha256": "922f4c35dfd42b964714d6c8dc4850d6ccdd280616988587332f0f5012780ab6"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/ServiceAnnouncement.swift",
+      "sha256": "9d0c5d88ef47c09ee336b638f2ee7dc7b986f6739348c02d7973c90cd165feca"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/StopTriage.swift",
+      "sha256": "85dd4f576f90b649df7628fa4a1be52d7344d907b77167c3e58929e177e980a0"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/SuiteAPI.swift",
+      "sha256": "7c0a63c509f06a7327700221e6ed7223fb3a42e7352942ead9925f676debe3f6"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/SuiteGoals.swift",
+      "sha256": "aaf5caa08029d281dbc8b2949ef0ffe41c2acb3afef24492d848810a4188dc19"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/SuitePairing.swift",
+      "sha256": "daeb131f156a21b2f6c49f3ce8bb1b809ee47de7ef44317325ec9430e030f54f"
+    },
+    {
+      "path": "macos/Tests/SuiteCoreTests/ActivityOutlineTests.swift",
+      "sha256": "8e340a2a3288ae8dc40eac612e1e4c58be2ae4ed7d0718f9941bf63c35d8de9a"
+    },
+    {
+      "path": "macos/Tests/SuiteCoreTests/ActivityPresentationTests.swift",
+      "sha256": "4cceed883086afaf7e8205eaa90f183a01fd0acedb5609fadecf64a86ba88f20"
+    },
+    {
+      "path": "macos/Tests/SuiteCoreTests/ActivityRequestTests.swift",
+      "sha256": "e9cfa58e81fb553a39709e5a20c3a17b73b9e110f64a0d6200e6218f70cfd826"
+    },
+    {
+      "path": "macos/Tests/SuiteCoreTests/ArtworkLoadingTests.swift",
+      "sha256": "e5ec45b2e362e3186165ff775c078ff9350e0a0c0b2c5f419512aa8c7a772210"
+    },
+    {
+      "path": "macos/Tests/SuiteCoreTests/BotRequestFixtures.swift",
+      "sha256": "dd81aaa92a0e8f6e832a043dfcca7d2cf87e223e905e9e53d3af048e70c6be39"
+    },
+    {
+      "path": "macos/Tests/SuiteCoreTests/BotRequestTests.swift",
+      "sha256": "78cc19c8d0230581e3ce58e6cd12f7a5a4527cb72c030f2b3461e3d92c0e0039"
+    },
+    {
+      "path": "macos/Tests/SuiteCoreTests/CompanionTests.swift",
+      "sha256": "98e60e790a505489b5355cebbeb7915d32fad32789b280f97b1a23b5091468de"
+    },
+    {
+      "path": "macos/Tests/SuiteCoreTests/DictationVocabularyTests.swift",
+      "sha256": "c6569aa639069376ee88aaa8f9fd14791af9cfc3e6951472d8b056fc61bba353"
+    },
+    {
+      "path": "macos/Tests/SuiteCoreTests/EffortTrainingTests.swift",
+      "sha256": "9c18dc096ba9cbfd84f4bcc354d5cd20efc69a01a59c0999ff6942bcb562c6e2"
+    },
+    {
+      "path": "macos/Tests/SuiteCoreTests/FieldPreviewTests.swift",
+      "sha256": "b2ec118bf3f6ede5f270300c7736b22f3f2e7468453e4a2a65909bd4d1fde25b"
+    },
+    {
+      "path": "macos/Tests/SuiteCoreTests/GameInputTests.swift",
+      "sha256": "90bacddbd04b3168fbba7b78cc039bbba81b9f4bc2f7c0260f97aa302ee6123b"
+    },
+    {
+      "path": "macos/Tests/SuiteCoreTests/HuntDraftTests.swift",
+      "sha256": "001110e0be7bcf8d6a99cb3302028d3581b87767ef2ff458aee5fb4d1d25f8d8"
+    },
+    {
+      "path": "macos/Tests/SuiteCoreTests/HuntProgressTests.swift",
+      "sha256": "38b7e760fa11f20a89b2c9b1011724ee39d1e9cdc56c199bd3fba97617ead39d"
+    },
+    {
+      "path": "macos/Tests/SuiteCoreTests/PCInventoryTests.swift",
+      "sha256": "b24d296fbfde78a3db01cc98b10d01a4c79fddf66ee588a34517f06271c45fd2"
+    },
+    {
+      "path": "macos/Tests/SuiteCoreTests/PartyMemberPresentationTests.swift",
+      "sha256": "14ed3a70c8a42ca07231d571bceec8ab4cc9390bbf6afcea3b4d9b251dae9826"
+    },
+    {
+      "path": "macos/Tests/SuiteCoreTests/PokedexFilterTests.swift",
+      "sha256": "820c3371c8865cbe42ed6e69e4fde7f2ca984b11918ce272186614e935734887"
+    },
+    {
+      "path": "macos/Tests/SuiteCoreTests/StopTriageTests.swift",
+      "sha256": "3056b372d5574197537d02fbc1dffb6a9ac5ddabe7207c918d595b8968aadd3d"
+    },
+    {
+      "path": "macos/Tests/SuiteCoreTests/SuiteCoreTests.swift",
+      "sha256": "9009a870f50233a762522eb5c8726fd7738828eba113f83f82c465d5084b0e7f"
+    },
+    {
+      "path": "macos/Tests/SuitePlaybackTests/ActivityLayoutTests.swift",
+      "sha256": "d5710a23ad048d24bdc5121c34845200af59bffba9840a72ad5610f7982e47f1"
+    },
+    {
+      "path": "macos/Tests/SuitePlaybackTests/BotAskLayoutTests.swift",
+      "sha256": "728739d24a9ba0a6dc7fc4630824d88301ab75398fc8a24cf467fef804f023ba"
+    },
+    {
+      "path": "macos/Tests/SuitePlaybackTests/PlaybackRecoveryTests.swift",
+      "sha256": "e6e6747541cf5123571dea332e5df016c381bd0b13e4ee7462b520628443faa3"
+    },
+    {
+      "path": "macos/Tests/SuitePlaybackTests/ServiceOutputTests.swift",
+      "sha256": "935cf718fd4d86629f5aba73ccf80f0976de7aeb8384c476b5fac851821cfd31"
+    },
+    {
+      "path": "macos/Tests/SuitePlaybackTests/SupportLinksLayoutTests.swift",
+      "sha256": "9fa0de1ac4acc9e4727718dea0db1efb1ef5d079aa6c184e240a384674bea22e"
+    },
+    {
+      "path": "macos/runtime-lock.json",
+      "sha256": "4534f977bb6fdbe424ceebd06b089b3f70194c286ad8b071f221fed624a54e73"
+    },
+    {
+      "path": "macos/update-runtime-lock.json",
+      "sha256": "e092b8453a5d321d1287d1e95c2eebf3fccefd02fa21b2a8b4f8bde873625b5f"
+    },
+    {
+      "path": "native/ios/App/SuiteMobileApp.swift",
+      "sha256": "c229159fa06ca60d5a85c47e486174c91a02152f09bd247227150424c25962f1"
+    },
+    {
+      "path": "native/ios/Companion/Artwork.swift",
+      "sha256": "f33d593318ab8a28f18fbe100033705479487ed96386698251cf350211f24193"
+    },
+    {
+      "path": "native/ios/Companion/BadgeArtwork.swift",
+      "sha256": "5698934695ee291c9b1b58c377e6972e0e76f8b8fc280825c4f443d1d571589d"
+    },
+    {
+      "path": "native/ios/Companion/GameSearchField.swift",
+      "sha256": "b0f062060ba99e683b4aef3a994eddf7f9d491f4c7fdc3fc92a73ebd53b91189"
+    },
+    {
+      "path": "native/ios/Companion/GameTheme.swift",
+      "sha256": "a26101523071ae07fead59d40e4129e848c2f8cb1069be151fedf1dc7160ecc4"
+    },
+    {
+      "path": "native/ios/Companion/LibraryView.swift",
+      "sha256": "a2a0e0155c06b37fca8a9808f65d419398066dac22a0a2cfcfff373123cb5cf3"
+    },
+    {
+      "path": "native/ios/Companion/LivePanels.swift",
+      "sha256": "67af96274638cb987ccbd73a93ed9be0bc0c58737fb1787e3b1c112847497c0d"
+    },
+    {
+      "path": "native/ios/Companion/LiveView.swift",
+      "sha256": "23da16992cdd9145fb02dd6b56094d452d55173a41d3caa19c76de845f46f1df"
+    },
+    {
+      "path": "native/ios/Companion/LocationMap.swift",
+      "sha256": "d50d5d70c61226c106526252265139ea6c4a745ef64ee23fdb058067292be0ba"
+    },
+    {
+      "path": "native/ios/Companion/NetworkDrawer.swift",
+      "sha256": "879bbfd591c569315572916d8414adb86b36c69e4258f6f688402b82993e48c0"
+    },
+    {
+      "path": "native/ios/Companion/PartyDetailSnapshot.swift",
+      "sha256": "7ddaf26072599b4e25a5309ac82b4db2a9349310d05d0221c6debf97a116cb50"
+    },
+    {
+      "path": "native/ios/Companion/PartyInlineDetails.swift",
+      "sha256": "3f5d43dfd2e1362632e26c10e0ba7b13c0f3112c868d562e921898647e174626"
+    },
+    {
+      "path": "native/ios/Companion/PartyInspection.swift",
+      "sha256": "a96de7e0ba35396b2772175ed4a6bc55ef9489e1a403f85bdbe5a9d91052c940"
+    },
+    {
+      "path": "native/ios/Companion/PokedexView.swift",
+      "sha256": "fb61d4c48c63eb7eadcc13617042e6c5a66f0f4723f8066530231d8d71538733"
+    },
+    {
+      "path": "native/ios/Companion/ReferenceChrome.swift",
+      "sha256": "cb8ebe8a0d6d26c0bafa78ea480c9ff7eec5f55f33aed5257639748773a5d1d9"
+    },
+    {
+      "path": "native/ios/Companion/ReferenceDashboard.swift",
+      "sha256": "be70a1d490f5789ffce76d45f1a164d0eae0d5c17e721407d958ce1250e429bb"
+    },
+    {
+      "path": "native/ios/Companion/SpinningPokeball.swift",
+      "sha256": "b941c25cd32f9e2d9ec536aa3b27513326005fc6c54979a93af00414e69d7527"
+    },
+    {
+      "path": "native/ios/Companion/SuiteApp.swift",
+      "sha256": "01b6a6b4b7ae79b3037e01865db1d89c8cb5d815ba00ec4a1098481bd93ad957"
+    },
+    {
+      "path": "native/ios/Companion/SuiteModel.swift",
+      "sha256": "e48363a670710ddbc4349727b46276b468e26ad71a73857e0e6d32f202ceb712"
+    },
+    {
+      "path": "native/ios/Companion/TradingView.swift",
+      "sha256": "77812c041c24525896fc81d8acf6e5188c12712479d8e178ff93478ff6614e52"
+    },
+    {
+      "path": "native/ios/Companion/TrainerPortrait.swift",
+      "sha256": "3be326c298d664e17de95e0cc49f55f4d0540b019c5b7312cbfd43c1a8f30c07"
+    },
+    {
+      "path": "native/ios/CompanionTests/LiveThemeLayoutTests.swift",
+      "sha256": "81f0ad5463e18ec00923135b9b73b43ae51116e2f7e6780b60b427decc55d725"
+    },
+    {
+      "path": "native/ios/CompanionTests/LocationMapTests.swift",
+      "sha256": "dfb506dd818e8d81082ff70973b5f6e37b66802ae4f1e3630930b68fa3388dfc"
+    },
+    {
+      "path": "native/ios/CompanionTests/PartyDetailSnapshotTests.swift",
+      "sha256": "a967d3f06f72ee45d9788eda1fb73294022d5906e04021d70bd093685b4df195"
+    },
+    {
+      "path": "native/ios/CompanionTests/PartyInspectionTests.swift",
+      "sha256": "5d269066e49b395f676c648a1156ee70a39992da6206b12badf694ef9387fbe1"
+    },
+    {
+      "path": "native/ios/CompanionTests/TrainerCharacterTests.swift",
+      "sha256": "ecd09e8db0cdd95574dd92eee067548f40239dad8b3186762dfc249d9f8c63ac"
+    },
+    {
+      "path": "native/ios/CompanionUITests/CompanionUITests.swift",
+      "sha256": "53c97a2f8f1d1d46bc1edbc478b314d1c1360eb691282a50cd30fd8476579418"
+    },
+    {
+      "path": "native/ios/CompanionUITests/LiveThemeUITests.swift",
+      "sha256": "61ee93987f06525a73f0799e6302e91c3c4826d714b816ef408ec743767380d4"
+    },
+    {
+      "path": "native/ios/CompanionUITests/MobileLayoutUITests.swift",
+      "sha256": "f944532a9bdacba0feb4c12933a8e5b79f3f761cf58abcc07e395b9f5b8fc971"
+    },
+    {
+      "path": "native/ios/CompanionUITests/NavigationMenuUITests.swift",
+      "sha256": "cc7c78184b1c318b2bb8e3e710ee28ad3b0ebf2bbede1dcd539698818d7adf15"
+    },
+    {
+      "path": "native/ios/Core/LocalStorage.swift",
+      "sha256": "86d321b8a0e711d1a69aef82807202640b1486cfb235ebf7d1b8ebb1b422b031"
+    },
+    {
+      "path": "native/ios/Package.swift",
+      "sha256": "f172779076dcdafdaaf011c8877fc2dcec0eff41655a50a13ad88a0c90689329"
+    },
+    {
+      "path": "native/ios/README.md",
+      "sha256": "a4fe43eca5236fa2b8389a620956de6fa97c23fdd84341172e90688172351d3b"
+    },
+    {
+      "path": "native/ios/RadioProbe/App/Probe-Bridging-Header.h",
+      "sha256": "89cfe4100638eac82e3f3a2cd4d5036ff9ce18711e9cdf70e613c8c2e4b0e48a"
+    },
+    {
+      "path": "native/ios/RadioProbe/App/RadioProbeApp.swift",
+      "sha256": "2d283e45ab7559bea3664e3318a821106b078043b2eac857896f86d2012c5c6a"
+    },
+    {
+      "path": "native/ios/RadioProbe/Driver/Descriptor.h",
+      "sha256": "1b18b71aee720e297b353b94f5282ee1cc7d608b7fd8d8314ce9edec38a0d81e"
+    },
+    {
+      "path": "native/ios/RadioProbe/Driver/SuiteUSBProbe.cpp",
+      "sha256": "c2fcaee86839e7262c87f62ea1398f85ad4fbaf13fdf0b7edef91666eadb7968"
+    },
+    {
+      "path": "native/ios/RadioProbe/Driver/SuiteUSBProbe.iig",
+      "sha256": "44d46b7f2b428c49e2a416b5fbc5b892a7975e04202efabba553262b4bd0b49b"
+    },
+    {
+      "path": "native/ios/RadioProbe/Driver/SuiteUSBProbeClient.cpp",
+      "sha256": "6ac5752794547b19bef43da487238133f406b59e12ef81c456f9fda16bbe1525"
+    },
+    {
+      "path": "native/ios/RadioProbe/Driver/SuiteUSBProbeClient.iig",
+      "sha256": "423c51603b742f2e3ea79655a8655d7a1cf294400887296a389a491993d295f8"
+    },
+    {
+      "path": "native/ios/RadioProbe/Tests/descriptor.cpp",
+      "sha256": "a5dbb24258365ff985adea3a70a579e3f5da2be76d8144b21351431fdc4e023f"
+    },
+    {
+      "path": "native/ios/RadioProbe/build.py",
+      "sha256": "d11821dc5fbf38fc9949e033c26c20197a2edf7a8ee1a1238b082f71531b45a0"
+    },
+    {
+      "path": "native/ios/Runtime/checkpoint.js",
+      "sha256": "949b586b4ae3bc60fffc4f0ebbf2877de95968d720ddd781adabe0a688188384"
+    },
+    {
+      "path": "native/ios/Runtime/crypto.js",
+      "sha256": "20fff1cd3a6309105909f1d20faf972f3dc577b6f2b5e207ce4cd0d2af5df5fd"
+    },
+    {
+      "path": "native/ios/Runtime/entry.js",
+      "sha256": "cb36cc1f246178c9179afaa31fde19ea1197d82d1bb03aa36a1ae95a9a1f3e19"
+    },
+    {
+      "path": "native/ios/Runtime/globals.js",
+      "sha256": "1ea48c51d6e831700db4c4a82471c5a678b9698498cd5ae72158245997f57df7"
+    },
+    {
+      "path": "native/ios/Runtime/host.js",
+      "sha256": "a54b718fdd9e72225e9cf11d907d0145b61127047f8997121d945f1bebbbe1dd"
+    },
+    {
+      "path": "native/ios/Runtime/index.html",
+      "sha256": "b6dc0cc1f894f21b78afaeb8e6464d37fd8ad8fdfb044e49e3bdbac99af61618"
+    },
+    {
+      "path": "native/ios/Runtime/util.js",
+      "sha256": "27694559b3aaaa4ee36b6cd6cde493a21618bd7b037e2b9569f42dadce86584d"
+    },
+    {
+      "path": "native/ios/Tests/LocalStorageTests.swift",
+      "sha256": "1166a5409e0ac0ad7b79d17bc13472f2d7138ba0f14b5e91e848ea4470be115d"
+    },
+    {
+      "path": "native/ios/UITests/LocalGameUITests.swift",
+      "sha256": "6e70e08461431779d53b054ef96926aa7715277dace97ea124f828603d5afd44"
+    },
+    {
+      "path": "native/ios/build-companion.py",
+      "sha256": "3500ebce314ef3c97c4d025a7e0b82bd17ef8a2271eee6effa26d47b0d8af506"
+    },
+    {
+      "path": "native/ios/build.mjs",
+      "sha256": "2caa81afc9556da3b6a61bdeba7c38c070e39d6a76c5b297940ca66913aeeff1"
+    },
+    {
+      "path": "native/ios/package-lock.json",
+      "sha256": "acce83f21cd83b2051c6e06bd35255d06cb3f65220b4475132340ddd2760a165"
+    },
+    {
+      "path": "native/ios/package.json",
+      "sha256": "458ad7449327973675e0e4593bb48cc1e21e8dfc521ec5c2d0b55628a6f90eb5"
+    },
+    {
+      "path": "native/libretro/README.md",
+      "sha256": "bec65b199f028509582108257288a0e61608b507bf08968fd97f9bd60a5b9b32"
+    },
+    {
+      "path": "native/libretro/libretro.h",
+      "sha256": "5875414c47d8af4facf118c184b40b0e311285333a46bbfe8221a853efe5ba7a"
+    },
+    {
+      "path": "native/libretro/suite_bridge.c",
+      "sha256": "3e8a2f6ad8aab6915dc8b60a1a817551ae518edab6b0bc30df630da35a3316a7"
+    },
+    {
+      "path": "native/radio-appliance/README.md",
+      "sha256": "415e2a0429091c813df778c243c12d861501ca8c2f190881004819c8afc8b72b"
+    },
+    {
+      "path": "native/radio-appliance/build-guest.sh",
+      "sha256": "271ab936f262e68b2c17d6fc392179556a776f5c48958983ae184455914f53bf"
+    },
+    {
+      "path": "native/radio-appliance/guest_probe.py",
+      "sha256": "7c8f33bb601088c4124e5fd4b91e489ba07ba157893d919808a27e6129cfff07"
+    },
+    {
+      "path": "native/radio-appliance/guest_relay.py",
+      "sha256": "9572f1f2e4a7c7fd82c6a81dc64373abf21e14cc9c34f0abc3ed37ddb008fe0e"
+    },
+    {
+      "path": "native/radio-appliance/init",
+      "sha256": "39f263056cb69c48831086c28a73e94b3a5a1779843c3ea2b5d0bdba00ef207b"
+    },
+    {
+      "path": "native/radio-appliance/relay-init",
+      "sha256": "b4374bce47bc0a3e8c6b9f89d37d5be2320545e9e9e4a00228743ea16b741e1b"
+    },
+    {
+      "path": "native/suite-desktop-keyboard.swift",
+      "sha256": "1ab17bfa20ca6270be0c44b65a597173d46d08bb1ca5141b20fd26e8e7453af6"
+    },
+    {
+      "path": "native/suite-desktop.swift",
+      "sha256": "59b4e11380056a3f6be684959cb806920d389265c744eeaf8b0598f39064051b"
+    },
+    {
+      "path": "native/suite-switch/README.md",
+      "sha256": "227c03c7a7091848c8723a95b21e0cacaefb25b65c6e0d34687ac5c6eeba261d"
+    },
+    {
+      "path": "native/suite-switch/Ryujinx-LICENSE.txt",
+      "sha256": "781bbdf040b7d0286c47cca6bffdb9148dfe751c0c9cabdf1a1752412a2e56b4"
+    },
+    {
+      "path": "native/suite-switch/SuiteBridge.cs",
+      "sha256": "89d09414c21dc6ee0cee681555d8bd58be9a5f47023c9fa9a33d681ab759f02b"
+    },
+    {
+      "path": "native/suite-switch/SuiteBridge.csproj",
+      "sha256": "3ee9ba74193d185764b2fd82e55249db0bbeb98c0f74e3e61e3f90eb44c816ae"
+    },
+    {
+      "path": "native/suite-switch/patcher/Patcher.csproj",
+      "sha256": "7bd723fd8783a6be95d59a938cd8f3ca5335d717909ecf0391ae766c8a85277b"
+    },
+    {
+      "path": "native/suite-switch/patcher/Program.cs",
+      "sha256": "0a927044e91f8c58e4c9e17f723d98a6d57fa2a7339f377a8d0ff3aecc885b93"
+    },
+    {
+      "path": "native/suite-switch/tests/BridgeTests.csproj",
+      "sha256": "6e66453926b30ece758b5006970bd9fd8b485e1589225e3040dcce40d1c8ac79"
+    },
+    {
+      "path": "native/suite-switch/tests/Program.cs",
+      "sha256": "a915474f9de58c63ec6780cdba857b7788c974dde0f9de8875799d7e2bfc1c69"
+    },
+    {
+      "path": "native/tests/keyboard-tests.swift",
+      "sha256": "6fc366155b3ec784aeef947aa3052e06813e2e7cecbea76b85f92dc4ca1fb5a9"
+    },
+    {
+      "path": "package.json",
+      "sha256": "960d6c7a1a891f99e04bb448a5b966f3751cf609808249520c78c2ad41670dc0"
+    },
+    {
+      "path": "pokemon_suite/__init__.py",
+      "sha256": "abaea286c5109186e19d57df145cbb357ab6dd327a3a27f1f5622514d75ae8b2"
+    },
+    {
+      "path": "pokemon_suite/__main__.py",
+      "sha256": "220605777b6b0afccf37d08b0ef0c640a8222a9cb88f9b28b2287c37b9597da1"
+    },
+    {
+      "path": "pokemon_suite/bootstrap.py",
+      "sha256": "757108b52070982824d5df3a95024160c9eb40fc47a259114afc36217bef5504"
+    },
+    {
+      "path": "pokemon_suite/bot_verification.py",
+      "sha256": "c8f3e91a4c493df863b0ed471b172fbba6615dd88309a38d367c44b5ee6030dd"
+    },
+    {
+      "path": "pokemon_suite/capabilities.py",
+      "sha256": "d69112213132472226a840db3ce59175350e8263222c0528bc31ce5c13ec42d2"
+    },
+    {
+      "path": "pokemon_suite/cartridge_graphics.py",
+      "sha256": "a1332f8c3aec2e21271d4289d37bc3060fd606ab71258914be9570ba6b484275"
+    },
+    {
+      "path": "pokemon_suite/cartridge_label.py",
+      "sha256": "c227b547c3897e6b7d2b2be76cd91576f7673520d90cec5d4968b4b91dbbaeca"
+    },
+    {
+      "path": "pokemon_suite/companion.py",
+      "sha256": "3bc14752eed075f745f1f31a4e9cdf860195ec868b09e4800dba5cd239e17cd4"
+    },
+    {
+      "path": "pokemon_suite/crystal_graphics.py",
+      "sha256": "e5b8b23b68861584d3b2793527f3eb449befdb8b332f6c7fdb46578e93f04fb2"
+    },
+    {
+      "path": "pokemon_suite/data_provider.py",
+      "sha256": "44ee9cae5be3c537c99c70d5f0d789b9023575c3e9c9291e86ae4a756f4476b1"
+    },
+    {
+      "path": "pokemon_suite/desktop.py",
+      "sha256": "60f43f922e38bd305ff3ee668f350bc3ba8b36aac887e75930e98f2efd1054f9"
+    },
+    {
+      "path": "pokemon_suite/ds_mascot.py",
+      "sha256": "54088e5e6c15819b09d30c6c4a345b07a12c2c23646e27440aa67684dd2ca575"
+    },
+    {
+      "path": "pokemon_suite/file_lock.py",
+      "sha256": "942affeddaca1df8d6215640031919e5c89053eaceca812e5c30a88c18fee7cd"
+    },
+    {
+      "path": "pokemon_suite/firered_static_encounters.json",
+      "sha256": "40db35ca1841378e9dad82462c1f6e0da2041afb62cb8547f35f31632f1324a2"
+    },
+    {
+      "path": "pokemon_suite/game_resources.py",
+      "sha256": "f746c74883bfc2a579c5e8be9ec006ddbe656699120df74ba26d02c3cabee8a5"
+    },
+    {
+      "path": "pokemon_suite/http_routes.py",
+      "sha256": "3803d80d85a39fa48250e73113821bafa36763f97da27bbc1f7f66d6186ff347"
+    },
+    {
+      "path": "pokemon_suite/http_routes.py.orig",
+      "sha256": "cc5f196c0e506f3a15960936e06ae1ec14d58be0b0946c900c35cbb01fe00ba1"
+    },
+    {
+      "path": "pokemon_suite/installation.py",
+      "sha256": "1ef3117ba376c4e0db4a42ae4c9f2592717fc82aa7f54c7d24f6f153549bb8c8"
+    },
+    {
+      "path": "pokemon_suite/inventory_sources.py",
+      "sha256": "b9766100940decc0a86a75ef63c48bb3acefb11f823abc3c250a7fbc41b43df3"
+    },
+    {
+      "path": "pokemon_suite/laya_runtime.py",
+      "sha256": "e4e34bedc24161316d208c62db244c4daddab11b45d30de87bdfbd7af6d125f6"
+    },
+    {
+      "path": "pokemon_suite/laya_sidecar.py",
+      "sha256": "f80019818b3172d5e20c12dd8608745ab4d441884389524b6cffd7be7d338c6b"
+    },
+    {
+      "path": "pokemon_suite/package_builder.py",
+      "sha256": "95ef7ac9df1150a65cf6a0fefd525500f7975af026b73de01ec8ecc5f3c693b5"
+    },
+    {
+      "path": "pokemon_suite/packages.py",
+      "sha256": "fc4c2c873a1fa7234d5a5e151d9a5b0dcf72aa4fd95962fc08f90fafff687987"
+    },
+    {
+      "path": "pokemon_suite/paths.py",
+      "sha256": "d39b59a9edf940f5380cf098433319477303af6118c3e61304d5aadab05059bd"
+    },
+    {
+      "path": "pokemon_suite/pokedex_database.py",
+      "sha256": "89f96238027a82fe656d7866228748b90e654d6c147895b7065144b23f7224da"
+    },
+    {
+      "path": "pokemon_suite/pokemon_acquisition.py",
+      "sha256": "0972e9a5fe5dad569d0f621756ddb32491a96888102f7c7ddcb6ec72bb1dc787"
+    },
+    {
+      "path": "pokemon_suite/pokemon_bot_settings.py",
+      "sha256": "5ec9c9d1debae5940020f90360d650ecdcf851ef5563e54d6289a4c1749e6606"
+    },
+    {
+      "path": "pokemon_suite/pokemon_campaigns.py",
+      "sha256": "d2a200a6e8ab12cd1917d1031477e593b42c65de25d465716cbd8563d5306ae7"
+    },
+    {
+      "path": "pokemon_suite/pokemon_competitive.py",
+      "sha256": "0ed291e5e321ea461066edccf168eb2c49c33bc0dc2a7ecb31f1354c9995dee6"
+    },
+    {
+      "path": "pokemon_suite/pokemon_evolution.py",
+      "sha256": "65de0a99db120334dfebb075f9d807b953978f6edf892b5e418418df58f1ec30"
+    },
+    {
+      "path": "pokemon_suite/pokemon_farming.py",
+      "sha256": "d4f7512ddc058725c90e53e808ab11a30bd546f5e60292121b7adb5fecaef570"
+    },
+    {
+      "path": "pokemon_suite/pokemon_goals.py",
+      "sha256": "cd4cdc39c4ace67c0f924543865bd242a6bee8ea831504391ff3f5aaca67d5f0"
+    },
+    {
+      "path": "pokemon_suite/pokemon_hunt_routes.py",
+      "sha256": "056e3a00c09538436d5eec2ea9a9f7429733044662dab47d3d97f005f0710454"
+    },
+    {
+      "path": "pokemon_suite/pokemon_main_series.py",
+      "sha256": "c76a6eb1654e7d97c036d5ff5d860194b3d1376e02f4054cc5b0cbf023398598"
+    },
+    {
+      "path": "pokemon_suite/pokemon_player_tasks.py",
+      "sha256": "fce82ec2ffe590192960566089fc28d08cc36f111964782743b8c8c05282f7f6"
+    },
+    {
+      "path": "pokemon_suite/pokemon_requests.py",
+      "sha256": "80a5af68fed422a46aff1a79d8def0778b63f1d24f28afe13a1c7c821c40fa74"
+    },
+    {
+      "path": "pokemon_suite/pokemon_sessions.py",
+      "sha256": "c244e9eaee47b6a03fdf5500b57d2c7b9444e7d676ae70e4d935438d31e3af4f"
+    },
+    {
+      "path": "pokemon_suite/pokemon_shiny_sweep.py",
+      "sha256": "bfdb45ee25e50fd2822e7b32b9551137fed2610f11ff9c8c92ad373ce1a56991"
+    },
+    {
+      "path": "pokemon_suite/pokemon_stop_triage.py",
+      "sha256": "90d0cc73d97d7c774be18d76b9465b60c787e491181bbb1d6b2a1fda1b2d39b9"
+    },
+    {
+      "path": "pokemon_suite/postgame_partner.py",
+      "sha256": "d0effe15f64300228971939de1053cf4e01bdfafb0a709bd8042bb691f40d6f1"
+    },
+    {
+      "path": "pokemon_suite/processes.py",
+      "sha256": "0357ac6396af247677e722ec91d9d2af5804a94518791e7896c4f6d4174ba699"
+    },
+    {
+      "path": "pokemon_suite/radio_appliance.py",
+      "sha256": "ff8cfc39edf3275a0780dc529a445418628f367d987724b096fcacdc6c9078d2"
+    },
+    {
+      "path": "pokemon_suite/region_map_art.py",
+      "sha256": "85091e183c3475deb8a409317307e8e3117a194cdee77f9d97ebca973ce7006b"
+    },
+    {
+      "path": "pokemon_suite/reports.py",
+      "sha256": "bfaf8200e0e19c39b244f4c7254cc6a4b6e3b3e59cbd3dac84eb7643f4596bba"
+    },
+    {
+      "path": "pokemon_suite/rom_art.py",
+      "sha256": "85cfedadf72982fefbb700698efdfd895a530cc22b31683bea283bc88be81dfe"
+    },
+    {
+      "path": "pokemon_suite/rom_integrity.py",
+      "sha256": "67c0ba62847197d579aff808c157ffe19a97cd8554a13ff96f628701d6d5b54c"
+    },
+    {
+      "path": "pokemon_suite/runtime_components.py",
+      "sha256": "573e789f3c65b70ec9ec4ed2167d8b05a0c00b70cde87bc5aadc4c60d6f2f6dc"
+    },
+    {
+      "path": "pokemon_suite/server.py",
+      "sha256": "54a8223ea3ae33b6e09a092f54896882c818048229c2460b19a2c68e2a205866"
+    },
+    {
+      "path": "pokemon_suite/static/assets/pokemon/hardware/SOURCE.md",
+      "sha256": "b2b2ca441fc0efd9a1419c9ac9c292285dda832af2e05d8ffc5e9dcd75712ef1"
+    },
+    {
+      "path": "pokemon_suite/static/assets/pokemon/hardware/credits.html",
+      "sha256": "aebed53b607f5dd3d93008b934dbe10c73d1c7d8a08a0eae833224d15f91f533"
+    },
+    {
+      "path": "pokemon_suite/static/assets/pokemon/hardware/gb-light-photo.png",
+      "sha256": "1d902bf8938ea02e4fed25e99b6a742be72ebfd9ea27ae72cdc6d50c5d7f5dba"
+    },
+    {
+      "path": "pokemon_suite/static/assets/pokemon/hardware/gb-micro-photo.png",
+      "sha256": "47eeb8209d94d08d4452cc742e36adf0dc31f477520a872f1825165e9cbd66ef"
+    },
+    {
+      "path": "pokemon_suite/static/assets/pokemon/hardware/gb-photo.png",
+      "sha256": "35f1c603dad85249fbf34eaea6d109db792762c53aadf23c23d4b241cf48b306"
+    },
+    {
+      "path": "pokemon_suite/static/assets/pokemon/hardware/gb-pocket-photo.png",
+      "sha256": "bf5cbb057a7834bc24ab35f4ee2ed4d8aa3162944906abca95cb7e6a74465a84"
+    },
+    {
+      "path": "pokemon_suite/static/assets/pokemon/hardware/gba-photo.png",
+      "sha256": "e186098ee5d86328da1723a7946e1243c802dea3ae5fd78bab3d0ea31e1c4359"
+    },
+    {
+      "path": "pokemon_suite/static/assets/pokemon/hardware/gba-sp-photo.png",
+      "sha256": "5ddaba71e2e1c8851c16e37991e1e18e9624f7fadb25092dcdbb265ffb76cc2e"
+    },
+    {
+      "path": "pokemon_suite/static/assets/pokemon/hardware/gbc-photo.png",
+      "sha256": "136f28bd206750555982091fcbeefcf0b49f6d9101cc247e761b8543d666af35"
+    },
+    {
+      "path": "pokemon_suite/static/assets/suite/badges.svg",
+      "sha256": "328b62450de7e7b76169d2c0f2f4402cdbd5c34cf2a36e40c2b65ae2046e4ba2"
+    },
+    {
+      "path": "pokemon_suite/static/assets/suite/category.svg",
+      "sha256": "60609b9e71dd8580aebbaabd3e4d5f382668bf362d03c8036586d991bb8e8630"
+    },
+    {
+      "path": "pokemon_suite/static/assets/suite/item.svg",
+      "sha256": "115e59f18b7544eb4b903229f658bb3408e19687e113540c6f9be962a30f345a"
+    },
+    {
+      "path": "pokemon_suite/static/assets/suite/species.svg",
+      "sha256": "c7d2cc988c48053c03372979e6a3e577051982a5fa2e55b5fcdd0c894e363bac"
+    },
+    {
+      "path": "pokemon_suite/static/assets/suite/trainer.svg",
+      "sha256": "18dce6790c2cae633989090fb5e2df446b4f6f6d0cfec399075876166422f87e"
+    },
+    {
+      "path": "pokemon_suite/static/data/champions.json",
+      "sha256": "e6a5f7e8d2cb4d0dbf99895010123a40e1543944fe05c7e16ce8315b4072f29b"
+    },
+    {
+      "path": "pokemon_suite/static/data/pokedex/crystal.json",
+      "sha256": "0f354cecafe69e680291bfbd7fc564542e0e17edc51dce6b93861ecd7a27a0e2"
+    },
+    {
+      "path": "pokemon_suite/static/data/pokedex/emerald.json",
+      "sha256": "7cee8259487719892781940c9bfb9eb8bb05074ae7ae32201fe888021a141358"
+    },
+    {
+      "path": "pokemon_suite/static/data/pokedex/evolution-rules.json",
+      "sha256": "8eeac879e2dd8a9e9ad7b11b46a9ad9c49525c209de767176bcec84c9fa7ac96"
+    },
+    {
+      "path": "pokemon_suite/static/data/pokedex/firered-hunt-routes.json",
+      "sha256": "ca0ca8a125140b11a063320f0c3bdd0abd97d2f87d9311f2e8fdf09f4f0f30de"
+    },
+    {
+      "path": "pokemon_suite/static/data/pokedex/firered-items.json",
+      "sha256": "c6a3ecfd509ce5e37a756d28797a9694f2edc5d53f18a67e093ad07fbfb07b72"
+    },
+    {
+      "path": "pokemon_suite/static/data/pokedex/firered.json",
+      "sha256": "094bc42b4e75d1013225e510dd1984cead1ec0d1f328a64f042dcd1c810ea9db"
+    },
+    {
+      "path": "pokemon_suite/static/data/pokedex/leafgreen.json",
+      "sha256": "b53148c7e45ededb36667ca15a992dbc788c6321fa7877cbc40fe165a6184084"
+    },
+    {
+      "path": "pokemon_suite/static/data/pokedex/master.sqlite3",
+      "sha256": "6a4add0b9ba569fa92982b699cb8e319fe1c991b5d03b173010db9a533c9fb7d"
+    },
+    {
+      "path": "pokemon_suite/static/data/requests/firered-places.json",
+      "sha256": "4665dd11c7ba6b7d3719b9850ca2dae42a2c9cd516e7e13ee53ab096e5c1955a"
+    },
+    {
+      "path": "pokemon_suite/static/gba-surround.css",
+      "sha256": "bd7302a4dcca0ccbae25344cb63012c16e34c2d630ee7737e5c6eea623ab6296"
+    },
+    {
+      "path": "pokemon_suite/static/index.html",
+      "sha256": "cbb8280c5f9613492a1d7183652ba58dcd774979c685f1ee43ff6bcf53cb55c2"
+    },
+    {
+      "path": "pokemon_suite/static/master-red-live-panel.js",
+      "sha256": "4152c98d58e052a750a3310fb980f7d2b8f91c7995420bf3c6283aa1956f6348"
+    },
+    {
+      "path": "pokemon_suite/static/master-red-trace.js",
+      "sha256": "c193a3b490562abf281b726425c60da0d8d398d07d5c8219393091eed5cc285f"
+    },
+    {
+      "path": "pokemon_suite/static/pokemon-bot-settings.js",
+      "sha256": "bf2333e248395624ad64097534cd6860cc87075d66a5c9ad61aecaaaba719076"
+    },
+    {
+      "path": "pokemon_suite/static/pokemon-bot-tasks.js",
+      "sha256": "167cae3887514e555f925c0f9989c3609fb09958d57b37aad454fff0484c8e00"
+    },
+    {
+      "path": "pokemon_suite/static/pokemon-campaign-runs.css",
+      "sha256": "27c9e457f7fcb540519f10ba9695170f99dbd2e16838413a8cf2965ce122ef87"
+    },
+    {
+      "path": "pokemon_suite/static/pokemon-campaign-runs.js",
+      "sha256": "929e162bdd5678deb7e486e72b57e5f201495602336b106f3415d4babddb0eb2"
+    },
+    {
+      "path": "pokemon_suite/static/pokemon-competitive.js",
+      "sha256": "69e455710c00c2770dbaed493ff38c008c57bd6cde68b957a953314327d11364"
+    },
+    {
+      "path": "pokemon_suite/static/pokemon-console-power.css",
+      "sha256": "5508916de74057ba7a9185817d9d7f4170177aa06bd90f28f0c5b0658a780713"
+    },
+    {
+      "path": "pokemon_suite/static/pokemon-console-power.js",
+      "sha256": "40bc7e634214a369583fc1fa2be3ca68d8dd5d9912afa6dbf01f243451ac2b85"
+    },
+    {
+      "path": "pokemon_suite/static/pokemon-farming.css",
+      "sha256": "825be8044d2e3a4c3f0b954cc4f5a345ff4f78b88488701ca8c2efc7129945d2"
+    },
+    {
+      "path": "pokemon_suite/static/pokemon-farming.js",
+      "sha256": "9f0ec0104c61c553add3d740767eee92427514ce1beffa4fa4499163b1375582"
+    },
+    {
+      "path": "pokemon_suite/static/pokemon-hardware-shell.js",
+      "sha256": "c6436f5e0c2135995facb6d4b9130547ad5ea637f3794bb4b0cc5a5405db2e25"
+    },
+    {
+      "path": "pokemon_suite/static/pokemon-hunt-panel.js",
+      "sha256": "21e7aa2cb234644e0319891a4fcd6c8c7932897abc20880b371a52abab482169"
+    },
+    {
+      "path": "pokemon_suite/static/pokemon-items.js",
+      "sha256": "f4a0ba2d47a355bf929cda58210612468d7b843b962ca987fef07c1cfd22e4af"
+    },
+    {
+      "path": "pokemon_suite/static/pokemon-live-panels.css",
+      "sha256": "2edc7e06c69960f20767180cc4205d1c1f13229e4d2ba849a114a4f6b52586d1"
+    },
+    {
+      "path": "pokemon_suite/static/pokemon-playback.css",
+      "sha256": "d84fd6e7668868f415693cc5051aa8f5166675f9cec3566faa3db2dd4c4b5d76"
+    },
+    {
+      "path": "pokemon_suite/static/pokemon-playback.js",
+      "sha256": "85703f39d0b1bd4c8d6a56a07062afa41e758c9d7a16f775ee49a9175707dd5e"
+    },
+    {
+      "path": "pokemon_suite/static/pokemon-shinies.js",
+      "sha256": "93d3ee345f75df5d093c467d27d7dcfbdbd2c926bbeb6b0677c57d264fa8b1ca"
+    },
+    {
+      "path": "pokemon_suite/static/pokemon-stop-triage.js",
+      "sha256": "d47768fda627865367d38496d7901fb8d54b067e3ba4f1f1dd93bc42693d6b9a"
+    },
+    {
+      "path": "pokemon_suite/static/pokemon-suite.css",
+      "sha256": "99f425db4f9e49dcb0a25f56ea0ad8de29221ce507ca2e297db571fa86a384f7"
+    },
+    {
+      "path": "pokemon_suite/static/pokemon-suite.js",
+      "sha256": "f26e5a2b8b5092e596038ccc868c4500e46491f8ad75310a56ae1e5a2be8eb37"
+    },
+    {
+      "path": "pokemon_suite/static/pokemon-theme.css",
+      "sha256": "0c76fc2989d083baa4e71c2288f44e0e0c4b22c0bdcba04d070bd3cff275e8c9"
+    },
+    {
+      "path": "pokemon_suite/static/pokemon-theme.js",
+      "sha256": "0efcfdefac0828581cf1bc0fb2e6d4377bb32012d76da3767ad556ba57810b14"
+    },
+    {
+      "path": "pokemon_suite/static/pokemon-workspace.css",
+      "sha256": "2ba70be5aa04196ea8f2144fa73a0c278bd0ddb0ffdf86b9d172ccf74c4ab4a9"
+    },
+    {
+      "path": "pokemon_suite/static/software-updates.js",
+      "sha256": "c07a6d3576353dece8344841f9b8a1586247c65d58cbf8807b8e32eba4bba5e2"
+    },
+    {
+      "path": "pokemon_suite/static/standalone.css",
+      "sha256": "ec815ac2ab5b105bf696fb00f45a750cccca768bb3c12b1db0c45f10bbc827e3"
+    },
+    {
+      "path": "pokemon_suite/static/standalone.js",
+      "sha256": "f3b84bea64f488327d0918a7d0d80e6fee2d6f599d868b231a676c1eaea65f5e"
+    },
+    {
+      "path": "pokemon_suite/static/style.css",
+      "sha256": "d20ae546b981fb551a322a29c399072e6cef2b40824bd6908dc9a7926a2d60c6"
+    },
+    {
+      "path": "pokemon_suite/static/token-fuel.css",
+      "sha256": "db745dff5ebc5c00b1765007c21624fcbc428bce756e9dac7272bf72670c3682"
+    },
+    {
+      "path": "pokemon_suite/static_assets.py",
+      "sha256": "193a11d22ea5db21ccc25c9f329db9fb898e24cff90aa53dd9daa73c0baa9430"
+    },
+    {
+      "path": "pokemon_suite/suite_desktop.py",
+      "sha256": "a2e33c9204e80702815e334cc30b5747ab65b6072af35cc9605668c3064cc66f"
+    },
+    {
+      "path": "pokemon_suite/suite_desktop_stream.py",
+      "sha256": "9c3ff64e4f0d8551978fb8ef3dfa469c4e8712168ef0c19de12346c71993a854"
+    },
+    {
+      "path": "pokemon_suite/suite_desktop_worker.py",
+      "sha256": "ab0adfe3cd71d1eb40e0d9cecff45b9feed2e62833e768b699d1212536e40153"
+    },
+    {
+      "path": "pokemon_suite/suite_libretro.py",
+      "sha256": "ab794d8a0f1ae0ab4dc134fca791668b6212f5866bbdf0a2d1f25204481d2c6c"
+    },
+    {
+      "path": "pokemon_suite/suite_playback_worker.py",
+      "sha256": "78c0f6f1b6a9d9be26f5aeed5acabed795f9a2d522559e0f94e445f63e626a39"
+    },
+    {
+      "path": "pokemon_suite/suite_save_store.py",
+      "sha256": "11b3a7f49c910786fdae37f3f3f1a7db8f99e7dc435b23056795ae0fd5af40c1"
+    },
+    {
+      "path": "pokemon_suite/trade_state.py",
+      "sha256": "1bfe442232aeee83b2fe25c6943ce97f4518f981b02de7b49f46e39936875121"
+    },
+    {
+      "path": "pokemon_suite/trading.py",
+      "sha256": "f0ed29a6844f869f1c07d4eaac2e35930eaeec2b8b3a42c746394a883b2e532c"
+    },
+    {
+      "path": "pokemon_suite/update-requirements.txt",
+      "sha256": "795cdf5d7b1701ad4981edcc4709ab5e0d49e4970346646d0304e27a19c5bbf5"
+    },
+    {
+      "path": "pokemon_suite/update_feed.py",
+      "sha256": "ef9501a3a2642786ef7afc1ba9b716fa47b01ae93f5fda0180ddceb3826f517d"
+    },
+    {
+      "path": "pokemon_suite/update_journal.py",
+      "sha256": "e1a68786e72e5d5bb19533a5191aa82c46cec24e5a10b0edd1ba018228369a0c"
+    },
+    {
+      "path": "pokemon_suite/updates.py",
+      "sha256": "9a7f45d4c59ba19119252cb4f78ec665f284402f2c5f386be89a397fd3ec11bd"
+    },
+    {
+      "path": "scripts/build-item-knowledge.py",
+      "sha256": "df80c93c011a2371c1a8a873e0224b91c15b6f00d85e58c682e7a952cec1fc43"
+    },
+    {
+      "path": "scripts/build-layout-variants.mjs",
+      "sha256": "e5defb2e46d0e7a5d63c718c988d1cd0f27accdc5beaca8345b388279322d508"
+    },
+    {
+      "path": "scripts/build-macos.py",
+      "sha256": "596214daf68e1fc682249670bd30b0abe1f90b65d599037fc8cc3a57fdeaa501"
+    },
+    {
+      "path": "scripts/build-move-knowledge.py",
+      "sha256": "ecc9c4f8c68845443e73497cbfcfe59dc3c5c27d2fac6936a5988a0e74a4159e"
+    },
+    {
+      "path": "scripts/build-pokedex.py",
+      "sha256": "1b7b30f9e8d7308cc4fe65d6c98784400b9b5f61fb0d86c0779253b6f5a9ce3b"
+    },
+    {
+      "path": "scripts/derive-postgame-facts.py",
+      "sha256": "b4e403cce1a9a5e37a9e62a826a090fe48fdfe706349eeb45d26ec0904b526b3"
+    },
+    {
+      "path": "scripts/extract-fame-script-awards.py",
+      "sha256": "05b06b130d6ca9ecc3d593cad5ea7e3986e12932fd6fe93f540d2370a6026a0f"
+    },
+    {
+      "path": "scripts/gate_triage.py",
+      "sha256": "c1de38d7c34ae23b46040ae33feb76f06389b34e032a2d8c0dd558c12ec55811"
+    },
+    {
+      "path": "scripts/goal-supervisor-replay.py",
+      "sha256": "602c423a1af379a0740b15a079a8056c8c20638b43fd7842a57df01fc8b1d363"
+    },
+    {
+      "path": "scripts/inspect-moves.mjs",
+      "sha256": "dd2d167e7935605ec60cb8cddfc837a42621f1179902fa29b47a109c4b10bb5d"
+    },
+    {
+      "path": "scripts/laya-export-battles.mjs",
+      "sha256": "19dd8dde8de070e251040b3be226b87b7da260de97c1f634716b3b16e032556e"
+    },
+    {
+      "path": "scripts/package-components.py",
+      "sha256": "9fe98111efa38a15f40dccdfaa458517f0a830bf452dfade3ba821ec1f09b2e6"
+    },
+    {
+      "path": "scripts/package-source.py",
+      "sha256": "1316e64dc07ba5bf8fd99f2bf93571008f4e3537cf5aa9119d57438cfe6404c5"
+    },
+    {
+      "path": "scripts/prepare-cartridge-models.py",
+      "sha256": "1847fe46527615cf18cd2d3417149f5f33898a47d6153d7fac38c0eac1ce6ebd"
+    },
+    {
+      "path": "scripts/probe-radio-appliance.py",
+      "sha256": "38c27ebf6325c1f89b95306ef5c03a42386c18a082eeb46b4644cbe6ea1aff57"
+    },
+    {
+      "path": "scripts/publish-package-feed.py",
+      "sha256": "a9df606abcacde63fa9816241b6a654200e6d89fa60133bb53c0480dbc3abf9b"
+    },
+    {
+      "path": "scripts/replay-automatic-partner.mjs",
+      "sha256": "eb8a0f6210670f3f6855627a78c41dbb8758f51168310d255021508e55a81939"
+    },
+    {
+      "path": "scripts/replay-balanced-progression.mjs",
+      "sha256": "878f789932ddfb3b477ccc42e2030e4a785dd57407b4a4f79bc80b6d6c855270"
+    },
+    {
+      "path": "scripts/replay-battle-tape.mjs",
+      "sha256": "7b11c9e4c2fd1b9b9846a22b2c2978cc3420bf15d4f59f718988cd6972477114"
+    },
+    {
+      "path": "scripts/replay-bot.mjs",
+      "sha256": "cbb30868285d84569b785c1aa63df9e4dd285bfc58fc884fac34e45245e6ad78"
+    },
+    {
+      "path": "scripts/replay-boundary-recovery.mjs",
+      "sha256": "933009fae859d58e7c44ce19ed68d73a769b3685ac96ae697e107e6c3677921d"
+    },
+    {
+      "path": "scripts/replay-campaign-interruptions.mjs",
+      "sha256": "91465152258f032b1548cd264fa7f8cdfb6844238cc9e5820dfc9132c674d19c"
+    },
+    {
+      "path": "scripts/replay-campaign-roster.mjs",
+      "sha256": "f313c2b28a0fd4c86fdf99cbedecd4bd843c6eb2306b710d84ff63bcf8501321"
+    },
+    {
+      "path": "scripts/replay-campaign-search.mjs",
+      "sha256": "3cb57bb17e8bdae93f40db870d0e400acb574a9b58b1d0c8e05d67d7f5c9e262"
+    },
+    {
+      "path": "scripts/replay-campaign-strategy.mjs",
+      "sha256": "4aafdc186aa843530194a8f84be10a64391e0cd81d60222dc7e827fb21f1dc01"
+    },
+    {
+      "path": "scripts/replay-campaign-teaching.mjs",
+      "sha256": "8463779ebe0424f7cad04a7c7b7a052e7a7d65835a73148d993ed93d5b0653f1"
+    },
+    {
+      "path": "scripts/replay-checklist-agenda.mjs",
+      "sha256": "32f1531b6ff970b21b7eae3376bbf799bfda0c59d9cdc87c3f78ee07c6ae6b52"
+    },
+    {
+      "path": "scripts/replay-completion-preview.mjs",
+      "sha256": "83d55631c4b8f6ee909e5c2e6c37e678e91999098e5d15d4db2b9df64338958f"
+    },
+    {
+      "path": "scripts/replay-cycling-route.mjs",
+      "sha256": "44bda9217b1d0bb809776fee04226bea222ba361f478dc8c70a1a808d136abe0"
+    },
+    {
+      "path": "scripts/replay-direct-training.mjs",
+      "sha256": "8e3986533a876ee7b617c33e0d0ccf32a7c53cf8b2030d162fe812567cfc4b2d"
+    },
+    {
+      "path": "scripts/replay-dojo-gift-hidden-power.mjs",
+      "sha256": "ae042a49b86be7175567372ad629e2c4788d1752ec816ad1366406c06bb7cda1"
+    },
+    {
+      "path": "scripts/replay-dojo-gift.mjs",
+      "sha256": "64db8d7750da08262c2c7f8147854472de4e0ff071e58d3b01dc2643d69a5ee4"
+    },
+    {
+      "path": "scripts/replay-dunsparce-tunnel-rng.mjs",
+      "sha256": "c641d3b61235ea8552025694c00b0464964349ca1b0f669896f20e9081d88fa7"
+    },
+    {
+      "path": "scripts/replay-effort-training.mjs",
+      "sha256": "ffc580928119fbb5001752bfa8e5dc7cfa19780fac6d5fa437a9e408723e7d2c"
+    },
+    {
+      "path": "scripts/replay-egg-wait-progress.mjs",
+      "sha256": "7b3aa4685da66988838e871ac7762aae8c4add37134f33b445db05a1d175583f"
+    },
+    {
+      "path": "scripts/replay-evolution-acceleration.mjs",
+      "sha256": "4be671074878557291096daab4a7a62a6f0ee6e858ca4f268f292e3a0efc0d71"
+    },
+    {
+      "path": "scripts/replay-evolution-learning.mjs",
+      "sha256": "4c7ef51cc843214caf8968591ed0d59ee5e52b921db15cbd0a1579f703505859"
+    },
+    {
+      "path": "scripts/replay-fame-checker.mjs",
+      "sha256": "673cf5ebac52a443d7e5fe401a56d199d052f43dcca80cc4d8dae1f96e6fb48e"
+    },
+    {
+      "path": "scripts/replay-field-dialogue.mjs",
+      "sha256": "43470cb9e94c9aa79f13bc03266d193234195c9aadd9dd99fd848d4d498a361c"
+    },
+    {
+      "path": "scripts/replay-firered-partner.mjs",
+      "sha256": "13c5b69f1918b474a8da9bcc192921fd0de2e7f3deaa3ad4fe76256c11db304a"
+    },
+    {
+      "path": "scripts/replay-funding-recovery.mjs",
+      "sha256": "3abe7246db7fce4702dc9a6d3495b8d2c7d33a2e0011fe0cf6d04b080b9d576a"
+    },
+    {
+      "path": "scripts/replay-goal-new-game-name.mjs",
+      "sha256": "64983623d81366079534d367da157e9626017d11cb23309d15d0038fdbdd2ba1"
+    },
+    {
+      "path": "scripts/replay-goal-postgame-handoff.mjs",
+      "sha256": "1a0de9547879254af7380a800db89d0c60983b52dbbc525ffdb9887c0a75204c"
+    },
+    {
+      "path": "scripts/replay-held-item-partner.mjs",
+      "sha256": "23f7ae3b5fbe13fb98cc61fb6034a0e6785e989a56b5157b64bf4f57119f31a3"
+    },
+    {
+      "path": "scripts/replay-held-reference.mjs",
+      "sha256": "739a85e3b0fc3d4e7683ce05e5607b295193484bfe119dbb9f932a222b3b5b88"
+    },
+    {
+      "path": "scripts/replay-hm-policy.mjs",
+      "sha256": "f55c28603c79323e23d7a55bd888181696c10fcc61b779657222df6880f96548"
+    },
+    {
+      "path": "scripts/replay-hunt-rejection.mjs",
+      "sha256": "5313de1c9b7cdc920e31179fd5362291e7e924735d9d15cb030d005ae8d343ee"
+    },
+    {
+      "path": "scripts/replay-income-chain.mjs",
+      "sha256": "cd2c3a4c2354014add3ee76fe947c804d05c941f561f483ae16e9e7a4c0579b2"
+    },
+    {
+      "path": "scripts/replay-island-fly.mjs",
+      "sha256": "d527810ee7d63ec79237932a2be2e585d074a94f4c82677addbceffcc8e66a3b"
+    },
+    {
+      "path": "scripts/replay-league-champion-tactics.mjs",
+      "sha256": "94959aafa4a0eceabd328544d902ae4b6465da9db2d2e43bace662e47b280c62"
+    },
+    {
+      "path": "scripts/replay-league-exp-share-restore.mjs",
+      "sha256": "b414cdd85da1464a59ccd44c429025417f5b711d10b1b7c4a9c237a5554d2bd2"
+    },
+    {
+      "path": "scripts/replay-league-exp-share-strike.mjs",
+      "sha256": "7993696013a60ad68f1c820b68aebbc2789538bcabe1823dc9fc33f5a17120a0"
+    },
+    {
+      "path": "scripts/replay-league-exp-share.mjs",
+      "sha256": "ecfffb9cc0217a4b9dbbceb42e3b753e7f6e20b65bdc1c4fc6b3ef86a0488d96"
+    },
+    {
+      "path": "scripts/replay-league-finish.mjs",
+      "sha256": "9f4bd4f77e29515fdcb3c3fdd7e947b2deea2324a3dcc7a182473ac5365ad4af"
+    },
+    {
+      "path": "scripts/replay-league-menu-settle.mjs",
+      "sha256": "15067d19085b8461c9c002f36fac5c030db4d6555b9ed3bff10aa482e2cc12c6"
+    },
+    {
+      "path": "scripts/replay-league-ownership.mjs",
+      "sha256": "bbe1b78f832efb004fd744d0c8fddb652cd6727e2020852df90e72557d578438"
+    },
+    {
+      "path": "scripts/replay-league-record.mjs",
+      "sha256": "51d5de8d124006f5f206865d80bc1e2e44924aad28e1be731ea672cf257c9523"
+    },
+    {
+      "path": "scripts/replay-league-tactics.mjs",
+      "sha256": "4caec9d8c805847852ab363f99ad1be0a7b3b51d04c03e85c299095ae4901e6a"
+    },
+    {
+      "path": "scripts/replay-league-training.mjs",
+      "sha256": "08366806628e5ac7cf49f8e822c6644d0d0bee8d9ebc69a81741b5af9769bf85"
+    },
+    {
+      "path": "scripts/replay-maintenance-recovery.mjs",
+      "sha256": "3bb0e2e29f3e7f0b8a44ecf7e8d36e9c6ec3e7a5567a4b9ab6876a30693c593e"
+    },
+    {
+      "path": "scripts/replay-major-battle.mjs",
+      "sha256": "29503ff28ae2d0228db11a215b9a16892281601a2e59f62782f3859bd8e6a45a"
+    },
+    {
+      "path": "scripts/replay-menu-navigation.mjs",
+      "sha256": "032c491913aa2959203adf5a20fba0cd412764a9513218e5a038659f32b24a98"
+    },
+    {
+      "path": "scripts/replay-moltres-route.mjs",
+      "sha256": "1df362bd0f0ce37c9022382cbaf5d07f2835a743ea5a2eb2fae20d2b4eea8867"
+    },
+    {
+      "path": "scripts/replay-move-understanding.mjs",
+      "sha256": "098f6fba47ba0694ab931affa93586f62a45225de7d32fd27462163aa3c24442"
+    },
+    {
+      "path": "scripts/replay-moving-rematch.mjs",
+      "sha256": "9abcddccd360ad5d19c400c189333a140afb420b4a6d9da05a36891ae320a856"
+    },
+    {
+      "path": "scripts/replay-national-ember-hunt.mjs",
+      "sha256": "b22c346a17d2bee19776d9d57b38c511964870b951f30156b85d45e019b14aab"
+    },
+    {
+      "path": "scripts/replay-native-acquisition.mjs",
+      "sha256": "108c9dbd18f47176017a49701d95e0f7c54cab31b185a056cd0d58e6d65c25dc"
+    },
+    {
+      "path": "scripts/replay-new-save-bot-start.mjs",
+      "sha256": "49471735c9b8138f33238395b953780065c350e0b0da76f5d664ff77e900a295"
+    },
+    {
+      "path": "scripts/replay-postgame-combat-preparation.mjs",
+      "sha256": "dccdb6d597f705871b395fc2cac14a2dcad551f2077f9c846e5b846eaf942334"
+    },
+    {
+      "path": "scripts/replay-postgame-evolution.mjs",
+      "sha256": "97dea0e0f42e5e725c203eff84854cac033f65898b9bd8e63a231ea5398d751b"
+    },
+    {
+      "path": "scripts/replay-postgame-handoff.mjs",
+      "sha256": "b90aafb5ab1da69ecf6362817501d8080aa17c1499cc6fbe191370ba3a067670"
+    },
+    {
+      "path": "scripts/replay-postgame-icefall.mjs",
+      "sha256": "cc8cfeb19f6d95b5955d2004625596f79c4caf52f15e209ea5e82585c675f3a1"
+    },
+    {
+      "path": "scripts/replay-postgame-records.mjs",
+      "sha256": "5cee40b7107825ac714c09928da89f6e2410d717a05083785e74ec6902737401"
+    },
+    {
+      "path": "scripts/replay-postgame-safari-save.mjs",
+      "sha256": "f96aaf9d2590066aa08e17c63ccac5b344a442e3fc80b727b4e58860caf71130"
+    },
+    {
+      "path": "scripts/replay-postgame-sapphire.mjs",
+      "sha256": "75df2ce729bb122a54ce1b635ec190f0169e186cb3274318e3fccf445b89476b"
+    },
+    {
+      "path": "scripts/replay-postgame-selection.mjs",
+      "sha256": "dbce8684c8620a3763efef34641c6cd826b2a33f9e1f26b3ba7d583e4c7cc78d"
+    },
+    {
+      "path": "scripts/replay-postgame-shopping-resume.mjs",
+      "sha256": "d6afcc96564b0dfa6731030aadea49d539a87221db0972331477dfd6377cc4a9"
+    },
+    {
+      "path": "scripts/replay-postgame-supplies.mjs",
+      "sha256": "9b3faa70881c861447d02eb1e10a7dcc1c565bc06537a069f281cbbc12ebb5bb"
+    },
+    {
+      "path": "scripts/replay-postgame-supply-replan.mjs",
+      "sha256": "58bbbd536619b77b565ce7e1fa5d4dc96478662c9f2b48119a0f63800689153c"
+    },
+    {
+      "path": "scripts/replay-postgame-tower-balanced-roster.mjs",
+      "sha256": "1826e97d151d046a1f3c4b2951c0e5fcdd0abac864a949832c21ecc3ef99d964"
+    },
+    {
+      "path": "scripts/replay-postgame-travel.mjs",
+      "sha256": "02776ca7bc229a047b8106d3d7aec9e1519936538697f69e354500cb04be2ec9"
+    },
+    {
+      "path": "scripts/replay-postgame-worker.mjs",
+      "sha256": "0b82e27c43e2c2e54eba1bdc03f569b42a7ab03876a8b7aa4d303f199621ccbe"
+    },
+    {
+      "path": "scripts/replay-priority-static-target.mjs",
+      "sha256": "7825fc353702b52ba06d618d420b7461fd71708b38ebdb5f82ddb9808272fd4e"
+    },
+    {
+      "path": "scripts/replay-qmm-supply.mjs",
+      "sha256": "f7b44781fd178b8e78e4c7ff81882cb99b639d5163c64d4f2a9fa93d490a9ae7"
+    },
+    {
+      "path": "scripts/replay-rare-candy-move-learn.mjs",
+      "sha256": "61e2d42e8eb1d1e2959a5c2e6d074cf500e463b4cd3c125a3547e87d26e78ce0"
+    },
+    {
+      "path": "scripts/replay-recharge-approach.mjs",
+      "sha256": "00fe5a0fc8a93095e8a9bf1e3325671288db25b6503e9569a5247eb1de5cb67d"
+    },
+    {
+      "path": "scripts/replay-recovery-storage.mjs",
+      "sha256": "e30f08ac540976e1357bdaeea8d4aa39cd91fcb77629376a7c7e4454b840dace"
+    },
+    {
+      "path": "scripts/replay-released-hunt-resume.mjs",
+      "sha256": "a0e2d0191ac68dd297c69f8c58adaa4892885438d1e7e66e6bc44ea5cfcd8bc3"
+    },
+    {
+      "path": "scripts/replay-roamer-capture.mjs",
+      "sha256": "6fb90f8b428f7a2a59817baf01af37844dfd4c6afffa85abe516e903febd8032"
+    },
+    {
+      "path": "scripts/replay-rom-inputs.mjs",
+      "sha256": "e79e81cef0e012326c47c571868097dcac81ce92b51cb90e81ff3820bbcf6594"
+    },
+    {
+      "path": "scripts/replay-safari-dex-capture.mjs",
+      "sha256": "8020e62ba7ab002152fd3d389a8c3d958ecd66cedcadc12c8bd70c04fbc73344"
+    },
+    {
+      "path": "scripts/replay-seafoam-current.mjs",
+      "sha256": "377319e11f01b072fd2def705bcdaaf56d8ae7c618e49d0e9f6f9fbffb9ef6e4"
+    },
+    {
+      "path": "scripts/replay-seagallop-return.mjs",
+      "sha256": "712dcefc8525480a60ba23dc68822772a6abb13efae7e14595d98f1fa9e0d1a6"
+    },
+    {
+      "path": "scripts/replay-snorlax-handoff.mjs",
+      "sha256": "88e17cd1d2ddd1ee87e5e67c5d2c6a67895b6fb0134986e3d77b9eb64a56d0d3"
+    },
+    {
+      "path": "scripts/replay-static-timing.mjs",
+      "sha256": "ee7e2b610a28e6de2dd7c307d2df978812ee6d2493fd87782a60eeafc1f90491"
+    },
+    {
+      "path": "scripts/replay-story-checkpoints.mjs",
+      "sha256": "948a8565bbd63e86b75ef281bbe1516192724f0571484a830574016567fe2e54"
+    },
+    {
+      "path": "scripts/replay-team-trade-evolution.mjs",
+      "sha256": "9336617be9ebdcd648d15e88e09f914412efd6f27c083fcbb523df449fdec7c7"
+    },
+    {
+      "path": "scripts/replay-tower-admission.mjs",
+      "sha256": "4af0a1f45515493b7214f5f403ff2caba012bd3ae1b317c5151fc3e4d440317e"
+    },
+    {
+      "path": "scripts/replay-tower-defeat.mjs",
+      "sha256": "57d5471cf88ffc3cf02d8475c6e6776460963251c06c110fbb8950929e1b87c9"
+    },
+    {
+      "path": "scripts/replay-trainer-portrait.mjs",
+      "sha256": "c774322fdfbdfa88ded2ba64e4ff9141df547319d66fe4436ccdc7266af66ccb"
+    },
+    {
+      "path": "scripts/replay-transform.mjs",
+      "sha256": "62ed19444360d74c809a1a1460b3585648f0d00e1cc3347efedec351a5d8efa3"
+    },
+    {
+      "path": "scripts/replay-unown-handoff.mjs",
+      "sha256": "be9ae92d978837a5eec65aea10e6ec1914a1b4441b624f61d378f86a017e718e"
+    },
+    {
+      "path": "scripts/replay-victory-boulder.mjs",
+      "sha256": "8813b03f3e5cecb87c04094ac55c4ddc8a8c4e594e0414634fec51a499ba48f1"
+    },
+    {
+      "path": "scripts/replay-victory-road-funding.mjs",
+      "sha256": "2674bc902e03abd9e12866d36402d18fc8a69c32f940db7469c8040268942e68"
+    },
+    {
+      "path": "scripts/replay-victory-road-return.mjs",
+      "sha256": "b8213e615a51bb61719b43712c1da7852523cf3bc01fd1095749275f115f71e5"
+    },
+    {
+      "path": "scripts/replay-vs-seeker-cycle.mjs",
+      "sha256": "4f136970b267313c2f5da0f329f3fce82d966abeca625fce71747c2fcac03230"
+    },
+    {
+      "path": "scripts/run-gate.py",
+      "sha256": "6162968ae2a573131de6855cacbd5bba3c515922e60f2bdd48e0dcde76ff89e2"
+    },
+    {
+      "path": "scripts/stage-radio-host.py",
+      "sha256": "cdca11f30716fc8254f427cafd2408f9a23ddd3cb206d790f2f70635ef3c0446"
+    },
+    {
+      "path": "scripts/sync-pokedex-profiles.py",
+      "sha256": "6254e6a5dc78dc55bf07c062e228b36a06fabc04600be6a7472bc19762dc36cd"
+    },
+    {
+      "path": "scripts/test-engine.mjs",
+      "sha256": "1e84fb905cbbb8ebcc9b44a5ab031924ad66675b1da8536c9751be7707126350"
+    },
+    {
+      "path": "scripts/verify-bot.py",
+      "sha256": "52d95657a8509db8f5eac17fb48e8e65af02575acb3d331d0c9daa698a1c0f7e"
+    },
+    {
+      "path": "scripts/verify-live.mjs",
+      "sha256": "a4d8391194d1e122ccb4c731e12cd7837c94561148842054780ab7ff91e41e99"
+    },
+    {
+      "path": "tests/adapter-resources.test.mjs",
+      "sha256": "28a05c7d0495a14f0cd934bb5eb10ac4c62c464cbca7ebb697888101adf53036"
+    },
+    {
+      "path": "tests/browser.test.mjs",
+      "sha256": "dd3c8f4cd4ad29a4f0421fac5310bb87178f3d24c1f2d55486d0321d0fff3b63"
+    },
+    {
+      "path": "tests/cold-save.test.mjs",
+      "sha256": "a1a44628b95d612782d4659ab90ee7dc2d770cfadb2ffe47533cbd1ed27daa8c"
+    },
+    {
+      "path": "tests/data/gate-failure-labels.jsonl",
+      "sha256": "e30c81b50bbf288176d7a7d6ab0f6af6b5de7e941e8f45ae6784d83bd4b0aa51"
+    },
+    {
+      "path": "tests/data/request-context.json",
+      "sha256": "2189c91fa00e9ca9786f9c848d51388f25f6b837e7ed37ada0eca0ccdfc60260"
+    },
+    {
+      "path": "tests/data/request-phrasings-blind.jsonl",
+      "sha256": "1140b3fe29774a8a0bf4a48bfc9e8b9a7978eef135607e1c666dab9529d134fc"
+    },
+    {
+      "path": "tests/data/request-phrasings.jsonl",
+      "sha256": "8c58304d58a858459e97be0a5d143d27987ee03342cbc3c20954e79612b4d4fb"
+    },
+    {
+      "path": "tests/data/stop-triage-labels.jsonl",
+      "sha256": "fca2082f6636e3804072fac73b825b1424a5b758bf92e3663fce384b8924a486"
+    },
+    {
+      "path": "tests/helpers/chrome-page.mjs",
+      "sha256": "aa82bb450ecbc16c49ce828fc4d620371b86b06aa3c642c966863c531a284aec"
+    },
+    {
+      "path": "tests/laya-export-battles.test.mjs",
+      "sha256": "747c8899c1041dc639f785695913be2191129ebac722cefd46daaa8f944659a2"
+    },
+    {
+      "path": "tests/mobile-runtime.test.mjs",
+      "sha256": "dabd7884e0334a3e331cd79f65d11bada43b2553218fd454aaca8e7cf48a6b77"
+    },
+    {
+      "path": "tests/replay-rom-inputs.test.mjs",
+      "sha256": "ee40d7293af580c83ec7cd8bbc203adfe41772a1f2e180f6281f412c90751a9f"
+    },
+    {
+      "path": "tests/request-ask.test.mjs",
+      "sha256": "3d48df4efec30f8c87ec27548073d439367bf8f8140d4a465e20b77a9b901a50"
+    },
+    {
+      "path": "tests/rom-art.test.mjs",
+      "sha256": "4613812203b62f120923a261150f4e6289f470269677da7650c62da9c3e7bbe1"
+    },
+    {
+      "path": "tests/stop-triage-card.test.mjs",
+      "sha256": "46cb3ca5dfb59b8bc0ccb210f7c109c3d0aebd9ec1cfcf6c55f17db5aa1768a2"
+    },
+    {
+      "path": "tests/test_adapter_launch.py",
+      "sha256": "f0c1d8c91daa99a9c54531121eeeaabeda260d1b0171696936ed624c3c6b3657"
+    },
+    {
+      "path": "tests/test_battle_tape_launch.py",
+      "sha256": "bcc4701bb9fb2f6a7a65dacc126cb88c37558a07f08607c2b82a635bee6448b4"
+    },
+    {
+      "path": "tests/test_bot_settings.py",
+      "sha256": "fa5d55365a27dc68c479c035d9d38ab9ff628c3b41f8f427fc8894f64159aa40"
+    },
+    {
+      "path": "tests/test_bot_verification.py",
+      "sha256": "0fd6305d6c25a4f66cb0bacd2fee403112f50f6005e0e947dfd0acde5ae25ca2"
+    },
+    {
+      "path": "tests/test_capabilities.py",
+      "sha256": "301865e16ef0e97eb46f7c77194fe163536dcfc514c6014a6c0cd09b56345fde"
+    },
+    {
+      "path": "tests/test_cartridge_mascots.py",
+      "sha256": "75e27964f4cbecc0228765b9fbf2e36a29a5b50369717654795763b8608f02ae"
+    },
+    {
+      "path": "tests/test_cartridge_models.py",
+      "sha256": "bd941c7ab7e81f060dcf57c072e8b2f7018cc152105359029d6cf7a52cc0324d"
+    },
+    {
+      "path": "tests/test_companion.py",
+      "sha256": "350064be8501d49f184a043cf63474ac51d6fb8e0bc7f101ec884125eb1ea54a"
+    },
+    {
+      "path": "tests/test_competitive_training.py",
+      "sha256": "d1ee38fc53fc3ca7e4c119e964c1c21be04c407ddaed1a1c93b8fd56527b9eb4"
+    },
+    {
+      "path": "tests/test_component_selection.py",
+      "sha256": "7909ac2d19cb916d71230758169a4f9d9d640fbefca49899bb6aac67658572f9"
+    },
+    {
+      "path": "tests/test_controls.py",
+      "sha256": "ce4b62c3815db24778da5bc39bb1d1b9f90fd90cc75ec2fc382e6344d238027a"
+    },
+    {
+      "path": "tests/test_data_provider.py",
+      "sha256": "a843d1150320c9abeaba4bcf7e06d38af5d4dcd48357af1aac3fc76c952fd204"
+    },
+    {
+      "path": "tests/test_desktop.py",
+      "sha256": "ac77b6ae20148cbd387d12936f9f5165cec8a60560e730deb49a3bddc0d9728e"
+    },
+    {
+      "path": "tests/test_firered_partner.py",
+      "sha256": "7e102b9a8120925fac418812955e79c01d2f3cff38dbcc14a545d8758575b170"
+    },
+    {
+      "path": "tests/test_game_resources.py",
+      "sha256": "1e3a25589d0074141833f2288a170f66b11ae673428be975610339954ade4a30"
+    },
+    {
+      "path": "tests/test_gate_triage.py",
+      "sha256": "67c66809890bb2b55f08175bcd356c008cb567f01d8a236c919ca599a76cd50e"
+    },
+    {
+      "path": "tests/test_goal_requests.py",
+      "sha256": "5bdd46b57d75d2c2ed0faa05e2157e1a1c120fccb457f3541e90ac73af3871fb"
+    },
+    {
+      "path": "tests/test_goal_supervisor.py",
+      "sha256": "9b72f08fa3c41f465d42bad92f4c8b00e0e976707c2a991639b2109aab7d354e"
+    },
+    {
+      "path": "tests/test_guest_relay.py",
+      "sha256": "0cd6f84f7279a5841f823de38f013cb6b5d55577bfb569e5d11c374015d51063"
+    },
+    {
+      "path": "tests/test_http.py",
+      "sha256": "d07580a1cc3a640e8ba2f6cf32f95501e9a21b4db1a06b5f24c3f7d78cae9224"
+    },
+    {
+      "path": "tests/test_http_disconnect.py",
+      "sha256": "9bf1d0494f30674aef1aff0c6e7a61b9b2bcf90cd6527185da2b89031cae0b0d"
+    },
+    {
+      "path": "tests/test_installation.py",
+      "sha256": "845e59983fd65128d0d0169227e6c924f1641be625895fc3f5c820fcea78f960"
+    },
+    {
+      "path": "tests/test_inventory_sources.py",
+      "sha256": "51f295137c4398b4607369e1304f9e11ef21d3c6370bc40352525bf4bf969538"
+    },
+    {
+      "path": "tests/test_laya_primary.py",
+      "sha256": "4871d23e1773589c82ee25de704a3a0296e06ed75426bbe9b638da414553d2cd"
+    },
+    {
+      "path": "tests/test_laya_runtime.py",
+      "sha256": "5283b201bff979e973c402baca6f1566efe3cc8e87d083eac96589ad1361f3d8"
+    },
+    {
+      "path": "tests/test_macos_engine_packaging.py",
+      "sha256": "2b83fbf8b99bb6d9ed8e96c3675748126a6bf954af588dbf9ea477e41aef2dde"
+    },
+    {
+      "path": "tests/test_macos_radio_packaging.py",
+      "sha256": "1bf6b7125e1c9e22b2580d5e592cf79606d9007469cbb6e5bb33e275a0df353e"
+    },
+    {
+      "path": "tests/test_native_playback.py",
+      "sha256": "2984f8c5c64ebbe02d0e695aac44099e2d25d5b5863c696dcefa93db8e1d3d27"
+    },
+    {
+      "path": "tests/test_package.py",
+      "sha256": "d4d91a55006db72fa06ee79c63e6c91ae3b8652eb19c5b83051734f376bca2ea"
+    },
+    {
+      "path": "tests/test_packages.py",
+      "sha256": "e111abe7da2338e0f7b7dd53dfe201221b82d709169286b551b1121987c51ef8"
+    },
+    {
+      "path": "tests/test_pokedex_database.py",
+      "sha256": "ed720b744949c01ee4a43a9af2e224c56e43ba6557e2729ecc8481f34727a0d9"
+    },
+    {
+      "path": "tests/test_pokemon_requests.py",
+      "sha256": "59bae01569c1141dd11355012e0710e9d0a5e907b3da9e868eca7c599b02b27f"
+    },
+    {
+      "path": "tests/test_portability.py",
+      "sha256": "ed2fc69a88ccc0f3c37a0d4cf9f110d95008a832ff758a038288a0c06a970a77"
+    },
+    {
+      "path": "tests/test_postgame_partner.py",
+      "sha256": "005ea71d6810a1278a4e45c8f8e9b72c6e3041b44a80cbf095f130973c9df6ae"
+    },
+    {
+      "path": "tests/test_radio_appliance.py",
+      "sha256": "a66b41490b755ea09024c3f0f490f27b4d87c5d95c85127f9245d0acd4a4348c"
+    },
+    {
+      "path": "tests/test_radio_appliance_probe.py",
+      "sha256": "bdf95297d77c88692fe8f2558c19fd3032e970ec5ba4e19a699b768d7b78fa81"
+    },
+    {
+      "path": "tests/test_radio_host_stage.py",
+      "sha256": "a334ba3314180ddf9222af0eb20cb892f532f86dbb9736397fb48a1f3097ec3e"
+    },
+    {
+      "path": "tests/test_region_map_art.py",
+      "sha256": "086057def50a1a5021f71e9c9df9e5d5fbed548daf82b3de2221936afa237daa"
+    },
+    {
+      "path": "tests/test_release_assets.py",
+      "sha256": "e778ea33f763f114b114f00ecbb45e06ac36c3eff6894d6b56070f253849b6fb"
+    },
+    {
+      "path": "tests/test_reports.py",
+      "sha256": "332f85b96deeb69184516e751c03e9876ceb48abd9f98fed9d59276363508183"
+    },
+    {
+      "path": "tests/test_request_phrasings.py",
+      "sha256": "a6fed77aa9dbc7e2b8354860ceff19086e18c22da405fa3abcc89d307c6baaff"
+    },
+    {
+      "path": "tests/test_request_routes.py",
+      "sha256": "522346b469158fc6692d790341c19c1a54a44956e11079f1e0e43c60169a4e10"
+    },
+    {
+      "path": "tests/test_roamer_hunt.py",
+      "sha256": "c59dc3549ad6191f22ec4389431ee3e029031f8dd59ce472a4aef98d1e599097"
+    },
+    {
+      "path": "tests/test_rom_art.py",
+      "sha256": "c514047fe97413e730de6f65ce02d0dcefe2d7173d603956d74c42537a4d22d1"
+    },
+    {
+      "path": "tests/test_rom_graphics.py",
+      "sha256": "285feb6534e96f8826a287efd94d325f58eebb94cd31ca1ac3d1d3ec698aa975"
+    },
+    {
+      "path": "tests/test_rom_integrity.py",
+      "sha256": "aa498a4b9b8213d70586f7e826bea92f2c20de69f4c2619442d9b7c70ad14bb6"
+    },
+    {
+      "path": "tests/test_runtime_selection.py",
+      "sha256": "abb1c0a217bc067cd831a5d8752c0599dc10bea5188b43aa19db3a81ff0cffdd"
+    },
+    {
+      "path": "tests/test_session_liveness.py",
+      "sha256": "a187c9fe249ce15de7a79fce01582466d72e0ea8aedb1d89411a20d2f7dad92a"
+    },
+    {
+      "path": "tests/test_shiny_sweep.py",
+      "sha256": "6ea7a8118998a86218729da3f017ad1c9a112bb5d15a4ac8b643010da70ee6cc"
+    },
+    {
+      "path": "tests/test_standalone.py",
+      "sha256": "329cba3ec1ba7fc82bab3ad7e9de537edfc46f594e1518b45a3d2728ffd123b0"
+    },
+    {
+      "path": "tests/test_stop_triage.py",
+      "sha256": "33e1495758a3a44d5e4309eeb53119b6c9d8e5f08b8ab31839703109ec9875a9"
+    },
+    {
+      "path": "tests/test_trading.py",
+      "sha256": "859943fb491bf61bf5159a8636512ea808fb726445e3d9c25316e24bc9d34f2e"
+    },
+    {
+      "path": "tests/test_update_feed.py",
+      "sha256": "7f6d3cf5c854f83dcf8dcda7f5141936cc3f2f446daa0089096df01967ea0d75"
+    },
+    {
+      "path": "tests/test_update_journal.py",
+      "sha256": "3cfa970f178be683083e974db9795478086f83c5eba5be78deadaa69b6263eb7"
+    },
+    {
+      "path": "tests/test_update_partners.py",
+      "sha256": "59a68991eb2cfe05ab02786890b9c2b8c70af4e14588e711d6ca958e9f69abb7"
+    },
+    {
+      "path": "tests/test_update_recovery.py",
+      "sha256": "430d1b3f2f514b73164e4a390b72543992e768d7ac54e889333702c2542cc99d"
+    },
+    {
+      "path": "tests/test_voice_request_packaging.py",
+      "sha256": "3640ec753db86c0b10e93984bb8e86b9986fcf5378d4fe96f681b0984ece3e40"
+    }
+  ]
+}

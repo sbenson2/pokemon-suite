@@ -1,0 +1,1367 @@
+{
+  "schema": "pokemon-suite/fame-checker-facts/v1",
+  "source": {
+    "commit": "c75f352304d529f6ba92d4f74b9cf8b5c3810788",
+    "table": "https://github.com/pret/pokefirered/tree/c75f352304d529f6ba92d4f74b9cf8b5c3810788/data",
+    "derivation": "Map event identity and reachable famechecker instructions; no artwork or dialogue."
+  },
+  "people": [
+    "OAK",
+    "DAISY",
+    "BROCK",
+    "MISTY",
+    "LTSURGE",
+    "ERIKA",
+    "KOGA",
+    "SABRINA",
+    "BLAINE",
+    "LORELEI",
+    "BRUNO",
+    "AGATHA",
+    "LANCE",
+    "BILL",
+    "MRFUJI",
+    "GIOVANNI"
+  ],
+  "targets": [
+    {
+      "map": "MAP_CELADON_CITY",
+      "kind": "background",
+      "index": 7,
+      "script": "CeladonCity_EventScript_GymSign",
+      "entries": [
+        [
+          5,
+          0
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CELADON_CITY_CONDOMINIUMS_1F",
+      "kind": "map-arrival",
+      "script": "CeladonCity_Condominiums_1F_MapScripts",
+      "entries": [
+        [
+          1,
+          4
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CELADON_CITY_CONDOMINIUMS_1F",
+      "kind": "object",
+      "index": 3,
+      "script": "CeladonCity_Condominiums_1F_EventScript_TeaWoman",
+      "entries": [
+        [
+          1,
+          4
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CELADON_CITY_CONDOMINIUMS_2F",
+      "kind": "object",
+      "index": 0,
+      "script": "CeladonCity_Condominiums_2F_EventScript_PokemonJournalErika",
+      "entries": [
+        [
+          5,
+          5
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CELADON_CITY_CONDOMINIUMS_2F",
+      "kind": "object",
+      "index": 1,
+      "script": "CeladonCity_Condominiums_2F_EventScript_PokemonJournalErika",
+      "entries": [
+        [
+          5,
+          5
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CELADON_CITY_DEPARTMENT_STORE_2F",
+      "kind": "object",
+      "index": 3,
+      "script": "CeladonCity_DepartmentStore_2F_EventScript_Woman",
+      "entries": [
+        [
+          12,
+          3
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CELADON_CITY_GYM",
+      "kind": "map-arrival",
+      "script": "CeladonCity_Gym_MapScripts",
+      "entries": [
+        [
+          5,
+          1
+        ],
+        [
+          5,
+          4
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CELADON_CITY_GYM",
+      "kind": "object",
+      "index": 3,
+      "script": "CeladonCity_Gym_EventScript_Tamia",
+      "entries": [
+        [
+          5,
+          3
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CELADON_CITY_GYM",
+      "kind": "object",
+      "index": 5,
+      "script": "CeladonCity_Gym_EventScript_Lisa",
+      "entries": [
+        [
+          5,
+          2
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CELADON_CITY_GYM",
+      "kind": "object",
+      "index": 6,
+      "script": "CeladonCity_Gym_EventScript_Erika",
+      "entries": [
+        [
+          5,
+          1
+        ],
+        [
+          5,
+          4
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CERULEAN_CITY",
+      "kind": "background",
+      "index": 1,
+      "script": "CeruleanCity_EventScript_GymSign",
+      "entries": [
+        [
+          3,
+          0
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CERULEAN_CITY",
+      "kind": "trigger",
+      "index": 0,
+      "script": "CeruleanCity_EventScript_RivalTriggerLeft",
+      "entries": [
+        [
+          13,
+          0
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CERULEAN_CITY",
+      "kind": "trigger",
+      "index": 1,
+      "script": "CeruleanCity_EventScript_RivalTriggerMid",
+      "entries": [
+        [
+          13,
+          0
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CERULEAN_CITY",
+      "kind": "trigger",
+      "index": 2,
+      "script": "CeruleanCity_EventScript_RivalTriggerRight",
+      "entries": [
+        [
+          13,
+          0
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CERULEAN_CITY_GYM",
+      "kind": "map-arrival",
+      "script": "CeruleanCity_Gym_MapScripts",
+      "entries": [
+        [
+          3,
+          1
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CERULEAN_CITY_GYM",
+      "kind": "object",
+      "index": 0,
+      "script": "CeruleanCity_Gym_EventScript_Luis",
+      "entries": [
+        [
+          3,
+          2
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CERULEAN_CITY_GYM",
+      "kind": "object",
+      "index": 2,
+      "script": "CeruleanCity_Gym_EventScript_Misty",
+      "entries": [
+        [
+          3,
+          1
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CERULEAN_CITY_POKEMON_CENTER_1F",
+      "kind": "object",
+      "index": 3,
+      "script": "CeruleanCity_PokemonCenter_1F_EventScript_Youngster",
+      "entries": [
+        [
+          13,
+          1
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CERULEAN_CITY_POKEMON_CENTER_1F",
+      "kind": "object",
+      "index": 5,
+      "script": "CeruleanCity_PokemonCenter_1F_EventScript_PokemonJournalMisty",
+      "entries": [
+        [
+          3,
+          5
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CERULEAN_CITY_POKEMON_CENTER_1F",
+      "kind": "object",
+      "index": 6,
+      "script": "CeruleanCity_PokemonCenter_1F_EventScript_PokemonJournalMisty",
+      "entries": [
+        [
+          3,
+          5
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CINNABAR_ISLAND",
+      "kind": "object",
+      "index": 0,
+      "script": "CinnabarIsland_EventScript_Woman",
+      "entries": [
+        [
+          8,
+          3
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CINNABAR_ISLAND",
+      "kind": "background",
+      "index": 2,
+      "script": "CinnabarIsland_EventScript_GymSign",
+      "entries": [
+        [
+          8,
+          0
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CINNABAR_ISLAND_GYM",
+      "kind": "object",
+      "index": 4,
+      "script": "CinnabarIsland_Gym_EventScript_Derek",
+      "entries": [
+        [
+          8,
+          2
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CINNABAR_ISLAND_GYM",
+      "kind": "object",
+      "index": 7,
+      "script": "CinnabarIsland_Gym_EventScript_Blaine",
+      "entries": [
+        [
+          8,
+          1
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CINNABAR_ISLAND_GYM",
+      "kind": "background",
+      "index": 14,
+      "script": "CinnabarIsland_Gym_EventScript_BlaineFujiPhoto",
+      "entries": [
+        [
+          8,
+          4
+        ],
+        [
+          14,
+          4
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CINNABAR_ISLAND_POKEMON_CENTER_1F",
+      "kind": "object",
+      "index": 4,
+      "script": "CinnabarIsland_PokemonCenter_1F_EventScript_PokemonJournalMrFuji",
+      "entries": [
+        [
+          14,
+          5
+        ]
+      ]
+    },
+    {
+      "map": "MAP_CINNABAR_ISLAND_POKEMON_CENTER_1F",
+      "kind": "object",
+      "index": 5,
+      "script": "CinnabarIsland_PokemonCenter_1F_EventScript_PokemonJournalMrFuji",
+      "entries": [
+        [
+          14,
+          5
+        ]
+      ]
+    },
+    {
+      "map": "MAP_FIVE_ISLAND_POKEMON_CENTER_1F",
+      "kind": "object",
+      "index": 3,
+      "script": "FiveIsland_PokemonCenter_1F_EventScript_PokemonJournal",
+      "entries": [
+        [
+          9,
+          3
+        ]
+      ]
+    },
+    {
+      "map": "MAP_FIVE_ISLAND_POKEMON_CENTER_1F",
+      "kind": "object",
+      "index": 4,
+      "script": "FiveIsland_PokemonCenter_1F_EventScript_PokemonJournal",
+      "entries": [
+        [
+          9,
+          3
+        ]
+      ]
+    },
+    {
+      "map": "MAP_FIVE_ISLAND_RESORT_GORGEOUS_HOUSE",
+      "kind": "background",
+      "index": 0,
+      "script": "FiveIsland_ResortGorgeous_House_EventScript_PokemonJournal",
+      "entries": [
+        [
+          8,
+          5
+        ]
+      ]
+    },
+    {
+      "map": "MAP_FIVE_ISLAND_RESORT_GORGEOUS_HOUSE",
+      "kind": "background",
+      "index": 1,
+      "script": "FiveIsland_ResortGorgeous_House_EventScript_PokemonJournal",
+      "entries": [
+        [
+          8,
+          5
+        ]
+      ]
+    },
+    {
+      "map": "MAP_FIVE_ISLAND_ROCKET_WAREHOUSE",
+      "kind": "object",
+      "index": 5,
+      "script": "FiveIsland_RocketWarehouse_EventScript_Gideon",
+      "entries": [
+        [
+          15,
+          5
+        ]
+      ]
+    },
+    {
+      "map": "MAP_FIVE_ISLAND_WATER_LABYRINTH",
+      "kind": "map-arrival",
+      "script": "FiveIsland_WaterLabyrinth_MapScripts",
+      "entries": [
+        [
+          1,
+          2
+        ]
+      ]
+    },
+    {
+      "map": "MAP_FIVE_ISLAND_WATER_LABYRINTH",
+      "kind": "object",
+      "index": 0,
+      "script": "FiveIsland_WaterLabyrinth_EventScript_EggGentleman",
+      "entries": [
+        [
+          1,
+          2
+        ]
+      ]
+    },
+    {
+      "map": "MAP_FOUR_ISLAND",
+      "kind": "object",
+      "index": 5,
+      "script": "FourIsland_EventScript_OldWoman",
+      "entries": [
+        [
+          9,
+          5
+        ]
+      ]
+    },
+    {
+      "map": "MAP_FOUR_ISLAND",
+      "kind": "object",
+      "index": 11,
+      "script": "FourIsland_EventScript_LittleGirl",
+      "entries": [
+        [
+          9,
+          4
+        ]
+      ]
+    },
+    {
+      "map": "MAP_FOUR_ISLAND_MART",
+      "kind": "object",
+      "index": 1,
+      "script": "FourIsland_Mart_EventScript_OldMan",
+      "entries": [
+        [
+          9,
+          2
+        ]
+      ]
+    },
+    {
+      "map": "MAP_FOUR_ISLAND_POKEMON_CENTER_1F",
+      "kind": "background",
+      "index": 0,
+      "script": "FourIsland_PokemonCenter_1F_EventScript_PokemonJournal",
+      "entries": [
+        [
+          1,
+          5
+        ]
+      ]
+    },
+    {
+      "map": "MAP_FOUR_ISLAND_POKEMON_CENTER_1F",
+      "kind": "background",
+      "index": 1,
+      "script": "FourIsland_PokemonCenter_1F_EventScript_PokemonJournal",
+      "entries": [
+        [
+          1,
+          5
+        ]
+      ]
+    },
+    {
+      "map": "MAP_FUCHSIA_CITY",
+      "kind": "object",
+      "index": 15,
+      "script": "FuchsiaCity_EventScript_Lass",
+      "entries": [
+        [
+          6,
+          3
+        ]
+      ]
+    },
+    {
+      "map": "MAP_FUCHSIA_CITY",
+      "kind": "background",
+      "index": 2,
+      "script": "FuchsiaCity_EventScript_GymSign",
+      "entries": [
+        [
+          6,
+          0
+        ]
+      ]
+    },
+    {
+      "map": "MAP_FUCHSIA_CITY_GYM",
+      "kind": "map-arrival",
+      "script": "FuchsiaCity_Gym_MapScripts",
+      "entries": [
+        [
+          6,
+          1
+        ]
+      ]
+    },
+    {
+      "map": "MAP_FUCHSIA_CITY_GYM",
+      "kind": "object",
+      "index": 2,
+      "script": "FuchsiaCity_Gym_EventScript_Kirk",
+      "entries": [
+        [
+          6,
+          2
+        ]
+      ]
+    },
+    {
+      "map": "MAP_FUCHSIA_CITY_GYM",
+      "kind": "object",
+      "index": 6,
+      "script": "FuchsiaCity_Gym_EventScript_Koga",
+      "entries": [
+        [
+          6,
+          1
+        ]
+      ]
+    },
+    {
+      "map": "MAP_FUCHSIA_CITY_HOUSE1",
+      "kind": "object",
+      "index": 0,
+      "script": "FuchsiaCity_House1_EventScript_OldMan",
+      "entries": [
+        [
+          13,
+          2
+        ]
+      ]
+    },
+    {
+      "map": "MAP_FUCHSIA_CITY_WARDENS_HOUSE",
+      "kind": "object",
+      "index": 3,
+      "script": "FuchsiaCity_WardensHouse_EventScript_PokemonJournalKoga",
+      "entries": [
+        [
+          6,
+          4
+        ]
+      ]
+    },
+    {
+      "map": "MAP_INDIGO_PLATEAU_POKEMON_CENTER_1F",
+      "kind": "object",
+      "index": 4,
+      "script": "IndigoPlateau_PokemonCenter_1F_EventScript_BlackBelt",
+      "entries": [
+        [
+          11,
+          1
+        ],
+        [
+          11,
+          2
+        ]
+      ]
+    },
+    {
+      "map": "MAP_INDIGO_PLATEAU_POKEMON_CENTER_1F",
+      "kind": "object",
+      "index": 5,
+      "script": "IndigoPlateau_PokemonCenter_1F_EventScript_PokemonJournal",
+      "entries": [
+        [
+          12,
+          4
+        ]
+      ]
+    },
+    {
+      "map": "MAP_INDIGO_PLATEAU_POKEMON_CENTER_1F",
+      "kind": "object",
+      "index": 6,
+      "script": "IndigoPlateau_PokemonCenter_1F_EventScript_CooltrainerM",
+      "entries": [
+        [
+          12,
+          5
+        ]
+      ]
+    },
+    {
+      "map": "MAP_INDIGO_PLATEAU_POKEMON_CENTER_1F",
+      "kind": "object",
+      "index": 7,
+      "script": "IndigoPlateau_PokemonCenter_1F_EventScript_PokemonJournal",
+      "entries": [
+        [
+          12,
+          4
+        ]
+      ]
+    },
+    {
+      "map": "MAP_LAVENDER_TOWN_POKEMON_CENTER_1F",
+      "kind": "object",
+      "index": 4,
+      "script": "LavenderTown_PokemonCenter_1F_EventScript_BaldingMan",
+      "entries": [
+        [
+          14,
+          3
+        ]
+      ]
+    },
+    {
+      "map": "MAP_LAVENDER_TOWN_VOLUNTEER_POKEMON_HOUSE",
+      "kind": "object",
+      "index": 5,
+      "script": "LavenderTown_VolunteerPokemonHouse_EventScript_LittleGirl",
+      "entries": [
+        [
+          14,
+          0
+        ]
+      ]
+    },
+    {
+      "map": "MAP_LAVENDER_TOWN_VOLUNTEER_POKEMON_HOUSE",
+      "kind": "background",
+      "index": 0,
+      "script": "LavenderTown_VolunteerPokemonHouse_EventScript_PokemonFanMagazine",
+      "entries": [
+        [
+          14,
+          2
+        ]
+      ]
+    },
+    {
+      "map": "MAP_MT_MOON_1F",
+      "kind": "object",
+      "index": 13,
+      "script": "MtMoon_1F_EventScript_BaldingMan",
+      "entries": [
+        [
+          2,
+          4
+        ]
+      ]
+    },
+    {
+      "map": "MAP_ONE_ISLAND_KINDLE_ROAD_EMBER_SPA",
+      "kind": "object",
+      "index": 2,
+      "script": "OneIsland_KindleRoad_EmberSpa_EventScript_BlackBelt",
+      "entries": [
+        [
+          10,
+          3
+        ]
+      ]
+    },
+    {
+      "map": "MAP_ONE_ISLAND_POKEMON_CENTER_1F",
+      "kind": "object",
+      "index": 2,
+      "script": "OneIsland_PokemonCenter_1F_EventScript_Celio",
+      "entries": [
+        [
+          13,
+          3
+        ],
+        [
+          13,
+          4
+        ],
+        [
+          13,
+          5
+        ]
+      ]
+    },
+    {
+      "map": "MAP_PALLET_TOWN",
+      "kind": "background",
+      "index": 0,
+      "script": "PalletTown_EventScript_OaksLabSign",
+      "entries": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "map": "MAP_PALLET_TOWN_PROFESSOR_OAKS_LAB",
+      "kind": "object",
+      "index": 0,
+      "script": "PalletTown_ProfessorOaksLab_EventScript_Aide1",
+      "entries": [
+        [
+          0,
+          5
+        ]
+      ]
+    },
+    {
+      "map": "MAP_PALLET_TOWN_PROFESSOR_OAKS_LAB",
+      "kind": "object",
+      "index": 1,
+      "script": "PalletTown_ProfessorOaksLab_EventScript_Aide3",
+      "entries": [
+        [
+          0,
+          2
+        ]
+      ]
+    },
+    {
+      "map": "MAP_PALLET_TOWN_PROFESSOR_OAKS_LAB",
+      "kind": "object",
+      "index": 2,
+      "script": "PalletTown_ProfessorOaksLab_EventScript_Aide2",
+      "entries": [
+        [
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "map": "MAP_PALLET_TOWN_PROFESSOR_OAKS_LAB",
+      "kind": "object",
+      "index": 3,
+      "script": "PalletTown_ProfessorOaksLab_EventScript_ProfOak",
+      "entries": [
+        [
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "map": "MAP_PEWTER_CITY",
+      "kind": "object",
+      "index": 2,
+      "script": "PewterCity_EventScript_FatMan",
+      "entries": [
+        [
+          2,
+          2
+        ]
+      ]
+    },
+    {
+      "map": "MAP_PEWTER_CITY",
+      "kind": "background",
+      "index": 2,
+      "script": "PewterCity_EventScript_GymSign",
+      "entries": [
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "map": "MAP_PEWTER_CITY_GYM",
+      "kind": "map-arrival",
+      "script": "PewterCity_Gym_MapScripts",
+      "entries": [
+        [
+          2,
+          1
+        ]
+      ]
+    },
+    {
+      "map": "MAP_PEWTER_CITY_GYM",
+      "kind": "object",
+      "index": 0,
+      "script": "PewterCity_Gym_EventScript_Brock",
+      "entries": [
+        [
+          2,
+          1
+        ]
+      ]
+    },
+    {
+      "map": "MAP_PEWTER_CITY_MUSEUM_1F",
+      "kind": "background",
+      "index": 2,
+      "script": "PewterCity_Museum_1F_EventScript_PokemonJournalBrock",
+      "entries": [
+        [
+          2,
+          5
+        ]
+      ]
+    },
+    {
+      "map": "MAP_PEWTER_CITY_MUSEUM_1F",
+      "kind": "background",
+      "index": 3,
+      "script": "PewterCity_Museum_1F_EventScript_PokemonJournalBrock",
+      "entries": [
+        [
+          2,
+          5
+        ]
+      ]
+    },
+    {
+      "map": "MAP_POKEMON_LEAGUE_AGATHAS_ROOM",
+      "kind": "object",
+      "index": 0,
+      "script": "PokemonLeague_AgathasRoom_EventScript_Agatha",
+      "entries": [
+        [
+          0,
+          4
+        ],
+        [
+          11,
+          0
+        ],
+        [
+          11,
+          4
+        ]
+      ]
+    },
+    {
+      "map": "MAP_POKEMON_LEAGUE_BRUNOS_ROOM",
+      "kind": "object",
+      "index": 0,
+      "script": "PokemonLeague_BrunosRoom_EventScript_Bruno",
+      "entries": [
+        [
+          10,
+          0
+        ],
+        [
+          10,
+          1
+        ]
+      ]
+    },
+    {
+      "map": "MAP_POKEMON_LEAGUE_LANCES_ROOM",
+      "kind": "object",
+      "index": 0,
+      "script": "PokemonLeague_LancesRoom_EventScript_Lance",
+      "entries": [
+        [
+          12,
+          0
+        ],
+        [
+          12,
+          1
+        ]
+      ]
+    },
+    {
+      "map": "MAP_POKEMON_LEAGUE_LORELEIS_ROOM",
+      "kind": "object",
+      "index": 0,
+      "script": "PokemonLeague_LoreleisRoom_EventScript_Lorelei",
+      "entries": [
+        [
+          9,
+          0
+        ],
+        [
+          9,
+          1
+        ]
+      ]
+    },
+    {
+      "map": "MAP_POKEMON_TOWER_7F",
+      "kind": "object",
+      "index": 2,
+      "script": "PokemonTower_7F_EventScript_Grunt2",
+      "entries": [
+        [
+          14,
+          1
+        ]
+      ]
+    },
+    {
+      "map": "MAP_ROCKET_HIDEOUT_B4F",
+      "kind": "object",
+      "index": 0,
+      "script": "RocketHideout_B4F_EventScript_Giovanni",
+      "entries": [
+        [
+          15,
+          0
+        ]
+      ]
+    },
+    {
+      "map": "MAP_ROUTE20",
+      "kind": "object",
+      "index": 10,
+      "script": "Route20_EventScript_Camper",
+      "entries": [
+        [
+          3,
+          3
+        ]
+      ]
+    },
+    {
+      "map": "MAP_ROUTE25",
+      "kind": "object",
+      "index": 11,
+      "script": "Route25_EventScript_Beauty",
+      "entries": [
+        [
+          3,
+          4
+        ]
+      ]
+    },
+    {
+      "map": "MAP_ROUTE4",
+      "kind": "object",
+      "index": 3,
+      "script": "Route4_EventScript_Boy",
+      "entries": [
+        [
+          2,
+          3
+        ]
+      ]
+    },
+    {
+      "map": "MAP_SAFARI_ZONE_NORTH_REST_HOUSE",
+      "kind": "object",
+      "index": 3,
+      "script": "SafariZone_North_RestHouse_EventScript_BaldingMan",
+      "entries": [
+        [
+          6,
+          5
+        ]
+      ]
+    },
+    {
+      "map": "MAP_SAFFRON_CITY",
+      "kind": "object",
+      "index": 14,
+      "script": "SaffronCity_EventScript_CrushGirl",
+      "entries": [
+        [
+          12,
+          2
+        ]
+      ]
+    },
+    {
+      "map": "MAP_SAFFRON_CITY",
+      "kind": "background",
+      "index": 6,
+      "script": "SaffronCity_EventScript_GymSign",
+      "entries": [
+        [
+          7,
+          0
+        ]
+      ]
+    },
+    {
+      "map": "MAP_SAFFRON_CITY_GYM",
+      "kind": "map-arrival",
+      "script": "SaffronCity_Gym_MapScripts",
+      "entries": [
+        [
+          7,
+          2
+        ],
+        [
+          7,
+          3
+        ]
+      ]
+    },
+    {
+      "map": "MAP_SAFFRON_CITY_GYM",
+      "kind": "object",
+      "index": 6,
+      "script": "SaffronCity_Gym_EventScript_Sabrina",
+      "entries": [
+        [
+          7,
+          2
+        ],
+        [
+          7,
+          3
+        ]
+      ]
+    },
+    {
+      "map": "MAP_SAFFRON_CITY_GYM",
+      "kind": "object",
+      "index": 7,
+      "script": "SaffronCity_Gym_EventScript_Tyron",
+      "entries": [
+        [
+          7,
+          5
+        ]
+      ]
+    },
+    {
+      "map": "MAP_SAFFRON_CITY_POKEMON_CENTER_1F",
+      "kind": "object",
+      "index": 4,
+      "script": "SaffronCity_PokemonCenter_1F_EventScript_PokemonJournalSabrina",
+      "entries": [
+        [
+          7,
+          4
+        ]
+      ]
+    },
+    {
+      "map": "MAP_SAFFRON_CITY_POKEMON_CENTER_1F",
+      "kind": "object",
+      "index": 5,
+      "script": "SaffronCity_PokemonCenter_1F_EventScript_PokemonJournalSabrina",
+      "entries": [
+        [
+          7,
+          4
+        ]
+      ]
+    },
+    {
+      "map": "MAP_SAFFRON_CITY_POKEMON_TRAINER_FAN_CLUB",
+      "kind": "object",
+      "index": 8,
+      "script": "SaffronCity_PokemonTrainerFanClub_EventScript_PokemonJournalBruno",
+      "entries": [
+        [
+          10,
+          2
+        ]
+      ]
+    },
+    {
+      "map": "MAP_SAFFRON_CITY_POKEMON_TRAINER_FAN_CLUB",
+      "kind": "object",
+      "index": 9,
+      "script": "SaffronCity_PokemonTrainerFanClub_EventScript_PokemonJournalBruno",
+      "entries": [
+        [
+          10,
+          2
+        ]
+      ]
+    },
+    {
+      "map": "MAP_SEVEN_ISLAND_POKEMON_CENTER_1F",
+      "kind": "object",
+      "index": 4,
+      "script": "SevenIsland_PokemonCenter_1F_EventScript_PokemonJournal",
+      "entries": [
+        [
+          11,
+          3
+        ]
+      ]
+    },
+    {
+      "map": "MAP_SEVEN_ISLAND_POKEMON_CENTER_1F",
+      "kind": "object",
+      "index": 5,
+      "script": "SevenIsland_PokemonCenter_1F_EventScript_PokemonJournal",
+      "entries": [
+        [
+          11,
+          3
+        ]
+      ]
+    },
+    {
+      "map": "MAP_SEVEN_ISLAND_SEVAULT_CANYON",
+      "kind": "object",
+      "index": 19,
+      "script": "SevenIsland_SevaultCanyon_EventScript_BlackBelt",
+      "entries": [
+        [
+          10,
+          5
+        ]
+      ]
+    },
+    {
+      "map": "MAP_SILPH_CO_5F",
+      "kind": "object",
+      "index": 8,
+      "script": "SilphCo_5F_EventScript_Scientist",
+      "entries": [
+        [
+          15,
+          1
+        ]
+      ]
+    },
+    {
+      "map": "MAP_SILPH_CO_8F",
+      "kind": "object",
+      "index": 5,
+      "script": "SilphCo_8F_EventScript_Scientist",
+      "entries": [
+        [
+          15,
+          2
+        ]
+      ]
+    },
+    {
+      "map": "MAP_SIX_ISLAND_MART",
+      "kind": "object",
+      "index": 1,
+      "script": "SixIsland_Mart_EventScript_OldWoman",
+      "entries": [
+        [
+          11,
+          5
+        ]
+      ]
+    },
+    {
+      "map": "MAP_THREE_ISLAND_HOUSE2",
+      "kind": "map-arrival",
+      "script": "ThreeIsland_House2_MapScripts",
+      "entries": [
+        [
+          7,
+          1
+        ]
+      ]
+    },
+    {
+      "map": "MAP_THREE_ISLAND_HOUSE2",
+      "kind": "object",
+      "index": 1,
+      "script": "ThreeIsland_House2_EventScript_Man",
+      "entries": [
+        [
+          7,
+          1
+        ]
+      ]
+    },
+    {
+      "map": "MAP_TWO_ISLAND",
+      "kind": "object",
+      "index": 2,
+      "script": "TwoIsland_EventScript_Beauty",
+      "entries": [
+        [
+          10,
+          4
+        ]
+      ]
+    },
+    {
+      "map": "MAP_VERMILION_CITY",
+      "kind": "background",
+      "index": 2,
+      "script": "VermilionCity_EventScript_GymSign",
+      "entries": [
+        [
+          4,
+          0
+        ]
+      ]
+    },
+    {
+      "map": "MAP_VERMILION_CITY_GYM",
+      "kind": "object",
+      "index": 0,
+      "script": "VermilionCity_Gym_EventScript_LtSurge",
+      "entries": [
+        [
+          4,
+          1
+        ]
+      ]
+    },
+    {
+      "map": "MAP_VERMILION_CITY_GYM",
+      "kind": "object",
+      "index": 2,
+      "script": "VermilionCity_Gym_EventScript_Dwayne",
+      "entries": [
+        [
+          4,
+          4
+        ]
+      ]
+    },
+    {
+      "map": "MAP_VERMILION_CITY_GYM",
+      "kind": "object",
+      "index": 4,
+      "script": "VermilionCity_Gym_EventScript_Tucker",
+      "entries": [
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          3
+        ]
+      ]
+    },
+    {
+      "map": "MAP_VERMILION_CITY_POKEMON_CENTER_1F",
+      "kind": "object",
+      "index": 5,
+      "script": "VermilionCity_PokemonCenter_1F_EventScript_PokemonJournalLtSurge",
+      "entries": [
+        [
+          4,
+          5
+        ]
+      ]
+    },
+    {
+      "map": "MAP_VERMILION_CITY_POKEMON_CENTER_1F",
+      "kind": "object",
+      "index": 6,
+      "script": "VermilionCity_PokemonCenter_1F_EventScript_PokemonJournalLtSurge",
+      "entries": [
+        [
+          4,
+          5
+        ]
+      ]
+    },
+    {
+      "map": "MAP_VERMILION_CITY_POKEMON_FAN_CLUB",
+      "kind": "object",
+      "index": 1,
+      "script": "VermilionCity_PokemonFanClub_EventScript_WorkerF",
+      "entries": [
+        [
+          1,
+          1
+        ]
+      ]
+    },
+    {
+      "map": "MAP_VIRIDIAN_CITY_GYM",
+      "kind": "map-arrival",
+      "script": "ViridianCity_Gym_MapScripts",
+      "entries": [
+        [
+          15,
+          3
+        ]
+      ]
+    },
+    {
+      "map": "MAP_VIRIDIAN_CITY_GYM",
+      "kind": "object",
+      "index": 7,
+      "script": "ViridianCity_Gym_EventScript_Giovanni",
+      "entries": [
+        [
+          15,
+          3
+        ]
+      ]
+    },
+    {
+      "map": "MAP_VIRIDIAN_CITY_GYM",
+      "kind": "object",
+      "index": 9,
+      "script": "ViridianCity_Gym_EventScript_GymGuy",
+      "entries": [
+        [
+          15,
+          4
+        ]
+      ]
+    },
+    {
+      "map": "MAP_VIRIDIAN_CITY_SCHOOL",
+      "kind": "background",
+      "index": 3,
+      "script": "ViridianCity_School_EventScript_PokemonJournal",
+      "entries": [
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          3
+        ]
+      ]
+    },
+    {
+      "map": "MAP_VIRIDIAN_CITY_SCHOOL",
+      "kind": "background",
+      "index": 4,
+      "script": "ViridianCity_School_EventScript_PokemonJournal",
+      "entries": [
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          3
+        ]
+      ]
+    }
+  ]
+}

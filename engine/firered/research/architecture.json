@@ -1,0 +1,142 @@
+{
+  "schema": "master-red/architecture/v1",
+  "status": "research-only",
+  "mission": "From a stock Pokemon FireRed Rev 1 new game, reach the native Hall of Fame without human controller input.",
+  "soleInputWriter": "worker-control-gate",
+  "controlModes": {
+    "bot": {"owner": "central-player", "emulationSpeed": "configured"},
+    "manual": {"owner": "operator", "emulationSpeed": 1},
+    "handoff": "fresh atomic observation before bot policy resumes"
+  },
+  "decisionLoop": [
+    "request one atomic frame-boundary observation from the autonomous emulator worker",
+    "fan the immutable observation out to pure advisors",
+    "rectify conflicts using mission progress, safety, legality, confidence, and evidence",
+    "submit one bounded edge or semantically leased locomotion chord without advancing the emulator",
+    "observe its first stop condition and verify the postcondition"
+  ],
+  "emulatorRuntime": {
+    "owner": "dedicated-worker",
+    "presentationFramesPerSecond": 59.7275,
+    "speedSemantics": "advance configured cartridge frames, then publish exactly one presentation frame",
+    "playerInterface": ["observe", "execute", "captureSnapshot", "metrics", "controlState", "takeControlHandoff", "setStatus"],
+    "forbiddenPlayerInterface": ["step", "setKeys", "runFrame"],
+    "manualInterface": ["setControlMode", "setManualButtons"],
+    "livePath": "worker-framebuffer -> persistent MRF1 stream -> FFmpeg -> WebRTC",
+    "diagnosticIsolation": "policy, JSON serialization, compression, and filesystem writes run outside the emulator worker"
+  },
+  "advisors": [
+    {"id": "quest", "output": "advice", "scope": "story progress and objective candidates"},
+    {"id": "navigation", "output": "advice", "scope": "routes, local motion, and collision-aware reachability"},
+    {"id": "battle", "output": "advice", "scope": "legal battle choices, risk, and expected outcomes"},
+    {"id": "inventory", "output": "advice", "scope": "party, items, resources, and preparation"},
+    {"id": "verifier", "output": "advice", "scope": "postconditions, contradictions, and recovery evidence"}
+  ],
+  "observationDispositions": {
+    "stable": "advise",
+    "transition": "resample",
+    "unknown": "resample"
+  },
+  "retainedLocomotion": {
+    "routePlan": "before input, the collision-aware pathfinder chooses the complete route and serializes its first straight segment as direction, tile count, and exact current-map endpoint",
+    "command": "B plus one direction remains continuously held across the preplanned straight running segment",
+    "ordinaryTileTransition": "the worker reads the cartridge coordinate after every emulated frame, keeps the chord down across intermediate tiles, releases at the exact waypoint, and waits for tileTransitionState zero",
+    "precisionApproach": "a turn starts a newly planned segment; doors, objects, field obstacles, and interactions use walking or bounded edges after running ends on their approach tile",
+    "fallback": "missing or inconsistent segment metadata degrades to a one-tile semantic movement lease",
+    "blockedAttempt": "release after sixty stationary cartridge frames or the route-sized absolute frame budget",
+    "stableHeldInput": "treat any input still held after the semantic lease settles as a verifier contradiction",
+    "releaseOn": [
+      "exact route-segment waypoint",
+      "route divergence",
+      "stationary-frame limit",
+      "movement lease frame limit",
+      "different action",
+      "callback or map change",
+      "script lock",
+      "palette fade",
+      "battle transition",
+      "warp or forced movement",
+      "unknown observation",
+      "terminal stop"
+    ]
+  },
+  "interrupts": [
+    "map-change",
+    "mode-change",
+    "dialog",
+    "battle",
+    "collision",
+    "script-lock",
+    "postcondition",
+    "action-budget"
+  ],
+  "controlWorkflows": {
+    "schema": "master-red/control-workflow/v1",
+    "purpose": "retain a rectified objective across cartridge-owned multi-menu transitions",
+    "battlePartySelection": {
+      "stages": [
+        "opening-party-picker",
+        "choosing-party-member",
+        "confirming-party-action",
+        "party-message"
+      ],
+      "completion": "the target party slot and species are observed as the active battler",
+      "invalidation": [
+        "target missing, fainted, or species-mismatched",
+        "battle ended",
+        "party workflow returned to the action menu without its postcondition"
+      ],
+      "resumeRecovery": "an orphaned non-item battle party picker selects a healthy non-active reserve and creates a normal transaction"
+    }
+  },
+  "diagnostics": {
+    "schema": "master-red/run-diagnostics/v1",
+    "journal": "one independently compressed event for every decision, bot controller frame plan, and manual control handoff",
+    "replayBundles": [
+      "run-start",
+      "periodic",
+      "stable-no-advice",
+      "repeated-decision-cycle",
+      "manual-recovery"
+    ],
+    "bundleContents": [
+      "whole-emulator-state",
+      "native-sram",
+      "framebuffer",
+      "atomic-observation",
+      "central-decision",
+      "control-workflow-state"
+    ],
+    "stablePointers": [
+      "AI-HANDOFF.md",
+      "LATEST.json",
+      "manual-recoveries.jsonl"
+    ],
+    "manualRecoveryExamples": {
+      "schema": "master-red/manual-recovery-example/v1",
+      "contextDecisions": 16,
+      "demonstration": "frame-stamped button choices paired with lightweight cartridge state",
+      "outcome": "fresh post-intervention observation and first replanned bot decision",
+      "provenance": "causal journal plus pre/post replay bundles",
+      "use": "reviewed policy repair, regression evaluation, or future imitation training",
+      "onlinePolicyMutation": false
+    }
+  },
+  "invariants": [
+    "Only the worker control gate may write cartridge input, and it accepts exactly one active owner.",
+    "Manual mode interrupts bot input, runs at 1x, and records every button-state choice with cartridge context.",
+    "Bot mode resumes only after a fresh atomic observation clears stale central workflow state.",
+    "Only the autonomous emulator worker may advance cartridge frames or publish framebuffers.",
+    "The central player has no direct cartridge session or step method.",
+    "Controller hold and release durations are measured in emulated cartridge frames.",
+    "Advisors receive immutable observations and return serializable advice only.",
+    "No observation carries owner, lease, controller, or input-writer state.",
+    "Map and modal transitions are recoverable interrupts, not ownership faults.",
+    "No action continues past an interrupt without a new central decision.",
+    "Observed cartridge state outranks policy assumptions.",
+    "A multi-menu objective remains a central workflow until its observed postcondition or invalidation.",
+    "Every bot command and manual control handoff is represented in the private causal journal.",
+    "Every completed manual intervention appends a replay-backed recovery example to the stable run dataset.",
+    "A recovery example never mutates live policy until a reviewed repair is implemented and regression-tested."
+  ]
+}

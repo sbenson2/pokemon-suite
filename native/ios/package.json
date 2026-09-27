@@ -1,0 +1,14 @@
+{
+  "name": "pokemon-suite-mobile-runtime",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "@noble/hashes": "2.4.0",
+    "buffer": "6.0.3"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}

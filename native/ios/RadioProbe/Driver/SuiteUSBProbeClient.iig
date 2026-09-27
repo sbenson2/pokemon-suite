@@ -1,0 +1,9 @@
+#include <DriverKit/IOUserClient.iig>
+class SuiteUSBProbeClient: public IOUserClient {
+public:
+    virtual bool init(void) override;
+    virtual void free(void) override;
+    virtual kern_return_t Start(IOService* provider) override;
+    virtual kern_return_t Stop(IOService* provider) override;
+    virtual kern_return_t ExternalMethod(uint64_t selector,IOUserClientMethodArguments* arguments,const IOUserClientMethodDispatch* dispatch,OSObject* target,void* reference) override;
+};

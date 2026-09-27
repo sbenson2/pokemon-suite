@@ -1,0 +1,49 @@
+:root { --header-height:56px; --footer-height:0px; }
+html,body {width:100%;height:100%;margin:0;overflow:hidden;}
+[hidden] {display:none!important;}
+.standalone-header {position:fixed;inset:0 0 auto;height:56px;box-sizing:border-box;display:flex;align-items:center;gap:16px;padding:8px 18px;background:var(--suite-paper,#f2f1eb);border-bottom:1px solid var(--suite-line,#c7c8bf);z-index:10;color:var(--suite-ink,#303238);}
+.standalone-header .workspace-brand {margin-right:auto;}
+.standalone-header p {font-size:12px;margin:0;}
+.standalone-header button {display:flex;align-items:center;gap:6px;min-height:36px;padding:4px 10px;border:1px solid #9a9e91;border-radius:5px;background:transparent;color:inherit;cursor:pointer;}
+html[data-pokemon-theme=dark] .standalone-header {background:#202725;color:#e7eadf;border-color:#46534c;}
+body[data-pokemon-suite=true] #player-layout {position:fixed!important;inset:56px 0 0 184px!important;display:grid!important;grid-template-rows:minmax(160px,1fr) minmax(220px,36%);padding:14px;gap:12px;min-width:0;min-height:0;box-sizing:border-box;}
+body:not([data-suite-view=workspace]) #player-layout {visibility:hidden;pointer-events:none;}
+#stage {position:relative;width:100%;height:100%;min-height:0;overflow:hidden;background:#131818;border:1px solid #6a736a;border-radius:10px;}
+.suite-game-screen {position:absolute;inset:0;width:100%;height:100%;object-fit:contain;image-rendering:pixelated;z-index:2;}
+#stage.gba-stage .suite-game-screen {inset:auto;left:var(--game-left);top:var(--game-top);width:var(--game-width);height:var(--game-height);}
+.suite-screen-message {position:absolute;inset:30% 10% auto;margin:0;padding:20px;background:#18201cf0;color:#e7eadf;text-align:center;z-index:5;border:1px solid #7b897d;border-radius:6px;}
+#journey-deck {position:relative!important;inset:auto!important;height:100%;min-height:0;display:flex;flex-direction:column;overflow:hidden;}
+.journey-content {min-height:0;flex:1;overflow:hidden;}
+.journey-content>section {height:100%;min-height:0;box-sizing:border-box;overflow:auto;border:1px solid var(--suite-line,#929c90);border-radius:8px;overscroll-behavior:contain;scrollbar-gutter:stable;}
+.journey-content>section {display:none!important;}
+.journey-content[data-mobile-tab=team]>.journey-team,.journey-content[data-mobile-tab=hunt]>.journey-hunt,.journey-content[data-mobile-tab=trainer]>.trainer-card,.journey-content[data-mobile-tab=bot]>.journey-settings,.journey-content[data-mobile-tab=manual]>.journey-manual {display:block!important;}
+.journey-tabs {display:flex!important;flex-shrink:0;overflow:auto;border:1px solid var(--suite-line,#929c90);border-radius:6px;}
+.suite-party-member {display:flex;align-items:center;gap:12px;padding:10px;border-bottom:1px solid var(--suite-line,#929c90);}
+.suite-party-member img {width:64px;height:64px;image-rendering:pixelated;}
+.suite-party-member>div {display:grid;gap:4px;flex:1;}
+.suite-party-member progress {width:100%;height:7px;accent-color:#4a9368;}
+.suite-badge {font-size:10px;opacity:.4;padding:4px;border:1px solid currentColor;}
+.suite-badge[data-earned=true] {opacity:1;}
+#standalone-notice:empty {display:none;}
+#standalone-notice {position:fixed;right:16px;bottom:16px;max-width:min(420px,80vw);background:#27392e;color:#f1f4eb;padding:12px 16px;border:1px solid #9fac9c;border-radius:6px;z-index:20;font:13px/1.5 system-ui;pointer-events:none;}
+.suite-scroll,.dex-grid,.dex-detail,#suite-rom-list,.suite-settings-scroll {border:1px solid var(--suite-line,#929c90);border-radius:6px;scrollbar-gutter:stable;overscroll-behavior:contain;}
+.suite-install-form {display:grid;gap:10px;padding:16px;border:1px solid var(--suite-line);border-radius:8px;box-sizing:border-box;}
+.suite-install-form label{display:grid;gap:4px;}.suite-install-form input{min-width:0;padding:8px;}.suite-install-form h2,.suite-install-form p{margin:0;}
+.suite-settings-page{overflow:auto!important;overscroll-behavior:contain;}
+@media(max-width:760px){
+  :root{--header-height:52px;}
+  .standalone-header{height:52px;gap:8px;padding:6px 10px;}
+  .standalone-header .workspace-brand{font-size:14px;display:flex!important;}
+  #connection-status{display:none;}
+  #suite-theme-toggle span{display:none;}
+  .standalone-header button{font-size:12px;}
+  #pokemon-suite{inset:52px 0 0;}
+  .suite-rail{inset:0 0 auto!important;width:100%!important;height:58px!important;border-right:0;border-bottom:1px solid var(--suite-line);}
+  .suite-identity,.suite-current{display:none!important;}
+  .suite-nav{display:flex;overflow:auto;padding:4px 6px;gap:2px;}
+  .suite-nav button{flex-direction:column;gap:1px;min-width:59px;min-height:46px;padding:3px;font-size:10px;white-space:nowrap;}
+  .suite-nav-icon{width:24px;height:24px;}
+  .suite-page{inset:58px 0 0!important;padding:14px 12px!important;}
+  body[data-pokemon-suite=true] #player-layout{inset:110px 0 0!important;padding:8px;gap:8px;grid-template-rows:minmax(150px,1fr) minmax(220px,43%);}
+  .suite-rom-row{gap:12px;padding:16px 8px;}.suite-rom-art{width:40px;height:50px;}.suite-rom-copy h3{font-size:15px;}
+}

@@ -1,0 +1,1154 @@
+{
+ "schema": "pokemon-suite/request-places/v1",
+ "game": "firered",
+ "source": "Curated human names for FireRed map identifiers (pret/pokefirered map constants) used by the request interpreter. The live player-task location list stays authoritative; this table adds everyday aliases and the preferred entry map for multi-floor places.",
+ "places": [
+  {
+   "id": "MAP_PALLET_TOWN",
+   "name": "Pallet Town",
+   "aliases": [
+    "home",
+    "my house",
+    "pallet",
+    "pallet town"
+   ]
+  },
+  {
+   "id": "MAP_VIRIDIAN_CITY",
+   "name": "Viridian City",
+   "aliases": [
+    "viridian"
+   ]
+  },
+  {
+   "id": "MAP_VIRIDIAN_CITY_POKEMON_CENTER_1F",
+   "name": "Viridian City Pokémon Center 1F",
+   "aliases": [
+    "viridian center",
+    "viridian pc",
+    "viridian pokecenter",
+    "viridian pokemon center"
+   ]
+  },
+  {
+   "id": "MAP_VIRIDIAN_CITY_MART",
+   "name": "Viridian City Mart",
+   "aliases": [
+    "viridian mart",
+    "viridian poke mart",
+    "viridian pokemart",
+    "viridian shop",
+    "viridian store"
+   ]
+  },
+  {
+   "id": "MAP_VIRIDIAN_CITY_GYM",
+   "name": "Viridian City Gym",
+   "aliases": [
+    "viridian gym"
+   ]
+  },
+  {
+   "id": "MAP_PEWTER_CITY",
+   "name": "Pewter City",
+   "aliases": [
+    "pewter"
+   ]
+  },
+  {
+   "id": "MAP_PEWTER_CITY_POKEMON_CENTER_1F",
+   "name": "Pewter City Pokémon Center 1F",
+   "aliases": [
+    "pewter center",
+    "pewter pc",
+    "pewter pokecenter",
+    "pewter pokemon center"
+   ]
+  },
+  {
+   "id": "MAP_PEWTER_CITY_MART",
+   "name": "Pewter City Mart",
+   "aliases": [
+    "pewter mart",
+    "pewter poke mart",
+    "pewter pokemart",
+    "pewter shop",
+    "pewter store"
+   ]
+  },
+  {
+   "id": "MAP_PEWTER_CITY_GYM",
+   "name": "Pewter City Gym",
+   "aliases": [
+    "pewter gym"
+   ]
+  },
+  {
+   "id": "MAP_CERULEAN_CITY",
+   "name": "Cerulean City",
+   "aliases": [
+    "cerulean"
+   ]
+  },
+  {
+   "id": "MAP_CERULEAN_CITY_POKEMON_CENTER_1F",
+   "name": "Cerulean City Pokémon Center 1F",
+   "aliases": [
+    "cerulean center",
+    "cerulean pc",
+    "cerulean pokecenter",
+    "cerulean pokemon center"
+   ]
+  },
+  {
+   "id": "MAP_CERULEAN_CITY_MART",
+   "name": "Cerulean City Mart",
+   "aliases": [
+    "cerulean mart",
+    "cerulean poke mart",
+    "cerulean pokemart",
+    "cerulean shop",
+    "cerulean store"
+   ]
+  },
+  {
+   "id": "MAP_CERULEAN_CITY_GYM",
+   "name": "Cerulean City Gym",
+   "aliases": [
+    "cerulean gym"
+   ]
+  },
+  {
+   "id": "MAP_LAVENDER_TOWN",
+   "name": "Lavender Town",
+   "aliases": [
+    "lavender"
+   ]
+  },
+  {
+   "id": "MAP_LAVENDER_TOWN_POKEMON_CENTER_1F",
+   "name": "Lavender Town Pokémon Center 1F",
+   "aliases": [
+    "lavender center",
+    "lavender pc",
+    "lavender pokecenter",
+    "lavender pokemon center"
+   ]
+  },
+  {
+   "id": "MAP_LAVENDER_TOWN_MART",
+   "name": "Lavender Town Mart",
+   "aliases": [
+    "lavender mart",
+    "lavender poke mart",
+    "lavender pokemart",
+    "lavender shop",
+    "lavender store"
+   ]
+  },
+  {
+   "id": "MAP_VERMILION_CITY",
+   "name": "Vermilion City",
+   "aliases": [
+    "vermilion",
+    "vermilion harbor",
+    "vermilion port",
+    "vermillion"
+   ]
+  },
+  {
+   "id": "MAP_VERMILION_CITY_POKEMON_CENTER_1F",
+   "name": "Vermilion City Pokémon Center 1F",
+   "aliases": [
+    "vermilion center",
+    "vermilion pc",
+    "vermilion pokecenter",
+    "vermilion pokemon center"
+   ]
+  },
+  {
+   "id": "MAP_VERMILION_CITY_MART",
+   "name": "Vermilion City Mart",
+   "aliases": [
+    "vermilion mart",
+    "vermilion poke mart",
+    "vermilion pokemart",
+    "vermilion shop",
+    "vermilion store"
+   ]
+  },
+  {
+   "id": "MAP_VERMILION_CITY_GYM",
+   "name": "Vermilion City Gym",
+   "aliases": [
+    "vermilion gym"
+   ]
+  },
+  {
+   "id": "MAP_CELADON_CITY",
+   "name": "Celadon City",
+   "aliases": [
+    "celadon"
+   ]
+  },
+  {
+   "id": "MAP_CELADON_CITY_POKEMON_CENTER_1F",
+   "name": "Celadon City Pokémon Center 1F",
+   "aliases": [
+    "celadon center",
+    "celadon pc",
+    "celadon pokecenter",
+    "celadon pokemon center"
+   ]
+  },
+  {
+   "id": "MAP_CELADON_CITY_GYM",
+   "name": "Celadon City Gym",
+   "aliases": [
+    "celadon gym"
+   ]
+  },
+  {
+   "id": "MAP_FUCHSIA_CITY",
+   "name": "Fuchsia City",
+   "aliases": [
+    "fuchsia",
+    "fuschia"
+   ]
+  },
+  {
+   "id": "MAP_FUCHSIA_CITY_POKEMON_CENTER_1F",
+   "name": "Fuchsia City Pokémon Center 1F",
+   "aliases": [
+    "fuchsia center",
+    "fuchsia pc",
+    "fuchsia pokecenter",
+    "fuchsia pokemon center"
+   ]
+  },
+  {
+   "id": "MAP_FUCHSIA_CITY_MART",
+   "name": "Fuchsia City Mart",
+   "aliases": [
+    "fuchsia mart",
+    "fuchsia poke mart",
+    "fuchsia pokemart",
+    "fuchsia shop",
+    "fuchsia store"
+   ]
+  },
+  {
+   "id": "MAP_FUCHSIA_CITY_GYM",
+   "name": "Fuchsia City Gym",
+   "aliases": [
+    "fuchsia gym"
+   ]
+  },
+  {
+   "id": "MAP_SAFFRON_CITY",
+   "name": "Saffron City",
+   "aliases": [
+    "saffron"
+   ]
+  },
+  {
+   "id": "MAP_SAFFRON_CITY_POKEMON_CENTER_1F",
+   "name": "Saffron City Pokémon Center 1F",
+   "aliases": [
+    "saffron center",
+    "saffron pc",
+    "saffron pokecenter",
+    "saffron pokemon center"
+   ]
+  },
+  {
+   "id": "MAP_SAFFRON_CITY_MART",
+   "name": "Saffron City Mart",
+   "aliases": [
+    "saffron mart",
+    "saffron poke mart",
+    "saffron pokemart",
+    "saffron shop",
+    "saffron store"
+   ]
+  },
+  {
+   "id": "MAP_SAFFRON_CITY_GYM",
+   "name": "Saffron City Gym",
+   "aliases": [
+    "saffron gym"
+   ]
+  },
+  {
+   "id": "MAP_CINNABAR_ISLAND",
+   "name": "Cinnabar Island",
+   "aliases": [
+    "cinnabar",
+    "cinnabar city"
+   ]
+  },
+  {
+   "id": "MAP_CINNABAR_ISLAND_POKEMON_CENTER_1F",
+   "name": "Cinnabar Island Pokémon Center 1F",
+   "aliases": [
+    "cinnabar center",
+    "cinnabar pc",
+    "cinnabar pokecenter",
+    "cinnabar pokemon center"
+   ]
+  },
+  {
+   "id": "MAP_CINNABAR_ISLAND_MART",
+   "name": "Cinnabar Island Mart",
+   "aliases": [
+    "cinnabar mart",
+    "cinnabar poke mart",
+    "cinnabar pokemart",
+    "cinnabar shop",
+    "cinnabar store"
+   ]
+  },
+  {
+   "id": "MAP_CINNABAR_ISLAND_GYM",
+   "name": "Cinnabar Island Gym",
+   "aliases": [
+    "cinnabar gym"
+   ]
+  },
+  {
+   "id": "MAP_ONE_ISLAND",
+   "name": "One Island",
+   "aliases": [
+    "1 island",
+    "knot island"
+   ]
+  },
+  {
+   "id": "MAP_ONE_ISLAND_POKEMON_CENTER_1F",
+   "name": "One Island Pokémon Center 1F",
+   "aliases": [
+    "1 island center",
+    "1 island pc",
+    "1 island pokecenter",
+    "1 island pokemon center"
+   ]
+  },
+  {
+   "id": "MAP_TWO_ISLAND",
+   "name": "Two Island",
+   "aliases": [
+    "2 island",
+    "boon island"
+   ]
+  },
+  {
+   "id": "MAP_TWO_ISLAND_POKEMON_CENTER_1F",
+   "name": "Two Island Pokémon Center 1F",
+   "aliases": [
+    "2 island center",
+    "2 island pc",
+    "2 island pokecenter",
+    "2 island pokemon center"
+   ]
+  },
+  {
+   "id": "MAP_THREE_ISLAND",
+   "name": "Three Island",
+   "aliases": [
+    "3 island",
+    "kin island"
+   ]
+  },
+  {
+   "id": "MAP_THREE_ISLAND_POKEMON_CENTER_1F",
+   "name": "Three Island Pokémon Center 1F",
+   "aliases": [
+    "3 island center",
+    "3 island pc",
+    "3 island pokecenter",
+    "3 island pokemon center"
+   ]
+  },
+  {
+   "id": "MAP_THREE_ISLAND_MART",
+   "name": "Three Island Mart",
+   "aliases": [
+    "3 island mart",
+    "3 island poke mart",
+    "3 island pokemart",
+    "3 island shop",
+    "3 island store"
+   ]
+  },
+  {
+   "id": "MAP_FOUR_ISLAND",
+   "name": "Four Island",
+   "aliases": [
+    "4 island",
+    "floe island"
+   ]
+  },
+  {
+   "id": "MAP_FOUR_ISLAND_POKEMON_CENTER_1F",
+   "name": "Four Island Pokémon Center 1F",
+   "aliases": [
+    "4 island center",
+    "4 island pc",
+    "4 island pokecenter",
+    "4 island pokemon center"
+   ]
+  },
+  {
+   "id": "MAP_FOUR_ISLAND_MART",
+   "name": "Four Island Mart",
+   "aliases": [
+    "4 island mart",
+    "4 island poke mart",
+    "4 island pokemart",
+    "4 island shop",
+    "4 island store"
+   ]
+  },
+  {
+   "id": "MAP_FIVE_ISLAND",
+   "name": "Five Island",
+   "aliases": [
+    "5 island",
+    "chrono island"
+   ]
+  },
+  {
+   "id": "MAP_FIVE_ISLAND_POKEMON_CENTER_1F",
+   "name": "Five Island Pokémon Center 1F",
+   "aliases": [
+    "5 island center",
+    "5 island pc",
+    "5 island pokecenter",
+    "5 island pokemon center"
+   ]
+  },
+  {
+   "id": "MAP_SIX_ISLAND",
+   "name": "Six Island",
+   "aliases": [
+    "6 island",
+    "fortune island"
+   ]
+  },
+  {
+   "id": "MAP_SIX_ISLAND_POKEMON_CENTER_1F",
+   "name": "Six Island Pokémon Center 1F",
+   "aliases": [
+    "6 island center",
+    "6 island pc",
+    "6 island pokecenter",
+    "6 island pokemon center"
+   ]
+  },
+  {
+   "id": "MAP_SIX_ISLAND_MART",
+   "name": "Six Island Mart",
+   "aliases": [
+    "6 island mart",
+    "6 island poke mart",
+    "6 island pokemart",
+    "6 island shop",
+    "6 island store"
+   ]
+  },
+  {
+   "id": "MAP_SEVEN_ISLAND",
+   "name": "Seven Island",
+   "aliases": [
+    "7 island",
+    "quest island"
+   ]
+  },
+  {
+   "id": "MAP_SEVEN_ISLAND_POKEMON_CENTER_1F",
+   "name": "Seven Island Pokémon Center 1F",
+   "aliases": [
+    "7 island center",
+    "7 island pc",
+    "7 island pokecenter",
+    "7 island pokemon center"
+   ]
+  },
+  {
+   "id": "MAP_SEVEN_ISLAND_MART",
+   "name": "Seven Island Mart",
+   "aliases": [
+    "7 island mart",
+    "7 island poke mart",
+    "7 island pokemart",
+    "7 island shop",
+    "7 island store"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE1",
+   "name": "Route 1",
+   "aliases": [
+    "route 1"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE2",
+   "name": "Route 2",
+   "aliases": [
+    "route 2"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE3",
+   "name": "Route 3",
+   "aliases": [
+    "route 3"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE4",
+   "name": "Route 4",
+   "aliases": [
+    "route 4"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE5",
+   "name": "Route 5",
+   "aliases": [
+    "route 5"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE6",
+   "name": "Route 6",
+   "aliases": [
+    "route 6"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE7",
+   "name": "Route 7",
+   "aliases": [
+    "route 7"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE8",
+   "name": "Route 8",
+   "aliases": [
+    "route 8"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE9",
+   "name": "Route 9",
+   "aliases": [
+    "route 9"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE10",
+   "name": "Route 10",
+   "aliases": [
+    "route 10"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE11",
+   "name": "Route 11",
+   "aliases": [
+    "route 11"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE12",
+   "name": "Route 12",
+   "aliases": [
+    "route 12"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE13",
+   "name": "Route 13",
+   "aliases": [
+    "route 13"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE14",
+   "name": "Route 14",
+   "aliases": [
+    "route 14"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE15",
+   "name": "Route 15",
+   "aliases": [
+    "route 15"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE16",
+   "name": "Route 16",
+   "aliases": [
+    "route 16"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE17",
+   "name": "Route 17",
+   "aliases": [
+    "route 17"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE18",
+   "name": "Route 18",
+   "aliases": [
+    "route 18"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE19",
+   "name": "Route 19",
+   "aliases": [
+    "route 19"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE20",
+   "name": "Route 20",
+   "aliases": [
+    "route 20"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE21_NORTH",
+   "name": "Route 21 North",
+   "aliases": [
+    "route 21",
+    "route 21 north"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE21_SOUTH",
+   "name": "Route 21 South",
+   "aliases": [
+    "route 21 south"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE22",
+   "name": "Route 22",
+   "aliases": [
+    "route 22"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE23",
+   "name": "Route 23",
+   "aliases": [
+    "route 23"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE24",
+   "name": "Route 24",
+   "aliases": [
+    "route 24"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE25",
+   "name": "Route 25",
+   "aliases": [
+    "route 25"
+   ]
+  },
+  {
+   "id": "MAP_PALLET_TOWN_PROFESSOR_OAKS_LAB",
+   "name": "Professor Oak’s Lab",
+   "aliases": [
+    "oak lab",
+    "oaks lab",
+    "prof oaks lab",
+    "professor oaks lab",
+    "the lab"
+   ]
+  },
+  {
+   "id": "MAP_VIRIDIAN_FOREST",
+   "name": "Viridian Forest",
+   "aliases": [
+    "viridian forest"
+   ]
+  },
+  {
+   "id": "MAP_MT_MOON_1F",
+   "name": "Mt. Moon",
+   "aliases": [
+    "mount moon",
+    "mt moon",
+    "mt. moon"
+   ]
+  },
+  {
+   "id": "MAP_CERULEAN_CAVE_1F",
+   "name": "Cerulean Cave",
+   "aliases": [
+    "cerulean cave",
+    "mewtwo cave",
+    "unknown dungeon"
+   ]
+  },
+  {
+   "id": "MAP_CERULEAN_CAVE_B1F",
+   "name": "Cerulean Cave B1F",
+   "aliases": [
+    "cerulean cave b1f",
+    "cerulean cave basement"
+   ]
+  },
+  {
+   "id": "MAP_ROCK_TUNNEL_1F",
+   "name": "Rock Tunnel",
+   "aliases": [
+    "rock tunnel"
+   ]
+  },
+  {
+   "id": "MAP_POKEMON_TOWER_1F",
+   "name": "Pokémon Tower",
+   "aliases": [
+    "ghost tower",
+    "lavender tower",
+    "pokemon tower"
+   ]
+  },
+  {
+   "id": "MAP_POWER_PLANT",
+   "name": "Power Plant",
+   "aliases": [
+    "power plant",
+    "zapdos plant"
+   ]
+  },
+  {
+   "id": "MAP_SEAFOAM_ISLANDS_1F",
+   "name": "Seafoam Islands",
+   "aliases": [
+    "seafoam",
+    "seafoam island",
+    "seafoam islands"
+   ]
+  },
+  {
+   "id": "MAP_SEAFOAM_ISLANDS_B4F",
+   "name": "Seafoam Islands B4F",
+   "aliases": [
+    "bottom of seafoam",
+    "seafoam b4f"
+   ]
+  },
+  {
+   "id": "MAP_VICTORY_ROAD_1F",
+   "name": "Victory Road",
+   "aliases": [
+    "victory road"
+   ]
+  },
+  {
+   "id": "MAP_INDIGO_PLATEAU_EXTERIOR",
+   "name": "Indigo Plateau",
+   "aliases": [
+    "e4",
+    "elite 4",
+    "elite four",
+    "indigo",
+    "indigo plateau",
+    "pokemon league",
+    "the league"
+   ]
+  },
+  {
+   "id": "MAP_INDIGO_PLATEAU_POKEMON_CENTER_1F",
+   "name": "Indigo Plateau Pokémon Center",
+   "aliases": [
+    "indigo plateau pokemon center",
+    "league pokemon center"
+   ]
+  },
+  {
+   "id": "MAP_POKEMON_MANSION_1F",
+   "name": "Pokémon Mansion",
+   "aliases": [
+    "cinnabar mansion",
+    "mansion",
+    "pokemon mansion"
+   ]
+  },
+  {
+   "id": "MAP_SILPH_CO_1F",
+   "name": "Silph Co.",
+   "aliases": [
+    "silph",
+    "silph co",
+    "silph company"
+   ]
+  },
+  {
+   "id": "MAP_ROCKET_HIDEOUT_B1F",
+   "name": "Rocket Hideout",
+   "aliases": [
+    "game corner hideout",
+    "rocket hideout",
+    "team rocket hideout"
+   ]
+  },
+  {
+   "id": "MAP_CELADON_CITY_GAME_CORNER",
+   "name": "Celadon Game Corner",
+   "aliases": [
+    "casino",
+    "celadon game corner",
+    "game corner"
+   ]
+  },
+  {
+   "id": "MAP_CELADON_CITY_DEPARTMENT_STORE_1F",
+   "name": "Celadon Department Store",
+   "aliases": [
+    "celadon department store",
+    "celadon dept store",
+    "celadon mall",
+    "department store",
+    "dept store"
+   ]
+  },
+  {
+   "id": "MAP_SAFARI_ZONE_CENTER",
+   "name": "Safari Zone",
+   "aliases": [
+    "safari",
+    "safari zone",
+    "the safari"
+   ]
+  },
+  {
+   "id": "MAP_FUCHSIA_CITY_SAFARI_ZONE_ENTRANCE",
+   "name": "Safari Zone entrance",
+   "aliases": [
+    "safari entrance",
+    "safari zone entrance"
+   ]
+  },
+  {
+   "id": "MAP_SAFFRON_CITY_DOJO",
+   "name": "Fighting Dojo",
+   "aliases": [
+    "dojo",
+    "fighting dojo",
+    "karate dojo"
+   ]
+  },
+  {
+   "id": "MAP_DIGLETTS_CAVE_B1F",
+   "name": "Diglett’s Cave",
+   "aliases": [
+    "diglett cave",
+    "digletts cave"
+   ]
+  },
+  {
+   "id": "MAP_SSANNE_EXTERIOR",
+   "name": "S.S. Anne",
+   "aliases": [
+    "s s anne",
+    "ss anne",
+    "the boat",
+    "the ship"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE5_POKEMON_DAY_CARE",
+   "name": "Route 5 Day Care",
+   "aliases": [
+    "day care",
+    "daycare",
+    "route 5 day care"
+   ]
+  },
+  {
+   "id": "MAP_FOUR_ISLAND_POKEMON_DAY_CARE",
+   "name": "Four Island Day Care",
+   "aliases": [
+    "4 island day care",
+    "four island day care"
+   ]
+  },
+  {
+   "id": "MAP_CERULEAN_CITY_BIKE_SHOP",
+   "name": "Bike Shop",
+   "aliases": [
+    "bike shop"
+   ]
+  },
+  {
+   "id": "MAP_UNDERGROUND_PATH_NORTH_ENTRANCE",
+   "name": "Underground Path",
+   "aliases": [
+    "underground",
+    "underground path"
+   ]
+  },
+  {
+   "id": "MAP_POKEMON_LEAGUE_HALL_OF_FAME",
+   "name": "Hall of Fame",
+   "aliases": [
+    "hall of fame"
+   ]
+  },
+  {
+   "id": "MAP_ONE_ISLAND_KINDLE_ROAD",
+   "name": "Kindle Road",
+   "aliases": [
+    "kindle road"
+   ]
+  },
+  {
+   "id": "MAP_ONE_ISLAND_KINDLE_ROAD_EMBER_SPA",
+   "name": "Ember Spa",
+   "aliases": [
+    "ember spa"
+   ]
+  },
+  {
+   "id": "MAP_ONE_ISLAND_TREASURE_BEACH",
+   "name": "Treasure Beach",
+   "aliases": [
+    "treasure beach"
+   ]
+  },
+  {
+   "id": "MAP_MT_EMBER_EXTERIOR",
+   "name": "Mt. Ember",
+   "aliases": [
+    "mount ember",
+    "mt ember",
+    "mt. ember"
+   ]
+  },
+  {
+   "id": "MAP_MT_EMBER_SUMMIT",
+   "name": "Mt. Ember Summit",
+   "aliases": [
+    "moltres summit",
+    "mount ember summit",
+    "mt ember summit"
+   ]
+  },
+  {
+   "id": "MAP_TWO_ISLAND_CAPE_BRINK",
+   "name": "Cape Brink",
+   "aliases": [
+    "cape brink"
+   ]
+  },
+  {
+   "id": "MAP_THREE_ISLAND_BOND_BRIDGE",
+   "name": "Bond Bridge",
+   "aliases": [
+    "bond bridge"
+   ]
+  },
+  {
+   "id": "MAP_THREE_ISLAND_BERRY_FOREST",
+   "name": "Berry Forest",
+   "aliases": [
+    "berry forest"
+   ]
+  },
+  {
+   "id": "MAP_THREE_ISLAND_DUNSPARCE_TUNNEL",
+   "name": "Dunsparce Tunnel",
+   "aliases": [
+    "dunsparce tunnel"
+   ]
+  },
+  {
+   "id": "MAP_FOUR_ISLAND_ICEFALL_CAVE_ENTRANCE",
+   "name": "Icefall Cave",
+   "aliases": [
+    "ice fall cave",
+    "icefall cave"
+   ]
+  },
+  {
+   "id": "MAP_FIVE_ISLAND_RESORT_GORGEOUS",
+   "name": "Resort Gorgeous",
+   "aliases": [
+    "resort gorgeous"
+   ]
+  },
+  {
+   "id": "MAP_FIVE_ISLAND_WATER_LABYRINTH",
+   "name": "Water Labyrinth",
+   "aliases": [
+    "water labyrinth"
+   ]
+  },
+  {
+   "id": "MAP_FIVE_ISLAND_MEADOW",
+   "name": "Five Isle Meadow",
+   "aliases": [
+    "5 isle meadow",
+    "five isle meadow",
+    "meadow"
+   ]
+  },
+  {
+   "id": "MAP_FIVE_ISLAND_MEMORIAL_PILLAR",
+   "name": "Memorial Pillar",
+   "aliases": [
+    "memorial pillar"
+   ]
+  },
+  {
+   "id": "MAP_FIVE_ISLAND_LOST_CAVE_ENTRANCE",
+   "name": "Lost Cave",
+   "aliases": [
+    "lost cave"
+   ]
+  },
+  {
+   "id": "MAP_FIVE_ISLAND_ROCKET_WAREHOUSE",
+   "name": "Rocket Warehouse",
+   "aliases": [
+    "rocket warehouse"
+   ]
+  },
+  {
+   "id": "MAP_SIX_ISLAND_OUTCAST_ISLAND",
+   "name": "Outcast Island",
+   "aliases": [
+    "outcast island"
+   ]
+  },
+  {
+   "id": "MAP_SIX_ISLAND_GREEN_PATH",
+   "name": "Green Path",
+   "aliases": [
+    "green path"
+   ]
+  },
+  {
+   "id": "MAP_SIX_ISLAND_WATER_PATH",
+   "name": "Water Path",
+   "aliases": [
+    "water path"
+   ]
+  },
+  {
+   "id": "MAP_SIX_ISLAND_RUIN_VALLEY",
+   "name": "Ruin Valley",
+   "aliases": [
+    "ruin valley"
+   ]
+  },
+  {
+   "id": "MAP_SIX_ISLAND_PATTERN_BUSH",
+   "name": "Pattern Bush",
+   "aliases": [
+    "pattern bush"
+   ]
+  },
+  {
+   "id": "MAP_SIX_ISLAND_ALTERING_CAVE",
+   "name": "Altering Cave",
+   "aliases": [
+    "altering cave"
+   ]
+  },
+  {
+   "id": "MAP_SEVEN_ISLAND_TRAINER_TOWER",
+   "name": "Trainer Tower",
+   "aliases": [
+    "trainer tower"
+   ]
+  },
+  {
+   "id": "MAP_SEVEN_ISLAND_SEVAULT_CANYON",
+   "name": "Sevault Canyon",
+   "aliases": [
+    "sevault canyon"
+   ]
+  },
+  {
+   "id": "MAP_SEVEN_ISLAND_TANOBY_RUINS",
+   "name": "Tanoby Ruins",
+   "aliases": [
+    "tanoby",
+    "tanoby ruins"
+   ]
+  },
+  {
+   "id": "MAP_TWO_ISLAND_JOYFUL_GAME_CORNER",
+   "name": "Joyful Game Corner",
+   "aliases": [
+    "joyful game corner"
+   ]
+  },
+  {
+   "id": "MAP_NAVEL_ROCK_EXTERIOR",
+   "name": "Navel Rock",
+   "aliases": [
+    "navel rock"
+   ]
+  },
+  {
+   "id": "MAP_BIRTH_ISLAND_EXTERIOR",
+   "name": "Birth Island",
+   "aliases": [
+    "birth island"
+   ]
+  },
+  {
+   "id": "MAP_ROUTE25_SEA_COTTAGE",
+   "name": "Sea Cottage",
+   "aliases": [
+    "bill house",
+    "bill's house",
+    "bills house",
+    "sea cottage"
+   ]
+  },
+  {
+   "id": "MAP_CINNABAR_ISLAND_POKEMON_LAB_LOUNGE",
+   "name": "Cinnabar Pokémon Lab",
+   "aliases": [
+    "cinnabar lab",
+    "fossil lab",
+    "pokemon lab"
+   ]
+  },
+  {
+   "id": "MAP_VERMILION_CITY_POKEMON_FAN_CLUB",
+   "name": "Pokémon Fan Club",
+   "aliases": [
+    "fan club",
+    "pokemon fan club"
+   ]
+  },
+  {
+   "id": "MAP_ONE_ISLAND_HARBOR",
+   "name": "One Island Harbor",
+   "aliases": [
+    "1 island harbor",
+    "one island harbor"
+   ]
+  }
+ ]
+}

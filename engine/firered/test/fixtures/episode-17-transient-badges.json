@@ -1,0 +1,14 @@
+{
+  "sourceRun": "master-red-six-20260905-01-17",
+  "sourceRevision": "e8c64a58101cfce5844c9dcf42632b7491746ce44a0d9cf9f829218708da3a89",
+  "projection": "Final six audit.jsonl.gz events: frame, phase, mode, eight native badge bits, memory hash, play time",
+  "map": "MAP_ROUTE2",
+  "samples": [
+    [357558, "transition", "overworld", "00000000", "3eaaf59a36c3a185b876aba27a8eecb2777dc637bd72ee69bf9d815313c30943", [1,35,55]],
+    [357582, "stable", "overworld", "00000000", "99cfa55008dda5d73dcb6b33b2278b89909dec84fa77ad3806e4797fba8af894", [1,35,55]],
+    [357810, "transition", "overworld", "00000000", "e52454592501070169f48ea629fff33e3f548a5c72b17460e26fe89e1ba217f9", [1,35,59]],
+    [357834, "transition", "overworld", "00000000", "bb2ad854ec9e04f8d80af2f23c8704d3936fad8baaa56181e43c12dc6b7fa0e7", [1,35,59]],
+    [357858, "transition", "overworld", "00000000", "3356d69b02fe27d08d01a81bfc7a217fe615d6b1c79306b012e104164b2d64ea", [1,36,0]],
+    [357882, "transition", "battle", "11111111", "23f2601c7be263b3ec48aa46baf1db37dbca5a7c705ea8a7b53a54894d5205a9", [1,36,0]]
+  ]
+}

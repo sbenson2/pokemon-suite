@@ -1,0 +1,129 @@
+{
+ "schema": "pokemon-suite/static-encounters/v1",
+ "game": "firered",
+ "source": "Executor capability projection of engine/firered/src/suite/static-availability.js STATIC_TARGETS (static method); engine/firered/test/goal-request-foundations.test.js verifies it. Code-adjacent, not pinned game data: saved requests with older data locks still preview.",
+ "encounters": [
+  {
+   "id": "mewtwo",
+   "speciesId": 150,
+   "nativeSpecies": 150,
+   "name": "Mewtwo",
+   "method": "static",
+   "map": "MAP_CERULEAN_CAVE_B1F",
+   "flag": 700,
+   "level": 70,
+   "locationId": "10:325:20:",
+   "location": "Cerulean Cave (B1F)",
+   "balls": [
+    "any",
+    "poke-ball",
+    "great-ball",
+    "ultra-ball"
+   ],
+   "requires": [
+    {
+     "key": "leagueComplete",
+     "flag": 2092,
+     "label": "Enter the Hall of Fame",
+     "need": "Hall of Fame",
+     "source": "postgame-agenda"
+    },
+    {
+     "key": "nationalDex",
+     "flag": 2112,
+     "label": "Unlock the National Pokédex",
+     "need": "National Pokédex",
+     "source": "postgame-agenda"
+    },
+    {
+     "key": "canLinkNationally",
+     "flag": 2116,
+     "label": "Complete Celio’s Ruby and Sapphire quest",
+     "need": "Celio’s link (Ruby and Sapphire quest)",
+     "source": "postgame-agenda"
+    }
+   ]
+  },
+  {
+   "id": "articuno",
+   "speciesId": 144,
+   "nativeSpecies": 144,
+   "name": "Articuno",
+   "method": "static",
+   "map": "MAP_SEAFOAM_ISLANDS_B4F",
+   "flag": 702,
+   "level": 50,
+   "locationId": "10:262:20:",
+   "location": "Seafoam Islands (B4F)",
+   "balls": [
+    "any",
+    "poke-ball",
+    "great-ball",
+    "ultra-ball"
+   ],
+   "requires": [
+    {
+     "key": "leagueComplete",
+     "flag": 2092,
+     "label": "Enter the Hall of Fame",
+     "need": "Hall of Fame",
+     "source": "postgame-agenda"
+    }
+   ]
+  },
+  {
+   "id": "zapdos",
+   "speciesId": 145,
+   "nativeSpecies": 145,
+   "name": "Zapdos",
+   "method": "static",
+   "map": "MAP_POWER_PLANT",
+   "flag": 703,
+   "level": 50,
+   "locationId": "10:330:20:",
+   "location": "Power Plant",
+   "balls": [
+    "any",
+    "poke-ball",
+    "great-ball",
+    "ultra-ball"
+   ],
+   "requires": [
+    {
+     "key": "leagueComplete",
+     "flag": 2092,
+     "label": "Enter the Hall of Fame",
+     "need": "Hall of Fame",
+     "source": "postgame-agenda"
+    }
+   ]
+  },
+  {
+   "id": "moltres",
+   "speciesId": 146,
+   "nativeSpecies": 146,
+   "name": "Moltres",
+   "method": "static",
+   "map": "MAP_MT_EMBER_SUMMIT",
+   "flag": 701,
+   "level": 50,
+   "locationId": "10:825:20:",
+   "location": "Mount Ember Summit",
+   "balls": [
+    "any",
+    "poke-ball",
+    "great-ball",
+    "ultra-ball"
+   ],
+   "requires": [
+    {
+     "key": "leagueComplete",
+     "flag": 2092,
+     "label": "Enter the Hall of Fame",
+     "need": "Hall of Fame",
+     "source": "postgame-agenda"
+    }
+   ]
+  }
+ ]
+}

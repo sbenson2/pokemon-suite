@@ -1,0 +1,23 @@
+{
+  "name": "master-red-research",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Evidence-gated research foundation for a central-player Pok\u00e9mon FireRed agent.",
+  "scripts": {
+    "catalog:stock-saves": "node src/cli/catalog-stock-saves.js",
+    "check": "node src/cli/check-foundation.js",
+    "extract:knowledge": "node src/cli/extract-knowledge.js",
+    "prepare:mart-seed": "node src/cli/prepare-mart-seed.js",
+    "prepare:scenario-seed": "node src/cli/prepare-scenario-seed.js",
+    "qualify:emulator": "node src/cli/qualify-emulator.js",
+    "qualify:scenario": "node src/cli/qualify-scenario.js",
+    "run:player": "node src/cli/run-player.js",
+    "test": "node --test",
+    "verify": "npm run check && npm test"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT"
+}

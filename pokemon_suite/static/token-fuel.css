@@ -1,0 +1,52 @@
+/* A fuel dial in the player header, with a bounded settings drawer beneath it. */
+.token-speed-control {--fuel-paper:#222c38;--fuel-raised:#303e50;--fuel-ink:#f1f5f8;--fuel-muted:#bccbd9;--fuel-line:#73879b;--speed-color:#f1a18e;--fuel-angle:22deg;margin-right:12px;}
+body[data-pokemon-suite="true"] .token-speed-control {--fuel-paper:var(--ps-surface);--fuel-raised:var(--ps-raised);--fuel-ink:var(--ps-ink);--fuel-muted:var(--ps-muted);--fuel-line:var(--ps-border);}
+.token-speed-control[data-speed="slow"],.token-speed-control [data-token-speed="slow"] {--speed-color:#449782;--fuel-angle:-65deg;}
+.token-speed-control[data-speed="medium"],.token-speed-control [data-token-speed="medium"] {--speed-color:#b08a36;--fuel-angle:-22deg;}
+.token-speed-control[data-speed="high"],.token-speed-control [data-token-speed="high"] {--speed-color:#c75c4e;--fuel-angle:22deg;}
+.token-speed-control[data-speed="unlimited"],.token-speed-control [data-token-speed="unlimited"] {--speed-color:#4687b0;--fuel-angle:65deg;}
+.controls #token-speed-toggle {display:flex;gap:6px;min-height:44px;padding:3px 9px;color:var(--fuel-ink);background:var(--fuel-paper);border:1px solid var(--fuel-line);border-radius:5px;font:600 12px/1.2 'Trebuchet MS',sans-serif;}
+.controls #token-speed-toggle:hover {background:var(--fuel-raised);color:var(--fuel-ink);}
+.fuel-gauge {width:40px;height:30px;flex:none;overflow:visible;fill:var(--fuel-ink);}
+.fuel-gauge-track,.fuel-gauge-band {fill:none;stroke:var(--fuel-line);stroke-width:4;}
+.fuel-gauge-band {stroke:var(--speed-color);stroke-dasharray:9 2;}
+.fuel-gauge-needle {stroke:var(--fuel-ink);stroke-width:2;stroke-linecap:round;transform-origin:20px 23px;transform:rotate(var(--fuel-angle));}
+.fuel-toggle-copy {display:grid;gap:2px;text-align:left;min-width:48px;}
+.fuel-toggle-copy small {font-size:9px;font-weight:400;color:var(--fuel-muted);}
+.fuel-toggle-chevron {color:var(--fuel-muted);}
+.token-speed-control .token-speed-panel {position:fixed;z-index:100;box-sizing:border-box;width:min(330px,calc(100vw - 16px));padding:14px;border:2px solid var(--fuel-line);border-radius:6px;background:var(--fuel-paper);color:var(--fuel-ink);box-shadow:0 6px 18px #0004;font:13px/1.45 'Trebuchet MS',sans-serif;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;}
+.token-speed-panel:not([hidden]) {animation:fuel-panel-open 160ms ease-out;}
+@keyframes fuel-panel-open {from {opacity:0;translate:0 -4px;} to {opacity:1;translate:0 0;}}
+.token-speed-panel #token-speed-title {margin:0 0 4px;font-size:18px;font-weight:700;}
+.token-speed-panel .fuel-intro {color:var(--fuel-muted);font-size:12px;line-height:1.5;font-weight:400;margin:0 0 12px;}
+.controls .token-speed-panel button {font:600 14px/1.3 'Trebuchet MS',sans-serif;min-height:54px;border-radius:4px;margin:4px 0;padding:8px 9px;color:var(--fuel-ink);background:var(--fuel-paper);border-color:transparent;}
+.controls .token-speed-panel button:hover {background:var(--fuel-raised);color:var(--fuel-ink);}
+.controls .token-speed-panel button small {color:var(--fuel-muted);font-size:11px;line-height:1.4;}
+.controls .token-speed-panel button[aria-pressed="true"] {border-color:var(--speed-color);background:var(--fuel-raised);box-shadow:inset 3px 0 var(--speed-color);}
+.token-speed-control [data-token-speed] i {width:12px;height:12px;border-radius:2px;}
+.token-speed-control [data-token-speed="unlimited"] i {font:700 21px/12px 'Trebuchet MS',sans-serif;color:var(--speed-color);background:none;}
+.token-speed-panel #token-speed-description {border-top:1px solid var(--fuel-line);margin:12px 0 0;padding-top:10px;font-size:12px;line-height:1.5;font-weight:400;}
+.fuel-readings {display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0;padding:9px;background:var(--fuel-raised);border:1px solid var(--fuel-line);border-radius:3px;}
+.fuel-readings dt {font-size:10px;color:var(--fuel-muted);}
+.fuel-readings dd {margin:3px 0 0;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;}
+.token-speed-panel #token-speed-scope {color:var(--fuel-muted);font-size:11px;line-height:1.5;}
+.token-speed-panel #token-speed-status {color:var(--fuel-ink);font-size:12px;margin-top:8px;}
+.token-speed-panel #token-speed-status:empty {display:none;}
+.token-speed-panel::-webkit-scrollbar {width:10px;}
+.token-speed-panel::-webkit-scrollbar-track {background:var(--fuel-paper);border-left:1px solid var(--fuel-line);}
+.token-speed-panel::-webkit-scrollbar-thumb {background:var(--fuel-muted);border:2px solid var(--fuel-paper);border-radius:3px;}
+.token-speed-control button:focus-visible {outline:3px solid var(--fuel-line);outline-offset:2px;}
+@media(max-width:1100px) {
+  .token-speed-control {margin-right:8px;margin-left:6px;}
+  .controls #token-speed-toggle {padding:3px 6px;}
+  .fuel-toggle-copy,.fuel-toggle-chevron {display:none;}
+}
+@media(max-width:560px) {
+  body[data-pokemon-suite="true"] .controls-identity {padding-right:4px;}
+  body[data-pokemon-suite="true"] .control-actions {gap:4px;padding-inline:4px;}
+  body[data-pokemon-suite="true"] .control-actions #stop {font-size:0;width:34px;min-height:36px;padding:0;}
+  body[data-pokemon-suite="true"] .control-actions #stop::before {content:'';display:block;width:10px;height:10px;background:currentColor;margin:auto;border-radius:1px;}
+  body[data-pokemon-suite="true"] .control-actions #mute {font-size:0;width:34px;min-height:36px;padding:0;}
+  body[data-pokemon-suite="true"] .control-actions #mute::before {content:'';display:block;width:19px;height:19px;background:currentColor;margin:auto;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M3 9h4l5-4v14l-5-4H3z'/%3E%3Cpath fill='none' stroke='black' stroke-width='2' d='M16 8q4 4 0 8m3-11q7 7 0 14'/%3E%3C/svg%3E") center/contain no-repeat;}
+}
+@media(prefers-reduced-motion:reduce) {.token-speed-panel:not([hidden]) {animation:none;}}
