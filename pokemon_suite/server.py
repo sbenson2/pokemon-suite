@@ -82,7 +82,7 @@ class SuiteServer(ThreadingHTTPServer):
         current = next((s for s in sessions if s['game'] == selected), None)
         pack = next((p for p in packs if p['game']['id'] == 'pokemon-' + str(selected)), None)
         cards = [{**p, 'id': p['game']['id']} for p in packs]
-        return {'product': 'pokemon-suite', 'version': '0.1.0', 'controlAvailable': True,
+        return {'product': 'pokemon-suite', 'version': '0.1.1', 'controlAvailable': True,
                 'selected': pack['id'] if pack else '', 'packs': packs, 'cartridges': cards,
                 'library': library, 'sessions': sessions, 'session': current,
                 'software':{**self.updates.status(),'feed':self.update_feed.status()},

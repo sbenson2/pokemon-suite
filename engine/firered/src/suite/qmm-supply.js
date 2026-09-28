@@ -54,7 +54,7 @@ const dataOf=d=>d?.data??d??{};
 const knows=(p,id)=>(p?.moves??[]).includes(id);
 // Boxed records carry experience but no level; derive it from the species'
 // growth curve (src/data/pokemon/experience_tables.h formulas).
-const GROWTH={
+export const GROWTH={
  GROWTH_MEDIUM_FAST:n=>n**3,
  GROWTH_ERRATIC:n=>n<=50?Math.floor(n**3*(100-n)/50):n<=68?Math.floor(n**3*(150-n)/100):n<=98?Math.floor(n**3*Math.floor((1911-10*n)/3)/500):Math.floor(n**3*(160-n)/100),
  GROWTH_FLUCTUATING:n=>n<=15?Math.floor(n**3*(Math.floor((n+1)/3)+24)/50):n<=36?Math.floor(n**3*(n+14)/50):Math.floor(n**3*(Math.floor(n/2)+32)/50),

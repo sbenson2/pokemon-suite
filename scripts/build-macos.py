@@ -175,7 +175,7 @@ def build(output, cache, arch, *, feed_url=None, public_key=None, signing_identi
             'CFBundleDevelopmentRegion': 'en', 'CFBundleExecutable': 'PokemonSuite',
             'CFBundleIdentifier': 'org.pokemonsuite.mac', 'CFBundleName': 'Pokémon Suite',
             'CFBundleDisplayName': 'Pokémon Suite', 'CFBundlePackageType': 'APPL',
-            'CFBundleShortVersionString': '0.1.0', 'CFBundleVersion': '62',
+            'CFBundleShortVersionString': '0.1.1', 'CFBundleVersion': '65',
             'NSRemovableVolumesUsageDescription': 'Read your selected game cartridges and their artwork from your ROM collection.',
             'NSMicrophoneUsageDescription': 'Hear the request you speak to the bot after you click the microphone in Ask the bot.',
             'NSSpeechRecognitionUsageDescription': 'Turn your spoken bot request into text on this Mac. Your voice is never sent to a server.',
@@ -216,12 +216,12 @@ def build(output, cache, arch, *, feed_url=None, public_key=None, signing_identi
         output.mkdir()
         shutil.move(str(app), output/app.name)
     app = output/'Pokémon Suite.app'
-    archive = output/f'pokemon-suite-0.1.0-macos-{arch}.zip'
+    archive = output/f'pokemon-suite-0.1.1-macos-{arch}.zip'
     subprocess.run(['ditto', '-c', '-k', '--sequesterRsrc', '--keepParent', str(app), str(archive)], check=True)
     sha = hashlib.sha256(archive.read_bytes()).hexdigest()
     archive.with_suffix('.zip.sha256').write_text(sha+'  '+archive.name+'\n')
     # The same pinned pack, for running from source (attached to the release).
-    pack = output/'pokemon-suite-0.1.0-firered-resources.zip'
+    pack = output/'pokemon-suite-0.1.1-firered-resources.zip'
     subprocess.run(['ditto', '-c', '-k', '--norsrc', str(app/'Contents/Resources/GameResources'), str(pack)], check=True)
     pack.with_suffix('.zip.sha256').write_text(hashlib.sha256(pack.read_bytes()).hexdigest()+'  '+pack.name+'\n')
     result = {'app': str(app), 'archive': str(archive), 'sha256': sha, 'resources': str(pack), 'architecture': arch, 'signing': 'ad-hoc' if signing_identity=='-' else signing_identity, 'notarized': False}
@@ -231,7 +231,7 @@ def build(output, cache, arch, *, feed_url=None, public_key=None, signing_identi
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output', type=Path, default=ROOT/'dist/macos-0.1.0')
+    parser.add_argument('--output', type=Path, default=ROOT/'dist/macos-0.1.1')
     parser.add_argument('--runtime-cache', type=Path, default=ROOT/'.private/macos-app/runtime-cache')
     parser.add_argument('--arch', choices=['arm64', 'x86_64'], default=platform.machine())
     parser.add_argument('--feed-url')

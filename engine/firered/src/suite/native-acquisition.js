@@ -1,5 +1,6 @@
 import {NativeAcquisitionTask,acquisitionField,acquiredPokemon} from './acquisition-task.js';
 import {BreedingTask} from './native-breeding.js';
+import {PcReleaseTask} from './pc-release.js';
 export {selectOwnedBreeding} from './native-breeding.js';
 import {encounterFingerprint} from '../player/encounter-tracker.js';
 import {storageCapacity} from './storage-capacity.js';
@@ -130,5 +131,6 @@ class GameCornerTask extends NativeAcquisitionTask{
 export function createPostgameAcquisition(options){
  if(options.kind==='breeding')return new BreedingTask(options);
  if(options.kind==='game-corner')return new GameCornerTask(options);
+ if(options.kind==='pc-release')return new PcReleaseTask(options);
  throw Error('This native acquisition workflow is unavailable.');
 }

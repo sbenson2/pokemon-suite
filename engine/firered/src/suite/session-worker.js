@@ -1240,7 +1240,7 @@ async function command(c){
   if(usingNativeRadio)startNativeRadio();
   // Keep the captured party inside this emulator. Link traffic will require
   // normal speed; never launch the record-export bridge as a fallback.
-  tradePreparation??=new TradePreparation({receipt:json(join(directory,`trade-ready-${tradeState().id}.json`)),center:prepared.center,nurseIndex:prepared.nurseIndex,mechanics:inputs.battle,state:prepared});
+  tradePreparation??=new TradePreparation({receipt:json(join(directory,`trade-ready-${tradeState().id}.json`)),center:prepared.center,nurseIndex:prepared.nurseIndex,mechanics:inputs.battle,world:inputs.world,state:prepared});
   engine('bot',false,1);player=createPlayer();resume=null;
   tradeState().status='running';tradeState().reason='Going upstairs to host a native trade as Leader.';
   running=true;persist('native-trade-started');task=runNativeTrade();return;
@@ -1257,7 +1257,7 @@ async function command(c){
   const map=inputs.world.data.maps.find(m=>m.id===center);
   const nurseIndex=map?.objectEvents.findIndex(o=>/EventScript_Nurse$/.test(o.script));
   if(!(nurseIndex>=0))throw new Error('The destination nurse could not be verified.');
-  tradePreparation=new TradePreparation({receipt,center,nurseIndex,mechanics:inputs.battle,state:tradePreparation?.state??resume?.tradePreparation??null});
+  tradePreparation=new TradePreparation({receipt,center,nurseIndex,mechanics:inputs.battle,world:inputs.world,state:tradePreparation?.state??resume?.tradePreparation??null});
   botPolicy={...botPolicy,enabled:true,awaitingCommand:false,consolePowered:true,runScope:'task'};atomicJson(botPolicyPath,botPolicy);
   engine('bot');player=createPlayer(tradePreparation.state.phase==='ready'?null:resume?.tradePreparation?resume.player:null);
   resume=null;tradeState().status='running';tradeState().reason='Taking the saved capture to a Pokémon Center for trading.';

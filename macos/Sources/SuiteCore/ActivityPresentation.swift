@@ -73,10 +73,12 @@ public struct ActivityPresentation {
         let battle = (s["mode"].string.nonempty ?? s["observation"]["mode"].string) == "battle"
         let objectiveID = action["objective"].string.nonempty ?? objective["id"].string
         let current = story["current"]
-        goal = Self.checkpoint(current) ?? bot["objective"]["label"].string.nonempty ?? bot["objective"]["name"].string.nonempty ?? mission["name"].string.nonempty
+        // A finished or deferred hunt is history; it never names the current goal.
+        let liveMission = !deferredMission && !terminal.contains(mission["state"].string) ? mission["name"].string.nonempty : nil
+        goal = Self.checkpoint(current) ?? bot["objective"]["label"].string.nonempty ?? bot["objective"]["name"].string.nonempty ?? liveMission
         if postgameActive {
             goal = postgame["entries"].array.first { $0["id"] == postgame["active"] }?["label"].string.nonempty
-                ?? (!deferredMission && !terminal.contains(mission["state"].string) ? mission["name"].string.nonempty : nil)
+                ?? liveMission
         }
         location = s["spectator"]["map"]["name"].string.nonempty ?? Self.place(s["map"]) ?? Self.place(s["observation"]["map"]["id"])
         destination = Self.place(action["targetMap"]) ?? Self.place(objective["target"]["map"])
@@ -403,6 +405,9 @@ public struct ActivityPresentation {
         case "choose-storage-party-member":return "Selecting a party Pokémon at the PC"
         case "choose-storage-box-member":return "Selecting a boxed Pokémon"
         case "confirm-storage-action":return "Confirming the PC operation"
+        case "choose-storage-menu-action":return "Choosing \(readableGameText(a["targetAction"].string)) for the boxed Pokémon"
+        case "confirm-storage-release":return a["targetOption"].string == "yes" ? "Releasing the selected Egg-sticker hatchling" : "Keeping the Pokémon: its release was not verified"
+        case "acknowledge-storage-message":return "Advancing the PC message"
         case "cancel-storage-action":return "Cancelling the PC operation"
         case "exit-storage", "exit-storage-mode":return "Leaving the PC"
         case "choose-storage-continue":return "Finishing the PC operation"
@@ -437,6 +442,7 @@ public struct ActivityPresentation {
     }
     private static func reason(_ action: JSONValue, winner: JSONValue) -> String? {
         let constraints=Set(winner["constraints"].array.map(\.string)), objective=action["objective"].string
+        if constraints.contains("release-egg-sticker-hatchling") { return "Releasing Egg-sticker hatchlings to free PC space." }
         if constraints.contains("increase-capture-probability") { return "Applying a status condition to improve the catch chance." }
         if constraints.contains("critical-hit-safe-capture-damage") { return "Weakening the target while keeping the predicted critical hit survivable." }
         if constraints.contains("high-confidence-knockout-margin") { return "The training Pokémon is healthy and its move is predicted to finish the opponent." }

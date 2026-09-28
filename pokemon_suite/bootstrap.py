@@ -47,6 +47,6 @@ def doctor(directory, runtime_overrides=None):
             issues.append(f'{game}: the extracted desktop capture adapter is currently macOS-only; a native adapter for this OS is required.')
     resources = [ROOT / 'engine/firered/src/suite/session-worker.js', ROOT / 'engine/shared/shared/cartridge.js']
     issues.extend('Missing application resource: ' + str(p.relative_to(ROOT)) for p in resources if not p.is_file())
-    return {'product': 'pokemon-suite', 'version': '0.1.0', 'host': {'os': sys.platform, 'architecture': platform.machine()},
+    return {'product': 'pokemon-suite', 'version': '0.1.1', 'host': {'os': sys.platform, 'architecture': platform.machine()},
             'configuredGames': len(config['games']), 'status': 'needs-setup' if issues else 'ready' if config['games'] else 'ready-for-game-setup',
             'issues': issues, 'dataDirectory': str(Path(directory).resolve())}

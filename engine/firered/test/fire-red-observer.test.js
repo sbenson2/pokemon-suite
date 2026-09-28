@@ -14,7 +14,9 @@ const zeroIdentity = { validity: "valid", personality: 0, otId: 0, trainerId: 0,
   nature: { id: 0, name: "Hardy" }, shiny: true, shinyValue: 0, isEgg: false, abilityNum: 0,
   friendship: 0, beauty: 0, sheen: 0, pokerus: 0,
   evs: { hp: 0, attack: 0, defense: 0, speed: 0, spAttack: 0, spDefense: 0 },
-  ivs: { hp: 0, attack: 0, defense: 0, speed: 0, spAttack: 0, spDefense: 0 } };
+  ivs: { hp: 0, attack: 0, defense: 0, speed: 0, spAttack: 0, spDefense: 0 },
+  // The fixtures' origins word is zero: the hatched met level.
+  metLevel: 0 };
 
 function u32(value) {
   const bytes = new Uint8Array(4);
@@ -5079,4 +5081,118 @@ test("battle observations expose each battler's committed action for the turn", 
   // A runtime without the symbol leaves the action unobserved.
   const unobserved = createFireRedObserver({ session, runtime: fixtureRuntime(), runId: "battle-no-actions" }).capture();
   assert.equal(unobserved.playerMemory.battle.chosenActions, undefined);
+});
+
+// PC release (pokefirered c75f352 pokemon_storage_system_tasks.c Task_OnSelectedMon
+// and Task_ReleaseMon; gStorage->menuItems[7] at 0xC70, menuItemsCount at 0xCA8
+// in the pinned ARM layout of struct PokemonStorageSystemData).
+function releaseStorageSession({ task, state, boxOption = 2, cursor = 0, items = null, pointerFor = null }) {
+  const session = stableSession(), runtime = fixtureRuntime();
+  runtime.data.symbols.Task_ReleaseMon = { address: 0x08017300, size: 20, region: "ROM" };
+  runtime.data.symbols.sMenuTexts = { address: 0x08030000, size: 152, region: "ROM" };
+  const tasks = new Uint8Array(640), view = new DataView(tasks.buffer);
+  view.setUint32(4 * 40, task, true);
+  tasks[4 * 40 + 4] = 1;
+  session.put(0x03000600, tasks);
+  const main = session.memory.get(0x03000100).slice();
+  new DataView(main.buffer).setUint32(4, 0x08015001, true);
+  session.put(0x03000100, main);
+  session.put(0x02000e80, u32(0x02003000));
+  session.put(0x02003000, Uint8Array.from([state, boxOption]));
+  session.put(0x03000b00, u32(0x02004000));
+  const pokemonStorage = new Uint8Array(4 + 14 * 30 * 80);
+  pokemonStorage[0] = 4;
+  session.put(0x02004000, pokemonStorage);
+  session.put(0x02000e84, Uint8Array.from([boxOption]));
+  session.put(0x02000e85, Uint8Array.from([0]));
+  session.put(0x02000e86, Uint8Array.from([7]));
+  session.put(0x02000e87, Uint8Array.from([0]));
+  session.put(0x02000e88, Uint8Array.from([0]));
+  session.put(0x02000e89, Uint8Array.from([0]));
+  const menu = session.memory.get(0x02000320).slice();
+  menu[2] = cursor;
+  session.put(0x02000320, menu);
+  const texts = new Uint8Array(152), textView = new DataView(texts.buffer);
+  for (let id = 0; id < 38; id += 1) textView.setUint32(id * 4, 0x08031000 + id * 16, true);
+  session.put(0x08030000, texts);
+  if (items) {
+    const block = new Uint8Array(57), blockView = new DataView(block.buffer);
+    items.forEach((textId, index) => {
+      blockView.setUint32(index * 8, pointerFor?.(textId, index) ?? 0x08031000 + textId * 16, true);
+      blockView.setInt32(index * 8 + 4, textId, true);
+    });
+    block[56] = items.length;
+    session.put(0x02003000 + 0xc70, block);
+  }
+  return { session, runtime };
+}
+
+test("the storage Pokemon menu exposes the cartridge's verified options and cursor", () => {
+  // Move mode on a boxed Pokemon: MOVE, SUMMARY, WITHDRAW, MARK, RELEASE, CANCEL.
+  const { session, runtime } = releaseStorageSession({ task: 0x08017101, state: 2, boxOption: 2, cursor: 4, items: [3, 6, 2, 8, 7, 0] });
+  const observation = createFireRedObserver({ session, runtime, runId: "storage-menu-options" }).capture();
+  assert.equal(observation.phase, "stable");
+  assert.equal(observation.playerMemory.ui.storage.stage, "pokemon-menu");
+  assert.equal(observation.playerMemory.ui.storage.boxOption, "move-pokemon");
+  assert.equal(observation.playerMemory.ui.storage.cursorArea, "box");
+  assert.equal(observation.playerMemory.ui.storage.currentBox, 4);
+  assert.equal(observation.playerMemory.ui.storage.cursorPosition, 7);
+  assert.deepEqual(observation.playerMemory.ui.storage.menu, {
+    items: ["move", "summary", "withdraw", "mark", "release", "cancel"], cursor: 4, selected: "release",
+  });
+
+  // Withdraw mode lists WITHDRAW, SUMMARY, MARK, RELEASE, CANCEL.
+  const withdraw = releaseStorageSession({ task: 0x08017101, state: 2, boxOption: 0, cursor: 0, items: [2, 6, 8, 7, 0] });
+  assert.deepEqual(createFireRedObserver({ ...withdraw, runId: "storage-menu-withdraw" }).capture().playerMemory.ui.storage.menu,
+    { items: ["withdraw", "summary", "mark", "release", "cancel"], cursor: 0, selected: "withdraw" });
+});
+
+test("an unverifiable storage menu is withheld instead of guessed", () => {
+  // A text pointer that is not the cartridge's own label for its id means the
+  // menu block was not read from the expected structure.
+  const wrong = releaseStorageSession({ task: 0x08017101, state: 2, cursor: 3, items: [2, 6, 8, 7, 0],
+    pointerFor: (textId, index) => index === 3 ? 0x08031000 : null });
+  const observation = createFireRedObserver({ ...wrong, runId: "storage-menu-mismatch" }).capture();
+  assert.equal(observation.playerMemory.ui.storage.stage, "pokemon-menu");
+  assert.equal(observation.playerMemory.ui.storage.menu, null);
+  const empty = releaseStorageSession({ task: 0x08017101, state: 2, cursor: 0, items: [] });
+  assert.equal(createFireRedObserver({ ...empty, runId: "storage-menu-empty" }).capture().playerMemory.ui.storage.menu, null);
+  const outOfRange = releaseStorageSession({ task: 0x08017101, state: 2, cursor: 5, items: [2, 6, 8, 7, 0] });
+  assert.deepEqual(createFireRedObserver({ ...outOfRange, runId: "storage-menu-cursor" }).capture().playerMemory.ui.storage.menu,
+    { items: ["withdraw", "summary", "mark", "release", "cancel"], cursor: 5, selected: null });
+});
+
+test("the release confirmation, released messages and refusal are distinct storage stages", () => {
+  const stage = (state, cursor = 1) => {
+    const fixture = releaseStorageSession({ task: 0x08017301, state, cursor });
+    return createFireRedObserver({ ...fixture, runId: `release-state-${state}` }).capture();
+  };
+  let observation = stage(1, 1);
+  assert.equal(observation.phase, "stable");
+  assert.equal(observation.emulator.mode, "storage");
+  assert.deepEqual(observation.playerMemory.ui.storage, {
+    stage: "release-confirm", option: 1, selected: "no", boxOption: "move-pokemon", cursorArea: "box",
+    cursorPosition: 7, currentBox: 4, movingPokemon: false, depositBox: 0,
+  });
+  assert.equal(observation.playerMemory.ui.choiceMenu, null, "the storage Yes/No is not a field choice menu");
+  assert.equal(stage(1, 0).playerMemory.ui.storage.selected, "yes");
+  observation = stage(4);
+  assert.equal(observation.phase, "stable");
+  assert.equal(observation.playerMemory.ui.storage.stage, "release-message");
+  assert.equal(observation.playerMemory.ui.storage.message, "released");
+  assert.equal(stage(5).playerMemory.ui.storage.message, "bye-bye");
+  for (const [state, message] of [[9, "released"], [10, "surprise"], [12, "came-back"], [13, "worried"]]) {
+    const refused = stage(state);
+    assert.equal(refused.phase, "stable");
+    assert.equal(refused.playerMemory.ui.storage.stage, "release-refused");
+    assert.equal(refused.playerMemory.ui.storage.message, message);
+  }
+  // The eligibility check, the purge, party compaction and the return to the
+  // box are animations or single-frame steps; they are not input prompts.
+  for (const state of [0, 2, 3, 6, 7, 8, 11]) {
+    const moving = stage(state);
+    assert.equal(moving.phase, "transition", `state ${state}`);
+    assert.ok(moving.phaseReasons.includes("storage-transition"));
+    assert.equal(moving.playerMemory.ui.storage, null);
+  }
 });

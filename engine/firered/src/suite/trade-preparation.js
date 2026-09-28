@@ -1,6 +1,7 @@
 import {encounterFingerprint} from '../player/encounter-tracker.js';
 import {partyFullyRestored} from '../player/recovery.js';
 import {nativeTradeFinished} from './native-trade-host.js';
+import {resolveFireRedTravel} from './fire-red-link-quest.js';
 
 export function assertOwnedTradeReady({observation:o,mission,capture,campaign,running=false,localBusy=false,nativeTrade,wireless}) {
  if(campaign&&campaign.status!=='complete')throw Error('Finish the story run or load another save before trading.');
@@ -18,15 +19,16 @@ export function assertOwnedTradeReady({observation:o,mission,capture,campaign,ru
 // Continue the caught individual's save using normal travel, PC, nurse and
 // SAVE inputs. This task never restores the hunt anchor or rewrites a Pokémon.
 export class TradePreparation {
- constructor({receipt,center,nurseIndex,mechanics,state=null}) {
+ constructor({receipt,center,nurseIndex,mechanics,world=null,state=null}) {
   if(!receipt?.fingerprint || !['saved-awaiting-partner','owned-awaiting-save'].includes(receipt.state))throw new Error('Trade preparation needs a verified, saved capture or an owned individual awaiting its native save.');
   if(state && (state.requestId!==receipt.requestId || state.fingerprint!==receipt.fingerprint))throw new Error('Trade preparation belongs to another capture.');
-  this.mechanics=mechanics;
+  this.mechanics=mechanics;this.world=world;
   this.state=state?structuredClone(state):{requestId:receipt.requestId,fingerprint:receipt.fingerprint,center,nurseIndex,phase:'party',saveBaseline:null};
  }
  inspect(o) {
   const s=this.state,m=o.playerMemory??{},t=m.trainer??{},ui=m.ui??{};
-  const policy=(id,target)=>({kind:'policy',objective:{id,target,dialogue:'advance',choice:'yes',deferOptionalDetours:true}});
+  // The center may be on another island: cross by Seagallop first, as missions do.
+  const policy=(id,target)=>({kind:'policy',objective:resolveFireRedTravel({id,target,dialogue:'advance',choice:'yes',deferOptionalDetours:true},o,this.world)});
   const stop=reason=>({kind:'stop',reason});
   if(o.phase!=='stable')return {kind:'wait'};
   // Let the central player's encounter guard handle any new encounter safely.

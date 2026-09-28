@@ -9,6 +9,36 @@ final class ActivityPresentationTests: XCTestCase {
         s["mission"] = value(#"{"state":"blocked","name":"Entei","reason":"Roaming hunt budget reached. The current save is preserved."}"#)
         XCTAssertEqual(present(s).why,"Roaming hunt budget reached. The current save is preserved.")
     }
+    func testAFinishedHuntIsNotShownAsTheGoalOfTheNextTask() {
+        // Sept 27: while a player task walked to hatch an Egg, the Session card showed the finished Dex hunt
+        // ("delibird", state complete) as its Goal.
+        let s = value(#"{"sessionId":"live","state":"running","bot":{"enabled":true,"runScope":"task","activity":"postgame","status":"running","objective":{"id":"acquire-postgame-egg-sticker-hatch"}},"mission":{"state":"complete","name":"delibird"}}"#)
+        XCTAssertNil(present(s).headline)
+        var labelled = s
+        labelled["bot"]["objective"]["label"] = .string("Complete remaining postgame objectives")
+        XCTAssertEqual(present(labelled).headline, "Complete remaining postgame objectives")
+        var running = s
+        running["mission"]["state"] = .string("running")
+        XCTAssertEqual(present(running).headline, "delibird", "a hunt that is still running remains the goal")
+    }
+    func testReleasingEggStickerHatchlingsReadsAsItsOwnGoalAndActions() {
+        // Sept 27: a full PC stopped postgame; the owner now releases the Egg sticker's own hatchlings.
+        let s = value(#"{"sessionId":"live","state":"running","bot":{"enabled":true,"runScope":"postgame","activity":"postgame","status":"running","objective":{"id":"acquire-postgame-pc-release-64604996-release-3","label":"Releasing Egg-sticker hatchlings to free PC space","target":{"kind":"party-roster","map":"MAP_FOUR_ISLAND_POKEMON_CENTER_1F"}}},"decision":{"kind":"act","recommendation":{"kind":"confirm-storage-release","targetOption":"yes","targetIndex":0,"objective":"acquire-postgame-pc-release-64604996-release-3"}},"winner":{"constraints":["observed-pokemon-storage","release-egg-sticker-hatchling"]},"postgame":{"active":"pc-release","entries":[{"id":"egg-sticker","label":"Earn the final Egg sticker","status":"pending"},{"id":"pc-release","label":"Free PC space by releasing Egg-sticker hatchlings","status":"pending","conditional":true}]}}"#)
+        let p = present(s)
+        XCTAssertEqual(p.goal, "Free PC space by releasing Egg-sticker hatchlings")
+        XCTAssertEqual(p.now, "Releasing the selected Egg-sticker hatchling")
+        XCTAssertEqual(p.why, "Releasing Egg-sticker hatchlings to free PC space.")
+        XCTAssertFalse(p.needsAttention)
+        var menu = s
+        menu["decision"]["recommendation"] = value(#"{"kind":"choose-storage-menu-action","targetAction":"release","targetIndex":4}"#)
+        XCTAssertEqual(present(menu).now, "Choosing Release for the boxed Pokémon")
+        var refused = s
+        refused["decision"]["recommendation"] = value(#"{"kind":"confirm-storage-release","targetOption":"no","targetIndex":1}"#)
+        XCTAssertEqual(present(refused).now, "Keeping the Pokémon: its release was not verified")
+        var message = s
+        message["decision"]["recommendation"] = value(#"{"kind":"acknowledge-storage-message","message":"bye-bye"}"#)
+        XCTAssertEqual(present(message).now, "Advancing the PC message")
+    }
     func testRoamerSearchExplainsIntentionalCrossingsAndUsesLiveDestination() {
         let s = value(#"{"sessionId":"live","state":"running","bot":{"enabled":true,"runScope":"postgame","activity":"task"},"mission":{"state":"running","name":"Entei","method":"roamer","phase":"tracking","encounters":0,"route":"MAP_ONE_ISLAND_POKEMON_CENTER_1F"},"decision":{"recommendation":{"kind":"move-toward","objective":"track-entei","targetMap":"MAP_ROUTE1"}},"postgame":{"active":"roamer","entries":[{"id":"roamer","label":"Catch the roaming legendary","status":"pending"}],"progress":{"completed":29,"total":57}}}"#)
         let p = present(s)

@@ -84,6 +84,7 @@ GENERIC = {
     'partner-trade-wait': 'Waiting for the trade partner', 'hunt-budget': 'Hunt limit reached',
     'capture-supplies': 'Out of Poké Balls', 'protected-encounter': 'Protected encounter needs review',
     'static-timing': 'Encounter timing not calibrated', 'unclassified': 'Stop not recognised',
+    'pc-release': 'PC release stopped for review', 'pc-space': 'The PC is full',
 }
 
 # Plain-language explanations of the generic families (the raw stop reason stays in the evidence).
@@ -106,6 +107,11 @@ GENERIC_EXPLAIN = {
     'protected-encounter': 'A protected (shiny or requested) encounter could not be verified, so the bot stopped to keep it safe.',
     'static-timing': 'The timing for a one-time encounter could not be calibrated.',
     'unclassified': 'The bot stopped for a reason no rule recognises.',
+    'pc-release': 'While releasing Egg-sticker hatchlings to free PC space, the game did not show exactly the expected '
+                  'change, so the bot stopped before releasing anything else. Only non-shiny, unreserved Egg-sticker '
+                  'hatchlings are ever released; the save is kept for review.',
+    'pc-space': 'The PC is full down to the 30 spaces kept for unexpected shinies and transfers, and no Egg-sticker '
+                'hatchling can be released safely. Free some PC space to let new catches continue.',
 }
 BUCKET_SENTENCE = {'transient-retry': 'It is temporary: the bot retries on its own.',
                    'needs-owner': 'It needs your decision before the bot continues.',
@@ -511,6 +517,10 @@ def _rule_route(f):
 
 
 def _rule_owner(f):
+    if _has(f, 'PC release: '):
+        return _hit('pc-release', 'needs-code-fix', [_screen_evidence(f), f"Stop: {_reasons(f)[0]}"])
+    if _has(f, 'Free PC space while preserving the shiny reserve'):
+        return _hit('pc-space', 'needs-owner', [f"Stop: {_reasons(f)[0]}"])
     if _has(f, 'supply basket exceeds the remaining spending limit or cash reserve'):
         return _hit('supply-budget', 'needs-owner', [f"Stop: {_reasons(f)[0]}"],
                     note='Build 106 re-plans a stale basket when nothing was bought; a stop after that means money or the spending limit is really short.')
@@ -752,6 +762,10 @@ def attach(directory, game, live):
         result = classify(runtime_facts(directory, game, live))
         # A running checklist that only carries a released hunt's old record needs no card.
         if result and result.get('retained') and result['stop']['phase'] == 'recovering':
+            return None
+        # Routine automatic recovery (battles, menu settles) with no recognised cause is not a stop.
+        if result and result['family'] == 'unclassified' and result['stop']['phase'] == 'recovering' \
+                and live.get('state') not in STOP_STATES - {'recovering'} and bot.get('status') == 'recovering':
             return None
         return compact(result)
     except Exception:  # presentation only: a triage failure must never break the sessions payload

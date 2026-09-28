@@ -57,6 +57,7 @@ You can cancel while the bot is preparing or waiting for the Switch. Once the ex
 |---|---|---|
 | September 2026 | Mac mini (M1), Archer T3U, Switch 2, English LeafGreen | One complete exchange: a shiny Wigglytuff for a Chansey. Both games saved, the room was left normally, and the received Pokémon was confirmed in the Mac's save. |
 | September 2026 | Same | A second exchange saved on both sides, then the connection dropped while leaving the room. The bot recovered with both saves intact. A fix for the likely cause is in the current release but hasn't been tried on hardware yet. |
+| September 2026 | Same Mac and adapter, with the rebuilt radio (runtime local.7) | One complete exchange: a shiny Hitmonlee for a shiny Meowth. Both games saved, the room was left normally, and the received Pokémon was confirmed in the Mac's save. The trade was chosen while the bot was on Four Island, and the release it ran on couldn't route from the Sevii Islands to the Pokémon Center, so it was walked to the ferry by hand. The bot now takes the ferry itself. |
 
 Not tested yet: the original Switch, Switch Lite and OLED, other Macs, repeated trades in one session, and pulling the adapter out mid-trade.
 

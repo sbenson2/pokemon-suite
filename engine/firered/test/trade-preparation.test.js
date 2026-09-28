@@ -62,3 +62,17 @@ test('leaves the PC root after withdrawing, instead of reopening storage',()=>{
  o.playerMemory.ui.choiceMenu={maxCursor:2,cursor:0};
  assert.equal(p.inspect(o).objective.id,'trade-heal-party');
 });
+test('sails from a Sevii island to the Kanto trade center instead of waiting for an unsupported route',()=>{
+ // Live, Sept 27: a Switch trade selected at the Four Island Sticker Man's
+ // house waited 15 minutes on "No executable route" to Lavender.
+ const world={data:{maps:[{id:'MAP_FOUR_ISLAND_HARBOR',warpEvents:[{dest_map:'MAP_FOUR_ISLAND'}]}]}};
+ const p=new TradePreparation({receipt,center,nurseIndex:0,mechanics,world}),o=observation();
+ o.playerMemory.map.id='MAP_FOUR_ISLAND_HOUSE2';
+ assert.deepEqual(p.inspect(o).objective.target,{kind:'map',map:'MAP_FOUR_ISLAND'});
+ o.playerMemory.map.id='MAP_FOUR_ISLAND_HARBOR';
+ assert.deepEqual(p.inspect(o).objective.target,{kind:'seagallop-destination',map:'MAP_VERMILION_CITY'});
+ assert.equal(p.state.phase,'party');
+ // Back in Kanto the unchanged withdrawal objective resumes.
+ o.playerMemory.map.id='MAP_VERMILION_CITY';
+ assert.equal(p.inspect(o).objective.id,'trade-withdraw-capture');
+});

@@ -2031,10 +2031,36 @@ function selectRosterDepositCandidate(party, target, teamPlan) {
     )[0]?.pokemon ?? null;
 }
 
+// A planned PC release (suite/pc-release.js) names one boxed individual and the
+// fields re-checked at the cursor. Anything else under the cursor, a shiny, an
+// Egg, a held item or a changed record is never released.
+function releaseTargetMatches(pokemon, release, party = []) {
+  return Boolean(pokemon && release && pokemon.validity === "valid" &&
+    encounterFingerprint(pokemon) === release.fingerprint &&
+    !party.some((member) => encounterFingerprint(member) === release.fingerprint) &&
+    Number(pokemon.box) === Number(release.box) && Number(pokemon.slot) === Number(release.slot) &&
+    pokemon.species === release.species && pokemon.personality === release.personality &&
+    pokemon.otId === release.otId && pokemon.experience === release.experience &&
+    pokemon.friendship === release.friendship &&
+    (release.metLevel == null || pokemon.metLevel === release.metLevel) &&
+    pokemon.shiny === false && pokemon.isEgg === false && Number(pokemon.heldItem) === 0);
+}
+
 function planStorageOperation(memory, objective, teamPlan, mechanics) {
   const party = memory?.trainer?.party ?? [];
   const stored = memory?.trainer?.storage?.pokemon ?? [];
   const boxCounts = memory?.trainer?.storage?.boxCounts ?? [];
+  const release = objective?.target?.kind === "party-roster"
+    ? objective.target.release ?? null
+    : null;
+  if (release) {
+    // FireRed refuses Withdraw with six party Pokémon (Task_PCMainMenu); Move
+    // mode offers RELEASE for a boxed Pokémon without touching the party.
+    const storedTarget = stored.find((pokemon) => encounterFingerprint(pokemon) === release.fingerprint) ?? null;
+    return { party, stored, boxCounts, missingFingerprint: null, storedTarget, depositCandidate: null, release,
+      releaseMode: party.length >= 6 ? "move-pokemon" : "withdraw",
+      operation: releaseTargetMatches(storedTarget, release, party) ? "release" : "exit" };
+  }
   const target = objective?.target?.kind === "party-roster"
     ? objective.target
     : null;
@@ -2092,15 +2118,58 @@ function planStorageOperation(memory, objective, teamPlan, mechanics) {
   return { party, stored, boxCounts, missingFingerprint, storedTarget, depositCandidate, operation };
 }
 
+function releaseStorageRecommendation(ui, plan, objective) {
+  const { stored, release, releaseMode, operation, party } = plan;
+  const id = objective?.id ?? "close-storage";
+  // The cartridge purges the Pokémon before these messages; they only drain.
+  if (ui.stage === "release-message" || ui.stage === "release-refused") {
+    return { kind: "acknowledge-storage-message", message: ui.message ?? null, objective: id };
+  }
+  const atCursor = ui.cursorArea === "box" && ui.movingPokemon === false
+    ? stored.find(({ box, slot }) => Number(box) === Number(ui.currentBox) && Number(slot) === Number(ui.cursorPosition))
+    : null;
+  const verified = operation === "release" && ui.boxOption === releaseMode &&
+    releaseTargetMatches(atCursor, release, party);
+  if (ui.stage === "release-confirm") {
+    return verified
+      ? { kind: "confirm-storage-release", targetOption: "yes", targetIndex: 0, targetFingerprint: release.fingerprint, objective: id }
+      : { kind: "confirm-storage-release", targetOption: "no", targetIndex: 1, objective: id };
+  }
+  if (!release) return null;
+  if (ui.stage === "pc-menu") {
+    return operation === "exit"
+      ? { kind: "exit-storage", objective: id }
+      : { kind: "choose-storage-option", targetOption: releaseMode, targetIndex: releaseMode === "withdraw" ? 0 : 2, objective: id };
+  }
+  if (ui.stage === "confirm-continue") return null;
+  if (ui.stage === "pokemon-menu") {
+    const index = ui.menu?.items?.indexOf("release") ?? -1;
+    return verified && index >= 0
+      ? { kind: "choose-storage-menu-action", targetAction: "release", targetIndex: index,
+          targetFingerprint: release.fingerprint, targetSpecies: release.species, objective: id }
+      : { kind: "cancel-storage-action", objective: id };
+  }
+  if (ui.stage !== "storage-main" || operation === "exit" || ui.boxOption !== releaseMode) {
+    return { kind: "exit-storage-mode", objective: id };
+  }
+  if (ui.movingPokemon !== false) {
+    return { kind: "withhold-unsafe-decision", reason: "pokemon-held-in-storage", objective: id };
+  }
+  return { kind: "choose-storage-box-member", targetBox: release.box, targetBoxSlot: release.slot,
+    targetSpecies: release.species, objective: id };
+}
+
 function storageAdvice(observation, objective, teamPlan, mechanics) {
   const memory = observation.playerMemory;
   const ui = memory?.ui?.storage;
   if (!ui) return null;
-  const { party, stored, boxCounts, missingFingerprint, storedTarget, depositCandidate, operation } =
-    planStorageOperation(memory, objective, teamPlan, mechanics);
-  let recommendation = null;
+  const plan = planStorageOperation(memory, objective, teamPlan, mechanics);
+  const { party, stored, boxCounts, missingFingerprint, storedTarget, depositCandidate, operation } = plan;
+  let recommendation = releaseStorageRecommendation(ui, plan, objective);
 
-  if (operation === "withdraw" && !storedTarget) {
+  if (recommendation) {
+    // Planned PC release (or draining a release prompt).
+  } else if (operation === "withdraw" && !storedTarget) {
     recommendation = {
       kind: "withhold-unsafe-decision",
       reason: "required-pokemon-not-in-observed-storage",
@@ -2206,11 +2275,13 @@ function storageAdvice(observation, objective, teamPlan, mechanics) {
       "observed-pokemon-storage",
       "protect-starter",
       "one-bounded-edge-then-reobserve",
+      ...(plan.release ? ["release-egg-sticker-hatchling"] : []),
     ],
     evidenceRefs: [
       `campaign:objective:${objective?.id ?? "close-storage"}`,
       `cartridge:storage-stage:${ui.stage}`,
       `cartridge:storage-operation:${operation}`,
+      ...(plan.release ? [`pc-release:${plan.release.fingerprint}`] : []),
     ],
   });
 }

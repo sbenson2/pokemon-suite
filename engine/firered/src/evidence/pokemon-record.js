@@ -58,5 +58,8 @@ export function decodeBoxPokemonRecord(bytes, offset = 0) {
     pp: [0, 1, 2, 3].map((slot) => secure.getUint8(attacks + 8 + slot)),
     ivs: Object.fromEntries(IV_STATS.map((stat, index) => [stat, (packedIvs >>> (index * 5)) & 31])),
     isEgg: Boolean((packedIvs & 0x40000000) || (bytes[offset + 19] & 4)), abilityNum: packedIvs >>> 31,
+    // PokemonSubstruct3 origins word, low seven bits. Zero means the Pokémon
+    // hatched from an Egg (daycare.c AddHatchedMonToParty).
+    metLevel: secure.getUint16(misc + 2, true) & 0x7f,
   };
 }

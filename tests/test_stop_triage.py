@@ -183,6 +183,22 @@ class Families(unittest.TestCase):
         t = classify(live(106, bot={'reason': reason}, decision={'kind': 'blocked', 'reason': reason}))
         self.assertEqual((t['bucket'], t['family']), ('needs-owner', 'supply-budget'))
 
+    def test_a_pc_release_safety_stop_is_explained_and_never_actionable(self):
+        # Sept 27: the Egg sticker releases its own hatchlings; any unexpected PC change stops for review.
+        reason = 'PC release: the PC changed beyond the released hatchling. Keep this save for review.'
+        t = classify(live(121, mode='storage', bot={'reason': reason}, decision={'kind': 'blocked', 'reason': reason}))
+        self.assertEqual((t['bucket'], t['family']), ('needs-code-fix', 'pc-release'))
+        self.assertEqual(t['title'], 'PC release stopped for review')
+        self.assertIn('Egg-sticker hatchling', t['explanation'])
+        self.assertFalse(t['suggestedAction']['safe'])
+
+    def test_a_full_pc_without_releasable_hatchlings_needs_the_owner(self):
+        reason = 'Free PC space while preserving the shiny reserve: no Egg-sticker hatchling can be released safely; owned evolutions remain eligible.'
+        t = classify(live(121, bot={'reason': reason}, decision={'kind': 'blocked', 'reason': reason}))
+        self.assertEqual((t['bucket'], t['family']), ('needs-owner', 'pc-space'))
+        self.assertEqual(t['title'], 'The PC is full')
+        self.assertIn('30', t['explanation'])
+
     def test_trade_outcome_unresolved_is_never_actionable(self):
         reason = 'The received Pokémon is saved locally, but the final link handshake or normal exit is not verified. Preserving the save.'
         t = classify(live(107, map='MAP_TRADE_CENTER', bot={'reason': reason}, decision={'kind': 'blocked', 'reason': reason},
@@ -398,6 +414,22 @@ class Runtime(RuntimeBase):
         self.assertIsNone(st.attach(self.root, 'firered', {'game': 'firered', 'state': 'reconnecting'}))
         # A malformed snapshot never breaks the sessions payload.
         self.assertIsNone(st.attach(self.root, 'firered', {'state': 'blocked', 'bot': 'nonsense'}))
+
+    def test_routine_recovery_with_no_recognised_cause_shows_no_stop_card(self):
+        # Sept 27 companion screenshots: mid-battle, the Session card said "Why it stopped · Temporary: Stop not
+        # recognised". The owner was only in its routine automatic recovery; nothing had stopped.
+        routine = live(state='recovering', mode='battle', callback2='CB2_BattleMain',
+                       bot={'enabled': True, 'mode': 'postgame', 'runScope': 'postgame', 'awaitingCommand': False, 'activity': 'postgame',
+                            'status': 'recovering', 'reason': None, 'progress': {'status': 'running', 'task': 'national-collection'},
+                            'preparation': {'kind': 'postgame', 'phase': 'ready'}},
+                       control={'mode': 'bot', 'paused': False}, decision={'kind': 'resample', 'reason': 'Battle in progress'})
+        self.assertIsNone(st.attach(self.root, 'firered', routine))
+        # A recognised cause during recovery still explains itself, and a real unrecognised stop still shows.
+        self.assertIsNotNone(st.attach(self.root, 'firered', slugma()))
+        unknown = live(bot={**live()['bot'], 'reason': 'Something no rule knows about.'},
+                       decision={'kind': 'blocked', 'reason': 'Something no rule knows about.'}, control={'mode': 'bot', 'paused': True})
+        card = st.attach(self.root, 'firered', unknown)
+        self.assertEqual((card['family'], card['bucket']), ('unclassified', 'needs-code-fix'))
 
     def test_laya_shadow_is_logged_and_never_overrides(self):
         class Classifier:

@@ -46,6 +46,33 @@ const STORAGE_OPTIONS = [
   "exit",
 ];
 const STORAGE_CURSOR_AREAS = ["box", "party", "box-title", "buttons"];
+// Pinned FireRed enum of storage menu labels (pokemon_storage_system_internal.h
+// MENU_TEXT_*), in sMenuTexts order.
+const STORAGE_MENU_TEXTS = Object.freeze([
+  "cancel", "store", "withdraw", "move", "shift", "place", "summary", "release",
+  "mark", "jump", "wallpaper", "name", "take", "give", "give", "switch", "bag",
+  "info", "scenery-1", "scenery-2", "scenery-3", "etcetera", "forest", "city",
+  "desert", "savanna", "crag", "volcano", "snow", "cave", "beach", "seafloor",
+  "river", "sky", "polka-dot", "pokecenter", "machine", "simple",
+]);
+// Pinned FireRed struct PokemonStorageSystemData (ARM EABI layout):
+// menuItems[7] (struct StorageMenu {const u8 *text; int textId;}) at 0xC70 and
+// menuItemsCount at 0xCA8.
+const STORAGE_MENU_ITEMS_OFFSET = 0xc70;
+const STORAGE_MENU_BLOCK_BYTES = 57;
+// Task_ReleaseMon's gStorage->state values that wait for input
+// (pokemon_storage_system_tasks.c). 1 is the Yes/No prompt; 4 and 5 follow a
+// completed release; 9-13 are the cartridge's "came back" refusal (the last
+// Surf or Dive user), which leaves the Pokémon in place.
+const RELEASE_STORAGE_STATES = Object.freeze({
+  1: ["release-confirm", null],
+  4: ["release-message", "released"],
+  5: ["release-message", "bye-bye"],
+  9: ["release-refused", "released"],
+  10: ["release-refused", "surprise"],
+  12: ["release-refused", "came-back"],
+  13: ["release-refused", "worried"],
+});
 const BATTLE_ACTIONS = ["fight", "bag", "pokemon", "run"];
 const START_MENU_ITEMS = [
   "pokedex",
@@ -2162,21 +2189,55 @@ class FireRedObserver {
     const storageContinueTask = activeTasks.find(
       ({ function: name }) => name === "Task_OnBPressed",
     );
+    const storageReleaseTask = activeTasks.find(
+      ({ function: name }) => name === "Task_ReleaseMon",
+    );
     const pcMenuState = taskData(pcMenuTask, 0);
     const pcMenuReady = Boolean(pcMenuTask) && (pcMenuState === 2 || pcMenuState === 3);
     const graphicalStorageTask =
       storageMainTask ??
       storagePokemonMenuTask ??
       storageDepositTask ??
-      storageContinueTask;
+      storageContinueTask ??
+      storageReleaseTask;
     const graphicalStorageScreen = /PokeStorage/.test(callback2 ?? "");
     const graphicalStorageState = storageHeader?.[0] ?? null;
+    const releaseStage = storageReleaseTask
+      ? RELEASE_STORAGE_STATES[graphicalStorageState] ?? null
+      : null;
     const graphicalStorageReady =
       (Boolean(storageMainTask) && graphicalStorageState === 0) ||
       (Boolean(storagePokemonMenuTask) && graphicalStorageState === 2) ||
       (Boolean(storageDepositTask) &&
         (graphicalStorageState === 1 || graphicalStorageState === 4)) ||
-      (Boolean(storageContinueTask) && graphicalStorageState === 2);
+      (Boolean(storageContinueTask) && graphicalStorageState === 2) ||
+      Boolean(releaseStage);
+    // The selected Pokémon's menu lists the cartridge's own labels. Each entry's
+    // text pointer must be the ROM label for its id, or the menu is withheld.
+    let storageMenu = null;
+    if (storagePokemonMenuTask && graphicalStorageState === 2 &&
+        isEwramPointer(storagePointer + STORAGE_MENU_ITEMS_OFFSET, STORAGE_MENU_BLOCK_BYTES)) {
+      const menuTextBytes = this.#readSymbolOfSize("sMenuTexts", STORAGE_MENU_TEXTS.length * 4, blocks);
+      const menuBlock = this.#session.readMemory(storagePointer + STORAGE_MENU_ITEMS_OFFSET, STORAGE_MENU_BLOCK_BYTES);
+      blocks.set("PokemonStorageSystemData.menuItems", menuBlock);
+      const count = menuBlock[56];
+      const view = new DataView(menuBlock.buffer, menuBlock.byteOffset, menuBlock.byteLength);
+      const labels = menuTextBytes?.length === STORAGE_MENU_TEXTS.length * 4
+        ? new DataView(menuTextBytes.buffer, menuTextBytes.byteOffset, menuTextBytes.byteLength)
+        : null;
+      const items = labels && count >= 1 && count <= 7
+        ? Array.from({ length: count }, (_, index) => {
+            const textId = view.getInt32(index * 8 + 4, true);
+            return textId >= 0 && textId < STORAGE_MENU_TEXTS.length &&
+              view.getUint32(index * 8, true) === labels.getUint32(textId * 4, true)
+              ? STORAGE_MENU_TEXTS[textId]
+              : null;
+          })
+        : null;
+      storageMenu = items && items.every(Boolean)
+        ? { items, cursor: martCursor, selected: items[martCursor] ?? null }
+        : null;
+    }
     if (
       (pcMenuTask && !pcMenuReady) ||
       (graphicalStorageTask && !graphicalStorageReady) ||
@@ -2201,17 +2262,21 @@ class FireRedObserver {
     } else if (graphicalStorageReady) {
       const boxOptionValue = storageHeader?.[1] ?? currentBoxOptionBytes?.[0];
       const cursorAreaValue = storageCursorAreaBytes?.[0] ?? null;
-      const continueCursor = storageContinueTask ? martCursor : null;
-      storage = {
-        stage: storageContinueTask
-          ? "confirm-continue"
+      const yesNo = Boolean(storageContinueTask || releaseStage?.[0] === "release-confirm");
+      const continueCursor = yesNo ? martCursor : null;
+      const stage = storageContinueTask
+        ? "confirm-continue"
+        : releaseStage
+          ? releaseStage[0]
           : storageDepositTask
             ? "deposit-box"
             : storagePokemonMenuTask
               ? "pokemon-menu"
-              : "storage-main",
+              : "storage-main";
+      storage = {
+        stage,
         option: continueCursor,
-        selected: storageContinueTask
+        selected: yesNo
           ? continueCursor === 0
             ? "yes"
             : continueCursor === 1
@@ -2231,6 +2296,8 @@ class FireRedObserver {
         depositBox: storageDepositTask
           ? chooseBoxCursorBytes?.[0] ?? null
           : depositBoxIdBytes?.[0] ?? null,
+        ...(stage === "pokemon-menu" ? { menu: storageMenu } : {}),
+        ...(releaseStage?.[1] ? { message: releaseStage[1] } : {}),
       };
     }
     const scriptYesNoReady = activeTasks.some(

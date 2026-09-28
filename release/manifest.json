@@ -75,7 +75,7 @@
     },
     {
       "path": "docs/HARDWARE.md",
-      "sha256": "49d6d6097e49d7684e39338da9e5d7669afe43aefc9fc0312b50018eaa08656d"
+      "sha256": "e363db9c7fa4905928fca7c25fb31e453cf11b0d039d770f9f83106c8e030b96"
     },
     {
       "path": "docs/ITEMS-AND-OFFLINE-POKEDEX.md",
@@ -119,7 +119,7 @@
     },
     {
       "path": "docs/RADIO-RELAY-INTEGRATION.md",
-      "sha256": "73376b5697c1908fa16f561462213651e050611122590faac266e64f53ee87d2"
+      "sha256": "22a05799905e7fb3da8da31362200771346ce215e9d3ebae5d17eecffe787760"
     },
     {
       "path": "docs/RELEASING.md",
@@ -319,7 +319,7 @@
     },
     {
       "path": "engine/firered/src/evidence/fire-red-observer.js",
-      "sha256": "2448813cf2182c03981dd9489f68026959fde884adb7c7d2e88df49a07c98206"
+      "sha256": "790c5dd403ff8f6289017f7a8040aea06f84fa60c3d457a3b2df96218ee908de"
     },
     {
       "path": "engine/firered/src/evidence/gen3-abilities.js",
@@ -343,7 +343,7 @@
     },
     {
       "path": "engine/firered/src/evidence/pokemon-record.js",
-      "sha256": "9430d824a5b1681a277c8ee75f2b4cf79fc0c644432f830830c58d3bb52e6765"
+      "sha256": "ad3957c9e5436eaf336bd1460dd291b0b6df1a9f1a93321d362da8ff7011dd84"
     },
     {
       "path": "engine/firered/src/evidence/qualification.js",
@@ -399,7 +399,7 @@
     },
     {
       "path": "engine/firered/src/player/advisors.js",
-      "sha256": "446eeb28aef27c48d3afd5e7922b70c9662bde953ce3632d9081b5255d03f6ed"
+      "sha256": "d5478e17249c13049177707c32649304a8aac2dfb40c56459f8a90f51dfbf67d"
     },
     {
       "path": "engine/firered/src/player/battle-effectiveness.js",
@@ -471,7 +471,7 @@
     },
     {
       "path": "engine/firered/src/player/delegator.js",
-      "sha256": "4e4e686d73d138008935c0b1b45ee9506a8251c22c77bf8143dd6a7a069a102d"
+      "sha256": "4bd84d1ab807124d6741037302995db8dfa4f2a3ae45d83a0e3562b39e43b155"
     },
     {
       "path": "engine/firered/src/player/diagnostics.js",
@@ -827,7 +827,7 @@
     },
     {
       "path": "engine/firered/src/suite/native-acquisition.js",
-      "sha256": "47a265723dd3ddacd6168b42ce8fca6c46ae469b4ba8c4040a6de0e542848bf4"
+      "sha256": "8bd9729f703d559f961890e5c55509bbbe8d1329ffa8d053fa745bc784b0b8a1"
     },
     {
       "path": "engine/firered/src/suite/native-breeding.js",
@@ -847,7 +847,7 @@
     },
     {
       "path": "engine/firered/src/suite/native-trade-host.js",
-      "sha256": "04fb67404b1df75ccf405c5ad5814c3b5f2babe27d30687fec23833e004e27bf"
+      "sha256": "a27909f9f0e5a90b08de3b043e7ed447ebef6249a6731e11210e9e8458c08532"
     },
     {
       "path": "engine/firered/src/suite/native-trade-recovery.js",
@@ -860,6 +860,10 @@
     {
       "path": "engine/firered/src/suite/navigation-cycle.js",
       "sha256": "8a63675bb8b0e2969e9e7ed57ad85f5d583a2de7b6509b1a87821321dc5474ed"
+    },
+    {
+      "path": "engine/firered/src/suite/pc-release.js",
+      "sha256": "e599cf9df971cc242aec4bfe807b3e3d473ed773455190c894e5ca030936dae9"
     },
     {
       "path": "engine/firered/src/suite/planner-client.js",
@@ -879,7 +883,7 @@
     },
     {
       "path": "engine/firered/src/suite/postgame-agenda.js",
-      "sha256": "8f0d281445352a3025a0169d5ae448e4d1eb7d8a5ac678ebdda7b5dd23f827ed"
+      "sha256": "2922d44491af3299f0e98e539e9617f1434d7aa0568b92ff65173dcc1eed131d"
     },
     {
       "path": "engine/firered/src/suite/postgame-care.js",
@@ -927,11 +931,11 @@
     },
     {
       "path": "engine/firered/src/suite/postgame.js",
-      "sha256": "fefa5252e7f7c6ab72b960615bad1449ff030d5da3e2c4e2330f01c442e3da72"
+      "sha256": "144e6b90f80b8ce1c83fabec93af4ebb87e8c2b01c100bcc98aec201e9267f24"
     },
     {
       "path": "engine/firered/src/suite/qmm-supply.js",
-      "sha256": "10fa28c255554b656b373b97543d7f8a5df410d7c9dffe12b34682af4ed58737"
+      "sha256": "05577d35934cc2392f2308603ddb483e5b6ccb67d172000d7b8087b9f5d23052"
     },
     {
       "path": "engine/firered/src/suite/recovery.js",
@@ -967,7 +971,7 @@
     },
     {
       "path": "engine/firered/src/suite/session-worker.js",
-      "sha256": "505e8ea3dbfac10aad1dfe0bf56fed163c9cc6d65ca58eb89315f99f48113e0e"
+      "sha256": "d390d7348ccd7d8e40ebe471529ca7f25858c2e589510dc48b3406d6481c30a0"
     },
     {
       "path": "engine/firered/src/suite/shiny-collection.js",
@@ -995,7 +999,7 @@
     },
     {
       "path": "engine/firered/src/suite/trade-preparation.js",
-      "sha256": "09f84e86829a79a2aac9e3d72fa9b0b1d67f1df02fdd4c0a52dd8b1e62a9dfa8"
+      "sha256": "55d26fc31f1479e69fc964e07f48f8cf91584f5be8081521a08af5fc9bc4afb9"
     },
     {
       "path": "engine/firered/src/suite/update-boundary.js",
@@ -1055,7 +1059,7 @@
     },
     {
       "path": "engine/firered/test-support/native-regressions.json",
-      "sha256": "a0fb918961f27854d011b9bd9af2ba6352e9cddf2480bb02eb752bcc794bcde4"
+      "sha256": "3c902200cf2e6bdafdb06f612db8f4f0f0a21db9aa98fccad9b9ad46c35a254e"
     },
     {
       "path": "engine/firered/test-support/native-transform-planner.js",
@@ -1319,7 +1323,7 @@
     },
     {
       "path": "engine/firered/test/fire-red-observer.test.js",
-      "sha256": "cb30ee7484c053a78097d1891b8c390807e6018f61a35dc64ff6f292d269a211"
+      "sha256": "5d0e5d7f7acb97153f4e635a7de4bd5a770b9f28cebf329afc13194a33465b71"
     },
     {
       "path": "engine/firered/test/fire-red-rng.test.js",
@@ -1535,7 +1539,7 @@
     },
     {
       "path": "engine/firered/test/native-trade-host.test.js",
-      "sha256": "456b100b9f78a947fb847182935796d1862006401cdfc676c0bfa1d0d5fd81f9"
+      "sha256": "ebe5c30548bdc67c79e00ddbe0838db5e226f324eaa89ba2440206cb6f41a4aa"
     },
     {
       "path": "engine/firered/test/native-trade-recovery.test.js",
@@ -1556,6 +1560,14 @@
     {
       "path": "engine/firered/test/owned-trade.test.js",
       "sha256": "42ba323e50a16e203c7eec63f188afa5fc9b3f818252eae267db8a99e970cf13"
+    },
+    {
+      "path": "engine/firered/test/pc-release-advisor.test.js",
+      "sha256": "f076347736883f44a809eeb02f347b35a4dba0e50d021a0be0f9eec7190444ae"
+    },
+    {
+      "path": "engine/firered/test/pc-release.test.js",
+      "sha256": "47ee3c25071e96872f07ee2fc58e24e04a41fbac75a80c9fcfe640366842cdfa"
     },
     {
       "path": "engine/firered/test/pc-roster-constraints.test.js",
@@ -1603,7 +1615,7 @@
     },
     {
       "path": "engine/firered/test/pokemon-record.test.js",
-      "sha256": "725d156a576d2fa2c45025107f11bd531bd6d0d662da1a2a041b4bd55a539f2e"
+      "sha256": "448910d05a825ce5d6cfb25d42dc45a2dcb306c2904938149ac81d5cabb088b3"
     },
     {
       "path": "engine/firered/test/postgame-agenda.test.js",
@@ -1652,6 +1664,10 @@
     {
       "path": "engine/firered/test/postgame-milestone-save.test.js",
       "sha256": "806199e1ea911a10cff4b4fe006abc4f896796ebbbcaeeca97b46ccfd096d8ce"
+    },
+    {
+      "path": "engine/firered/test/postgame-pc-release.test.js",
+      "sha256": "8228c406eb06280eec2a42686231a52ecb5d381e777ba3c9d3e6bcb4870107b1"
     },
     {
       "path": "engine/firered/test/postgame-records.test.js",
@@ -1907,7 +1923,7 @@
     },
     {
       "path": "engine/firered/test/trade-preparation.test.js",
-      "sha256": "fa0d3ad71543313506de17ff6ddc381ffce0629dfd27ef9703167977c0ea066b"
+      "sha256": "3d84b0c989ac5486d1d0164b5d1b265d5f3e32155b30ee2682660847accb6d8c"
     },
     {
       "path": "engine/firered/test/trainer-economics.test.js",
@@ -2923,7 +2939,7 @@
     },
     {
       "path": "macos/Sources/SuiteCore/ActivityPresentation.swift",
-      "sha256": "1fbcf88ea8d387c1c15735baa5b71caa84fbf6a3f89723a76dc4a422a9c6bdbf"
+      "sha256": "1bc8b1262ce214e714458b1c5bb53fd5d6edcc05bb217e51e4d9e7a98f1ba555"
     },
     {
       "path": "macos/Sources/SuiteCore/AsyncResourceCache.swift",
@@ -3027,7 +3043,7 @@
     },
     {
       "path": "macos/Tests/SuiteCoreTests/ActivityPresentationTests.swift",
-      "sha256": "4cceed883086afaf7e8205eaa90f183a01fd0acedb5609fadecf64a86ba88f20"
+      "sha256": "e547d1f64fe3b4686b897c716406ae9ca1dbcfb9ce0c5073e9cdf014aba014fb"
     },
     {
       "path": "macos/Tests/SuiteCoreTests/ActivityRequestTests.swift",
@@ -3327,7 +3343,7 @@
     },
     {
       "path": "native/ios/build-companion.py",
-      "sha256": "3500ebce314ef3c97c4d025a7e0b82bd17ef8a2271eee6effa26d47b0d8af506"
+      "sha256": "d5a65c6b31c8391838f2dd83a3181a53e6d561fc7d4143061348b31e40d52789"
     },
     {
       "path": "native/ios/build.mjs",
@@ -3427,7 +3443,7 @@
     },
     {
       "path": "pokemon_suite/__init__.py",
-      "sha256": "abaea286c5109186e19d57df145cbb357ab6dd327a3a27f1f5622514d75ae8b2"
+      "sha256": "2ac7748dc1a930410477cbd2d96ed942c7a1ce10b3c028a6c0d1d4399601d329"
     },
     {
       "path": "pokemon_suite/__main__.py",
@@ -3435,7 +3451,7 @@
     },
     {
       "path": "pokemon_suite/bootstrap.py",
-      "sha256": "757108b52070982824d5df3a95024160c9eb40fc47a259114afc36217bef5504"
+      "sha256": "43fc8ecf151561d263548526a2a05d307caaf139983f09f841401b871b3573c4"
     },
     {
       "path": "pokemon_suite/bot_verification.py",
@@ -3579,7 +3595,7 @@
     },
     {
       "path": "pokemon_suite/pokemon_stop_triage.py",
-      "sha256": "90d0cc73d97d7c774be18d76b9465b60c787e491181bbb1d6b2a1fda1b2d39b9"
+      "sha256": "6311f27150dfd8102d476dba2835f49d10d5b6da095fc1e209c7eba526268a8b"
     },
     {
       "path": "pokemon_suite/postgame_partner.py",
@@ -3615,7 +3631,7 @@
     },
     {
       "path": "pokemon_suite/server.py",
-      "sha256": "54a8223ea3ae33b6e09a092f54896882c818048229c2460b19a2c68e2a205866"
+      "sha256": "fb4adce2c62bd7c70ee9f9b8ecc00bdfe10f27c280ed6fbbaa11429b552164ab"
     },
     {
       "path": "pokemon_suite/static/assets/pokemon/hardware/SOURCE.md",
@@ -3899,7 +3915,7 @@
     },
     {
       "path": "scripts/build-macos.py",
-      "sha256": "596214daf68e1fc682249670bd30b0abe1f90b65d599037fc8cc3a57fdeaa501"
+      "sha256": "0b60c29d3ee116a787a322843008839916d0a46e344435a3b95b1cd8f7b7c9fe"
     },
     {
       "path": "scripts/build-move-knowledge.py",
@@ -3967,7 +3983,7 @@
     },
     {
       "path": "scripts/replay-bot.mjs",
-      "sha256": "cbb30868285d84569b785c1aa63df9e4dd285bfc58fc884fac34e45245e6ad78"
+      "sha256": "776468e23479fba5afa029bdb94f7baa7d8b2eeac7ef36feefb5aca424d531d3"
     },
     {
       "path": "scripts/replay-boundary-recovery.mjs",
@@ -4160,6 +4176,14 @@
     {
       "path": "scripts/replay-new-save-bot-start.mjs",
       "sha256": "49471735c9b8138f33238395b953780065c350e0b0da76f5d664ff77e900a295"
+    },
+    {
+      "path": "scripts/replay-owned-trade-sevii.mjs",
+      "sha256": "3c1eeeac52009af2bf67152a70eca938496e4077687fd3d5d1e0c1cff3b982c9"
+    },
+    {
+      "path": "scripts/replay-pc-release.mjs",
+      "sha256": "62828b67b54db96e02b556df9978f407aa8a2b6fe0416a22dd015e3f77d2690c"
     },
     {
       "path": "scripts/replay-postgame-combat-preparation.mjs",
@@ -4599,7 +4623,7 @@
     },
     {
       "path": "tests/test_stop_triage.py",
-      "sha256": "33e1495758a3a44d5e4309eeb53119b6c9d8e5f08b8ab31839703109ec9875a9"
+      "sha256": "050b834e881f654ce3501af8dfa3162ac41449d4e1c9cebaed60d360f1129a7b"
     },
     {
       "path": "tests/test_trading.py",

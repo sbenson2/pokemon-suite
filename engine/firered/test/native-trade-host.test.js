@@ -559,3 +559,19 @@ test('a recovered exchange cannot resume its old trade controller or offer again
  assert.equal(task.inspect({emulator:{callback2:'CB2_TradeMenu'},playerMemory:{}},{remotePlayers:0}).kind,'stop');
  assert.equal(task.state.phase,'interrupted');
 });
+
+test('an unexpected party change still stops, and keeps what the check saw for diagnosis',()=>{
+ // Gate 118-02: the FireRed partner stopped with "The prepared trade party changed unexpectedly" in the
+ // outbound trade menu, before any exchange. The stop kept no record of the party it saw.
+ const task=create(),o=observation();o.emulator.callback2='CB2_TradeMenu';o.emulator.mainState=7;o.frame=88006;o.playerMemory.map.id='MAP_TRADE_CENTER';
+ const w={tradeCount:5,remotePlayers:1,tradeMenu:{callback:2,cursor:0,partyCount:2}};
+ task.inspect(o,w,{available:true,link:{session:true}});
+ assert.equal(task.state.partyBefore.length,2);
+ o.playerMemory.trainer.party=[{validity:'valid',species:25},{validity:'valid',species:26}];
+ const d=task.inspect(o,w,{available:true,link:{session:true}});
+ assert.deepEqual([d.kind,task.state.phase],['stop','identity-unavailable'],'the safety stop is unchanged');
+ const {observed,...rest}=task.state.identityCheck;
+ assert.deepEqual(rest,{frame:88006,callback2:'CB2_TradeMenu',mainState:7,tradeMenuCallback:2,partyValidity:'valid',
+  before:task.state.partyBefore,prepared:fingerprint});
+ assert.equal(observed.length,2);assert.ok(!observed.includes(fingerprint));
+});

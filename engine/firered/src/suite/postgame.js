@@ -22,6 +22,7 @@ import {finishPostgame} from './postgame-completion.js';
 import {nationalDexSources} from './national-dex-agenda.js';
 import {recordSaveStates,pendingRecordClaim} from './postgame-records.js';
 import {refreshLeagueTraining,validLeagueTrainingOwner,noteLeagueExpShareHold} from './league-exp-share.js';
+import {planHatchlingRelease,releaseDemand,releaseIdentityKeys,RELEASE_BATCH,RELEASE_LABEL} from './pc-release.js';
 import {resolveFireRedLinkQuest,resolveFireRedTravel,LINK_QUEST_WATCH,saveFireRedLinkUnlock,saveFireRedQuestMilestone,fireRedPokemonCenter} from './fire-red-link-quest.js';
 
 export function canContinuePostgame({enabled,running,mission,nativeTrade,wireless,postgame,recovery,interruptedRecovery}){
@@ -103,6 +104,36 @@ export function createPostgameController({world,story,mechanics,state=null,clock
  const fieldCare=structuredClone(state?.fieldCare??agenda.state.fieldCare??{});
  const releaseCleanAcquisition=()=>{if(acquisition?.state.dirty)throw Error('Finish the reserved acquisition and native save before changing tasks.');acquisition=null;};
  const reservedEvolutionFingerprints=()=>[...deferredEvolutions.map(e=>e.state.currentFingerprint??encounterFingerprint(e.state.originalPokemon)),...(evolution?[evolution.state.currentFingerprint??encounterFingerprint(evolution.state.originalPokemon)]:[])];
+ // PC release (pc-release.js). Every individual that any retained task, workflow,
+ // objective, reservation or breeding record names is protected; so are the
+ // team plan's families and Box 3 slot 1 (the Mail supply's mail[0xFF] alias).
+ const releaseContext=()=>{
+  const own=acquisition?.state.kind==='pc-release'?`acquire-${acquisition.state.requestId}-`:null;
+  const foreign=x=>own&&typeof x?.id==='string'&&x.id.startsWith(own)?null:x;
+  const plan=fieldTeamPlan??{};
+  return {receipts:agenda.state.acquisitions??[],
+   protectedIdentities:releaseIdentityKeys([evolution?.state,dexEvolution?.state,deferredEvolutions,deferredAcquisitions,own?null:acquisition?.state,
+    preparation,playerTask?.state,qmm?.state,foreign(objective),foreign(pendingObjective),agenda.state.workflows,agenda.state.hunts,
+    (player?.state()??playerState)?.encounterSafety,base.state(),(agenda.state.acquisitions??[]).map(r=>r?.parentsReturned)]),
+   protectedSlots:[{box:2,slot:0}],
+   protectedSpecies:[...(plan.starterFamily??[]),...(plan.permanentFamilies??[]).flat(),
+    ...[plan.acquisitions,plan.temporaryAcquisitions,plan.utilityAcquisitions,plan.fieldUtilityAlternatives].flatMap(list=>(Array.isArray(list)?list:[]).flatMap(a=>a?.family??[]))]};
+ };
+ // With the shiny reserve reached, release a batch of the Egg sticker's own
+ // hatchlings before choosing more work, and keep releasing batches until the
+ // reserve plus the buffer is free or no hatchling qualifies.
+ const releaseObjective=o=>{
+  const t=o.playerMemory?.trainer,space=storageCapacity(t),run=(agenda.state.workflows??={}).pcRelease??={};
+  const demand=releaseDemand(t),failure=agenda.state.failures?.['pc-release'];
+  if(!space.known)return null;
+  if(demand<=0||space.canStart&&!run.refilling){run.refilling=false;return null;}
+  if(failure?.retryAt>clock()||failure?.requiresStateChange&&failure.context===postgameFailureContext(o))return null;
+  const plan=planHatchlingRelease({trainer:t,mechanics,...releaseContext(),count:Math.min(RELEASE_BATCH,demand)});
+  run.available=plan.length>0;
+  if(!plan.length){run.refilling=false;return null;}
+  run.refilling=true;agenda.state.active='pc-release';
+  return {id:'postgame-pc-release',label:RELEASE_LABEL,target:{kind:'postgame-acquire'},acquisition:{kind:'pc-release',plan}};
+ };
  // Link prerequisites depend on the pair. The Emerald companion needs the
  // National Dex and Celio's link; a FireRed partner needs only the Pokédex,
  // plus the National Dex for a species outside #1–151.
@@ -181,7 +212,7 @@ export function createPostgameController({world,story,mechanics,state=null,clock
   const dependencies=[...Object.entries(agenda.state.failures??{}).map(([id,value])=>({id,...value})),...deferredEvolutions.map(e=>({id:e.state.requestId,reason:e.reason,retryAt:e.retryAt})),
    ...(fieldCare.deferredShopping?[{id:'stock-postgame-supplies',reason:fieldCare.deferredShopping.reason,retryAt:fieldCare.deferredShopping.retryAt,requiresStateChange:fieldCare.deferredShopping.exhausted}]:[])];
   const retryAt=dependencies.filter(d=>!d.requiresStateChange&&d.retryAt>clock()).sort((a,b)=>a.retryAt-b.retryAt)[0]?.retryAt??null;
-  const detail=!dex.known||m.trainer?.partyValidity!=='valid'||!space.known?'Verify the current Pokédex, party and PC before choosing another source.':!space.canStart?'Free PC space while preserving the shiny reserve; owned evolutions remain eligible.':retryAt?'Available routes are cooling down after failed attempts; retry the earliest route automatically.':goal==='national-dex'?`Register ${Math.max(0,60-dex.caught)} more species. No verified local capture, evolution, gift or prize route is currently available.`:goal==='sevii-link'?'Complete Celio’s link prerequisites; the current cartridge route could not be resolved.':'Remaining objectives require an available source, route or compatible partner.';
+  const detail=!dex.known||m.trainer?.partyValidity!=='valid'||!space.known?'Verify the current Pokédex, party and PC before choosing another source.':!space.canStart?(agenda.state.workflows?.pcRelease?.available===false?'Free PC space while preserving the shiny reserve: no Egg-sticker hatchling can be released safely; owned evolutions remain eligible.':'Free PC space while preserving the shiny reserve; owned evolutions remain eligible.'):retryAt?'Available routes are cooling down after failed attempts; retry the earliest route automatically.':goal==='national-dex'?`Register ${Math.max(0,60-dex.caught)} more species. No verified local capture, evolution, gift or prize route is currently available.`:goal==='sevii-link'?'Complete Celio’s link prerequisites; the current cartridge route could not be resolved.':'Remaining objectives require an available source, route or compatible partner.';
   return {id:'postgame-dependency-'+goal,goal,label:goal==='national-dex'?'Unlock the National Pokédex':goal==='sevii-link'?'Complete Celio’s Ruby and Sapphire quest':'Complete remaining postgame objectives',target:{kind:'await-postgame-dependency',map:m.map.id,reason:fieldCare.deferredShopping?`${detail} Supply basket retained: ${fieldCare.deferredShopping.reason}`:detail},progress:{current:dex.known?dex.caught:null,required:goal==='national-dex'?60:386},dependencies,retryAt};
  };
  // Keep each owner's logical destination while resolving the current ferry
@@ -298,7 +329,11 @@ export function createPostgameController({world,story,mechanics,state=null,clock
   },
   acknowledgeAcquisition(){
    if(!acquisition?.state.receipt?.nativeSaveVerified)throw Error('The native acquisition save is not verified.');
-   agenda.state.acquisitions??=[];agenda.state.acquisitions.push(acquisition.state.receipt);acquisition=null;objective=null;player=null;playerState=null;
+   // Release receipts are not acquisitions (nor Egg-sticker provenance).
+   const receipt=acquisition.state.receipt;
+   if(receipt.method==='pc-release'){const w=agenda.state.workflows??={},run=w.pcRelease??={};run.receipts=[...(run.receipts??[]),receipt].slice(-50);run.released=(run.released??0)+receipt.released.length;if(agenda.state.active==='pc-release')agenda.state.active=null;}
+   else{agenda.state.acquisitions??=[];agenda.state.acquisitions.push(receipt);}
+   acquisition=null;objective=null;player=null;playerState=null;
   },
   beginPlayerTask(request){
    releaseCleanAcquisition();
@@ -496,7 +531,7 @@ export function createPostgameController({world,story,mechanics,state=null,clock
     objective=next.objective;
    }
    if(acquisition&&!safety?.capture&&!save&&!o.emulator.inBattle&&!qmmOwns){
-    const next=acquisition.inspect(o,{yieldRequested:Boolean(watchdog.boundary)});
+    const next=acquisition.inspect(o,{yieldRequested:Boolean(watchdog.boundary),...(acquisition.state.kind==='pc-release'?{release:releaseContext()}:{})});
     if(next.kind==='complete')return {kind:'acquisition-saved',receipt:next.receipt};
     if(next.kind==='suspended'){
      if(!next.receipt?.nativeSaveVerified)throw Error('A suspended acquisition needs a native save receipt.');
@@ -542,7 +577,7 @@ export function createPostgameController({world,story,mechanics,state=null,clock
       const center=preparation.tradePreparation?.center??fireRedPokemonCenter(o.playerMemory.map.id),nurseIndex=world.data.maps.find(m=>m.id===center)?.objectEvents?.findIndex(e=>/EventScript_Nurse$/.test(e.script));
       if(!(nurseIndex>=0)){status='waiting';reason='The native evolution transfer nurse could not be verified.';return {kind:'blocked',reason};}
       preparation.transferReason=next.reason;
-      const transfer=new TradePreparation({receipt:{requestId:activeEvolution.state.requestId,fingerprint:activeEvolution.state.currentFingerprint,state:'saved-awaiting-partner'},center,nurseIndex,mechanics,state:preparation.tradePreparation??null});
+      const transfer=new TradePreparation({receipt:{requestId:activeEvolution.state.requestId,fingerprint:activeEvolution.state.currentFingerprint,state:'saved-awaiting-partner'},center,nurseIndex,mechanics,world,state:preparation.tradePreparation??null});
       const ready=transfer.inspect(o);preparation.tradePreparation=transfer.state;preparation.phase='preparing-transfer';
       if(ready.kind==='ready'){status='waiting';reason=next.reason;preparation.phase='waiting-for-transfer';return {kind:'blocked',reason};}
       next=ready;
@@ -635,6 +670,7 @@ export function createPostgameController({world,story,mechanics,state=null,clock
       objective=selected;status='waiting';reason=selected.target.reason;
       health={...health,status:'blocked',reason};return {kind:'blocked',reason};
      }
+     if(!selected&&agenda.state.enabled&&!towerActive&&!ownedMilestone()&&!qmm&&!isLeagueChallengeMap(o.playerMemory.map.id))selected=releaseObjective(o);
      const resolveEntry=next=>{
       const resolved=resolvePostgameObjective(next.id,o,world,agenda.state.workflows??={},{mechanics,planner:base,teamPlan:fieldTeamPlan,protectedFingerprints:reservedEvolutionFingerprints(),partnerAvailable,leagueTraining,now:clock()});
       if(!next.priority||resolved?.target.kind!=='postgame-hunt')return resolved;

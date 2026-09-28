@@ -11,7 +11,7 @@ shutil.copy2(out/'original-icon/icon_512x512@2x.png',icons/'AppIcon.png')
 (icons/'Contents.json').write_text(json.dumps({'images':[{'filename':'AppIcon.png','idiom':'universal','platform':'ios','size':'1024x1024'}],'info':{'author':'xcode','version':1}}))
 spec={'name':'PokemonSuiteCompanion','options':{'deploymentTarget':{'iOS':'17.0'}},
  'settings':{'base':{'SWIFT_VERSION':'5.0','DEVELOPMENT_TEAM':args.team,'TARGETED_DEVICE_FAMILY':'1,2','GENERATE_INFOPLIST_FILE':'YES','CODE_SIGN_STYLE':'Automatic',
- 'MARKETING_VERSION':'0.2.0','CURRENT_PROJECT_VERSION':'25','INFOPLIST_KEY_CFBundleDisplayName':'Pokémon Suite','INFOPLIST_KEY_UIApplicationSceneManifest_Generation':'YES','INFOPLIST_KEY_UILaunchScreen_Generation':'YES',
+ 'MARKETING_VERSION':'0.2.0','CURRENT_PROJECT_VERSION':'27','INFOPLIST_KEY_CFBundleDisplayName':'Pokémon Suite','INFOPLIST_KEY_UIApplicationSceneManifest_Generation':'YES','INFOPLIST_KEY_UILaunchScreen_Generation':'YES',
  'INFOPLIST_KEY_NSLocalNetworkUsageDescription':'Connect to Pokémon Suite on your Mac to view games, control the bot and prepare trades.',
  'INFOPLIST_KEY_NSMicrophoneUsageDescription':'Hear the request you speak to the bot after you tap the microphone in Ask the bot.',
  'INFOPLIST_KEY_NSSpeechRecognitionUsageDescription':'Turn your spoken bot request into text on this device. Your voice is never sent to a server.',

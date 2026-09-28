@@ -161,7 +161,12 @@ export class FireRedNativeTradeHost {
   if(matches===1&&!s.partyBefore){s.partyBefore=party;s.tradeCountBefore=Number.isInteger(wireless?.tradeCount)?wireless.tradeCount:null;}
   if(matches!==1){
    const slot=s.partyBefore?.indexOf(s.fingerprint),oneReplacement=matches===0&&slot>=0&&party.length===s.partyBefore.length&&party[slot]&&party.every((p,i)=>i===slot||p===s.partyBefore[i]);
-   if(!oneReplacement)return stop('identity-unavailable','The prepared trade party changed unexpectedly. Its current state is preserved.');
+   if(!oneReplacement){
+    // Keep what the check saw, so an intermittent stop can be told apart from a real party change.
+    s.identityCheck={frame:o.frame??null,callback2:callback??null,mainState:o.emulator?.mainState??null,tradeMenuCallback:wireless?.tradeMenu?.callback??null,
+     partyValidity:m.trainer.partyValidity,before:s.partyBefore??null,observed:party,prepared:s.fingerprint};
+    return stop('identity-unavailable','The prepared trade party changed unexpectedly. Its current state is preserved.');
+   }
    const savedCallback=callback==='CB2_SaveAndEndTrade'&&[5,6,7,8,9].includes(o.emulator.mainState)||s.game==='emerald'&&callback==='CB2_SaveAndEndWirelessTrade'&&[9,10,11,12].includes(o.emulator.mainState);
    // trade_scene.c commits the final sector signature before states 5–9.
    if(savedCallback&&Number.isInteger(s.tradeCountBefore)&&wireless?.tradeCount===s.tradeCountBefore+1&&o.sram?.sha256){

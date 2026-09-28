@@ -164,9 +164,14 @@ function leagueTrainingWait(entries,agenda){
  return first?entries.map(x=>x===e?{...e,reason:`${e.reason} · waits for ${first.label}`}:x):entries;
 }
 
+// A PC release (pc-release.js) owns the game between checklist goals. It is
+// shown as the active goal while it runs, and is not a checklist objective.
+const PC_RELEASE_ENTRY=Object.freeze({id:'pc-release',label:'Free PC space by releasing Egg-sticker hatchlings',status:'pending',executable:true,conditional:true,
+ reason:'Releases only non-shiny, unreserved hatchlings from the Egg sticker’s own breeding, then saves.'});
 export function postgamePresentation(o,agenda,previous=null){
  const current=o.phase==='stable',retained=!current&&previous?.evidenceFrame!=null&&previous.evidenceFrame<=o.frame;
- const entries=retained?previous.entries:leagueTrainingWait(postgameChecklist(o,agenda?.workflows,agenda?.continuation?.teamPlan),agenda);
+ const listed=retained?previous.entries.filter(e=>e.id!=='pc-release'):leagueTrainingWait(postgameChecklist(o,agenda?.workflows,agenda?.continuation?.teamPlan),agenda);
+ const entries=agenda?.active==='pc-release'?[...listed,{...PC_RELEASE_ENTRY}]:listed;
  return {...agenda,evidenceCurrent:current,evidenceFrame:current?o.frame:retained?previous.evidenceFrame:null,
   progress:retained?previous.progress:postgameProgress(o,agenda),
   entries:entries.map(e=>{

@@ -82,3 +82,27 @@ test("truncated, corrupt, bad-egg and uninitialized Pokémon never report not-sh
   }
   assert.equal(decodeBoxPokemonRecord(new Uint8Array(80)).validity, "empty");
 });
+
+// struct PokemonSubstruct3 (include/pokemon.h): metLocation at byte 1 and the
+// packed origins word at byte 2 (metLevel:7, metGame:4, pokeball:4, otGender:1).
+// daycare.c AddHatchedMonToParty sets metLevel 0 for every hatched Pokémon.
+test("the Misc substructure exposes the Gen 3 met level that marks a hatched Pokémon", () => {
+  for (let personality = 0; personality < 24; personality++) {
+    const bytes = record(personality), otId = 0x12345678;
+    const view = new DataView(bytes.buffer), order = orders[personality % 24], misc = order.indexOf("M") * 12;
+    const plain = new DataView(new ArrayBuffer(48));
+    for (let index = 0; index < 48; index += 4) plain.setUint32(index, view.getUint32(32 + index, true) ^ personality ^ otId, true);
+    assert.equal(decodeBoxPokemonRecord(bytes).metLevel, 0, "an unset origins word is the hatched met level");
+    // Met at level 5 in FireRed (game 4) in a Poke Ball (4), male OT.
+    plain.setUint8(misc + 1, 0x5b);
+    plain.setUint16(misc + 2, 5 | (4 << 7) | (4 << 11), true);
+    let checksum = 0;
+    for (let index = 0; index < 48; index += 2) checksum += plain.getUint16(index, true);
+    view.setUint16(28, checksum & 0xffff, true);
+    for (let index = 0; index < 48; index += 4) view.setUint32(32 + index, plain.getUint32(index, true) ^ personality ^ otId, true);
+    const decoded = decodeBoxPokemonRecord(bytes);
+    assert.equal(decoded.validity, "valid");
+    assert.equal(decoded.metLevel, 5);
+    assert.deepEqual(decoded.ivs, { hp: 31, attack: 0, defense: 1, speed: 2, spAttack: 3, spDefense: 4 });
+  }
+});

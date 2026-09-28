@@ -51,6 +51,9 @@ const RECOMMENDATION_PRIORITY = Object.freeze({
   "cancel-storage-action": 830,
   "exit-storage-mode": 830,
   "exit-storage": 830,
+  "choose-storage-menu-action": 830,
+  "confirm-storage-release": 830,
+  "acknowledge-storage-message": 830,
   // A cartridge-owned A/B prompt must drain before field controls can accept
   // Start. Opening a new modal remains above ordinary overworld intent.
   "open-start-menu": 790,
@@ -751,6 +754,23 @@ export function mapRecommendation(recommendation, observation) {
     }
     case "confirm-storage-action":
       return bounded(["a"], "storage-action");
+    case "choose-storage-menu-action": {
+      // Move to the observed label, then choose it; a menu that no longer
+      // lists that action at that row gets no input.
+      const menu = ui.storage?.menu;
+      const button = menu?.items?.[recommendation.targetIndex] === recommendation.targetAction
+        ? cursorStep(menu.cursor, recommendation.targetIndex, 1)
+        : null;
+      return bounded(button ? [button] : [], "storage-menu-action");
+    }
+    case "confirm-storage-release": {
+      const button = ui.storage?.stage === "release-confirm"
+        ? cursorStep(ui.storage.option, recommendation.targetIndex, 1)
+        : null;
+      return bounded(button ? [button] : [], "storage-release-confirm");
+    }
+    case "acknowledge-storage-message":
+      return bounded(["a"], "storage-message");
     case "cancel-storage-action":
       return bounded(["b"], "cancel-storage-action");
     case "exit-storage-mode":
