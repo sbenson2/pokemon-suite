@@ -1,5 +1,23 @@
 {
   "schema": "pokemon-suite/native-regression-requirements/v1",
+  "exclusive": [
+    "postgame-automatic-partner",
+    "postgame-team-trade-evolution",
+    "postgame-held-item-partner",
+    "postgame-firered-partner",
+    "task-firered-partner",
+    "postgame-firered-partner-stall",
+    "postgame-firered-partner-restart",
+    "postgame-firered-partner-console-reset",
+    "postgame-extra-save-loan",
+    "postgame-extra-save-loan-resume",
+    "postgame-extra-save-loan-charmander",
+    "postgame-extra-save-keep-hitmon",
+    "postgame-politoed-kings-rock",
+    "postgame-recovery-storage",
+    "campaign-transform"
+  ],
+  "releaseOnly": [],
   "required": [
     "pc-roster-exit",
     "national-dex-save",

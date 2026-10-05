@@ -189,6 +189,19 @@ def read_run(folder):
     evidence = _json(folder / 'case-evidence.json') or {}
     cases = evidence.get('cases') if isinstance(evidence, dict) else evidence
     cases = cases if isinstance(cases, list) else []
+    journal = folder / 'case-evidence.jsonl'
+    if journal.exists():
+        # One durable line per finished case, kept even when the run was
+        # interrupted before it wrote case-evidence.json.
+        by_id = {c.get('id'): c for c in cases if isinstance(c, dict)}
+        for line in journal.read_text(errors='replace').splitlines():
+            try:
+                entry = json.loads(line)
+            except ValueError:
+                continue
+            if isinstance(entry, dict):
+                by_id[entry.get('id')] = entry
+        cases = list(by_id.values())
     run = {'folder': folder, 'name': folder.name, 'status': report.get('status'),
            'source': report.get('sourceSha256'), 'corpus': report.get('corpusSha256'),
            'completedAt': report.get('completedAt') or '',
