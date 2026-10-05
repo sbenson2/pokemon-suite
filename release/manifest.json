@@ -15,7 +15,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "75cefd13c207a85e9badcaa1522a402588990c3d1c97e1f036613ce0f9e353a8"
+      "sha256": "002c0e5f47efe50a4695b2764bf85609ec13de5a4dbf7dfcb3248c5d5cffdf50"
     },
     {
       "path": "SECURITY.md",
@@ -79,7 +79,7 @@
     },
     {
       "path": "docs/HARDWARE.md",
-      "sha256": "e363db9c7fa4905928fca7c25fb31e453cf11b0d039d770f9f83106c8e030b96"
+      "sha256": "f69df63458dcf6f7690d716ebc7dc857c6ad7c119f01de11655bb87ccf61e85c"
     },
     {
       "path": "docs/ITEMS-AND-OFFLINE-POKEDEX.md",
@@ -154,10 +154,6 @@
       "sha256": "50699dd7bbac2b9ba80e05456d730af102ae1931c5bd5f00da78985cabea6889"
     },
     {
-      "path": "docs/images/hero.gif",
-      "sha256": "bad76dc1846cd42462b340980f714c5810ba0a94706b1d2a0369927a418a6378"
-    },
-    {
       "path": "docs/images/icon.png",
       "sha256": "1c32f8c6717e9093f826991ed1a1627c145e7123b7b6e3f7dabe9cc876395929"
     },
@@ -178,8 +174,52 @@
       "sha256": "e8bb212d6bf146cd43ef48b6c0f99aeb1f8685a0436ceb379124255f5a6bd982"
     },
     {
-      "path": "docs/images/mac-live.png",
-      "sha256": "dda56d871ccbf6ed28b22a23f118e3273bd9ce08056706edf2237df20dacedc3"
+      "path": "docs/images/mac-bank-dark.png",
+      "sha256": "8e9f2981270ee613d0b46b64b0bc4b3e31baf81fcf19ed8670e73dac09fefcef"
+    },
+    {
+      "path": "docs/images/mac-bank-light.png",
+      "sha256": "c9fa841b546f57404fa57e5f0b47835e2a0fd28aff05ef514616f98c5176e2d5"
+    },
+    {
+      "path": "docs/images/mac-live-dark.png",
+      "sha256": "df1fedf8f6e2d028b2f6d9c0923dfe846332d301eac5375323d232723bb36091"
+    },
+    {
+      "path": "docs/images/mac-live-light.png",
+      "sha256": "1b87cc601c7c2a54ecab2b2ed1ab9300a8756b0823ddd7caef68717e607d2731"
+    },
+    {
+      "path": "docs/images/mac-new-run-dark.png",
+      "sha256": "01eeaccb64a02e92bc12740701c2604a2d576b44bc2eb1fe938be0a7879ff882"
+    },
+    {
+      "path": "docs/images/mac-new-run-light.png",
+      "sha256": "39ff15bef6d24f3c580bcea7e6e003e400ae742d7b96141b48c73bed07cb9208"
+    },
+    {
+      "path": "docs/images/mac-saves-dark.png",
+      "sha256": "a62506d5658b6a15c04a1bf7a8a704ecca3672cb82ff5d50bf18b0b962d217bb"
+    },
+    {
+      "path": "docs/images/mac-saves-light.png",
+      "sha256": "0ac97a162ee82a3502d2c83957e3980e17aed4a5d10ce7bca243a8eecab93c61"
+    },
+    {
+      "path": "docs/images/mac-start-dark.png",
+      "sha256": "7dc2ba94b731b3986098df5aa77766ff251fd89dc3dfff064d2d29d58a1357ec"
+    },
+    {
+      "path": "docs/images/mac-start-light.png",
+      "sha256": "012c4d3d083e1c7123d0cc7b6df39a869e2f0a6ca23c1abb56cda22bc16ef126"
+    },
+    {
+      "path": "docs/images/mac-trading-dark.png",
+      "sha256": "e7128b8538592feaa8c041edc33d9a300ccf92a2827cffe7a1a811a0e3794b43"
+    },
+    {
+      "path": "docs/images/mac-trading-light.png",
+      "sha256": "2f6decb7f8f302c5c4f73ba91f12e28159594c5beb38239ac4574ba3a3c33d11"
     },
     {
       "path": "engine/firered/package.json",
