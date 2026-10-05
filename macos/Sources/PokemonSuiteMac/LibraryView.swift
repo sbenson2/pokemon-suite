@@ -10,8 +10,11 @@ struct LibraryView: View {
     private let platforms = ["gb","gbc","gba","nds","3ds","switch"]
     private let platformNames = ["gb":"Game Boy", "gbc":"Game Boy Color", "gba":"Game Boy Advance", "nds":"Nintendo DS", "3ds":"Nintendo 3DS", "switch":"Nintendo Switch"]
     var filtered: [JSONValue] { model.games.filter { (!installedOnly || $0["status"].string != "missing") && (search.isEmpty || $0["title"].string.localizedCaseInsensitiveContains(search)) } }
+    /// A first launch: nothing is installed yet, so the page leads with the one thing to do.
+    private var nothingInstalled: Bool { !model.games.contains { $0["status"].string == "installed" } }
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
+            if nothingInstalled { LibraryWelcome().padding([.horizontal, .top], 16) }
             HStack(spacing: 16) {
                 Toggle("In my library", isOn: $installedOnly).toggleStyle(.checkbox)
                 Text("\(filtered.count) games").foregroundStyle(.secondary).monospacedDigit()
@@ -57,7 +60,7 @@ struct LibraryView: View {
                                                     }.contentShape(Rectangle())
                                                 }.buttonStyle(.plain).accessibilityLabel("Details for \(game["title"].string)")
                                                 HStack(spacing: 9) { actions(game) }.controlSize(.small).frame(height: 28)
-                                            }.padding(.horizontal, 4).padding(.bottom, 8)
+                                            }.padding(8).gameTile()
                                         }
                                     }
                                 }
@@ -74,7 +77,7 @@ struct LibraryView: View {
                 Button("Open Library…", action: model.chooseProfile).help("Open an existing Suite library")
                 Menu("Add Games", systemImage: "plus") {
                     Button("Choose ROM Folder…", action: model.chooseROMFolder)
-                    Button("Add FireRed…", action: model.addFireRed)
+                    Button("Add FireRed or LeafGreen…", action: model.addFireRed)
                 }
             }
         }
@@ -94,6 +97,27 @@ struct LibraryView: View {
             Text(game["status"].string == "cataloged" ? "ROM found" : "ROM required").font(.caption).foregroundStyle(.secondary)
         }
         Button("Details…") { details = game }.help("View requirements and artwork for " + game["title"].string)
+    }
+}
+
+/// First-launch guidance: bring your own FireRed or LeafGreen; everything else ships in the app.
+/// Its text wraps without fixedSize: a vertically fixed Text in the split view's detail column
+/// overflowed the window during the split view's narrow measuring pass.
+struct LibraryWelcome: View {
+    @EnvironmentObject var model: SuiteModel
+    var body: some View {
+        GamePanel(title: "Start here", symbol: "sparkles") {
+            Text("Add your own Pokémon FireRed or LeafGreen").font(.title3.weight(.semibold))
+            Text("Choose your game file (.gba, US revision 1). It stays where it is. The emulator, the bot and its game knowledge are already inside Pokémon Suite, so the bot can start a new adventure as soon as the game is added.")
+            HStack(spacing: 12) {
+                Button("Add FireRed or LeafGreen…", action: model.addFireRed).buttonStyle(.borderedProminent)
+                    .disabled(model.busy || model.api == nil).accessibilityIdentifier("welcome-add-frlg")
+                Button("Choose ROM Folder…", action: model.chooseROMFolder).disabled(model.busy || model.api == nil)
+                    .help("Shows artwork for the other games you own. The bot plays FireRed and LeafGreen.")
+            }
+            Text("Other games in the list show their artwork once you choose your ROM folder.")
+                .font(.callout).foregroundStyle(.secondary)
+        }.accessibilityIdentifier("library-welcome")
     }
 }
 

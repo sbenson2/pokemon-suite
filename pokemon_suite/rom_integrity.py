@@ -31,6 +31,18 @@ FIRERED_ROMS = {
 }
 
 
+# LeafGreen US revision 1 (build 124): pret leafgreen_rev1, unmodified. There is
+# no reviewed LeafGreen patch, native link cartridge or partner.
+LEAFGREEN_ROMS = {
+    'leafgreen-rev1': {
+        'bytes': 16777216,
+        'sha1': '7862c67bdecbe21d1d69ce082ce34327e1c6ed5e',
+        'sha256': '2f978f635b9593f6ca26ec42481c53a6b39f6cddd894ad5c062c1419fac58825',
+        'ranges': (),
+    },
+}
+
+
 STOCK_PARTNER_ROMS = {'emerald': {'id':'emerald-us','bytes':16777216,
     'sha1':'f3ae088181bf583e55daf962a92bb46f4f1d07b7',
     'sha256':'a9dec84dfe7f62ab2220bafaef7479da0929d066ece16a6885f6226db19085af'}}
@@ -91,6 +103,25 @@ def compare_roms(original, candidate, base_policy, patch_policy):
     return {'baseSha256': base_hash, 'romSha256': candidate_hash, 'changedBytes': changed}
 
 
+def _verify_leafgreen_case(case, config_path):
+    """A LeafGreen replay runs only the reviewed stock image, never a link or partner."""
+    if case['nativeRadio'] is not False or case.get('partnerGame') or case.get('partnerOwner'):
+        raise ValueError('No reviewed LeafGreen ROM policy exists for a native link or partner replay.')
+    config_bytes = config_path.read_bytes()
+    base = json.loads(config_bytes)['games']['leafgreen']['cartridge']
+    policy = LEAFGREEN_ROMS['leafgreen-rev1']
+    if base['id'] != 'leafgreen-rev1':
+        raise ValueError('The configured ROM profile has no reviewed approval for this LeafGreen replay.')
+    if not Path(base['path']).is_absolute():
+        raise ValueError('ROM verification requires absolute cartridge paths.')
+    original = Path(base['path']).read_bytes()
+    audit = compare_roms(original, original, policy, policy)
+    if base.get('bytes') != policy['bytes'] or base.get('sha1') != policy['sha1']:
+        raise ValueError('The configured ROM identity differs from the reviewed fingerprint.')
+    return {'id': case['id'], 'game': 'leafgreen', 'nativeRadio': False, 'profile': 'leafgreen-rev1',
+            'configSha256': hashlib.sha256(config_bytes).hexdigest(), **audit}
+
+
 def verify_corpus_roms(corpus_path):
     """Audit the exact base/candidate selected by each FireRed native replay."""
     corpus_path = Path(corpus_path).resolve()
@@ -103,6 +134,12 @@ def verify_corpus_roms(corpus_path):
         if not isinstance(case, dict) or not isinstance(case.get('id'), str) or case['id'] in seen:
             raise ValueError('ROM verification needs unique case identifiers.')
         seen.add(case['id'])
+        if case.get('game') == 'leafgreen' and type(case.get('nativeRadio')) is bool:
+            try:
+                results.append(_verify_leafgreen_case(case, (corpus_path.parent/case['config']).resolve()))
+            except (KeyError, TypeError) as error:
+                raise ValueError('The native regression ROM configuration is incomplete.') from error
+            continue
         if case.get('game', 'firered') != 'firered' or type(case.get('nativeRadio')) is not bool:
             raise ValueError('No reviewed ROM policy exists for this game or replay mode.')
         try:

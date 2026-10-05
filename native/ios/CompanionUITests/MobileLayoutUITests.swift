@@ -88,9 +88,9 @@ final class MobileLayoutUITests: XCTestCase {
         XCUIDevice.shared.orientation = .portrait
         let app = XCUIApplication(); app.launch()
         XCTAssertTrue(app.buttons["Game menu"].firstMatch.waitForExistence(timeout: 40))
-        for page in ["Games", "Trading", "Pokédex"] {
+        for page in ["Games", "Trading", "Bank"] {
             navigateToSuitePage(app,page)
-            let region = page == "Pokédex" ? app.collectionViews.firstMatch : app.scrollViews.firstMatch
+            let region = page == "Bank" ? app.collectionViews.firstMatch : app.scrollViews.firstMatch
             XCTAssertTrue(region.waitForExistence(timeout: 30), app.debugDescription)
             XCTAssertLessThanOrEqual(region.frame.maxY,navigationBottom(app)+1,page)
             let shot = XCTAttachment(screenshot: XCUIScreen.main.screenshot())

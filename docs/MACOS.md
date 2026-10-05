@@ -4,11 +4,11 @@
 
 Pokémon Suite has a SwiftUI/AppKit application for macOS 14 or later. Its library, live game, trainer/team panels, Pokédex, hunting forms, shiny collection and common bot tasks use native Mac controls. Game video is decoded directly from the owning emulator, audio uses AVAudioEngine, and keyboard input supports simultaneous directions and releases when focus leaves the game.
 
-The app starts its own authenticated loopback service on an available port. Python 3.13, Node 22 and Pillow for desktop video conversion are bundled, with pinned archive hashes and upstream notices. Finder launch does not require Homebrew, a terminal, CPTR or AgentTV. The app also ships the FireRed bot resources: the pinned mGBA WebAssembly core and the game knowledge the bot plans with. You supply only your ROM. Firmware, keys and saves are never bundled.
+The app starts its own authenticated loopback service on an available port. Python 3.13, Node 22 and Pillow for desktop video conversion are bundled, with pinned archive hashes and upstream notices. Finder launch does not require Homebrew or a terminal. The app also ships the FireRed and LeafGreen bot resources: the pinned mGBA WebAssembly core and each game's knowledge the bot plans with. You supply only your ROM. Firmware, keys and saves are never bundled.
 
 ## Use
 
-Open **Pokémon Suite.app**. A first launch creates an empty library at `~/Library/Application Support/PokemonSuite`. Choose **File → Open Library** to reconnect an existing standalone Suite profile, or **Add FireRed** and choose your FireRed US revision 1 ROM. The app checks the ROM's SHA-1, verifies every bundled resource file against its pinned SHA-256, and copies both into the library, so moving or updating the app never strands an installed game. Configuration paths from an old development checkout are overridden for app-owned bot execution without rewriting the user's configuration.
+Open **Pokémon Suite.app**. A first launch creates an empty library at `~/Library/Application Support/PokemonSuite`. Choose **File → Open Library** to reconnect an existing standalone Suite profile, or **Add FireRed or LeafGreen** and choose your FireRed or LeafGreen US revision 1 ROM. The app checks the ROM's SHA-1 to tell which game it is, verifies every bundled resource file against its pinned SHA-256, and copies both into the library, so moving or updating the app never strands an installed game. Configuration paths from an old development checkout are overridden for app-owned bot execution without rewriting the user's configuration.
 
 Choose **Choose ROM Folder…** in Games or **Settings → Library** to catalog a collection containing `gb`, `gbc`, `gba`, `nds`, `3ds`, and `switch` subfolders. Raw cartridges and ZIP archives can supply artwork without running an emulator. Games with a recognized source show **ROM found**; playing still requires an installed emulator integration. Details show the available graphics for each cartridge. If macOS requests removable-drive access, allow access to the collection you selected.
 
@@ -28,13 +28,19 @@ Hunting defaults in **Bot settings → Hunting defaults** apply to new drafts. F
 
 ## Mac interface and keyboard
 
-**Pokémon Suite → Settings…** (Command-comma) opens a separate window with General, Library, and Support panes. Appearance defaults to the system setting. The app uses semantic system colors, your Mac’s accent, native menus and controls, and bordered internal scroll areas. See the [Apple HIG review](MACOS-HIG-REVIEW.md) for design decisions and verification limits.
+**Pokémon Suite → Settings…** (Command-comma) opens a separate window with General, Library, and Support panes. The app follows your Mac's Light or Dark appearance. The window itself (sidebar, toolbar, menus, sheets and Settings) uses standard Mac controls and your Mac's accent; the pages use the same game theme as the iPhone companion. See the [Apple HIG review](MACOS-HIG-REVIEW.md) for design decisions and verification limits.
 
 Use **View** or Command-1 through Command-6 to move between the six main pages. The standard sidebar control and View menu can hide or show navigation. The main window has a minimum content size of 1100 × 680 points so the game and its details remain usable together.
 
 In **Manual Play**, choose **Focus Game** or click the screen. Move with arrows or WASD; Z/X press A/B, Q/E press L/R, Return presses Start, and Space presses Select. DS and later add C/V for X/Y. 3DS/Switch use WASD and IJKL for the two sticks, and F/G for ZL/ZR. Click or drag the lower DS/3DS screen for touch input. The native viewer uses [Apple’s extended gamepad profile](https://developer.apple.com/documentation/gamecontroller/gcextendedgamepad): right and bottom face buttons map to Nintendo A and B. Controllers require the manual game surface to have focus. Tab, Shift-Tab, Escape, loss of focus, or leaving manual play releases inputs. Button, stick and touch holds refresh every 200 ms; the emulator retains its timeout fail-safe. On-screen buttons support keyboard and accessibility activation. Physical controllers and each desktop emulator still require hardware qualification.
 
-**Farming** has a searchable species chooser and a fixed Preview / Queue / Start action row. Catch, traits, training, limits and competitive builds use separate sections. **Pokédex** includes regional/national scope, type and encounter availability filters, evolution links and detailed moves. Emerald opens with its 202-entry Hoenn dex. **Bot settings** separates tasks, shiny collection, new runs, saves, hunting defaults, and activity. New runs require a preview and a separate Start action.
+**Farming** has a searchable species chooser and a fixed Preview / Queue / Start action row. Catch, traits, training, limits and competitive builds use separate sections. **Bank** (formerly Pokédex) lists every species with regional/national scope, type filters, evolution links and detailed moves. Emerald opens with its 202-entry Hoenn dex. For FireRed it also shows:
+
+- **Owned**: each Pokémon of that species in every save the app knows (the current game, preserved save profiles and linked saves), with its save, box and slot, shiny, nature, IVs and level. A Pokémon copied into several saves is one row. Saves are read, never changed. Inspect opens the same details as Trading. **Send to Switch** uses Trading's Prepare Trade flow and is available only for the current game; other saves show why.
+- **How FireRed gets it**: wild, gift or in-game trade, static encounter, evolution, breeding, partner trade, or external (needs another game or an event). Filters show owned, shiny-owned, not owned, obtainable or needing another game.
+- **Get It…**: shiny, quantity, natures, gender, ability, Hidden Power, IV ranges, and whether to keep it or send it to the Switch. Preview Plan sends these to the host, which builds the same goal as the typed request (for example Abra, shiny and Timid is "get me a shiny timid abra"). The plan, its search limit, the confirmation, the queue, "Your request" progress and Cancel are Ask's own. Sending to the Switch trades each caught Pokémon one at a time, up to 9 per request, and your Switch confirms each trade.
+
+**Bot settings** separates tasks, shiny collection, new runs, saves, hunting defaults, and activity. New runs require a preview and a separate Start action.
 
 ## Build
 
@@ -43,10 +49,12 @@ On a matching Mac architecture with Xcode and Python 3.12+ installed:
 ```sh
 swift test --package-path macos
 python3 -m unittest discover -s tests -v
-python3 scripts/build-macos.py --verification /path/to/report.json --engine-package /path/to/published-engine.pksuite --firered-resources /path/to/firered-resources
+python3 scripts/build-macos.py --verification /path/to/report.json --engine-package /path/to/published-engine.pksuite --firered-resources /path/to/firered-resources --leafgreen-resources /path/to/leafgreen-resources
 ```
 
-`--firered-resources` names a folder with `core/build-manifest.json`, `core/mgba.js`, `core/mgba.wasm`, `runtime.json`, `world.json`, `story.json` and `battle.json`. Every file must match its pin in `pokemon_suite/game_resources.py`, and nothing else may be in the folder. The builder copies the pack to `Contents/Resources/GameResources/firered/`, with the mGBA license and source notice in `GameResources/licenses/mgba/` (Settings → Support → Emulator License). It also writes `pokemon-suite-0.1.0-firered-resources.zip`, the same pack for running from source: unzip it and choose its `firered` folder.
+`--firered-resources` names a folder with `core/build-manifest.json`, `core/mgba.js`, `core/mgba.wasm`, `runtime.json`, `world.json`, `story.json` and `battle.json`. Every file must match its pin in `pokemon_suite/game_resources.py`, and nothing else may be in the folder. The builder copies the pack to `Contents/Resources/GameResources/firered/`, with the mGBA license and source notice in `GameResources/licenses/mgba/` (Settings → Support → Emulator License). It also writes `pokemon-suite-<version>-game-resources.zip`, the same packs for running from source: unzip it and choose its `firered` or `leafgreen` folder.
+
+`--leafgreen-resources` (optional) names the LeafGreen pack with the same seven files, pinned as `LEAFGREEN_FILES`. Its core files are FireRed's. It is copied to `GameResources/leafgreen/` and included in the resources ZIP. Without it the app installs FireRed only.
 
 The builder verifies `release/manifest.json` before copying source, downloads the checksum-pinned runtimes in `macos/runtime-lock.json`, builds Swift in release mode, generates an original cartridge icon, signs locally, and writes the application, ZIP and SHA-256 checksum under `dist/macos-0.1.0`. It refuses to replace an existing output folder. Use `--output` for another build.
 

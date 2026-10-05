@@ -7,6 +7,7 @@ import {
   decodeMetatileAttributes,
   parseNumericDefines,
 } from "./primitives.js";
+import { knowledgeVersion } from "./versions.js";
 
 async function readJson(root, path) {
   return JSON.parse(await readFile(join(root, path), "utf8"));
@@ -29,7 +30,8 @@ function reconciliationCheck(id, expected, actual) {
   return { id, expected, actual, passed: expected === actual };
 }
 
-export async function extractWorldStructure(root) {
+export async function extractWorldStructure(root, { version = "firered" } = {}) {
+  const { game, encounterSuffix } = knowledgeVersion(version);
   const [groups, layoutsDocument, metatilesSource, behaviorSource, wildDocument] =
     await Promise.all([
       readJson(root, "data/maps/map_groups.json"),
@@ -155,7 +157,7 @@ export async function extractWorldStructure(root) {
     ({ label, for_maps: forMaps }) => label === "gWildMonHeaders" && forMaps,
   );
   const wildEncounters = (wildGroup?.encounters ?? []).filter(({ base_label: label }) =>
-    label.endsWith("_FireRed"),
+    label.endsWith(encounterSuffix),
   );
   const mapIds = new Set(maps.map(({ id }) => id));
   const connections = maps.flatMap(({ connections: entries }) => entries);
@@ -178,7 +180,7 @@ export async function extractWorldStructure(root) {
       ).length,
     ),
     reconciliationCheck(
-      "firered-encounter-maps-resolve",
+      `${game}-encounter-maps-resolve`,
       wildEncounters.length,
       wildEncounters.filter(({ map }) => mapIds.has(map)).length,
     ),

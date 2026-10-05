@@ -108,6 +108,38 @@ class FireRedPartnerCoordinatorTests(unittest.TestCase):
             self.assertEqual(availability['partners'], [{'owner': 'firered-partner', 'title': 'firered'}])
             PostgamePartners(s).tick();self.assertEqual(len(s.commands), 1)
 
+    def test_an_automatic_player_task_prepares_its_selected_firered_partner(self):
+        """A task-scoped evolution owns the same verified transfer contract as the checklist."""
+        with tempfile.TemporaryDirectory() as root:
+            s = Coordinator(root, GAMES)
+            s.source['bot']['runScope'] = 'task'
+
+            PostgamePartners(s).tick()
+
+            self.assertEqual(s.commands, [('firered-partner', {
+                'type': 'prepare-partner',
+                'requestId': 'team-partner-1',
+                'automatic': True,
+                'sourceOwner': 'firered',
+            }, 'shiny')])
+            PostgamePartners(s).tick()
+            self.assertEqual(len(s.commands), 1, 'reconstructing the coordinator remains idempotent')
+
+    def test_a_task_scoped_request_keeps_the_transaction_guards(self):
+        for change in [
+            lambda s: s.source['bot'].update(enabled=False),
+            lambda s: s.source['bot']['preparation'].update(automatic=False),
+            lambda s: s.source.update(localEvolution={'phase': 'trading'}),
+        ]:
+            with tempfile.TemporaryDirectory() as root:
+                s = Coordinator(root, GAMES)
+                s.source['bot']['runScope'] = 'task'
+                change(s)
+
+                PostgamePartners(s).tick()
+
+                self.assertEqual(s.commands, [])
+
     def test_a_partner_sharing_the_source_trainer_id_or_waiting_is_unavailable_and_the_evolution_defers(self):
         for change, pattern in [(lambda s: s.partner['gameProgress'].update(trainerId=10933), 'trainer ID'),
                                 (lambda s: s.partner['bot'].update(awaitingCommand=False, preparation={'requestId': 'team-partner-1', 'phase': 'waiting', 'reason': 'Save the FireRed partner in this Pokémon Center before it serves a trade.'}), 'Save the FireRed partner'),

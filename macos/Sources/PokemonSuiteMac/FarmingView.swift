@@ -113,7 +113,12 @@ struct FarmingView: View {
                         #if os(iOS)
                         .listRowBackground(GameFormRowBackground())
                         #endif
-                    }.formStyle(.grouped).disabled(!draftReady).overlay(Rectangle().stroke(.separator, lineWidth: 1))
+                    }
+                    #if os(macOS)
+                    .gameForm().disabled(!draftReady).padding(.horizontal, 12)
+                    #else
+                    .formStyle(.grouped).disabled(!draftReady).overlay(Rectangle().stroke(.separator, lineWidth: 1))
+                    #endif
                     VStack(alignment: .leading, spacing: 8) {
                         if let validation { Label(validation, systemImage: "exclamationmark.circle").font(.callout) }
                         else if !model.installed { Text("Add this game to start hunting.").font(.callout).foregroundStyle(.secondary) }

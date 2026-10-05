@@ -13923,6 +13923,29 @@ test("the quest policy gives a collected type booster to a compatible battler", 
     objective: "confirm-held-item-209",
   });
 });
+test("the quest policy keeps evolution items free: it never equips a King's Rock", () => {
+  // Owner, 2026-10-04: an evolution item is not reserved for holding.
+  const campaignPlanner = createCampaignPlanner({ campaign: { objectives: [] } });
+  const party = [
+    { slot: 0, species: 6, level: 40, hp: 120, maxHp: 120, heldItem: 0, moves: [53, 17], stats: { speed: 100 } },
+    { slot: 1, species: 131, level: 35, hp: 140, maxHp: 140, heldItem: 0, moves: [57], stats: { speed: 60 } },
+  ];
+  const recommend = (bag) => {
+    const observed = observation({
+      emulator: { mode: "overworld" },
+      playerMemory: { trainer: { partyCount: party.length, usablePartyCount: party.length, party, bag }, ui: {} },
+    });
+    return createPolicyAdvisors({ mechanics, campaignPlanner })
+      .find(({ id }) => id === "quest")
+      .advise(observed)?.recommendation;
+  };
+  const alone = recommend({ items: [{ itemId: 187, quantity: 1 }] });
+  assert.ok(!String(alone?.objective ?? "").startsWith("equip-held-item-187"), JSON.stringify(alone));
+  assert.deepEqual(recommend({ items: [{ itemId: 187, quantity: 1 }, { itemId: 209, quantity: 1 }] }), {
+    kind: "open-start-menu",
+    objective: "equip-held-item-209-on-slot-1",
+  });
+});
 test('PC withdrawal selects the requested shiny identity among identical species',()=>{
  const center=mapFromCollisionRows({id:'MAP_LAVENDER_TOWN_POKEMON_CENTER_1F',rows:['.......','...#...','.......'],behaviors:{'3,1':'MB_PC'}});
  const target={validity:'valid',box:0,slot:2,species:113,personality:123,otId:456,ivs:{},moves:[3],pp:[10]};

@@ -49,6 +49,8 @@ export async function readInventorySnapshot({config,game,profileId}){
   const result=pokemonInventory(game,observation.playerMemory?.trainer);
   return {schema:'pokemon-suite/inventory/v1',game,...result,source:'checkpoint',
    save:{id:saved.stateSha256,updatedAt:saved.updatedAt,frame:saved.metadata?.frame,ownerId},
-   trainer:observation.playerMemory?.trainer?.playerName??null};
+   trainer:observation.playerMemory?.trainer?.playerName??null,
+   // The save's own OT ID, so the read-only legality checker can tell caught from traded Pokémon.
+   trainerOtId:Number.isInteger(observation.playerMemory?.trainer?.otId)?observation.playerMemory.trainer.otId:null};
  }finally{session.close();}
 }

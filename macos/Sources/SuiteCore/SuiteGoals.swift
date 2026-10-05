@@ -19,18 +19,26 @@ public struct SuiteGoal: Equatable, Identifiable, Sendable {
     public let choices: [BotRequestChoice]
     public let result: String?
     public let updatedAt: String?
+    /// A campaign step continuing this save's own story (`continue: true`) rather than a new run;
+    /// nil when the report doesn't say (a brief carries no steps).
+    public let continuesStory: Bool?
 
     /// `session.goals` entries (pokemon_goals.brief).
     public init?(brief b: JSONValue) {
-        self.init(id: b["id"], status: b["status"], text: b["text"], progress: b, question: b["question"], result: b["result"], updatedAt: b["updatedAt"])
+        self.init(id: b["id"], status: b["status"], text: b["text"], progress: b, question: b["question"], result: b["result"], updatedAt: b["updatedAt"],
+                  continuesStory: b["detail"].string.hasPrefix("Continuing this save") ? true : nil)
     }
 
     /// A stored goal (GET /goals, POST /goals, /goals/cancel, /requests/commit).
     public init?(goal g: JSONValue) {
-        self.init(id: g["id"], status: g["status"], text: g["source"]["text"], progress: g["progress"], question: g["question"], result: g["result"], updatedAt: g["updatedAt"])
+        let plan = g["execution"]["plan"].array.isEmpty ? g["steps"].array : g["execution"]["plan"].array
+        let index = g["progress"]["step"].finiteNumber.map { Int($0) } ?? 0
+        let step = plan.indices.contains(index) ? plan[index] : .null
+        self.init(id: g["id"], status: g["status"], text: g["source"]["text"], progress: g["progress"], question: g["question"], result: g["result"], updatedAt: g["updatedAt"],
+                  continuesStory: step["kind"].string == "campaign" ? step["continue"].bool : nil)
     }
 
-    private init?(id: JSONValue, status: JSONValue, text: JSONValue, progress p: JSONValue, question: JSONValue, result: JSONValue, updatedAt: JSONValue) {
+    private init?(id: JSONValue, status: JSONValue, text: JSONValue, progress p: JSONValue, question: JSONValue, result: JSONValue, updatedAt: JSONValue, continuesStory: Bool?) {
         guard let id = id.string.nonempty, let status = status.string.nonempty else { return nil }
         self.id = id; self.status = status; self.text = text.string
         step = p["step"].finiteNumber.map { Int($0) }
@@ -40,6 +48,7 @@ public struct SuiteGoal: Equatable, Identifiable, Sendable {
         choices = question["choices"].array.compactMap(BotRequestChoice.init)
         self.result = result["summary"].string.nonempty
         self.updatedAt = updatedAt.string.nonempty
+        self.continuesStory = continuesStory
     }
 
     /// Queued, running or waiting: the owner can still cancel it.
@@ -56,8 +65,9 @@ public struct SuiteGoal: Equatable, Identifiable, Sendable {
 
     public var kindLabel: String? {
         guard let kind else { return nil }
+        if kind == "campaign" { return continuesStory == false ? "New game" : "Story" }
         return ["farming": "Catch", "postgame": "Postgame target", "player-task": "Task", "collection": "Shiny collection",
-                "trade": "Trade", "campaign": "New game", "status": "Question"][kind] ?? readableGameText(kind)
+                "trade": "Trade", "status": "Question"][kind] ?? readableGameText(kind)
     }
 
     /// Supervisor phases (G2 NOTES 2.4) in the owner's words.

@@ -3,6 +3,7 @@ import { writeContentAddressedArtifact } from "./artifact.js";
 import { extractRuntimeSymbols } from "./runtime.js";
 import { extractStoryState } from "./story.js";
 import { extractWorldStructure } from "./world.js";
+import { knowledgeVersion } from "./versions.js";
 
 const SHA1 = /^[0-9a-f]{40}$/;
 const SHA256 = /^[0-9a-f]{64}$/;
@@ -100,28 +101,33 @@ function battleCounts(result) {
   };
 }
 
-const DATASETS = [
-  {
-    id: "firered-world-structure",
-    extract: extractWorldStructure,
-    counts: worldCounts,
-  },
-  {
-    id: "firered-story-state",
-    extract: extractStoryState,
-    counts: storyCounts,
-  },
-  {
-    id: "firered-runtime-symbols",
-    extract: extractRuntimeSymbols,
-    counts: runtimeCounts,
-  },
-  {
-    id: "firered-battle-mechanics",
-    extract: extractBattleMechanics,
-    counts: battleCounts,
-  },
-];
+// The same four datasets for each FRLG version, named by its dataset prefix.
+function datasetsFor(version) {
+  const { datasetPrefix: prefix } = knowledgeVersion(version);
+  return [
+    {
+      id: `${prefix}-world-structure`,
+      extract: extractWorldStructure,
+      counts: worldCounts,
+    },
+    {
+      id: `${prefix}-story-state`,
+      extract: extractStoryState,
+      counts: storyCounts,
+    },
+    {
+      id: `${prefix}-runtime-symbols`,
+      extract: extractRuntimeSymbols,
+      counts: runtimeCounts,
+      runtime: true,
+    },
+    {
+      id: `${prefix}-battle-mechanics`,
+      extract: extractBattleMechanics,
+      counts: battleCounts,
+    },
+  ];
+}
 
 function validateProvenance({ cartridgeProfileId, source, generator, build }) {
   if (typeof cartridgeProfileId !== "string" || cartridgeProfileId.length === 0) {
@@ -152,6 +158,7 @@ function validateProvenance({ cartridgeProfileId, source, generator, build }) {
 }
 
 export async function generateKnowledgePack({
+  version = "firered",
   sourceRoot,
   outputDirectory,
   cartridgeProfileId,
@@ -161,6 +168,10 @@ export async function generateKnowledgePack({
   collectedAt = new Date().toISOString(),
   extractors = {},
 }) {
+  const expectedProfile = knowledgeVersion(version).cartridgeProfileId;
+  if (cartridgeProfileId !== expectedProfile) {
+    throw new TypeError(`a ${version} knowledge pack belongs to ${expectedProfile}`);
+  }
   validateProvenance({ cartridgeProfileId, source, generator, build });
   if (typeof sourceRoot !== "string" || typeof outputDirectory !== "string") {
     throw new TypeError("sourceRoot and outputDirectory are required");
@@ -170,9 +181,9 @@ export async function generateKnowledgePack({
   }
 
   const extracted = await Promise.all(
-    DATASETS.map(async (dataset) => ({
+    datasetsFor(version).map(async (dataset) => ({
       ...dataset,
-      result: await (extractors[dataset.id] ?? dataset.extract)(sourceRoot),
+      result: await (extractors[dataset.id] ?? dataset.extract)(sourceRoot, { version }),
     })),
   );
   for (const { id, result } of extracted) {
@@ -186,7 +197,7 @@ export async function generateKnowledgePack({
   }
 
   const artifacts = [];
-  for (const { id, counts, result } of extracted) {
+  for (const { id, counts, result, runtime } of extracted) {
     const { reconciliation, ...data } = result;
     const envelope = {
       schema: "master-red/knowledge-artifact/v1",
@@ -195,7 +206,7 @@ export async function generateKnowledgePack({
       source,
       generator,
       derivation:
-        id === "firered-runtime-symbols"
+        runtime
           ? { verifiedBuild: build }
           : undefined,
       reconciliation,

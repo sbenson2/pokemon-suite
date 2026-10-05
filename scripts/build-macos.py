@@ -15,6 +15,14 @@ import urllib.request
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
+# The app's version: Info.plist CFBundleShortVersionString and the release file
+# names. The next public version changes here only. APP_BUILD (CFBundleVersion)
+# goes up with every installed build.
+APP_VERSION = '0.2.0'
+APP_BUILD = '69'
+# The games the bundled engine package serves. LeafGreen (build 124) runs the
+# same engine as FireRed, so engine updates reach both.
+ENGINE_GAMES = ['firered','leafgreen','emerald','crystal']
 
 
 def copy_radio_runtime(source,target,notices=None):
@@ -38,17 +46,18 @@ def copy_radio_runtime(source,target,notices=None):
     if notices is not None:shutil.copytree(notices,target.parent/'RadioHost-licenses')
 
 
-def copy_game_resources(source,target):
-    # The pinned FireRed pack: the user supplies only the ROM.
+def copy_game_resources(source,target,game='firered'):
+    # A pinned FRLG pack (FireRed, or LeafGreen from build 124): the user
+    # supplies only the ROM.
     import sys
     sys.path.insert(0,str(ROOT))
-    from pokemon_suite.game_resources import FIRERED_FILES,verify_pack
-    source=verify_pack(source);target=Path(target)
-    if target.exists():raise ValueError('The game resources destination already exists.')
-    for name in FIRERED_FILES:
-        destination=target/'firered'/name;destination.parent.mkdir(parents=True,exist_ok=True)
+    from pokemon_suite.game_resources import pinned_files,verify_pack
+    source=verify_pack(source,game);target=Path(target)
+    if (target/game).exists():raise ValueError('The game resources destination already exists.')
+    for name in pinned_files(game):
+        destination=target/game/name;destination.parent.mkdir(parents=True,exist_ok=True)
         shutil.copyfile(source/name,destination)
-    verify_pack(target/'firered')
+    verify_pack(target/game,game)
 
 
 def exporter():
@@ -80,7 +89,7 @@ def bundle_engine(files,target,proof,*,previous=None,version=None):
     from pokemon_suite.package_builder import build_package
     from pokemon_suite.packages import PackageStore,MAX_BYTES
     from pokemon_suite.bot_verification import file_inventory,require_bot_verification
-    games=['firered','emerald','crystal']
+    games=ENGINE_GAMES
     entrypoints={'worker':'engine/firered/src/suite/session-worker.js','researchBots':'engine/shared','campaignPlanner':'engine/firered/src/suite/campaign-run.js'}
     require_bot_verification({'kind':'engine','files':file_inventory(files),'verification':proof})
     if (previous is None)==(version is None):raise ValueError('Reuse an unchanged --engine-package or supply a new --engine-version.')
@@ -103,7 +112,34 @@ def bundle_engine(files,target,proof,*,previous=None,version=None):
     return build_package(files,target,identifier='suite-engine',version=version,kind='engine',games=games,entrypoints=entrypoints,verification=proof)
 
 
-def build(output, cache, arch, *, feed_url=None, public_key=None, signing_identity='-', radio_runtime=None, verification=None, engine_package=None, engine_version=None, firered_resources=None):
+def info_plist(feed_url=None, public_key=None):
+    info = {
+        'CFBundleDevelopmentRegion': 'en', 'CFBundleExecutable': 'PokemonSuite',
+        'CFBundleIdentifier': 'org.pokemonsuite.mac', 'CFBundleName': 'Pokémon Suite',
+        'CFBundleDisplayName': 'Pokémon Suite', 'CFBundlePackageType': 'APPL',
+        'CFBundleShortVersionString': APP_VERSION, 'CFBundleVersion': APP_BUILD,
+        'NSMicrophoneUsageDescription': 'Hear the request you speak to the bot after you click the microphone in Ask the bot.',
+        'NSSpeechRecognitionUsageDescription': 'Turn your spoken bot request into text on this Mac. Your voice is never sent to a server.',
+        'CFBundleIconFile': 'Suite', 'LSMinimumSystemVersion': '14.0',
+        'LSApplicationCategoryType': 'public.app-category.games',
+        'NSHighResolutionCapable': True,
+        'NSAppTransportSecurity': {'NSAllowsLocalNetworking': True},
+        'NSHumanReadableCopyright': 'Pokémon Suite contributors. MIT licensed. Independent compatibility software.',
+    }
+    if feed_url or public_key:
+        import base64
+        from urllib.parse import urlsplit
+        if not feed_url or urlsplit(feed_url).scheme!='https' or not public_key or len(base64.b64decode(public_key,validate=True))!=32:raise ValueError('App updates need an HTTPS feed and a 32-byte public Ed25519 key.')
+        info.update(SUFeedURL=feed_url,SUPublicEDKey=public_key,SUEnableAutomaticChecks=True,SUAutomaticallyUpdate=False)
+    return info
+
+
+def release_files(arch, version=APP_VERSION):
+    """The release archives: the app, and the game resource packs for running from source."""
+    return f'pokemon-suite-{version}-macos-{arch}.zip', f'pokemon-suite-{version}-game-resources.zip'
+
+
+def build(output, cache, arch, *, feed_url=None, public_key=None, signing_identity='-', radio_runtime=None, verification=None, engine_package=None, engine_version=None, firered_resources=None, leafgreen_resources=None):
     if platform.system() != 'Darwin': raise ValueError('Build the Mac app on macOS with Xcode installed.')
     if arch != platform.machine(): raise ValueError('Build on the matching Mac architecture; cross-architecture builds are not qualified.')
     files = exporter().reviewed_files(ROOT)
@@ -117,6 +153,7 @@ def build(output, cache, arch, *, feed_url=None, public_key=None, signing_identi
     if firered_resources is None:raise ValueError('Supply --firered-resources: the app ships the pinned FireRed bot resources.')
     from pokemon_suite.game_resources import verify_pack
     verify_pack(firered_resources)
+    if leafgreen_resources is not None:verify_pack(leafgreen_resources,'leafgreen')
     lock = json.loads(files['macos/runtime-lock.json'])
     update_lock=json.loads(files['macos/update-runtime-lock.json'])[arch]
     if not isinstance(update_lock,list):raise ValueError(update_lock['reason'])
@@ -167,29 +204,12 @@ def build(output, cache, arch, *, feed_url=None, public_key=None, signing_identi
         shutil.copy2(ROOT/'macos/runtime-lock.json', runtime/'runtime-lock.json')
         if radio_runtime:copy_radio_runtime(radio_runtime,runtime/'RadioHost',notices=ROOT/'licenses/radio/app')
         copy_game_resources(firered_resources,resources/'GameResources')
+        if leafgreen_resources is not None:copy_game_resources(leafgreen_resources,resources/'GameResources','leafgreen')
         shutil.copytree(ROOT/'licenses/mgba',resources/'GameResources/licenses/mgba')
         iconset = stage/'Suite.iconset'
         subprocess.run(['swift', str(ROOT/'macos/Assets/Icon.swift'), str(iconset)], check=True)
         subprocess.run(['iconutil', '-c', 'icns', str(iconset), '-o', str(resources/'Suite.icns')], check=True)
-        info = {
-            'CFBundleDevelopmentRegion': 'en', 'CFBundleExecutable': 'PokemonSuite',
-            'CFBundleIdentifier': 'org.pokemonsuite.mac', 'CFBundleName': 'Pokémon Suite',
-            'CFBundleDisplayName': 'Pokémon Suite', 'CFBundlePackageType': 'APPL',
-            'CFBundleShortVersionString': '0.1.1', 'CFBundleVersion': '65',
-            'NSRemovableVolumesUsageDescription': 'Read your selected game cartridges and their artwork from your ROM collection.',
-            'NSMicrophoneUsageDescription': 'Hear the request you speak to the bot after you click the microphone in Ask the bot.',
-            'NSSpeechRecognitionUsageDescription': 'Turn your spoken bot request into text on this Mac. Your voice is never sent to a server.',
-            'CFBundleIconFile': 'Suite', 'LSMinimumSystemVersion': '14.0',
-            'LSApplicationCategoryType': 'public.app-category.games',
-            'NSHighResolutionCapable': True,
-            'NSAppTransportSecurity': {'NSAllowsLocalNetworking': True},
-            'NSHumanReadableCopyright': 'Pokémon Suite contributors. MIT licensed. Independent compatibility software.',
-        }
-        if feed_url or public_key:
-            import base64
-            from urllib.parse import urlsplit
-            if not feed_url or urlsplit(feed_url).scheme!='https' or not public_key or len(base64.b64decode(public_key,validate=True))!=32:raise ValueError('App updates need an HTTPS feed and a 32-byte public Ed25519 key.')
-            info.update(SUFeedURL=feed_url,SUPublicEDKey=public_key,SUEnableAutomaticChecks=True,SUAutomaticallyUpdate=False)
+        info = info_plist(feed_url, public_key)
         (contents/'Info.plist').write_bytes(plistlib.dumps(info))
         magic = {b'\xcf\xfa\xed\xfe', b'\xce\xfa\xed\xfe', b'\xca\xfe\xba\xbe', b'\xca\xfe\xba\xbf'}
         for path in runtime.rglob('*'):
@@ -216,22 +236,24 @@ def build(output, cache, arch, *, feed_url=None, public_key=None, signing_identi
         output.mkdir()
         shutil.move(str(app), output/app.name)
     app = output/'Pokémon Suite.app'
-    archive = output/f'pokemon-suite-0.1.1-macos-{arch}.zip'
+    archive_name, pack_name = release_files(arch)
+    archive = output/archive_name
     subprocess.run(['ditto', '-c', '-k', '--sequesterRsrc', '--keepParent', str(app), str(archive)], check=True)
     sha = hashlib.sha256(archive.read_bytes()).hexdigest()
     archive.with_suffix('.zip.sha256').write_text(sha+'  '+archive.name+'\n')
-    # The same pinned pack, for running from source (attached to the release).
-    pack = output/'pokemon-suite-0.1.1-firered-resources.zip'
+    # The same pinned packs (FireRed, plus LeafGreen when bundled), for running
+    # from source (attached to the release).
+    pack = output/pack_name
     subprocess.run(['ditto', '-c', '-k', '--norsrc', str(app/'Contents/Resources/GameResources'), str(pack)], check=True)
     pack.with_suffix('.zip.sha256').write_text(hashlib.sha256(pack.read_bytes()).hexdigest()+'  '+pack.name+'\n')
-    result = {'app': str(app), 'archive': str(archive), 'sha256': sha, 'resources': str(pack), 'architecture': arch, 'signing': 'ad-hoc' if signing_identity=='-' else signing_identity, 'notarized': False}
+    result = {'app': str(app), 'archive': str(archive), 'sha256': sha, 'resources': str(pack), 'leafgreenResources': leafgreen_resources is not None, 'architecture': arch, 'signing': 'ad-hoc' if signing_identity=='-' else signing_identity, 'notarized': False}
     (output/'build.json').write_text(json.dumps(result, indent=2)+'\n')
     return result
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output', type=Path, default=ROOT/'dist/macos-0.1.1')
+    parser.add_argument('--output', type=Path, default=ROOT/f'dist/macos-{APP_VERSION}')
     parser.add_argument('--runtime-cache', type=Path, default=ROOT/'.private/macos-app/runtime-cache')
     parser.add_argument('--arch', choices=['arm64', 'x86_64'], default=platform.machine())
     parser.add_argument('--feed-url')
@@ -239,10 +261,11 @@ if __name__ == '__main__':
     parser.add_argument('--signing-identity',default='-')
     parser.add_argument('--radio-runtime',type=Path)
     parser.add_argument('--firered-resources',type=Path,required=True,help='Folder holding the pinned FireRed core and knowledge (see pokemon_suite/game_resources.py)')
+    parser.add_argument('--leafgreen-resources',type=Path,help='Folder holding the pinned LeafGreen core and knowledge; without it the app offers FireRed only')
     parser.add_argument('--verification',type=Path,required=True)
     engine=parser.add_mutually_exclusive_group(required=True)
     engine.add_argument('--engine-package',type=Path,help='Reuse an existing capsule only when its engine files exactly match reviewed source.')
     engine.add_argument('--engine-version',help='Explicit new immutable version when publishing changed engine code.')
     args = parser.parse_args()
-    try: print(json.dumps(build(args.output, args.runtime_cache, args.arch,feed_url=args.feed_url,public_key=args.public_key,signing_identity=args.signing_identity,radio_runtime=args.radio_runtime,verification=args.verification,engine_package=args.engine_package,engine_version=args.engine_version,firered_resources=args.firered_resources), indent=2))
+    try: print(json.dumps(build(args.output, args.runtime_cache, args.arch,feed_url=args.feed_url,public_key=args.public_key,signing_identity=args.signing_identity,radio_runtime=args.radio_runtime,verification=args.verification,engine_package=args.engine_package,engine_version=args.engine_version,firered_resources=args.firered_resources,leafgreen_resources=args.leafgreen_resources), indent=2))
     except (ValueError, OSError, subprocess.SubprocessError) as error: parser.exit(1, str(error)+'\n')

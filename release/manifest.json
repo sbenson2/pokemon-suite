@@ -7,7 +7,7 @@
     },
     {
       "path": "DATA_SOURCES.md",
-      "sha256": "aec0dcf533d35b1f1f2c70497fe5dfc736f9133d5c9ca47d9aa7b47da4ab76db"
+      "sha256": "59bdbfc75ae2c494fcc85533731968de967168fe00fd78c2719f58a3f92460f8"
     },
     {
       "path": "LICENSE",
@@ -15,7 +15,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "3f7921631b6930a7f7374e13eb0ffb382d4c8700f662065e308b8362f85bae67"
+      "sha256": "75cefd13c207a85e9badcaa1522a402588990c3d1c97e1f036613ce0f9e353a8"
     },
     {
       "path": "SECURITY.md",
@@ -47,11 +47,15 @@
     },
     {
       "path": "docs/BOT-REGRESSION-GATE.md",
-      "sha256": "6c822474bfb6fe74a00f231b72f6104c2f8a717907d8874762eba41bf7da3688"
+      "sha256": "47e0afd4322d98b557adf6adc1e453e3ce797f193acb0545827c41690d0373f7"
     },
     {
       "path": "docs/CAMPAIGN-PERFORMANCE.md",
       "sha256": "5e8e83d4e5b2036ec2f34431dad5b03c26cb1cd2c841281ce75eb86baa292469"
+    },
+    {
+      "path": "docs/COMPETITIVE-BUILDER.md",
+      "sha256": "dda6466cb6d2297873e0cd08a1e66eb9a8e67f4b544e1498a275a4e9208894d9"
     },
     {
       "path": "docs/EMULATOR-TRADING-TESTS-20260912.md",
@@ -63,7 +67,7 @@
     },
     {
       "path": "docs/FIRERED-POSTGAME.md",
-      "sha256": "eb1aec540d58bceb3937b93d20fef4fecb18fce6a01bb8824cff7bda4dbcc816"
+      "sha256": "0d692251359e9f66c7620090bc6bb1b16a0d7993b2b4562d5f32eaf25bacd870"
     },
     {
       "path": "docs/FIRERED-STORY-CHECKPOINTS.md",
@@ -87,19 +91,19 @@
     },
     {
       "path": "docs/LAYA.md",
-      "sha256": "bc8b3b6334321ea3672e13af6d14d5a5334cbd678afd6b7e8369956bece47b99"
+      "sha256": "88f5180f56bbd27b530fc1ae68b6203b2a9a3f68af811740d0fe87dcad3d76f3"
     },
     {
       "path": "docs/MAC-TRADING.md",
-      "sha256": "421b287eb6a5d918010100ee084ec0e21a9b94f767c3e785f54ffd75d61382d4"
+      "sha256": "81eb0fcddbbb440c9457510ea5bcab47ad6f72224ce1b703630484d0d403094c"
     },
     {
       "path": "docs/MACOS-HIG-REVIEW.md",
-      "sha256": "2e69d3f47cf87567d600ec561ec2788f2d5982474af32595b3ac8dc670de8f0d"
+      "sha256": "49e990f9e5860a12ab2688ad10f334321466366230fa0f373f7671d0b4f30b23"
     },
     {
       "path": "docs/MACOS.md",
-      "sha256": "31ee93c49523c52de689ac229d211b512f92b5fb43a1d88a956bd2dda1a72cc7"
+      "sha256": "9d84c528440f68b8285a30d40940cdd3b4e1cd7c665591897d5ba0a4131e1e8c"
     },
     {
       "path": "docs/MOBILE-ARCHITECTURE.md",
@@ -107,7 +111,7 @@
     },
     {
       "path": "docs/MOBILE-COMPANION.md",
-      "sha256": "d5c53697069a8b0fd3629a038223ee01dcce35dfcd9f9bf39cc7d3a095d22184"
+      "sha256": "38ad1e1b04542f2160cfe62a7bdef8741e882c12668d026732f9b96b1887122e"
     },
     {
       "path": "docs/MOVE-KNOWLEDGE.md",
@@ -119,11 +123,11 @@
     },
     {
       "path": "docs/RADIO-RELAY-INTEGRATION.md",
-      "sha256": "22a05799905e7fb3da8da31362200771346ce215e9d3ebae5d17eecffe787760"
+      "sha256": "83fd9e3d4410e50d2b4aa85ff476b8d67011f509f3968c52b510a8fc7c144180"
     },
     {
       "path": "docs/RELEASING.md",
-      "sha256": "c74f6d39baab9c7634a058b91545c8ef961bb49b87f38051133965c80d61065c"
+      "sha256": "2de29b23198fe14e89dcc39980331d526ad920f76ec0764946c76b711ec2cb72"
     },
     {
       "path": "docs/ROM-RESOURCES.md",
@@ -195,7 +199,7 @@
     },
     {
       "path": "engine/firered/research/cartridges.json",
-      "sha256": "2a6024d8198818fe09f96f324b59cfd2e003b75228bba8a653901e965d085b28"
+      "sha256": "da89b9ec3e519f4672586b3fb2e6502adedcb3bddd70428ec2332d6caa655ce4"
     },
     {
       "path": "engine/firered/research/evidence.json",
@@ -223,7 +227,7 @@
     },
     {
       "path": "engine/firered/src/cli/extract-knowledge.js",
-      "sha256": "6711df1b5aaf2833c6a6912097aa76681c46ccf10db3ef42bbe9ee8052d747e0"
+      "sha256": "1bdf7b9b0768392a79856367b0b2d7ed17c4f1d3efa387d5d8e73dadc4b1a54a"
     },
     {
       "path": "engine/firered/src/cli/prepare-mart-seed.js",
@@ -327,7 +331,7 @@
     },
     {
       "path": "engine/firered/src/evidence/gen3-national-species.js",
-      "sha256": "6801fc85469280f89a63a0c4de2a8c124a96fb513f6e3d924c81d9c167714ee6"
+      "sha256": "376c61fe5f539375eeb4f4af5dda8d7f072d563530c58d806b587570ade556b9"
     },
     {
       "path": "engine/firered/src/evidence/knowledge-artifact.js",
@@ -343,7 +347,7 @@
     },
     {
       "path": "engine/firered/src/evidence/pokemon-record.js",
-      "sha256": "ad3957c9e5436eaf336bd1460dd291b0b6df1a9f1a93321d362da8ff7011dd84"
+      "sha256": "75e5bd587d1e96077590e61875d1697b948e98066cd71549ef95eb75bc1a5a66"
     },
     {
       "path": "engine/firered/src/evidence/qualification.js",
@@ -375,7 +379,7 @@
     },
     {
       "path": "engine/firered/src/extractor/knowledge-pack.js",
-      "sha256": "d7574d6439648570c43e0a214487f986a1e31e0abbe08f9f5f8ded5ab0b6250b"
+      "sha256": "d57118d597e1ecfc8446b8d51174acfd779a89894a86eb9fe1ee7664ae6a3b25"
     },
     {
       "path": "engine/firered/src/extractor/primitives.js",
@@ -383,23 +387,31 @@
     },
     {
       "path": "engine/firered/src/extractor/runtime.js",
-      "sha256": "36da2233d54688470360ba1b199b42e256cd74e4b9f320f1b90fcbe38405fd5f"
+      "sha256": "6a4c2af2920f2b958a5eeaaaa5552ccfd5bcef85fa110c95191eb6fd8d809200"
     },
     {
       "path": "engine/firered/src/extractor/story.js",
       "sha256": "9aebe791d1d2e4d3c7f79205593716b77a14b50c214241e637c899e071816ec7"
     },
     {
+      "path": "engine/firered/src/extractor/versions.js",
+      "sha256": "319c01a1d1cabc03bb4207294c64de84f445f73dc715f11c9be8e014f0885bd0"
+    },
+    {
       "path": "engine/firered/src/extractor/world.js",
-      "sha256": "ce904b8b5fe0163d8a200e8ab8afbaabb7faf81d69ccc0873dd7139f365e5367"
+      "sha256": "c0b23d1fee66279ad6dcb144b564d8d6f22f85efe7f98d57737aed49c44f1c40"
     },
     {
       "path": "engine/firered/src/foundation.js",
       "sha256": "5f81f0b6b5667c988078013f4345dde0e79adf3e43dd6495c877058b4282d899"
     },
     {
+      "path": "engine/firered/src/frlg.js",
+      "sha256": "071c3ea3908a014527f0555090787cf2745549e53ebda8525076501bfb953f44"
+    },
+    {
       "path": "engine/firered/src/player/advisors.js",
-      "sha256": "d5478e17249c13049177707c32649304a8aac2dfb40c56459f8a90f51dfbf67d"
+      "sha256": "87e156199eb5b68fc18b51a3cc1fea333f3bc0c1ae127c4df8c83ca852e27376"
     },
     {
       "path": "engine/firered/src/player/battle-effectiveness.js",
@@ -455,11 +467,11 @@
     },
     {
       "path": "engine/firered/src/player/campaign.js",
-      "sha256": "68f2a339011b83068da36d40e4040940fe2579ebfdd2d69c2f85a1eff7c06286"
+      "sha256": "4d82256c408e8c0bfc91ceaa595189b475d99f1e9159586261bfbcc490204a43"
     },
     {
       "path": "engine/firered/src/player/capture-balls.js",
-      "sha256": "5cdb676db59f88033142248f8c446398fd15f30037326e198297b9fa39a0afe9"
+      "sha256": "2e7a6ab57880c570136362dbec5cd147b3f3a90d4f85f45d718de1da3984d85b"
     },
     {
       "path": "engine/firered/src/player/checkpoint.js",
@@ -491,11 +503,11 @@
     },
     {
       "path": "engine/firered/src/player/fire-red-roster-facts.js",
-      "sha256": "9fcb065d3e7fc0c87cd73cf6272eb4c3a20daf7b84e7edac8395a2f595862d88"
+      "sha256": "0b4cf9edab619215973acaa77c5660264acbceb5fcd6a8c7bf36118dbe98eeb6"
     },
     {
       "path": "engine/firered/src/player/fire-red-roster.js",
-      "sha256": "05f334efb67a153f6887f423d37094d574782f8f58366bc96e96766395936fef"
+      "sha256": "1e51e6cd25da30bb36afc66773c5f851d097c95c10a4c8446a17e621f3ea4fe3"
     },
     {
       "path": "engine/firered/src/player/frame-pacer.js",
@@ -583,11 +595,11 @@
     },
     {
       "path": "engine/firered/src/player/roster-selection.js",
-      "sha256": "5b5ac218fe1db1f1b2514e33ff80d6d899a295ceadcff07cadc70580b8b9cd86"
+      "sha256": "a083290c32bacd94a6226c70025e0acf3bced2ef56fe1c9d3415364cbd1e4e32"
     },
     {
       "path": "engine/firered/src/player/run-profile.js",
-      "sha256": "70312245434e8c52912bcd2e7bce227c7987172d46c7b4f17ff3d11599ebf30d"
+      "sha256": "cf8439a9dbf3fbb4826dc61edc4977386601873ca71488d3c0d401923c84fa3a"
     },
     {
       "path": "engine/firered/src/player/run-timer.js",
@@ -695,7 +707,7 @@
     },
     {
       "path": "engine/firered/src/suite/acquisition-evidence.js",
-      "sha256": "e057cd631215edce01da7f0f1f1d9e067ab63d966ef9ebbf072321b8603c56cb"
+      "sha256": "be54d403ff3ccf7475fa487c9f166883063dafc9e28c3f4688205ef0c0f5a6d8"
     },
     {
       "path": "engine/firered/src/suite/acquisition-task.js",
@@ -711,11 +723,11 @@
     },
     {
       "path": "engine/firered/src/suite/campaign-config-cli.js",
-      "sha256": "1710eb650a41dee036a1c237c74661e0275a95251eccfb726abcd2e11d11aa0a"
+      "sha256": "d99a96ef453771e571f26f3dcb4675d0cfdc4a1b0ed7b4c9c9f4d9e4bd1d8069"
     },
     {
       "path": "engine/firered/src/suite/campaign-context.js",
-      "sha256": "824759f6d19bfae66e2a4b03ba156a77e1689c169a68878395d7240487f1ed40"
+      "sha256": "e6aaa1b9665cc8564bfd57b2b82f15902dbe6df745f0b88bed9cc23391971cfe"
     },
     {
       "path": "engine/firered/src/suite/campaign-continuation.js",
@@ -731,7 +743,11 @@
     },
     {
       "path": "engine/firered/src/suite/campaign-run.js",
-      "sha256": "4b8f39ab7e81482130d4ab2095ca822b849a0f55574e39b58b52b69f386158d6"
+      "sha256": "a93c79f8b3b4ace977d95c60e99e955a9a8d3c5068b46aec87c77ce38b593ee2"
+    },
+    {
+      "path": "engine/firered/src/suite/catchable-goal.js",
+      "sha256": "fadb73453aa59542922127b71cce6ccdfe21aaac651cb0e11d32aa84e4142f26"
     },
     {
       "path": "engine/firered/src/suite/console-power.js",
@@ -750,6 +766,30 @@
       "sha256": "6b831184759c84cff3a2c2e6c5c61ba8ca4f76840ff1a2654aabb469cbeac9dd"
     },
     {
+      "path": "engine/firered/src/suite/extra-save-exchange.js",
+      "sha256": "aa7d366b8f8b68296d53a2fb649bdecce820d3a1a783e0994a8c3bca82ce51bf"
+    },
+    {
+      "path": "engine/firered/src/suite/extra-save-helper.js",
+      "sha256": "4b7b36d76c7c0c869911e453bc0f77bda5703986c196a6b3d3cdbe6671b634ab"
+    },
+    {
+      "path": "engine/firered/src/suite/extra-save-inventory-cli.js",
+      "sha256": "e760e8a568c86c58eed4b1324adfd97d86a2bbcd1f4137788e3cd460e1a69e61"
+    },
+    {
+      "path": "engine/firered/src/suite/extra-save-story.js",
+      "sha256": "0acdb62397734bded022dead302177d227158540be78c1d770d0e95bd042faa9"
+    },
+    {
+      "path": "engine/firered/src/suite/extra-save-tasks.js",
+      "sha256": "94ccf7a3c7a12374275e3f0cc2772a75732c770c73a6f66146c7da0306c141c0"
+    },
+    {
+      "path": "engine/firered/src/suite/extra-saves.js",
+      "sha256": "259684b5e5b8844f9f7ff2a3bd2ec5f7d2d0f0043ef21a240a6b41992c8c56bf"
+    },
+    {
       "path": "engine/firered/src/suite/field-recovery.js",
       "sha256": "e193cb4a4ed29fb4a2a56cd2d5de20761dca57dfb07f68bfc3c1c434c59b6809"
     },
@@ -759,11 +799,15 @@
     },
     {
       "path": "engine/firered/src/suite/fire-red-evolution.js",
-      "sha256": "619fb57fd206d7d457864017f1bb6b3119d60e1c4355dfb047b5c5fffaeced7b"
+      "sha256": "1c37434bff214308f6c947cad1a399c6d64502ac1221543131d36b0793189057"
     },
     {
       "path": "engine/firered/src/suite/fire-red-link-quest.js",
       "sha256": "1a7fbb60a3ebc33af0fd7cb2b9af87aa00b4a622918738f48dd92d8d10ed540d"
+    },
+    {
+      "path": "engine/firered/src/suite/firered-catchable.json",
+      "sha256": "1616189dfb129820c10276136a99190abfe3e0c8294ba7a7e8d303825915954b"
     },
     {
       "path": "engine/firered/src/suite/firered-hm-learners.json",
@@ -771,11 +815,11 @@
     },
     {
       "path": "engine/firered/src/suite/firered-partner.js",
-      "sha256": "8eff1a72e3a9156b270fdf443335d5e3b406c762b562a72c802beb964f965685"
+      "sha256": "87e5d530c2ec0248c3f56056c5a8c4102ad46fcf3597093d1aa1de5823a75df6"
     },
     {
       "path": "engine/firered/src/suite/game-progress.js",
-      "sha256": "fa64a05664e25779fc188c41ec1aae5a8a54b9ec590557f82b4d5c873da5f14c"
+      "sha256": "418e2e2d156b447feed7f3e1b22cdc68f6bd9cdb6567778640be0b2ddef9c1e4"
     },
     {
       "path": "engine/firered/src/suite/gift-mission.js",
@@ -795,7 +839,11 @@
     },
     {
       "path": "engine/firered/src/suite/inventory-snapshot.js",
-      "sha256": "dfbfaee0bdbc9cc94a0d80e669e98a1ad8bc818736a6d26e6fb195f8a9875940"
+      "sha256": "0f38f3cbc6f773f51915fd39b10f326f7104f4bfd994c5a546f57db11d05728e"
+    },
+    {
+      "path": "engine/firered/src/suite/leafgreen-catchable.json",
+      "sha256": "bcfa10505d979e8ba85a790ef4044487fbb86e7dd3c5372c87e19d5de6f8071e"
     },
     {
       "path": "engine/firered/src/suite/league-ball-prize.js",
@@ -807,7 +855,7 @@
     },
     {
       "path": "engine/firered/src/suite/local-evolution-worker.js",
-      "sha256": "3fa6501a528def0fb465db0da9aa08dcdc2b315d830f49b83963fd679eb2ac13"
+      "sha256": "a0d9a39d291e9bfe8cb46f8b0e5367313eb2767e051ec02adc1276d88c0d535e"
     },
     {
       "path": "engine/firered/src/suite/local-evolution.js",
@@ -823,15 +871,15 @@
     },
     {
       "path": "engine/firered/src/suite/national-dex-agenda.js",
-      "sha256": "8236980cc43e87c9ebc911202e3f44754e31d5f5762a58d2e0a98a6cfd042258"
+      "sha256": "b3162469e0730964373406cb1a317a2f5c23671bd233c0cd468596e1eeb2afb5"
     },
     {
       "path": "engine/firered/src/suite/native-acquisition.js",
-      "sha256": "8bd9729f703d559f961890e5c55509bbbe8d1329ffa8d053fa745bc784b0b8a1"
+      "sha256": "fc4dc9e1590553532f612e9142123d4b3461e45e47220289c698ba9c82bfb731"
     },
     {
       "path": "engine/firered/src/suite/native-breeding.js",
-      "sha256": "0e9f28888fd87467cbe24fc549b0d3ca50be0c50ff6ad1ba4170fc9ae23bfdee"
+      "sha256": "b9a27b633c8abb2c66dee8440fa9908d2b11c7c014d887c2f82a38a8506322a2"
     },
     {
       "path": "engine/firered/src/suite/native-cold-boot.js",
@@ -842,12 +890,16 @@
       "sha256": "b05bb42922a0ec75380ab6e71a7c33a415d381668f74a9c7061d104044e91477"
     },
     {
+      "path": "engine/firered/src/suite/native-npc-trade.js",
+      "sha256": "024b4048ef9dbf5d06dd3994e20819f97f47cbd8e15499dcca8d386afbc4fc86"
+    },
+    {
       "path": "engine/firered/src/suite/native-radio.js",
       "sha256": "c979da9cf9653b240eeea62bf8d60d5acf585e6eb8833bcdb38218bc39f6117a"
     },
     {
       "path": "engine/firered/src/suite/native-trade-host.js",
-      "sha256": "a27909f9f0e5a90b08de3b043e7ed447ebef6249a6731e11210e9e8458c08532"
+      "sha256": "28674e63d2b448f1b35b62ae1e55c2354e55d28430d35bcbe8cbc6631449b16b"
     },
     {
       "path": "engine/firered/src/suite/native-trade-recovery.js",
@@ -871,11 +923,11 @@
     },
     {
       "path": "engine/firered/src/suite/planner-worker.js",
-      "sha256": "eb2a375cf662a15cbfc961b6500ba1cce35be56ff033218de7c24b616d5f7e56"
+      "sha256": "ea7ce145d50f6c6f8dfc621a518e51ccd962da8d0de910de57f7f712699f1ea4"
     },
     {
       "path": "engine/firered/src/suite/player-task.js",
-      "sha256": "c7ab5928283c05db614b9fd40e0721360585c15970d0465b6dca337c062003cc"
+      "sha256": "e012cba0b9cdf94d5d014db6c92996e1aa060e0f57672e9620ee9e5f50fe25b7"
     },
     {
       "path": "engine/firered/src/suite/pokemon-inventory.js",
@@ -883,7 +935,7 @@
     },
     {
       "path": "engine/firered/src/suite/postgame-agenda.js",
-      "sha256": "2922d44491af3299f0e98e539e9617f1434d7aa0568b92ff65173dcc1eed131d"
+      "sha256": "8ea74e8a7188b17736cf275de0cbf932f8402e9b85903a4d3ab2bf13f08db855"
     },
     {
       "path": "engine/firered/src/suite/postgame-care.js",
@@ -891,7 +943,7 @@
     },
     {
       "path": "engine/firered/src/suite/postgame-client.js",
-      "sha256": "6b44bc5c90a48fd909fd64fe1a7f4cb7ab456a97d58467c43653c8f109883e53"
+      "sha256": "df45e4b57d5def0537a9dc2e4e34c6aef9a68e53567e1aad2c2209c63056565d"
     },
     {
       "path": "engine/firered/src/suite/postgame-collection-extras.js",
@@ -911,7 +963,7 @@
     },
     {
       "path": "engine/firered/src/suite/postgame-progress.js",
-      "sha256": "57513ff6824a2703607012c779e8c74af57dc999600c8d103ddd9202f7835e7d"
+      "sha256": "7ffe4fd230897b5f4f4eba6abbc5af6f04ec18b35c51b8c97553a9597d893b6b"
     },
     {
       "path": "engine/firered/src/suite/postgame-records.js",
@@ -931,11 +983,11 @@
     },
     {
       "path": "engine/firered/src/suite/postgame.js",
-      "sha256": "144e6b90f80b8ce1c83fabec93af4ebb87e8c2b01c100bcc98aec201e9267f24"
+      "sha256": "b0cf86edf42c5d2c99dac6dda9964cc308d311e151b9c2651ab03936c25e08f3"
     },
     {
       "path": "engine/firered/src/suite/qmm-supply.js",
-      "sha256": "05577d35934cc2392f2308603ddb483e5b6ccb67d172000d7b8087b9f5d23052"
+      "sha256": "da9cabda6f7009c0dd0d09da64d1dc0c108a229ba6354112fcf53c1431433283"
     },
     {
       "path": "engine/firered/src/suite/recovery.js",
@@ -948,6 +1000,10 @@
     {
       "path": "engine/firered/src/suite/roamer-mission.js",
       "sha256": "264ba51c8ba3ee8288782f29ed2943ba2e1c064e70c51d1863768df9d5d06519"
+    },
+    {
+      "path": "engine/firered/src/suite/ruin-valley-route.js",
+      "sha256": "4e53c0773a2f737290c3cdb984aaebd29b2acdb8beba78ccb3627df35b08968b"
     },
     {
       "path": "engine/firered/src/suite/safari-mission.js",
@@ -967,11 +1023,11 @@
     },
     {
       "path": "engine/firered/src/suite/session-speed.js",
-      "sha256": "7482888b11048880bcfb01eada81d0055d85c2d70099171cd968870e466b4849"
+      "sha256": "75f07a7aa15e4e3658ba35fb755f1b5b7f5c02ba3d57935f69345031bd329dae"
     },
     {
       "path": "engine/firered/src/suite/session-worker.js",
-      "sha256": "d390d7348ccd7d8e40ebe471529ca7f25858c2e589510dc48b3406d6481c30a0"
+      "sha256": "53624a0f2e99615af8a263fc07d7a906408b75b129fa77ccf70e2734db219326"
     },
     {
       "path": "engine/firered/src/suite/shiny-collection.js",
@@ -991,11 +1047,11 @@
     },
     {
       "path": "engine/firered/src/suite/storage-capacity.js",
-      "sha256": "4f8c28a031ec6b1a0f671c129ea2839dd180729254ad9198accb0b1c9937be64"
+      "sha256": "a00f21359c306cafcf1eef939b0f85e85f7da39110ac8af9ddc931f6b3233b89"
     },
     {
       "path": "engine/firered/src/suite/suite-owner.js",
-      "sha256": "2cc3182486651f2cd1c6ff2b80da58def49a832f4e9013a5569dbc3823da83a6"
+      "sha256": "b703073778a133c129d69a93e1603559415338ea9bd0fd12ecf0bc02bbbfe040"
     },
     {
       "path": "engine/firered/src/suite/trade-preparation.js",
@@ -1007,7 +1063,7 @@
     },
     {
       "path": "engine/firered/src/suite/wild-mission.js",
-      "sha256": "b5e997608bcf719b9b66e8325d6c990d1d716774e5b05a82692c0843f46d026d"
+      "sha256": "07357370a443888e82da61240cdbdde709996187baa99926f81058c57580659e"
     },
     {
       "path": "engine/firered/src/testing/firered-replay.js",
@@ -1059,7 +1115,7 @@
     },
     {
       "path": "engine/firered/test-support/native-regressions.json",
-      "sha256": "3c902200cf2e6bdafdb06f612db8f4f0f0a21db9aa98fccad9b9ad46c35a254e"
+      "sha256": "628bc641c0308544c4b4a0896105681d9534d119f58d8acf5cf0b980724e431e"
     },
     {
       "path": "engine/firered/test-support/native-transform-planner.js",
@@ -1068,6 +1124,10 @@
     {
       "path": "engine/firered/test-support/roster-context-fixture.js",
       "sha256": "520de21d3e8adf4e9c211cca676f3ceb885386530a34daac3c1678d3698500ae"
+    },
+    {
+      "path": "engine/firered/test-support/ruin-valley-map.json",
+      "sha256": "5d7be81c9e7d9c44540c2d354823e04ef72d05dda6eda41541a1c6a81a6b06fa"
     },
     {
       "path": "engine/firered/test-support/temp-dir.mjs",
@@ -1150,6 +1210,10 @@
       "sha256": "1075320d2d2a2fedc036b9b095f9b66ce71f2550f4c7f5cc200983c088e80c8b"
     },
     {
+      "path": "engine/firered/test/breed-to-evolve.test.js",
+      "sha256": "b4e5967e74db679c184d003a66667265c14124afc9433d52d8741090f9cfea22"
+    },
+    {
       "path": "engine/firered/test/campaign-after-league-wait.test.js",
       "sha256": "b9f932fc328f42ead2f2ec873fa3ad3e7adc028acda8252a8b30df7f69c7f4c7"
     },
@@ -1159,7 +1223,7 @@
     },
     {
       "path": "engine/firered/test/campaign-context.test.js",
-      "sha256": "75ba52b33d4c772bc4038e822f5d9f2d63ac08cd8a2428637796708068a54b33"
+      "sha256": "5732b773d1f0849a97caed24a5b6dadc83970e9e55ff78ae2d4d5f33335548b1"
     },
     {
       "path": "engine/firered/test/campaign-diagnostics.test.js",
@@ -1171,7 +1235,7 @@
     },
     {
       "path": "engine/firered/test/campaign-planner.test.js",
-      "sha256": "40edb864555343c306e3d9b15a3dc629285643e3e4aca82c1beeb66c836e7e9c"
+      "sha256": "2f034300942502ee4d03d0b1dc6b6d8839d1b799b60c49e07ce2ee74132ae4e3"
     },
     {
       "path": "engine/firered/test/campaign-recovery-progress.test.js",
@@ -1290,12 +1354,44 @@
       "sha256": "41bdd106d2dbe9b419d44ea2108eed769a1e89cf135494dfe731a5f1145c1013"
     },
     {
+      "path": "engine/firered/test/evolution-items-not-held.test.js",
+      "sha256": "7e7e1b59686b74e7e18827603c0a17cd8620f6a6324e964903c61a66ab26d09f"
+    },
+    {
       "path": "engine/firered/test/evolution-preparation.test.js",
       "sha256": "3f29895314f66b23be97dff7de07596dc2b405f12cfbad6e4ad7b430df431ac1"
     },
     {
+      "path": "engine/firered/test/evolution-supply-regressions.test.js",
+      "sha256": "38bdc083df35e4382b218742c2ae8ab753c9f8d730a3a9686680a8942379277d"
+    },
+    {
       "path": "engine/firered/test/evolution-training-acceleration.test.js",
       "sha256": "a14df0c8f011a95f7ac55204758beb0ded9733d5028f21fb58f244014cda6f6f"
+    },
+    {
+      "path": "engine/firered/test/extra-save-exchange.test.js",
+      "sha256": "04be94be75eb38305d5a57f182f132bbe14d84dd9d428c3b8f5a3c1d092154fb"
+    },
+    {
+      "path": "engine/firered/test/extra-save-helper.test.js",
+      "sha256": "70d45129c4f289ba069e6411e2f3172f883f9606e03385234f5bb18e37688ffe"
+    },
+    {
+      "path": "engine/firered/test/extra-save-postgame.test.js",
+      "sha256": "a1990ed22aec3c52fa073e1d26487af09815a953fbc19f9e86c82bbb313609ae"
+    },
+    {
+      "path": "engine/firered/test/extra-save-tasks.test.js",
+      "sha256": "8f850128870067425588fc45d113c0e7d056a513cc0bec3c2f15c935b3c66047"
+    },
+    {
+      "path": "engine/firered/test/extra-save-worker.test.js",
+      "sha256": "539c2b4ff90dc3ee9e300f2b3426a417f60cf3b8cb0e952c0c1be16d774104cb"
+    },
+    {
+      "path": "engine/firered/test/extra-saves.test.js",
+      "sha256": "ab1dee22868ec15fb93bd3fe4e1ccf76f5efb6d64c67570bc954504b174c8dad"
     },
     {
       "path": "engine/firered/test/extract-command.test.js",
@@ -1315,7 +1411,7 @@
     },
     {
       "path": "engine/firered/test/fire-red-evolution.test.js",
-      "sha256": "8987396d05256e9c2fbd2f3a38c3aeee463ae3ab1b5ffd7731fbad4b9cd4fbb9"
+      "sha256": "90a8f33b140e47f30c723b0daf6ef6a8d7483ae8b86ea037323ea122887cabc6"
     },
     {
       "path": "engine/firered/test/fire-red-link-quest.test.js",
@@ -1323,7 +1419,7 @@
     },
     {
       "path": "engine/firered/test/fire-red-observer.test.js",
-      "sha256": "5d0e5d7f7acb97153f4e635a7de4bd5a770b9f28cebf329afc13194a33465b71"
+      "sha256": "daf8a927afb565b17445c0586610b9f5e252f01a8e94029a1503ff41d4dbf2f3"
     },
     {
       "path": "engine/firered/test/fire-red-rng.test.js",
@@ -1336,6 +1432,14 @@
     {
       "path": "engine/firered/test/fire-red-roster.test.js",
       "sha256": "60e139890f665de0e40fa3f48b4e76b72063d0fed4506649dac98aafbd3a826b"
+    },
+    {
+      "path": "engine/firered/test/firered-catchable.test.js",
+      "sha256": "e40b54e4451711048a7bbb258ffbb16fafa8af6a659cbb2cf860945b97bb5553"
+    },
+    {
+      "path": "engine/firered/test/firered-collection-sources.test.js",
+      "sha256": "99d7a1592b0bf91fded74f39fd1a68492cd5d44ac8d6c329f530215c80ab38c7"
     },
     {
       "path": "engine/firered/test/firered-partner-worker.test.js",
@@ -1362,6 +1466,10 @@
       "sha256": "ff6a2b2ae05b6f78d68e2299733a295f70368161c8a6df87e6b6efd4644d3503"
     },
     {
+      "path": "engine/firered/test/frlg-family.test.js",
+      "sha256": "0551b0a498f600ad1fb1836c4820248c38014c6ffcdb5bb31c51c6ce1471ba67"
+    },
+    {
       "path": "engine/firered/test/generated-action-workflows.test.js",
       "sha256": "aae351a6ffb32099f23f08bf99d2876f40d8171c2f22877845523b487574d00b"
     },
@@ -1384,6 +1492,10 @@
     {
       "path": "engine/firered/test/held-items-types.test.js",
       "sha256": "3b829ce06f1db4b5fa3fd8c0cc39dc705838288387f31fa663ae1b0fad451d2a"
+    },
+    {
+      "path": "engine/firered/test/held-trade-item-holder.test.js",
+      "sha256": "9d418114c28863e31964a83191809fde9df7994d635a5a35d3c444878a34a389"
     },
     {
       "path": "engine/firered/test/hm-policy.test.js",
@@ -1414,12 +1526,24 @@
       "sha256": "030d74af57f792e8b5a96c730b71c66f2e58a615be20e87942f68bd22d6c7276"
     },
     {
+      "path": "engine/firered/test/island-item-supply.test.js",
+      "sha256": "6289cc8902c879ddb374adea45e65d1b95dc1d221ab2924f8534a03bed62e2de"
+    },
+    {
       "path": "engine/firered/test/knowledge-artifact-identity.test.js",
       "sha256": "87fd41817eac624a550bc5cb487b18d2aa166d232b3f777184a2c3b30a495696"
     },
     {
       "path": "engine/firered/test/knowledge-pack.test.js",
       "sha256": "62cc8a53298bc6a33d331692b8d31d3d845784e7650224be12c2295c5e8b20b9"
+    },
+    {
+      "path": "engine/firered/test/leafgreen-catchable.test.js",
+      "sha256": "25cc2ba2c07e62411baac99e31891b7290600eed636794aa108aac4bb131103f"
+    },
+    {
+      "path": "engine/firered/test/leafgreen-knowledge.test.js",
+      "sha256": "462c7885aed4ef7c5b3c1805fba7388628673c8bd838a2cb718438adb2352e34"
     },
     {
       "path": "engine/firered/test/league-ball-prize.test.js",
@@ -1459,7 +1583,7 @@
     },
     {
       "path": "engine/firered/test/local-evolution-link-recovery.test.js",
-      "sha256": "60d023e5809a9d76ed8f4e393433be02f186f835ff0ecd1e6f722c57a24eff20"
+      "sha256": "43c91032df5b2fdc4fb12b945ab54029637b806879026dc5322ed63bc21e437a"
     },
     {
       "path": "engine/firered/test/local-evolution-preparation-guard.test.js",
@@ -1476,6 +1600,10 @@
     {
       "path": "engine/firered/test/major-battle-policy.test.js",
       "sha256": "0119a2e3acd7fc951966aae143f5ea43fb8dadff2eb69811c77d095d8bc3a40e"
+    },
+    {
+      "path": "engine/firered/test/mart-island-supply.test.js",
+      "sha256": "542756d7cf6f943195dd2c82c10f77e6a628cb9ea2d32e0c48abd1b7426af97e"
     },
     {
       "path": "engine/firered/test/mart-seed.test.js",
@@ -1504,6 +1632,22 @@
     {
       "path": "engine/firered/test/movement-recovery.test.js",
       "sha256": "9662e47ba487799bc2a4d5a6fed55d8361048ba7ea1b3af71de0f6fc4865ebeb"
+    },
+    {
+      "path": "engine/firered/test/national-collection-finished.test.js",
+      "sha256": "948bbd5c0d740e66930260c10ae08f065884515e26791b0f2e2ad7b31d927e62"
+    },
+    {
+      "path": "engine/firered/test/national-collection-fishing.test.js",
+      "sha256": "ff9d2bf2972a5237268cf7560fd831d004812b3819167a1e8bff7f01c3b0135d"
+    },
+    {
+      "path": "engine/firered/test/national-collection-sources.test.js",
+      "sha256": "c9d231affbd46cf5dc0ace4cd09fbfb4db1fbf09a6df6871d24096dfba5249fe"
+    },
+    {
+      "path": "engine/firered/test/national-collection-workflows.test.js",
+      "sha256": "d20e7dfbd3effae2067036a5b745985f00db82d1520123deef531697ed44b51b"
     },
     {
       "path": "engine/firered/test/national-dex-agenda.test.js",
@@ -1539,7 +1683,7 @@
     },
     {
       "path": "engine/firered/test/native-trade-host.test.js",
-      "sha256": "ebe5c30548bdc67c79e00ddbe0838db5e226f324eaa89ba2440206cb6f41a4aa"
+      "sha256": "77783cc33dbd729868fab8655a69262034cef7e833e5fac630859ccb832043cc"
     },
     {
       "path": "engine/firered/test/native-trade-recovery.test.js",
@@ -1574,6 +1718,10 @@
       "sha256": "44dae2af0f25d2383a7b3b0d3e488d38bff838a7d57599ab10b50e2da4c3b75a"
     },
     {
+      "path": "engine/firered/test/pc-roster-excluded-individual.test.js",
+      "sha256": "ab45149edf3522734b90a4bd88e02d1289c4fc14313e61097251d0c155b57d32"
+    },
+    {
       "path": "engine/firered/test/pinned-mgba.test.js",
       "sha256": "7a7561db138f07c9e295f5bea6a241c8c3fbef6ba19d16e6afa02c41da273072"
     },
@@ -1587,7 +1735,7 @@
     },
     {
       "path": "engine/firered/test/player-delegator.test.js",
-      "sha256": "636f6875f04fb040c2b4df02068da7eb0ba71976bc74f62110137df447df0aaa"
+      "sha256": "d11975512fb5aef5b8d3f68005c51ea753e741d491cd5f0098a7d8d9216a310a"
     },
     {
       "path": "engine/firered/test/player-diagnostics.test.js",
@@ -1603,11 +1751,15 @@
     },
     {
       "path": "engine/firered/test/player-task.test.js",
-      "sha256": "07925065c0a69eba8e494716f1dd6e81edaa88443ea7ad1586b2f35d2815b2e2"
+      "sha256": "9c94fa19d7d1f8e83d62a74e401c204e349137a740760bd3bcdf1feec810599c"
     },
     {
       "path": "engine/firered/test/player-workflow.test.js",
       "sha256": "a5cb1fb8f75cb35d30018b0bbfcbd10ae1bafcb7d930a0e942bca880b32c5a82"
+    },
+    {
+      "path": "engine/firered/test/pokedex-national-numbers.test.js",
+      "sha256": "4d86a14bff015f021f77542a8b04f01ff54aa65fe6d1ecd74c36cb4cd6d17eec"
     },
     {
       "path": "engine/firered/test/pokemon-inventory.test.js",
@@ -1615,7 +1767,7 @@
     },
     {
       "path": "engine/firered/test/pokemon-record.test.js",
-      "sha256": "448910d05a825ce5d6cfb25d42dc45a2dcb306c2904938149ac81d5cabb088b3"
+      "sha256": "5617f52bac27784797be17a9f2298cffe3485afea88e19df347997b70cecc761"
     },
     {
       "path": "engine/firered/test/postgame-agenda.test.js",
@@ -1639,7 +1791,7 @@
     },
     {
       "path": "engine/firered/test/postgame-continuation.test.js",
-      "sha256": "952ab4f2be21ffb584d95b967a27d58bf42224d0ec44f510886d358b73ccdbab"
+      "sha256": "0cdcf4091fc17bb95dc03ac0d982429abc54abefd47ee0f5a9b0733a0bfd6ba6"
     },
     {
       "path": "engine/firered/test/postgame-egg-budget.test.js",
@@ -1684,6 +1836,10 @@
     {
       "path": "engine/firered/test/postgame-slope-transition.test.js",
       "sha256": "7fda8a2a2b73d6e36010d2fe67b1ce980a21bcaf7e1e91e386cda9e1f0ceecf5"
+    },
+    {
+      "path": "engine/firered/test/postgame-start-partner-availability.test.js",
+      "sha256": "6d7a9eb9b1e735e120aa7a35c025ea57e6caf3497acfc3142bca262ab779ae58"
     },
     {
       "path": "engine/firered/test/postgame-static.test.js",
@@ -1806,6 +1962,10 @@
       "sha256": "aaedd7d3ca89acfe54b172dff644a6316923c589dbb2e4f55eba736ecddc5c6f"
     },
     {
+      "path": "engine/firered/test/ruin-valley-sun-stone.test.js",
+      "sha256": "83ddae0684d5ee9df214f8965f132aa4f8620f3a9de9fb9f495bc19a4b4e0fad"
+    },
+    {
       "path": "engine/firered/test/run-player-command.test.js",
       "sha256": "0774efc155c98a40028ec9cb6b403a0a8f6008af9ec737b583e11fd75119c605"
     },
@@ -1899,7 +2059,7 @@
     },
     {
       "path": "engine/firered/test/suite-owner.test.js",
-      "sha256": "3fc9c7372255a8ec54e947ded4ea5cac57c3a2b1fa4043bfbeaa31cc30f6bde0"
+      "sha256": "e70a5412fb28b555cf250f72c76d0a7ff0c3042cebf954376ec8291944b4a590"
     },
     {
       "path": "engine/firered/test/suite-recovery.test.js",
@@ -2823,23 +2983,27 @@
     },
     {
       "path": "macos/Sources/PokemonSuiteMac/AppUpdater.swift",
-      "sha256": "41be0d707b2c183f63b63235fc685badbd8edf44e771797fa2dc14a07c0f12fb"
+      "sha256": "e78b26fb090174099f04e5f3026909ec7ffaf814c71109c51cd69fc421bec12f"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/BankGetItView.swift",
+      "sha256": "db78fb6d0fcb805d13b759db971de4635ed5877f51af6bdb856a4570382b1394"
     },
     {
       "path": "macos/Sources/PokemonSuiteMac/BotAskView.swift",
-      "sha256": "ff1c98980b651cbb2dd989e20d32e380c7bb35ed48d78faf4166bc157fe90e32"
+      "sha256": "7c320d7da59761e7d918795f8904297ebb67d3b9ef863bd9182fe46252dc9abe"
     },
     {
       "path": "macos/Sources/PokemonSuiteMac/BotProgressView.swift",
-      "sha256": "10e144716262b45f82e8c187276a1f03eae42af4a3289f3422969729f4747886"
+      "sha256": "d62b11a515c2b7f5b692a7a94d4114bd26ecf3edf09b0e4e6486005dc85f1967"
     },
     {
       "path": "macos/Sources/PokemonSuiteMac/BotView.swift",
-      "sha256": "1ac12e547e0b68219ead5dfe7f9122cc1b3be4b0303170bfb5704fdee58bc248"
+      "sha256": "8d2a3bc0d436a28154c0b38a03a4543f66896475fa55893b90f78302610684e4"
     },
     {
       "path": "macos/Sources/PokemonSuiteMac/CartridgeModels.swift",
-      "sha256": "3ad9f722e2737ea5b5326f0c7e40ebc1a4787244249587350ad79e0c6fb63bdb"
+      "sha256": "d9d89a48e90598c5a889faa6819cd22445a411723686ca370b5ba9ae5fd0b309"
     },
     {
       "path": "macos/Sources/PokemonSuiteMac/CartridgePreviews.swift",
@@ -2862,12 +3026,20 @@
       "sha256": "fdc53758987f43c7efe21c270c35c054c76e917b00480e893d71049d484ebdfd"
     },
     {
+      "path": "macos/Sources/PokemonSuiteMac/CompetitiveBuilderView.swift",
+      "sha256": "9ac0fe29c468d68d1b1964f2a89252c7f5174d7b30aaf6be5fc0667ce64ff842"
+    },
+    {
       "path": "macos/Sources/PokemonSuiteMac/EffortTrainingForm.swift",
       "sha256": "4b6f30abc79ea47f75ce18b189738f998bb39e0d4a130965408d40a43cbf637e"
     },
     {
+      "path": "macos/Sources/PokemonSuiteMac/ExtraSavesView.swift",
+      "sha256": "ff92e6e6d73fa8f0aa6d74fca19d133962abcaacedc810b38eff0a66d5bcd04b"
+    },
+    {
       "path": "macos/Sources/PokemonSuiteMac/FarmingView.swift",
-      "sha256": "6998a1d4cce34604932bf1fd4056e272e45d9dcacd30b661caf40bd000d63837"
+      "sha256": "554be51611f0a2fc34bc2b75fd75064ecf8e691115c3072257a8d0710687d7f1"
     },
     {
       "path": "macos/Sources/PokemonSuiteMac/GameControllerInput.swift",
@@ -2887,15 +3059,19 @@
     },
     {
       "path": "macos/Sources/PokemonSuiteMac/LibraryView.swift",
-      "sha256": "64585bd211ac7d398f10e2252a975129940a2c593b69f434f8d327ea253ccc73"
+      "sha256": "03f6091d44dc324bd2716e255a8d21fdf13adcb8ccf351ec30679c6388450551"
     },
     {
       "path": "macos/Sources/PokemonSuiteMac/LiveView.swift",
-      "sha256": "da88a8c649c9459f07e63a88a5a980b8d28c3440a28556390849290d053e99fd"
+      "sha256": "29fbacd0995bf66b45e45ad6389e6940bcee9e5320cd94804606dcd73d3d8bcc"
     },
     {
       "path": "macos/Sources/PokemonSuiteMac/PokedexView.swift",
-      "sha256": "6252c095d5101c9c6b26d4eb584212c0dd0b91402c252c119a9e7f13ef5e5cf7"
+      "sha256": "8e7874456e7f42878620245b39fe18aab242223265700eb6a188619add6a6827"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/PokemonIndividualDetail.swift",
+      "sha256": "48af1debcd829fe93020630e3101ccdaff0fa7c9e65407040b21e455004bf342"
     },
     {
       "path": "macos/Sources/PokemonSuiteMac/ROMArtworkView.swift",
@@ -2907,7 +3083,7 @@
     },
     {
       "path": "macos/Sources/PokemonSuiteMac/SettingsView.swift",
-      "sha256": "d8e57e57e6da924df88da527e5c463b9fba3bb48c77a67bb9f6f42445f91b244"
+      "sha256": "9b6f87168e7896c980ba7abf21ef558a6dabab57757ab38339b1d9ec3f0336b0"
     },
     {
       "path": "macos/Sources/PokemonSuiteMac/SoftwareUpdatesView.swift",
@@ -2923,15 +3099,19 @@
     },
     {
       "path": "macos/Sources/PokemonSuiteMac/SuiteApp.swift",
-      "sha256": "78d49d97f4db4c65da59d3cee6bd0dbff01e4a885ee75d3e6a0c6485c202759d"
+      "sha256": "6552d974bdf0e60c1ad47917094258dbe334f7109e46d706591542acf9dfcff6"
     },
     {
       "path": "macos/Sources/PokemonSuiteMac/SuiteModel.swift",
-      "sha256": "be674518cfd027e755ac0ad7efc6d7722e828059a398a6d7bd682258b0875cf0"
+      "sha256": "52736c7a31bdbe5a7376bd42016ff4afc91c4096168d4b71cccba24557c367dc"
+    },
+    {
+      "path": "macos/Sources/PokemonSuiteMac/SuiteTheme.swift",
+      "sha256": "f466c40fd408a8b295c041aa9d628b3a8efe5427501253f02298a02c7adcc2fe"
     },
     {
       "path": "macos/Sources/PokemonSuiteMac/TradingView.swift",
-      "sha256": "7029777d7869e71ad26e268cb0eded881eedbd480907ec4d0857d291ee567a72"
+      "sha256": "0492d7b0befeebac27b76fc09115fb93a7e7ba4187a9748752af4eeb7de26fea"
     },
     {
       "path": "macos/Sources/SuiteCore/ActivityOutline.swift",
@@ -2946,8 +3126,12 @@
       "sha256": "6afa006cefc07bcf7063cdc55c55accd4158ec88e94d8d2148bd02e07205ea9e"
     },
     {
+      "path": "macos/Sources/SuiteCore/BankDraft.swift",
+      "sha256": "08b214098a91d83e2c849e206d730fdebe2dc899a386557d66bcd0f75b093133"
+    },
+    {
       "path": "macos/Sources/SuiteCore/BotRequest.swift",
-      "sha256": "74b6267f9baf20135b4d374ed965344a1a9a123793c6018847918d5bf06d1c38"
+      "sha256": "d96ee59d24fb0d65ac04f74ba12f297ae2aab253209d6602d4db4158cd4811e2"
     },
     {
       "path": "macos/Sources/SuiteCore/CartridgeArtwork.swift",
@@ -2966,6 +3150,10 @@
       "sha256": "8b2b53191da87f5f614c1ea4f002c64afd545c1059bd7e33d32fcbd2e895524e"
     },
     {
+      "path": "macos/Sources/SuiteCore/CompetitiveBuilder.swift",
+      "sha256": "9b5607327a3733a3bc1339439e9cbb9b099c41ee65e7325d8e5477748264b900"
+    },
+    {
       "path": "macos/Sources/SuiteCore/DictationReadiness.swift",
       "sha256": "7d236898609cef3fa7f5fcab2a68c8b6d5ec675c35c86bac1981766d780ed8f0"
     },
@@ -2976,6 +3164,10 @@
     {
       "path": "macos/Sources/SuiteCore/EffortTrainingDraft.swift",
       "sha256": "c9f212a0ec78fc2f2d91d2d1212c655837d418214d5664142d5b5b7d77fbee7c"
+    },
+    {
+      "path": "macos/Sources/SuiteCore/ExtraSavePlan.swift",
+      "sha256": "d0558ca3f83d537182254c42b1077d31e7828531a7146184e95027e48d01bce9"
     },
     {
       "path": "macos/Sources/SuiteCore/FieldPreviewGate.swift",
@@ -2999,7 +3191,7 @@
     },
     {
       "path": "macos/Sources/SuiteCore/HuntProgress.swift",
-      "sha256": "b3390274c018b07e80162950f21a0ca48274bf40dd752e57572f36a39fe5b7f4"
+      "sha256": "53e363c30df06bf09ce6ebd28f135e3f8ff181526d5bde08036c327d961ded9d"
     },
     {
       "path": "macos/Sources/SuiteCore/JSONValue.swift",
@@ -3015,7 +3207,7 @@
     },
     {
       "path": "macos/Sources/SuiteCore/PokedexFilter.swift",
-      "sha256": "922f4c35dfd42b964714d6c8dc4850d6ccdd280616988587332f0f5012780ab6"
+      "sha256": "22ede1d8d7260c0030cf024a929807f85439a7dff0b70b0e786166b0ed3723fd"
     },
     {
       "path": "macos/Sources/SuiteCore/ServiceAnnouncement.swift",
@@ -3031,11 +3223,15 @@
     },
     {
       "path": "macos/Sources/SuiteCore/SuiteGoals.swift",
-      "sha256": "aaf5caa08029d281dbc8b2949ef0ffe41c2acb3afef24492d848810a4188dc19"
+      "sha256": "d5c948dd7773c4121f9b3002cb832b7b1c8e9bfb10cd04292bd825ed383b3caf"
     },
     {
       "path": "macos/Sources/SuiteCore/SuitePairing.swift",
       "sha256": "daeb131f156a21b2f6c49f3ce8bb1b809ee47de7ef44317325ec9430e030f54f"
+    },
+    {
+      "path": "macos/Tests/Fixtures/builder-review.json",
+      "sha256": "d79f0767dbccf9c86b4af0e04e07ae0da6c64856c74a854bc898ab99877fbd5e"
     },
     {
       "path": "macos/Tests/SuiteCoreTests/ActivityOutlineTests.swift",
@@ -3054,6 +3250,10 @@
       "sha256": "e5ec45b2e362e3186165ff775c078ff9350e0a0c0b2c5f419512aa8c7a772210"
     },
     {
+      "path": "macos/Tests/SuiteCoreTests/BankTests.swift",
+      "sha256": "4468f9bf69c29a1c25d0c6ac8d6fe85d1b5a029b3cb5b14ff5f442703000995c"
+    },
+    {
       "path": "macos/Tests/SuiteCoreTests/BotRequestFixtures.swift",
       "sha256": "dd81aaa92a0e8f6e832a043dfcca7d2cf87e223e905e9e53d3af048e70c6be39"
     },
@@ -3066,12 +3266,20 @@
       "sha256": "98e60e790a505489b5355cebbeb7915d32fad32789b280f97b1a23b5091468de"
     },
     {
+      "path": "macos/Tests/SuiteCoreTests/CompetitiveBuilderTests.swift",
+      "sha256": "a7c2079a0d35b479d589c14ee4b33dcfa79c092fd8c6bef47035304e270cddb9"
+    },
+    {
       "path": "macos/Tests/SuiteCoreTests/DictationVocabularyTests.swift",
       "sha256": "c6569aa639069376ee88aaa8f9fd14791af9cfc3e6951472d8b056fc61bba353"
     },
     {
       "path": "macos/Tests/SuiteCoreTests/EffortTrainingTests.swift",
       "sha256": "9c18dc096ba9cbfd84f4bcc354d5cd20efc69a01a59c0999ff6942bcb562c6e2"
+    },
+    {
+      "path": "macos/Tests/SuiteCoreTests/ExtraSavePlanTests.swift",
+      "sha256": "bb666e3531f0e93ede3d5d0e05e1cc93fffcec0fd18b43fa9f4c684b8a798cab"
     },
     {
       "path": "macos/Tests/SuiteCoreTests/FieldPreviewTests.swift",
@@ -3087,7 +3295,7 @@
     },
     {
       "path": "macos/Tests/SuiteCoreTests/HuntProgressTests.swift",
-      "sha256": "38b7e760fa11f20a89b2c9b1011724ee39d1e9cdc56c199bd3fba97617ead39d"
+      "sha256": "7fc7f4210336a09021afc0ddc7a7cdb4f593d7a65c84f0d5e7b55b3a56011af0"
     },
     {
       "path": "macos/Tests/SuiteCoreTests/PCInventoryTests.swift",
@@ -3102,8 +3310,16 @@
       "sha256": "820c3371c8865cbe42ed6e69e4fde7f2ca984b11918ce272186614e935734887"
     },
     {
+      "path": "macos/Tests/SuiteCoreTests/SessionProgressTests.swift",
+      "sha256": "b8194b158940b60d300a6157b6da465951baf9600f3d611816d6348be522ae41"
+    },
+    {
       "path": "macos/Tests/SuiteCoreTests/StopTriageTests.swift",
       "sha256": "3056b372d5574197537d02fbc1dffb6a9ac5ddabe7207c918d595b8968aadd3d"
+    },
+    {
+      "path": "macos/Tests/SuiteCoreTests/StoryRequestTests.swift",
+      "sha256": "409e22f9fb57ee710eb8411d76a47b5979a533f3e4999117e352939bdc420f96"
     },
     {
       "path": "macos/Tests/SuiteCoreTests/SuiteCoreTests.swift",
@@ -3114,12 +3330,28 @@
       "sha256": "d5710a23ad048d24bdc5121c34845200af59bffba9840a72ad5610f7982e47f1"
     },
     {
+      "path": "macos/Tests/SuitePlaybackTests/BankLayoutTests.swift",
+      "sha256": "644f7b3e5cfc41d815da9d34675564afcb32664b9ee55e9fc7e585bac3d2b9af"
+    },
+    {
       "path": "macos/Tests/SuitePlaybackTests/BotAskLayoutTests.swift",
       "sha256": "728739d24a9ba0a6dc7fc4630824d88301ab75398fc8a24cf467fef804f023ba"
     },
     {
+      "path": "macos/Tests/SuitePlaybackTests/CompetitiveBuilderLayoutTests.swift",
+      "sha256": "c6602ab69601938a1bf80c4dd62445fecc935ae010fa638950e0899e7b5f4f33"
+    },
+    {
+      "path": "macos/Tests/SuitePlaybackTests/MacThemeTests.swift",
+      "sha256": "a2cc80a97cdc922eab6eb1cd97d0347cd83ccda116fcd0a1f83e57a1fb8f0321"
+    },
+    {
       "path": "macos/Tests/SuitePlaybackTests/PlaybackRecoveryTests.swift",
       "sha256": "e6e6747541cf5123571dea332e5df016c381bd0b13e4ee7462b520628443faa3"
+    },
+    {
+      "path": "macos/Tests/SuitePlaybackTests/ScreenRenderTests.swift",
+      "sha256": "b77949112c444821099abc0d8d353e9154db6b1a40755759afaff19dd5967cdb"
     },
     {
       "path": "macos/Tests/SuitePlaybackTests/ServiceOutputTests.swift",
@@ -3128,6 +3360,10 @@
     {
       "path": "macos/Tests/SuitePlaybackTests/SupportLinksLayoutTests.swift",
       "sha256": "9fa0de1ac4acc9e4727718dea0db1efb1ef5d079aa6c184e240a384674bea22e"
+    },
+    {
+      "path": "macos/Tests/SuitePlaybackTests/SystemAppearanceTests.swift",
+      "sha256": "4fa77f04655188745a84a3d57be01cae8cb5446e589e1420f9a1a00307e19483"
     },
     {
       "path": "macos/runtime-lock.json",
@@ -3191,7 +3427,7 @@
     },
     {
       "path": "native/ios/Companion/PokedexView.swift",
-      "sha256": "fb61d4c48c63eb7eadcc13617042e6c5a66f0f4723f8066530231d8d71538733"
+      "sha256": "d6866b3a67b6e216d4bd14a2e865166d52cd0da9b93136571f19b918833a42c7"
     },
     {
       "path": "native/ios/Companion/ReferenceChrome.swift",
@@ -3211,15 +3447,23 @@
     },
     {
       "path": "native/ios/Companion/SuiteModel.swift",
-      "sha256": "e48363a670710ddbc4349727b46276b468e26ad71a73857e0e6d32f202ceb712"
+      "sha256": "94b02a2edcfafbfabc8bfb86768ed0a3cb5bde20a0b25c6b301621eae36a86a0"
     },
     {
       "path": "native/ios/Companion/TradingView.swift",
-      "sha256": "77812c041c24525896fc81d8acf6e5188c12712479d8e178ff93478ff6614e52"
+      "sha256": "b2c5481c8c67f1c41c1beae1e029142f239634d3ea2874cddc9dab60cb5e9912"
     },
     {
       "path": "native/ios/Companion/TrainerPortrait.swift",
       "sha256": "3be326c298d664e17de95e0cc49f55f4d0540b019c5b7312cbfd43c1a8f30c07"
+    },
+    {
+      "path": "native/ios/CompanionTests/BankLayoutTests.swift",
+      "sha256": "bccf6d0a079f09c83deed3e4abb164b00655f074c07b99a7f82908250a2a10ab"
+    },
+    {
+      "path": "native/ios/CompanionTests/CompetitiveBuilderLayoutTests.swift",
+      "sha256": "1cfae0d28f564e6eb92fd53b031124b604f412ba36a361b562f69710e33a8a1e"
     },
     {
       "path": "native/ios/CompanionTests/LiveThemeLayoutTests.swift",
@@ -3243,7 +3487,7 @@
     },
     {
       "path": "native/ios/CompanionUITests/CompanionUITests.swift",
-      "sha256": "53c97a2f8f1d1d46bc1edbc478b314d1c1360eb691282a50cd30fd8476579418"
+      "sha256": "56a8e1aa899d2063f91c91f400d986dec87e63eeedcaef3f0b413c555604d169"
     },
     {
       "path": "native/ios/CompanionUITests/LiveThemeUITests.swift",
@@ -3251,11 +3495,11 @@
     },
     {
       "path": "native/ios/CompanionUITests/MobileLayoutUITests.swift",
-      "sha256": "f944532a9bdacba0feb4c12933a8e5b79f3f761cf58abcc07e395b9f5b8fc971"
+      "sha256": "89b1c9f82931c307df728a0d9f4bd672f0a9d17786c46ed08c5a7eba86125b8f"
     },
     {
       "path": "native/ios/CompanionUITests/NavigationMenuUITests.swift",
-      "sha256": "cc7c78184b1c318b2bb8e3e710ee28ad3b0ebf2bbede1dcd539698818d7adf15"
+      "sha256": "3701c34d0bf383f57d95d9975995f0a1fb6e37de0f9b52bdfe9a407f28967316"
     },
     {
       "path": "native/ios/Core/LocalStorage.swift",
@@ -3343,7 +3587,7 @@
     },
     {
       "path": "native/ios/build-companion.py",
-      "sha256": "d5a65c6b31c8391838f2dd83a3181a53e6d561fc7d4143061348b31e40d52789"
+      "sha256": "7a5293dad1b434f5e54c5f5a0c0ed4477e7c8ed1276f338ef809bb2298996129"
     },
     {
       "path": "native/ios/build.mjs",
@@ -3443,7 +3687,7 @@
     },
     {
       "path": "pokemon_suite/__init__.py",
-      "sha256": "2ac7748dc1a930410477cbd2d96ed942c7a1ce10b3c028a6c0d1d4399601d329"
+      "sha256": "c0539c9f71e68789300b53c9d0b1d2a5960117a6db1fd8254a5297590e104c0f"
     },
     {
       "path": "pokemon_suite/__main__.py",
@@ -3451,7 +3695,7 @@
     },
     {
       "path": "pokemon_suite/bootstrap.py",
-      "sha256": "43fc8ecf151561d263548526a2a05d307caaf139983f09f841401b871b3573c4"
+      "sha256": "15c88ef7c5f8c5fc666bccadea227a4400d354e16e84ef7c8f18d65970962ad6"
     },
     {
       "path": "pokemon_suite/bot_verification.py",
@@ -3459,7 +3703,7 @@
     },
     {
       "path": "pokemon_suite/capabilities.py",
-      "sha256": "d69112213132472226a840db3ce59175350e8263222c0528bc31ce5c13ec42d2"
+      "sha256": "191cf50d34c4308b482ab250242034889cace8bfece69b503312b7e4295e0a91"
     },
     {
       "path": "pokemon_suite/cartridge_graphics.py",
@@ -3471,7 +3715,7 @@
     },
     {
       "path": "pokemon_suite/companion.py",
-      "sha256": "3bc14752eed075f745f1f31a4e9cdf860195ec868b09e4800dba5cd239e17cd4"
+      "sha256": "e0a3027adbc522b256698f80d02bf8a764dfc967f41b22734b83f218211137a6"
     },
     {
       "path": "pokemon_suite/crystal_graphics.py",
@@ -3490,6 +3734,10 @@
       "sha256": "54088e5e6c15819b09d30c6c4a345b07a12c2c23646e27440aa67684dd2ca575"
     },
     {
+      "path": "pokemon_suite/extra_saves.py",
+      "sha256": "e5181a72f5274d7473696b22031d5d660ba0f41d45f710d7d8d0cfd222cff7bd"
+    },
+    {
       "path": "pokemon_suite/file_lock.py",
       "sha256": "942affeddaca1df8d6215640031919e5c89053eaceca812e5c30a88c18fee7cd"
     },
@@ -3499,19 +3747,19 @@
     },
     {
       "path": "pokemon_suite/game_resources.py",
-      "sha256": "f746c74883bfc2a579c5e8be9ec006ddbe656699120df74ba26d02c3cabee8a5"
+      "sha256": "9a52e2b835d39ce6519cfb8ad314f25ce0e6324f5020477bd1b0ef507d226b72"
+    },
+    {
+      "path": "pokemon_suite/gen3_rules.py",
+      "sha256": "0f6f76c71dfb9ce55c867f187f590c894595f787eb1915da76315f09505baa90"
     },
     {
       "path": "pokemon_suite/http_routes.py",
-      "sha256": "3803d80d85a39fa48250e73113821bafa36763f97da27bbc1f7f66d6186ff347"
-    },
-    {
-      "path": "pokemon_suite/http_routes.py.orig",
-      "sha256": "cc5f196c0e506f3a15960936e06ae1ec14d58be0b0946c900c35cbb01fe00ba1"
+      "sha256": "7997892564033af2d27cf7cba162954ad14d50f5a1cb40977c961224296528ac"
     },
     {
       "path": "pokemon_suite/installation.py",
-      "sha256": "1ef3117ba376c4e0db4a42ae4c9f2592717fc82aa7f54c7d24f6f153549bb8c8"
+      "sha256": "9014ae917fcfa79b262737dd9a99c8b4e6ddf69806683952f71b78dd3c530c28"
     },
     {
       "path": "pokemon_suite/inventory_sources.py",
@@ -3546,12 +3794,28 @@
       "sha256": "0972e9a5fe5dad569d0f621756ddb32491a96888102f7c7ddcb6ec72bb1dc787"
     },
     {
+      "path": "pokemon_suite/pokemon_bank.py",
+      "sha256": "1983b2eaf136f35faeb808086db99bd7079ce34e3231f637df782f43cf7ec37a"
+    },
+    {
       "path": "pokemon_suite/pokemon_bot_settings.py",
       "sha256": "5ec9c9d1debae5940020f90360d650ecdcf851ef5563e54d6289a4c1749e6606"
     },
     {
+      "path": "pokemon_suite/pokemon_build_plan.py",
+      "sha256": "957e2621f151b9e761769e55810761da6c215c5f0ebe1f252dbda4e9ada5378d"
+    },
+    {
+      "path": "pokemon_suite/pokemon_builder.py",
+      "sha256": "db9ea5d1f70e0e9c9f099caa112c6a996f5d199c4713865ebe8201c13d2b47b1"
+    },
+    {
+      "path": "pokemon_suite/pokemon_builder_knowledge.py",
+      "sha256": "dab91e6c9887f92987e20cb8679f93ce28312ecfb18e78f01f9e15b9ef59717b"
+    },
+    {
       "path": "pokemon_suite/pokemon_campaigns.py",
-      "sha256": "d2a200a6e8ab12cd1917d1031477e593b42c65de25d465716cbd8563d5306ae7"
+      "sha256": "c258da5607dda1ec7e953213b6f6f07ccacf431764512778b723f7ac842e94cf"
     },
     {
       "path": "pokemon_suite/pokemon_competitive.py",
@@ -3567,11 +3831,15 @@
     },
     {
       "path": "pokemon_suite/pokemon_goals.py",
-      "sha256": "cd4cdc39c4ace67c0f924543865bd242a6bee8ea831504391ff3f5aaca67d5f0"
+      "sha256": "191d91a200156d4509646185a645c02c39dde3da5b8b7b2fc4b1bffa8df8090c"
     },
     {
       "path": "pokemon_suite/pokemon_hunt_routes.py",
       "sha256": "056e3a00c09538436d5eec2ea9a9f7429733044662dab47d3d97f005f0710454"
+    },
+    {
+      "path": "pokemon_suite/pokemon_legality.py",
+      "sha256": "43345d8204bc7a4dad183e934921f71211cc327749ea7d995aee52644b95a4c2"
     },
     {
       "path": "pokemon_suite/pokemon_main_series.py",
@@ -3583,11 +3851,15 @@
     },
     {
       "path": "pokemon_suite/pokemon_requests.py",
-      "sha256": "80a5af68fed422a46aff1a79d8def0778b63f1d24f28afe13a1c7c821c40fa74"
+      "sha256": "b742122e78c8bbb85b6ac0b8f1b7206bbd31721ab36ae3b558107a732f37b524"
     },
     {
       "path": "pokemon_suite/pokemon_sessions.py",
-      "sha256": "c244e9eaee47b6a03fdf5500b57d2c7b9444e7d676ae70e4d935438d31e3af4f"
+      "sha256": "5afb995302754be8a7a41b7cb2cf1817d4e66e8ed9eac2136b041e7ce340c9ed"
+    },
+    {
+      "path": "pokemon_suite/pokemon_set_guidance.py",
+      "sha256": "0c7e5b28a9361f3b30e0833d744098c31810b97dbda15544bb625001ffcf25ef"
     },
     {
       "path": "pokemon_suite/pokemon_shiny_sweep.py",
@@ -3599,7 +3871,7 @@
     },
     {
       "path": "pokemon_suite/postgame_partner.py",
-      "sha256": "d0effe15f64300228971939de1053cf4e01bdfafb0a709bd8042bb691f40d6f1"
+      "sha256": "71872800b4401de74bc596114c053a065d42d0afc276a9d12e4313d1a09e6292"
     },
     {
       "path": "pokemon_suite/processes.py",
@@ -3623,7 +3895,7 @@
     },
     {
       "path": "pokemon_suite/rom_integrity.py",
-      "sha256": "67c0ba62847197d579aff808c157ffe19a97cd8554a13ff96f628701d6d5b54c"
+      "sha256": "1cc0785c2a0b4a8f767016216181930308496230723d514269d12c354703cc06"
     },
     {
       "path": "pokemon_suite/runtime_components.py",
@@ -3631,7 +3903,7 @@
     },
     {
       "path": "pokemon_suite/server.py",
-      "sha256": "fb4adce2c62bd7c70ee9f9b8ecc00bdfe10f27c280ed6fbbaa11429b552164ab"
+      "sha256": "f49acf201f6e32a98adfbefb5624128730a98b6c61ce86b87c98029fb4021c61"
     },
     {
       "path": "pokemon_suite/static/assets/pokemon/hardware/SOURCE.md",
@@ -3704,6 +3976,10 @@
     {
       "path": "pokemon_suite/static/data/pokedex/evolution-rules.json",
       "sha256": "8eeac879e2dd8a9e9ad7b11b46a9ad9c49525c209de767176bcec84c9fa7ac96"
+    },
+    {
+      "path": "pokemon_suite/static/data/pokedex/firered-builder.json",
+      "sha256": "b99d1c423dbb0c4b1a54f48163a1d8f02766b9f0d97fdff84125d1b00cb08152"
     },
     {
       "path": "pokemon_suite/static/data/pokedex/firered-hunt-routes.json",
@@ -3906,6 +4182,10 @@
       "sha256": "9a7f45d4c59ba19119252cb4f78ec665f284402f2c5f386be89a397fd3ec11bd"
     },
     {
+      "path": "scripts/build-builder-facts.py",
+      "sha256": "9313e4ba40f981c2df726c9c61ff8f7cf0a2551701f7e7b16cfa902f5c4a4f40"
+    },
+    {
       "path": "scripts/build-item-knowledge.py",
       "sha256": "df80c93c011a2371c1a8a873e0224b91c15b6f00d85e58c682e7a952cec1fc43"
     },
@@ -3915,7 +4195,7 @@
     },
     {
       "path": "scripts/build-macos.py",
-      "sha256": "0b60c29d3ee116a787a322843008839916d0a46e344435a3b95b1cd8f7b7c9fe"
+      "sha256": "27079ea3cac9d1813c39f6e15a3b3b9d25a77d098f23a3b6d06389610f9e5842"
     },
     {
       "path": "scripts/build-move-knowledge.py",
@@ -3926,12 +4206,28 @@
       "sha256": "1b7b30f9e8d7308cc4fe65d6c98784400b9b5f61fb0d86c0779253b6f5a9ce3b"
     },
     {
+      "path": "scripts/campaign-start-replay.py",
+      "sha256": "8d0d28347d33929b9f2116ee50179cbf082340492f51664976da253c98d397ba"
+    },
+    {
+      "path": "scripts/derive-firered-catchable.py",
+      "sha256": "7fa56d51830355ab93a1654dfaefec7fd333227477f6d62ee182c5749cc258bf"
+    },
+    {
+      "path": "scripts/derive-leafgreen-catchable.py",
+      "sha256": "c5dcf802a14dcd67360f49f3f848528ce2bb8ef107b2b0cbf013f69f5c7203de"
+    },
+    {
       "path": "scripts/derive-postgame-facts.py",
       "sha256": "b4e403cce1a9a5e37a9e62a826a090fe48fdfe706349eeb45d26ec0904b526b3"
     },
     {
       "path": "scripts/extract-fame-script-awards.py",
       "sha256": "05b06b130d6ca9ecc3d593cad5ea7e3986e12932fd6fe93f540d2370a6026a0f"
+    },
+    {
+      "path": "scripts/extract-ruin-valley-map.py",
+      "sha256": "23da57bc4d3fb995a8dd2d70c187e4667a7943ec83b9b2a5c2c4715978786595"
     },
     {
       "path": "scripts/gate_triage.py",
@@ -3951,7 +4247,7 @@
     },
     {
       "path": "scripts/package-components.py",
-      "sha256": "9fe98111efa38a15f40dccdfaa458517f0a830bf452dfade3ba821ec1f09b2e6"
+      "sha256": "13d5baceec205470f0ce9fc291e0c7c7c49b21b786358c40bd646f7d2f4f660a"
     },
     {
       "path": "scripts/package-source.py",
@@ -3983,11 +4279,15 @@
     },
     {
       "path": "scripts/replay-bot.mjs",
-      "sha256": "776468e23479fba5afa029bdb94f7baa7d8b2eeac7ef36feefb5aca424d531d3"
+      "sha256": "c250c5f5358beab29579144b7fc82c4c3580a7c34f075614e17663969b42385f"
     },
     {
       "path": "scripts/replay-boundary-recovery.mjs",
       "sha256": "933009fae859d58e7c44ce19ed68d73a769b3685ac96ae697e107e6c3677921d"
+    },
+    {
+      "path": "scripts/replay-breed-to-evolve.mjs",
+      "sha256": "ab429b57af868aa90913cfe02ef4e97a6a52626a91034b563cdfda46ac64a4cc"
     },
     {
       "path": "scripts/replay-campaign-interruptions.mjs",
@@ -4014,8 +4314,16 @@
       "sha256": "32f1531b6ff970b21b7eae3376bbf799bfda0c59d9cdc87c3f78ee07c6ae6b52"
     },
     {
+      "path": "scripts/replay-collection-sources.mjs",
+      "sha256": "08694d891cebbacc7ed718e33e2237092f8e26750febbdc25f50561670d64de2"
+    },
+    {
       "path": "scripts/replay-completion-preview.mjs",
       "sha256": "83d55631c4b8f6ee909e5c2e6c37e678e91999098e5d15d4db2b9df64338958f"
+    },
+    {
+      "path": "scripts/replay-console-reset.mjs",
+      "sha256": "4a2de05b37b349432d45a196e8bee98bd9a674f8f93a92aa790e03a38251e695"
     },
     {
       "path": "scripts/replay-cycling-route.mjs",
@@ -4054,6 +4362,10 @@
       "sha256": "4c7ef51cc843214caf8968591ed0d59ee5e52b921db15cbd0a1579f703505859"
     },
     {
+      "path": "scripts/replay-extra-save-loan.mjs",
+      "sha256": "5cb09b0698f9ce2f8123b771af39ca4bb0bf33d8480ab15b98ee0c19e7d43779"
+    },
+    {
       "path": "scripts/replay-fame-checker.mjs",
       "sha256": "673cf5ebac52a443d7e5fe401a56d199d052f43dcca80cc4d8dae1f96e6fb48e"
     },
@@ -4063,7 +4375,7 @@
     },
     {
       "path": "scripts/replay-firered-partner.mjs",
-      "sha256": "13c5b69f1918b474a8da9bcc192921fd0de2e7f3deaa3ad4fe76256c11db304a"
+      "sha256": "0d327f247af1e37d2275cb6d6b9bcf96ea22db23ee0975ee35ed8cbff6b96703"
     },
     {
       "path": "scripts/replay-funding-recovery.mjs",
@@ -4086,6 +4398,14 @@
       "sha256": "739a85e3b0fc3d4e7683ce05e5607b295193484bfe119dbb9f932a222b3b5b88"
     },
     {
+      "path": "scripts/replay-helper-save.mjs",
+      "sha256": "448856c4f89df3e39e20a2da43d51d56eee78371c070280af50c75f933965887"
+    },
+    {
+      "path": "scripts/replay-helper-tasks.mjs",
+      "sha256": "6ae4407d5d3eb7b70e77d75a6c3ef74426f56621275af887d0b1060d99ec5ee4"
+    },
+    {
       "path": "scripts/replay-hm-policy.mjs",
       "sha256": "f55c28603c79323e23d7a55bd888181696c10fcc61b779657222df6880f96548"
     },
@@ -4100,6 +4420,14 @@
     {
       "path": "scripts/replay-island-fly.mjs",
       "sha256": "d527810ee7d63ec79237932a2be2e585d074a94f4c82677addbceffcc8e66a3b"
+    },
+    {
+      "path": "scripts/replay-leafgreen-mansion.mjs",
+      "sha256": "b2a8bfdffbe7a33fb8b7e4c1d4a637b8180fabc2f5adc1cc034ef6a7ca84903f"
+    },
+    {
+      "path": "scripts/replay-leafgreen-new-game.mjs",
+      "sha256": "bb4d582486de475c380830fcdf9fdb58e41d0c9626f74c2b498561336fdfdb2b"
     },
     {
       "path": "scripts/replay-league-champion-tactics.mjs",
@@ -4170,8 +4498,12 @@
       "sha256": "b22c346a17d2bee19776d9d57b38c511964870b951f30156b85d45e019b14aab"
     },
     {
+      "path": "scripts/replay-national-fishing.mjs",
+      "sha256": "193b4a0006cd6e652edbfa9db7227324735c56266ac3fda6e458c24e56750c96"
+    },
+    {
       "path": "scripts/replay-native-acquisition.mjs",
-      "sha256": "108c9dbd18f47176017a49701d95e0f7c54cab31b185a056cd0d58e6d65c25dc"
+      "sha256": "dc4ad87a593214d28543ebc0faaa71ec87b6e1a54892d5ba0e81ef381bf4756f"
     },
     {
       "path": "scripts/replay-new-save-bot-start.mjs",
@@ -4184,6 +4516,10 @@
     {
       "path": "scripts/replay-pc-release.mjs",
       "sha256": "62828b67b54db96e02b556df9978f407aa8a2b6fe0416a22dd015e3f77d2690c"
+    },
+    {
+      "path": "scripts/replay-politoed-partner.mjs",
+      "sha256": "2c39f78010eda8dc1d0defa2259efb2fe8e15a8f407c44ca0930984d2a7b21a9"
     },
     {
       "path": "scripts/replay-postgame-combat-preparation.mjs",
@@ -4271,7 +4607,7 @@
     },
     {
       "path": "scripts/replay-rom-inputs.mjs",
-      "sha256": "e79e81cef0e012326c47c571868097dcac81ce92b51cb90e81ff3820bbcf6594"
+      "sha256": "c59c211c4725b4d13d16102bf3f21ce3f2cd7accaa549dc2f64d704918f2cb56"
     },
     {
       "path": "scripts/replay-safari-dex-capture.mjs",
@@ -4292,6 +4628,10 @@
     {
       "path": "scripts/replay-static-timing.mjs",
       "sha256": "ee7e2b610a28e6de2dd7c307d2df978812ee6d2493fd87782a60eeafc1f90491"
+    },
+    {
+      "path": "scripts/replay-stone-evolution.mjs",
+      "sha256": "8e2a4b6fcc9c56bc9e7b98f0b2e2447f81a85536487d6d931fde8a2355ce38cd"
     },
     {
       "path": "scripts/replay-story-checkpoints.mjs",
@@ -4374,6 +4714,14 @@
       "sha256": "a1a44628b95d612782d4659ab90ee7dc2d770cfadb2ffe47533cbd1ed27daa8c"
     },
     {
+      "path": "tests/data/bank-parity.json",
+      "sha256": "66b1462006751d022f48560f6b90928105ac6a9386fb5687b52981471eb998a5"
+    },
+    {
+      "path": "tests/data/builder-legal-sample.json",
+      "sha256": "420e5ba5968e3240766b3d24139f3f8cd9c78846ee7e14c57cb8e9deedac6684"
+    },
+    {
       "path": "tests/data/gate-failure-labels.jsonl",
       "sha256": "e30c81b50bbf288176d7a7d6ab0f6af6b5de7e941e8f45ae6784d83bd4b0aa51"
     },
@@ -4426,6 +4774,10 @@
       "sha256": "f0c1d8c91daa99a9c54531121eeeaabeda260d1b0171696936ed624c3c6b3657"
     },
     {
+      "path": "tests/test_bank.py",
+      "sha256": "8866a4ccb53cb94a3f4b6f3053f0dce52e1b4b9f498f872a5e50a6966b4ecac6"
+    },
+    {
       "path": "tests/test_battle_tape_launch.py",
       "sha256": "bcc4701bb9fb2f6a7a65dacc126cb88c37558a07f08607c2b82a635bee6448b4"
     },
@@ -4454,6 +4806,10 @@
       "sha256": "350064be8501d49f184a043cf63474ac51d6fb8e0bc7f101ec884125eb1ea54a"
     },
     {
+      "path": "tests/test_competitive_builder.py",
+      "sha256": "3e017376af1a4a95339792351390a88a99efaee2db2734abde76571724795ef7"
+    },
+    {
       "path": "tests/test_competitive_training.py",
       "sha256": "d1ee38fc53fc3ca7e4c119e964c1c21be04c407ddaed1a1c93b8fd56527b9eb4"
     },
@@ -4474,8 +4830,12 @@
       "sha256": "ac77b6ae20148cbd387d12936f9f5165cec8a60560e730deb49a3bddc0d9728e"
     },
     {
+      "path": "tests/test_extra_saves.py",
+      "sha256": "f75e67512da9af18214db6825f881a1c19212f70f267acbff31365804ade9b07"
+    },
+    {
       "path": "tests/test_firered_partner.py",
-      "sha256": "7e102b9a8120925fac418812955e79c01d2f3cff38dbcc14a545d8758575b170"
+      "sha256": "9d0282ec7a0c29a47ba110db79bd4922124f35859b074030b430c7bcb4697122"
     },
     {
       "path": "tests/test_game_resources.py",
@@ -4486,12 +4846,16 @@
       "sha256": "67c66809890bb2b55f08175bcd356c008cb567f01d8a236c919ca599a76cd50e"
     },
     {
+      "path": "tests/test_gen3_rules.py",
+      "sha256": "109694d666473750b923bcbf81b744e674054e1eca522a57dfa432411b34d364"
+    },
+    {
       "path": "tests/test_goal_requests.py",
       "sha256": "5bdd46b57d75d2c2ed0faa05e2157e1a1c120fccb457f3541e90ac73af3871fb"
     },
     {
       "path": "tests/test_goal_supervisor.py",
-      "sha256": "9b72f08fa3c41f465d42bad92f4c8b00e0e976707c2a991639b2109aab7d354e"
+      "sha256": "da93eec93528e94019a81d2977acb544b73ced447d72afeeb914fcd4a2bd903e"
     },
     {
       "path": "tests/test_guest_relay.py",
@@ -4515,15 +4879,19 @@
     },
     {
       "path": "tests/test_laya_primary.py",
-      "sha256": "4871d23e1773589c82ee25de704a3a0296e06ed75426bbe9b638da414553d2cd"
+      "sha256": "6dce35caf048463e0b1fbc10d3dba99b520b54764ba39945d76d1938832b52f5"
     },
     {
       "path": "tests/test_laya_runtime.py",
       "sha256": "5283b201bff979e973c402baca6f1566efe3cc8e87d083eac96589ad1361f3d8"
     },
     {
+      "path": "tests/test_leafgreen.py",
+      "sha256": "c8896464889daead3baf079ef5c87874a9ccd27bf43a45511f460fd98e5cd8af"
+    },
+    {
       "path": "tests/test_macos_engine_packaging.py",
-      "sha256": "2b83fbf8b99bb6d9ed8e96c3675748126a6bf954af588dbf9ea477e41aef2dde"
+      "sha256": "aaadf1142adaf651556cea2b5479698bf7aca4d7b4e3ce72c92741562754ccb9"
     },
     {
       "path": "tests/test_macos_radio_packaging.py",
@@ -4546,8 +4914,12 @@
       "sha256": "ed720b744949c01ee4a43a9af2e224c56e43ba6557e2729ecc8481f34727a0d9"
     },
     {
+      "path": "tests/test_pokemon_legality.py",
+      "sha256": "114af993d22f711273f490d15db75ad3d7908ba68d04507c95ee4fa2175ebd82"
+    },
+    {
       "path": "tests/test_pokemon_requests.py",
-      "sha256": "59bae01569c1141dd11355012e0710e9d0a5e907b3da9e868eca7c599b02b27f"
+      "sha256": "fd07d2204c7228c959f3aafed5c86dc5076e2ef75d09f66004e7bbccb6b98596"
     },
     {
       "path": "tests/test_portability.py",
@@ -4555,7 +4927,7 @@
     },
     {
       "path": "tests/test_postgame_partner.py",
-      "sha256": "005ea71d6810a1278a4e45c8f8e9b72c6e3041b44a80cbf095f130973c9df6ae"
+      "sha256": "b01b85365acd674ffd99fe5de59798a9a6a59d65efa3e9f4a936a22a3067f9f6"
     },
     {
       "path": "tests/test_radio_appliance.py",
@@ -4647,7 +5019,7 @@
     },
     {
       "path": "tests/test_voice_request_packaging.py",
-      "sha256": "3640ec753db86c0b10e93984bb8e86b9986fcf5378d4fe96f681b0984ece3e40"
+      "sha256": "1a52721b150ab6cb94cbaa6af2bce52bf186f5a1f39736a2d173d216878a24c6"
     }
   ]
 }

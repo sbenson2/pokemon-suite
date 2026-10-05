@@ -2,7 +2,13 @@
 
 This release candidate includes a local browser UI, Python service, Node bot engine, and a native SwiftUI/AppKit Mac app. It is not a hosted service. The Mac app bundles its service runtimes; see [native Mac build and qualification](MACOS.md). No GitHub repository or release is created by the build.
 
-Run `python3 scripts/package-source.py` after reviewing the input manifest. It writes `dist/pokemon-suite-0.1.0-rc.3-source.zip` and its matching `.zip.sha256` checksum. Extract that ZIP into an empty directory, such as `dist/release-candidate-rc3`. Its `pokemon-suite` directory is the candidate public repository root. Always extract the current archive into a fresh directory; do not reuse an older candidate tree. Do not publish the development workspace wholesale: excluded research assets may remain there for local work.
+## Version numbers
+
+The Mac app's version is `APP_VERSION` in `scripts/build-macos.py`. It sets the app's `CFBundleShortVersionString` and names both release archives, `pokemon-suite-<version>-macos-<arch>.zip` and `pokemon-suite-<version>-game-resources.zip`, so a new version number changes there only. `APP_BUILD` beside it is the app's `CFBundleVersion`; raise it for every build that is installed. The iPhone and iPad app keeps its own version and build number (`MARKETING_VERSION` and `CURRENT_PROJECT_VERSION` in `native/ios/build-companion.py`).
+
+## Source export
+
+Run `python3 scripts/package-source.py --output dist/pokemon-suite-<version>-source.zip` after reviewing the input manifest. It writes that ZIP and its matching `.zip.sha256` checksum. Extract the ZIP into an empty directory, such as `dist/release-<version>`. Its `pokemon-suite` directory is the candidate public repository root. Always extract the current archive into a fresh directory; do not reuse an older candidate tree. Do not publish the development workspace wholesale: excluded research assets may remain there for local work.
 
 The exporter excludes game sprites and audio/video, the Emerald vendor tree, private directories, ROM/save/key files, emulator binaries, the legacy branded/fallback SVGs, the extraction script, and historical audit inventories. It preserves licensed hardware photos and their credits, the libretro API header and Ryujinx notice, and the PokéAPI notice. It strips game prose from the four factual catalogs, directs sprite paths to the local ROM reader, and substitutes an empty competitive-preset catalog. The working source data is not overwritten. The decoder caches image bytes only in bounded process memory; no extracted sprite directory is generated or included in packages.
 
@@ -22,7 +28,7 @@ python3 -m pokemon_suite --data-dir "/path/to/empty-test-profile" doctor
 
 Chrome is needed for the browser check; `CHROME_PATH` selects its executable. An absent Chrome skips that check and is not browser qualification. The full FireRed regression suite is `npm run test:engine`; optional emulator qualification requires the exact private resources named by its tests. Do not run an explicit live canary against a real campaign's profile.
 
-The first supported intake is FireRed, using the user's verified ROM and local core/knowledge pack described in the root README. Empty-profile startup and catalog browsing do not require them. A future public resource builder must be reviewed and qualified; this candidate does not automatically obtain Nintendo resources or supply a ready-to-download proprietary knowledge pack.
+The bot's intake is FireRed or LeafGreen (English revision 1) from the user's own verified ROM. The Mac app ships the pinned emulator core and each game's knowledge pack (`pokemon_suite/game_resources.py`); running from source needs the same packs from the release's game-resources archive. Empty-profile startup and catalog browsing do not require them. No ROM, BIOS, save or game artwork is distributed.
 
 Emerald's experimental adapter accepts `POKEMON_SUITE_ADAPTER_DATA`, pointing to a local directory containing `pokeemerald/` and `pokeemerald-symbols/` at the pinned revisions. Its loaders resolve headers, maps, character data, and symbols there. The development-only fallback is `engine/shared/vendor`, which is absent from the public export. This is an input boundary, not permission to redistribute the data. Standalone Emerald installation and full gameplay remain unqualified. Crystal's legacy default archive location is now `POKEMON_SUITE_CRYSTAL_ROM`; configure the matching private game/adapter inputs before using its experimental CLI.
 

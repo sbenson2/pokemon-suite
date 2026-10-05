@@ -10,7 +10,8 @@ import {createLeagueRecovery} from './league-recovery.js';
 import {createCampaignTasks,campaignMemberIdentity} from './campaign-tasks.js';
 
 import {encounterFingerprint} from './encounter-tracker.js';
-import {fireRedIsland,SEAGALLOP_WATCH_VARIABLES} from '../suite/fire-red-link-quest.js';
+import {nationalSpeciesId} from '../evidence/gen3-national-species.js';
+import {fireRedIsland,fireRedFerryArrival,SEAGALLOP_WATCH_VARIABLES} from '../suite/fire-red-link-quest.js';
 import { isMajorBattle } from './major-battles.js';
 import {
   CAPTURE_BALL_UNIT_PRICES,
@@ -25,6 +26,8 @@ import {
 } from "./recovery.js";
 import { expectedTrainerPayout } from "./trainer-economics.js";
 import { NATIVE_LAYOUT_VARIANTS } from "../data/native-layout-variants.js";
+import { applyStoryChoices } from "../suite/extra-save-story.js"; // extra-saves
+import {RUIN_VALLEY,SUN_STONE} from '../suite/ruin-valley-route.js';
 
 const IMPORTANT_BATTLE_PARTY_MINIMUMS = Object.freeze({
   "rival-route22-early": 2,
@@ -4641,12 +4644,71 @@ const NATIVE_LAYOUT_CELLS = new Map(NATIVE_LAYOUT_VARIANTS.map(({ map, layout })
       encounterType,
       layerType,
     })))]));
+// FLAG_POKEMON_MANSION_SWITCH_STATE (0x26C). Every Mansion floor's ON_LOAD
+// runs `call_if_set FLAG_POKEMON_MANSION_SWITCH_STATE,
+// PokemonMansion_EventScript_PressSwitch_<floor>`, whose setmetatile commands
+// (data/scripts/pokemon_mansion.inc) move the barriers. The authored layouts
+// are the switch-reset floors (the ResetSwitch scripts restore exactly them),
+// so while the switch is set the offscreen graph must load these cells: 2F's
+// x=12 barrier seals the pocket around the 3F stairs, and 3F/1F open the way
+// from the holes to the east exit. Each entry is [x, y, impassable].
+const POKEMON_MANSION_SWITCH_FLAG_ID = 620;
+const POKEMON_MANSION_SWITCH_SET_CELLS = Object.freeze({
+  // PokemonMansion_EventScript_PressSwitch_1F
+  MAP_POKEMON_MANSION_1F: Object.freeze([
+    [22, 10, 0], [23, 10, 0], [24, 10, 0], [22, 11, 0], [23, 11, 0], [24, 11, 0],
+    [27, 25, 0], [28, 25, 0], [29, 25, 0], [27, 26, 0], [28, 26, 0], [29, 26, 0],
+    [32, 25, 0], [33, 25, 0], [34, 25, 0], [32, 26, 0], [33, 26, 0], [34, 26, 0],
+    [31, 18, 1], [32, 18, 1], [33, 18, 1], [31, 19, 1], [32, 19, 1], [33, 19, 1],
+    [5, 4, 0],
+  ]),
+  // PokemonMansion_EventScript_PressSwitch_2F
+  MAP_POKEMON_MANSION_2F: Object.freeze([
+    [24, 14, 0], [25, 14, 0], [26, 14, 0], [24, 15, 0], [25, 15, 0], [26, 15, 0],
+    [10, 28, 1], [10, 29, 1], [10, 30, 0], [10, 31, 0], [10, 32, 0],
+    [12, 4, 1], [12, 5, 1], [12, 6, 1], [12, 7, 1], [12, 8, 1],
+    [2, 15, 0],
+  ]),
+  // PokemonMansion_EventScript_PressSwitch_3F
+  MAP_POKEMON_MANSION_3F: Object.freeze([
+    [17, 11, 0], [18, 11, 0], [19, 11, 0], [17, 12, 0], [18, 12, 0], [19, 12, 0],
+    [21, 4, 1], [21, 5, 1], [21, 6, 1], [21, 7, 1], [21, 8, 1],
+    [12, 4, 0],
+  ]),
+  // PokemonMansion_EventScript_PressSwitch_B1F
+  MAP_POKEMON_MANSION_B1F: Object.freeze([
+    [33, 20, 1], [34, 20, 1], [35, 20, 1], [33, 21, 1], [34, 21, 1], [35, 21, 1],
+    [16, 26, 1], [16, 27, 1], [16, 28, 1], [16, 29, 1], [16, 30, 1],
+    [12, 8, 1], [12, 9, 1], [12, 10, 0], [12, 11, 0], [12, 12, 0],
+    [20, 22, 0], [21, 22, 0], [22, 22, 0], [20, 23, 0], [21, 23, 0], [22, 23, 0],
+    [24, 28, 0], [27, 4, 0],
+  ]),
+});
+// setmetatile keeps each cell's elevation (MapGridSetMetatileIdAt) and writes
+// the impassable bit, which the live grid reports as collision 3.
+function mansionSwitchSetView(map, switchCells) {
+  const impassable = new Map(switchCells.map(([x, y, value]) => [`${x},${y}`, value]));
+  return {
+    ...map,
+    layout: {
+      ...map.layout,
+      cells: (map.layout?.cells ?? []).map((cell) => {
+        const value = impassable.get(`${cell.x},${cell.y}`);
+        return value === undefined ? cell : { ...cell, collision: value ? 3 : 0 };
+      }),
+    },
+  };
+}
 // Native ON_TRANSITION scripts can install a whole layout (setmaplayoutindex).
 // The knowledge pack keeps each map's authored layout, so the offscreen graph
 // must use the layout the cartridge will load. Dunsparce Tunnel is dug out once
 // the National Dex is enabled; it is the only way into Three Isle Port's grass.
 // Apply a variant only to the exact authored layout it was derived against.
 function nativeLayoutView(map, capabilities) {
+  const switchCells = POKEMON_MANSION_SWITCH_SET_CELLS[map?.id];
+  if (switchCells && capabilities.mansionSwitchSet) {
+    return mansionSwitchSetView(map, switchCells);
+  }
   const variant = NATIVE_LAYOUT_VARIANTS.find((entry) => entry.map === map?.id);
   if (
     !variant || variant.condition !== "national-dex" || !capabilities.nationalDexLayouts ||
@@ -4679,6 +4741,7 @@ function worldNavigationCapabilities(observation) {
     canPassRoute16Snorlax: watchedFlag(observation, 128),
     canOpenSilphDoors: bagHasItem(observation, 355),
     nationalDexLayouts: nationalDexEnabled(observation),
+    mansionSwitchSet: watchedFlag(observation, POKEMON_MANSION_SWITCH_FLAG_ID),
   });
 }
 
@@ -9643,7 +9706,9 @@ function completed(completion, observation, mechanics = null) {
   if (completion?.kind === "owned-species") {
     const wanted = new Set((completion.species ?? []).map(Number));
     const owned = observation?.playerMemory?.trainer?.pokedex?.ownedSpecies ?? [];
-    return owned.some((species) => wanted.has(Number(species))) ||
+    // Pokédex flags are National numbers; completion species are internal ids.
+    const wantedNational = new Set([...wanted].map(nationalSpeciesId).filter(Boolean));
+    return owned.some((species) => wantedNational.has(Number(species))) ||
       (observation?.playerMemory?.trainer?.party ?? []).some(({ species }) =>
         wanted.has(Number(species))
       );
@@ -9915,7 +9980,7 @@ function selectTrainingInfrastructureObjective({
   const capabilities = worldNavigationCapabilities(observation);
   const candidates = (encounterCatalog ?? []).flatMap((encounter, order) => {
     if (
-      ownedSpecies.has(Number(encounter.speciesId)) ||
+      ownedSpecies.has(nationalSpeciesId(Number(encounter.speciesId))) ||
       encounter.safari ||
       encounter.requiresSilphScope && !bagHasItem(observation, SILPH_SCOPE_ITEM_ID) ||
       Number(encounter.encounterShare) < minimumEncounterShare ||
@@ -10075,7 +10140,7 @@ function selectRegionalMasteryObjective({
       !postgame ||
       !masteryMaps.has(encounter.map) ||
       !optionalMapAuthorized(encounter.map, observation) ||
-      ownedSpecies.has(encounter.speciesId) ||
+      ownedSpecies.has(nationalSpeciesId(Number(encounter.speciesId))) ||
       encounter.requiresSilphScope &&
         !bagHasItem(observation, SILPH_SCOPE_ITEM_ID) ||
       encounter.method === "surf" && !capabilities.canSurf ||
@@ -10135,9 +10200,12 @@ export function createCampaignPlanner({
   story = null,
   mechanics = null,
   initialState = null,
+  // extra-saves: a helper save's one-per-save choices (extra-save-story.js).
+  // Without them the campaign object is returned unchanged.
+  storyChoices = null,
 } = {}) {
-  const activeCampaign = campaign ?? (teamPlan
-    ? createRosterCampaign(teamPlan, { mechanics }) : MAIN_STORY_CAMPAIGN);
+  const activeCampaign = applyStoryChoices(campaign ?? (teamPlan
+    ? createRosterCampaign(teamPlan, { mechanics }) : MAIN_STORY_CAMPAIGN), storyChoices ?? {});
   const mandatoryInterludes = activeCampaign.mandatoryInterludes ?? [];
   const tasks=createCampaignTasks({initialState:initialState?.tasks??null,mechanics});
   if (initialState !== null && (
@@ -10386,8 +10454,10 @@ export function createCampaignPlanner({
   const incomeFailures=structuredClone(initialState?.incomeFailures??[]);
   // No trainer's route depends on the National Dex layouts (the dug-out tunnel
   // leads only to Three Isle Port's grass), so they do not split income records.
+  // The Mansion switch only changes which floor exits apply inside the Mansion;
+  // keeping it out also leaves already recorded failure contexts unchanged.
   const incomeCapabilities=capabilities=>Object.fromEntries(Object.entries(capabilities)
-    .filter(([key])=>!['currentlySurfing','currentElevation','nationalDexLayouts'].includes(key)).sort(([a],[b])=>a.localeCompare(b)));
+    .filter(([key])=>!['currentlySurfing','currentElevation','nationalDexLayouts','mansionSwitchSet'].includes(key)).sort(([a],[b])=>a.localeCompare(b)));
   const incomeContext=o=>JSON.stringify(incomeCapabilities(worldNavigationCapabilities(o)));
   // Old checkpoints keyed failures by the player's current map and transient
   // surface. Migrate those records instead of granting their candidates a reset.
@@ -10970,12 +11040,34 @@ export function createCampaignPlanner({
       for(const mart of pokeBallMartCatalog){
         const stock=mart.stock.find(i=>i.itemId===itemId),price=prices[itemId];
         if(!stock||!price||!optionalMapAuthorized(mart.map,observation)||Number(observation.playerMemory?.trainer?.money)<price*quantity)continue;
-        const metrics=routeMetrics({graph,observation,target:mart.target});
+        // A mart on another island (or back in Kanto) is reached by the same
+        // Seagallop leg as an item ball below: measure its clerk from that
+        // island's ferry landing and rank it after every same-island source.
+        // The Celadon Department Store is the only Fire Stone seller on the
+        // navigation graph, so an Eevee hatched at the Four Island Day Care
+        // could never become Flareon.
+        const crossing=fireRedIsland(mart.map)!==fireRedIsland(observation?.playerMemory?.map?.id);
+        const metrics=routeMetrics({graph,observation,target:mart.target})??(crossing&&
+          campaignTargetReachable({world,observation,target:mart.target,origins:[fireRedFerryArrival(mart.map)],exact:true})?{transitions:1000,localSteps:0}:null);
         if(metrics)candidates.push({metrics,objective:{id:`evolution-buy-${itemId}`,target:{kind:'purchase-items',map:mart.map,objectIndex:mart.objectIndex,items:[{itemId,quantity,unitPrice:price,stockIndex:stock.stockIndex}]},dialogue:'advance',choice:'yes',deferOptionalDetours:true,identityEvolution:true}});
       }
       for(const location of collectionCatalog){
+        // Ruin Valley's Sun Stone sits behind three Strength boulders. The coarse
+        // graph reaches it from inside the valley, but only the reviewed push
+        // order opens it (suite/ruin-valley-route.js), so it is never an
+        // ordinary supply: the postgame collects it on that route first.
+        if(location.map===RUIN_VALLEY&&location.target?.kind==='object'&&location.target.index===SUN_STONE.objectIndex)continue;
         if(excluded.has(location.id)||location.itemId!==itemId||watchedFlag(observation,location.flagId)||!optionalMapAuthorized(location.map,observation)||!collectionLocationAuthorized(location,observation)||location.underfoot&&!bagHasItem(observation,261)||location.requiredItemId&&!bagHasItem(observation,location.requiredItemId))continue;
-        const metrics=routeMetrics({graph,observation,target:location.target});
+        // An item on another island (or back in Kanto) is reached by the
+        // Seagallop leg resolveFireRedTravel plans; measure it from that landing
+        // and rank it after every same-island source. Its flag must read false,
+        // and the ball's own cell must be reachable (exact), the contract
+        // routeMetrics applies once on that island: entering the map is not
+        // reaching the ball (Ruin Valley's Sun Stone and Sevault Canyon's
+        // King's Rock sit behind Strength boulders).
+        const crossing=fireRedIsland(location.map)!==fireRedIsland(observation?.playerMemory?.map?.id);
+        const metrics=routeMetrics({graph,observation,target:location.target})??(crossing&&observation?.playerMemory?.storyState?.flagIds?.[location.flagId]===false&&
+          campaignTargetReachable({world,observation,target:location.target,origins:[fireRedFerryArrival(location.map)],exact:true})?{transitions:1000,localSteps:0}:null);
         if(metrics)candidates.push({metrics,objective:{id:`evolution-${location.id}`,target:location.target,completion:{kind:'flag-set',id:location.flagId},collectionKind:location.kind,itemId,underfoot:location.underfoot,dialogue:'advance',deferOptionalDetours:true,identityEvolution:true}});
       }
       candidates.sort((a,b)=>a.metrics.transitions-b.metrics.transitions||a.metrics.localSteps-b.metrics.localSteps);

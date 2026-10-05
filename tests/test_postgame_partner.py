@@ -33,3 +33,13 @@ class PartnerTests(unittest.TestCase):
         for change in [lambda s:s.source['bot'].update(enabled=False),lambda s:s.source['bot']['preparation'].update(automatic=False),lambda s:s.source.update(localEvolution={'phase':'trading'})]:
             with tempfile.TemporaryDirectory() as root:
                 s=Sessions(root);change(s);PostgamePartners(s).tick();self.assertEqual(s.commands,[])
+    def test_a_library_without_any_partner_game_says_none_is_set_up(self):
+        # A new user's library has FireRed only: no Emerald and no FireRed
+        # partner. The deferral must not ask them to start an Emerald bot.
+        with tempfile.TemporaryDirectory() as root:
+            s=Sessions(root);s.configured=lambda game:game=='firered';PostgamePartners(s).tick()
+            (game,body,_),=s.commands
+            self.assertEqual((game,body['type']),('firered','defer-partner-evolution'))
+            self.assertNotIn('Emerald',body['reason']);self.assertIn('No trade partner game is set up',body['reason'])
+            availability=json.loads((Path(root)/'firered/partner-availability.json').read_text())
+            self.assertEqual((availability['available'],availability['reason']),(False,body['reason']))

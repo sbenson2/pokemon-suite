@@ -117,6 +117,7 @@ public struct BotRequestTransport {
 @MainActor public final class BotRequestFlow: ObservableObject {
     public static let maxLength = 1000
     static let interpretPath = "/api/pokemon-suite/requests/interpret"
+    static let selectPath = "/api/pokemon-suite/requests/select"
     static let commitPath = "/api/pokemon-suite/requests/commit"
     static let draftCancelPath = "/api/pokemon-suite/requests/cancel"
     static let warmPath = "/api/pokemon-suite/requests/warm"
@@ -134,6 +135,8 @@ public struct BotRequestTransport {
     @Published public private(set) var cancelling: String?
     public private(set) var text = ""
     public private(set) var via: BotRequestVia = .typed
+    /// The Bank's "Get it" fields (BankDraft.selection) when the request came from the Bank instead of words.
+    public private(set) var selection: JSONValue?
     public private(set) var answers: [String: String] = [:]
     public private(set) var idempotencyKey: String?
     private let transport: BotRequestTransport
@@ -181,8 +184,16 @@ public struct BotRequestTransport {
         let value = raw.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !value.isEmpty, !isWorking else { return }
         guard value.count <= Self.maxLength else { reset(); stage = .failed("Keep your request under 1,000 characters."); return }
-        if value != text { answers = [:] }
-        text = value; self.via = via
+        if value != text || selection != nil { answers = [:] }
+        text = value; self.via = via; selection = nil
+        await interpret()
+    }
+
+    /// The Bank's "Get it": the same draft, preview, questions and commit as a typed request.
+    public func select(_ selection: JSONValue) async {
+        guard !isWorking else { return }
+        if selection != self.selection { answers = [:] }
+        self.selection = selection; text = ""; via = .ui
         await interpret()
     }
 
@@ -201,7 +212,7 @@ public struct BotRequestTransport {
     /// A suggested phrase offered after an unsupported request.
     public func useSuggestion(_ suggestion: String) async {
         guard !isWorking else { return }
-        text = suggestion; via = .ui; answers = [:]
+        text = suggestion; via = .ui; answers = [:]; selection = nil
         await interpret()
     }
 
@@ -249,7 +260,7 @@ public struct BotRequestTransport {
     /// Starts over; a response that arrives later is ignored.
     public func reset() {
         generation += 1
-        stage = .idle; error = nil; answers = [:]; idempotencyKey = nil; text = ""
+        stage = .idle; error = nil; answers = [:]; idempotencyKey = nil; text = ""; selection = nil
     }
 
     public func refreshGoals() async {
@@ -277,9 +288,12 @@ public struct BotRequestTransport {
         generation += 1
         let ticket = generation
         stage = .interpreting; error = nil
-        let body: JSONValue = .object(["text": .string(text), "via": .string(via.rawValue), "answers": .object(answers.mapValues(JSONValue.string))])
+        let answered: JSONValue = .object(answers.mapValues(JSONValue.string))
+        let path = selection == nil ? Self.interpretPath : Self.selectPath
+        let body: JSONValue = selection.map { .object(["selection": $0, "answers": answered]) }
+            ?? .object(["text": .string(text), "via": .string(via.rawValue), "answers": answered])
         do {
-            let response = try await transport.post(Self.interpretPath, body)
+            let response = try await transport.post(path, body)
             guard ticket == generation else { return }
             let d = try BotRequestDraft(response: response)
             idempotencyKey = makeKey()

@@ -29,7 +29,11 @@ import {createEmeraldCompanion} from './emerald-companion.js';
 import {resolveFireRedTravel,LINK_QUEST_WATCH} from './fire-red-link-quest.js';
 import {createLocalEvolutionWorker,checkpointLocalEvolution} from './local-evolution-worker.js';
 import {inspectFireRedPartnerReadiness,FIRERED_PARTNER_WATCH} from './firered-partner.js';
-import {resolveSuiteOwner} from './suite-owner.js';
+// extra-saves: exchanges with other owned FireRed saves.
+import {emptyPartnerLedger,applyPartnerLegProof} from './extra-save-exchange.js';
+import {describeSaveInventory,EXTRA_SAVE_WATCH} from './extra-saves.js';
+import {helperTaskAllows} from './extra-save-tasks.js';// extra-saves (build 126)
+import {resolveSuiteOwner,ownerNativePair} from './suite-owner.js';
 import {proveUncommittedLocalTrade} from './local-evolution.js';
 import {createEmeraldNativeTradeAdapter} from './emerald-native-trade.js';
 import {continueNativeSave,continueNativeSaveAsync,inspectNativeSaveContinuation,validateNativeTradeContinuation} from './native-cold-boot.js';
@@ -62,6 +66,7 @@ import {createPlannerClient} from './planner-client.js';
 import {createCampaignBenchmark} from './campaign-benchmark.js';
 import {sessionTiming,estimatedEmulationSeconds} from './session-speed.js';
 import {updateBoundary} from './update-boundary.js';
+import {isFrlgGame,frlgGame} from '../frlg.js';
 
 const json=p=>JSON.parse(readFileSync(p,'utf8'));
 const mapped=o=>({id:o.playerMemory?.map?.id,...o.playerMemory?.position});
@@ -70,7 +75,10 @@ const mapped=o=>({id:o.playerMemory?.map?.id,...o.playerMemory?.position});
 // 'firered-partner' (for example) with title 'firered'. Save identities keep
 // the title, so a banked FireRed save stays compatible with either owner.
 const [configPath,ownerKey]=process.argv.slice(2),config=json(configPath);
-const {owner,title:game,partner:fireRedPartner,cfg,directory}=resolveSuiteOwner(config,ownerKey);mkdirSync(directory,{recursive:true,mode:0o700});
+const {owner,title:game,partner:fireRedPartner,helper:fireRedHelper,cfg,directory}=resolveSuiteOwner(config,ownerKey);mkdirSync(directory,{recursive:true,mode:0o700});
+// FRLG family (build 124): FireRed and LeafGreen share this engine, observer and
+// story campaign. FireRed-only features keep their game==='firered' checks.
+const frlg=isFrlgGame(game);
 // Opt-in Rare Candy supply (question-mark Mail), from this game's Bot settings.
 // Read when a postgame owner is created, so a change applies to the next task.
 function qmmSupplyOption(){
@@ -97,12 +105,12 @@ process.on('exit',()=>{try{if(json(lockPath).pid===process.pid)unlinkSync(lockPa
 const {readVerifiedCartridge}=await import(pathToFileURL(join(config.researchBots,'shared/cartridge.js')));
 // A FireRed partner always runs its configured native link pair (the reviewed
 // peer-trade cartridge and native RFU core); its saves carry that identity.
-const partnerNative=fireRedPartner&&cfg.nativeRadio?.cartridge&&cfg.nativeRadio?.core?cfg.nativeRadio:null;
+const partnerNative=ownerNativePair(cfg,{partner:fireRedPartner,helper:fireRedHelper});// helpers too (build 126)
 const cartridge=await readVerifiedCartridge(partnerNative?.cartridge??cfg.cartridge);
 const baseCoreManifest=json(join(partnerNative?.core??cfg.core,'build-manifest.json'));
 const baseIdentity={game,romSha1:cartridge.identity.sha1,coreSha256:baseCoreManifest.mgba_wasm_sha256};
 const gameVault=new SaveVault(join(directory,'saves'),baseIdentity);
-const imported=await ensureInitialSave(gameVault,cfg,async()=>game==='firered'
+const imported=await ensureInitialSave(gameVault,cfg,async()=>frlg
  ?createPinnedMgbaSession({coreDirectory:partnerNative?.core??cfg.core,romBytes:cartridge.bytes,cartridge:cartridge.identity,expected:{mgbaCommit:baseCoreManifest.mgba_commit,wrapperCommit:baseCoreManifest.wrapper_commit,mgbaWasmSha256:baseCoreManifest.mgba_wasm_sha256}})
  :(await import(pathToFileURL(join(config.researchBots,'shared/pinned-mgba.js')))).createPinnedMultiSystemSession({coreDirectory:cfg.core,cartridge,system:game==='crystal'?'gbc':'gba'}));
 const activePath=join(directory,'active-hunt.json');
@@ -122,17 +130,17 @@ if(usingNativeRadio){
 }else saved=vault.read();
 let newProfile=saved.metadata?.newProfile===true;
 const makeFireRedSession=async (core,manifest)=>createPinnedMgbaSession({coreDirectory:core,romBytes:nativeCartridge.bytes,cartridge:nativeCartridge.identity,expected:{mgbaCommit:manifest.mgba_commit,wrapperCommit:manifest.wrapper_commit,mgbaWasmSha256:manifest.mgba_wasm_sha256}});
-let session=game==='firered'||game==='emerald'&&coreManifest.native_rfu
+let session=frlg||game==='emerald'&&coreManifest.native_rfu
  ? await makeFireRedSession(coreDirectory,coreManifest)
  : await (await import(pathToFileURL(join(config.researchBots,'shared/pinned-mgba.js')))).createPinnedMultiSystemSession({coreDirectory:cfg.core,cartridge,system:game==='crystal'?'gbc':'gba'});
 const nativeLinkSave=usingNativeRadio&&(saved.metadata?.ownedTrade?.nativeTrade||saved.metadata?.session?.nativeTrade&&!saved.metadata?.session?.postgame);
 const localNativeResume=coreManifest.native_rfu&&saved.metadata?.localEvolution&&saved.metadata.localEvolution.phase!=='complete';
-const restoringState=!localNativeResume&&(!usingNativeRadio||manualProfile||saved.metadata?.session?.postgame||(!nativeLinkSave&&['safari-land','wild-land','gift','static','roamer','snorlax'].includes(saved.metadata?.session?.mission?.method)));
+const restoringState=!localNativeResume&&(!usingNativeRadio||manualProfile||saved.metadata?.session?.postgame||(!nativeLinkSave&&['safari-land','wild-land','fishing','gift','static','roamer','snorlax'].includes(saved.metadata?.session?.mission?.method)));
 session.loadSram(saved.sram);if(restoringState)session.loadState(saved.state);
 const videoSession=createRestoredVideoSession({session,checkpoint:restoringState?saved:null});
 const readEmeraldProgress=game==='emerald'?await createEmeraldProgressReader({researchBots:config.researchBots,session}):null;
 const emeraldPresentation=game==='emerald'?await import(pathToFileURL(join(config.researchBots,'games/emerald/player/status.mjs'))):null;
-const inputs=game==='firered'?Object.fromEntries(['runtime','world','story','battle'].map(k=>[k,json(cfg.inputs[k])])):null;
+const inputs=frlg?Object.fromEntries(['runtime','world','story','battle'].map(k=>[k,json(cfg.inputs[k])])):null;
 const basePlanner=inputs?createCampaignPlanner({world:inputs.world,story:inputs.story,mechanics:inputs.battle}):null;
 let observer=null,emulator=null,player=null,objective=null,mission=null,running=false,exiting=false,task=null;
 let lastCommand=existsSync(join(directory,'command.json'))?json(join(directory,'command.json')).commandId:null,commandError=null,lastObservation=null,lastDecision=null,sequence=saved.metadata?.session?.decisions??0,lastSave=Date.now(),lastProgress=0;
@@ -146,6 +154,8 @@ let ownedTrade=saved.metadata?.ownedTrade?.state??null;
 if(ownedTrade)resume={...resume,player:saved.metadata.ownedTrade.player,tradePreparation:saved.metadata.ownedTrade.preparation,nativeTrade:saved.metadata.ownedTrade.nativeTrade};
 const tradeState=()=>ownedTrade??mission?.state;
 let emeraldRuntime=null,emeraldCompanion=null,emeraldActive=false,companionPreparation=saved.metadata?.companionPreparation??null;
+// extra-saves: a FireRed partner's open loan and the individuals it may give away (seeded helper saves).
+let extraSaveLedger=fireRedPartner?(saved.metadata?.extraSaveLedger??emptyPartnerLedger(cfg.extraSaveGrants??[])):null,extraSaveSourcesAt=null,extraSaveSourcesOwner=null,lastExtraSaveInventory=null;
 let localBridge=null,localActive=false,localFrameInput=null;
 // The FireRed source coordinates; Emerald and a FireRed partner owner serve.
 const localRole=game==='emerald'||fireRedPartner?'partner':'source';
@@ -163,7 +173,7 @@ let postgame=null,postgameActive=false;
 let campaign=null,campaignActive=false;
 function restoreCampaign(record,state=null){
  if(record.romSha1!==identity.romSha1)throw Error('The campaign preview belongs to another cartridge. Review the new run again.');
- const {rosterContext}=loadSuiteCampaignContext(configPath);
+ const {rosterContext}=loadSuiteCampaignContext(configPath,game,owner);
  restoreCampaignRun(record,rosterContext);
  const options={record,...inputs,mechanics:inputs.battle,state,fieldTeamPlan:rosterContext.createFieldTeamPlan(record.teamPlan)};
  const initial=createCampaignController(options);
@@ -206,8 +216,7 @@ if(localNativeResume){
 }
 // mGBA restores machine state before repainting its video buffer. Repaint a
 // completed Center save with neutral input so a paused viewer is not black.
-if(usingNativeRadio&&!manualProfile&&!resume?.postgame&&(!['safari-land','wild-land','gift','static','roamer','snorlax'].includes(mission?.state.method)||nativeLinkSave)){
- renewObserver();
+if(usingNativeRadio&&!manualProfile&&!resume?.postgame&&(!['safari-land','wild-land','fishing','gift','static','roamer','snorlax'].includes(mission?.state.method)||nativeLinkSave)){
  const loaded=continueNativeSave(session,observer),fingerprint=resume?.tradePreparation?.fingerprint;
  if(!fingerprint)throw new Error('The native radio save must identify its prepared Pokémon.');
  const continuation=validateNativeTradeContinuation(loaded,readNativeWirelessStatus(session,inputs.runtime),resume?.nativeTrade??{fingerprint});
@@ -233,11 +242,11 @@ let resumeActiveTask=canAutomate(botPolicy)&&resume?.mission?.status==='running'
 if(interruptedRecovery?.huntId===mission?.state.id)resumeActiveTask=false;
 function observe(){
  let o=observer?.capture()??null;
- if(o&&game==='firered')o={...o,playerMemory:{...o.playerMemory,postgameEvidence:readPostgameEvidence(session,inputs.runtime,o)}};
+ if(o&&frlg)o={...o,playerMemory:{...o.playerMemory,postgameEvidence:readPostgameEvidence(session,inputs.runtime,o)}};
  return o&&(postgameActive||mission?.state.method==='safari-land')?{...o,playerMemory:{...o.playerMemory,safari:readSafariStatus(session,inputs.runtime,o.playerMemory.battleTypeFlags)}}:o;
 }
 function renewObserver(){
- if(inputs){const watch=campaignActive?campaign.storyWatch():postgameActive?postgame.storyWatch():basePlanner.storyWatch();observer=createFireRedObserver({session,runtime:inputs.runtime,world:inputs.world,story:inputs.story,observeRng:Boolean(mission),runId:mission?.state.id??campaign?.record.id??`suite-${game}`,storyWatch:{...watch,variables:[...new Set([...(watch.variables??[]),...LINK_QUEST_WATCH.variables,...BALL_SHOP_WATCH.variables,...POSTGAME_WATCH.variables])],flags:[...new Set([...watch.flags,...LINK_QUEST_WATCH.flags,...BALL_SHOP_WATCH.flags,...POSTGAME_WATCH.flags,...(mission?.storyWatch?.().flags??[]),84,128,573,611,2092,2112,2116])]}});}
+ if(inputs){const watch=campaignActive?campaign.storyWatch():postgameActive?postgame.storyWatch():basePlanner.storyWatch();observer=createFireRedObserver({session,runtime:inputs.runtime,world:inputs.world,story:inputs.story,observeRng:Boolean(mission),runId:mission?.state.id??campaign?.record.id??`suite-${game}`,storyWatch:{...watch,variables:[...new Set([...(watch.variables??[]),...LINK_QUEST_WATCH.variables,...BALL_SHOP_WATCH.variables,...POSTGAME_WATCH.variables,...EXTRA_SAVE_WATCH.variables])],flags:[...new Set([...watch.flags,...LINK_QUEST_WATCH.flags,...BALL_SHOP_WATCH.flags,...POSTGAME_WATCH.flags,...EXTRA_SAVE_WATCH.flags,...(mission?.storyWatch?.().flags??[]),84,128,573,611,2092,2112,2116])]}});}
 }
 const consolePresentation=new ConsolePresentationGate();
 function engine(mode='manual',paused=false,speed){
@@ -273,6 +282,7 @@ function persist(reason){
  if(benchmark)metadata.benchmark=benchmark.state();
  metadata.manualControl=emulator?.controlState().mode==='manual';
  if(game==='emerald'||fireRedPartner)metadata.companionPreparation=emeraldCompanion?.state()??companionPreparation;
+ if(fireRedPartner)metadata.extraSaveLedger=extraSaveLedger;// extra-saves
  metadata.localEvolution=checkpointLocalEvolution(localBridge,saved.metadata?.localEvolution);
  const commit=vault.write(state,sram,metadata);refreshCollection();lastSave=Date.now();benchmark?.measure('persistence',performance.now()-startedAt);return commit;
 }
@@ -307,17 +317,22 @@ function status(){
  const campaignState=campaign?.state(),campaignOwner=campaign&&botPolicy.runScope==='campaign';
  let inventoryReason=null;
  if(game==='firered')try{assertOwnedTradeReady({observation:o,mission:mission?.state,capture:postgame?.state().player?.encounterSafety?.capture??player?.state()?.encounterSafety?.capture??captureEvidence,campaign:campaignState,running,localBusy,nativeTrade:nativeTrade?.state??resume?.nativeTrade,wireless:readNativeWirelessStatus(session,inputs.runtime)});}catch(error){inventoryReason=error.message;}
- return decisionFeed.update({runtime:{protocol:1,qualification,components:config.runtimeComponents??{},plannerIsolation:'worker-thread',lock:runtimeLock,plannerLock,update:{id:updateRequest?.id??null,held:updateHold&&Boolean(updateCheckpoint),checkpoint:updateCheckpoint,boundary:updateBoundary({game,observation:o,mission:mission?.state,nativeTrade:nativeTrade?.state,localBusy,captureTiming,postgameActive,postgameYieldReady:postgame?.canYield(o)===true,emeraldActive})}},schema:'pokemon-suite/session/v1',sessionId,pid:process.pid,game,owner,runId:ownedTrade?.id??mission?.state.id??`suite-${game}`,state:botPolicy.enabled&&botPolicy.awaitingCommand?'ready':manualPlaying?'running':game==='firered'?health.status:running?'running':botPolicy.enabled?'ready':mission?.state.status??'viewer',frame:session.frame,emulationSpeed:emulator.controlState().effectiveEmulationSpeed,
+ return decisionFeed.update({runtime:{protocol:1,qualification,components:config.runtimeComponents??{},plannerIsolation:'worker-thread',lock:runtimeLock,plannerLock,update:{id:updateRequest?.id??null,held:updateHold&&Boolean(updateCheckpoint),checkpoint:updateCheckpoint,boundary:updateBoundary({game,observation:o,mission:mission?.state,nativeTrade:nativeTrade?.state,localBusy,captureTiming,postgameActive,postgameYieldReady:postgame?.canYield(o)===true,emeraldActive})}},schema:'pokemon-suite/session/v1',sessionId,pid:process.pid,game,owner,runId:ownedTrade?.id??mission?.state.id??`suite-${game}`,state:botPolicy.enabled&&botPolicy.awaitingCommand?'ready':manualPlaying?'running':frlg?health.status:running?'running':botPolicy.enabled?'ready':mission?.state.status??'viewer',frame:session.frame,emulationSpeed:emulator.controlState().effectiveEmulationSpeed,
   performance:emulator.metrics(),benchmark:benchmark?.summary({compact:true})??null,
   phase:ownedTrade?ownedTrade.phase:localBusy?'evolution-'+local.phase:emeraldActive?'companion-preparation':postgameActive?'postgame':running?mission?.state.phase:mission?.state.status??'manual',decisions:sequence,updatedAt:new Date().toISOString(),map:m?.map?.id??e?.player?.map?.id??null,position:m?.position??e?.player?.position??null,mode:o?.emulator?.mode??e?.emulator?.mode??null,callback2:o?.emulator?.callback2??e?.emulator?.callback2Name??null,
   bot:{...botPolicy,progress:health.progress??null,activity:botPolicy.awaitingCommand?'ready':localBusy?'evolution':emeraldActive?'campaign':postgameActive?'postgame':running?'task':'ready',status:botPolicy.awaitingCommand?'ready':localBusy?local.phase:companion?.phase??health.status,reason:botPolicy.awaitingCommand?'Ready for commands. Choose a task in Bot settings.':localBusy?local.reason:companionReturned?'Evolution returned to FireRed and saved. Ready for the next command.':companion?.reason??health.reason,objective:botPolicy.awaitingCommand?null:companion?.objective??huntPreparation?.objective??postgame?.state().objective??null,captures:huntPreparation?.captures??postgame?.state().captures??0,preparation:companion??huntPreparation?.preparation??postgame?.state().preparation??null},
   recovery:recoveryStatus,
   localEvolution:local??null,
+  // extra-saves: the main save's plan rows; a partner's inventory and open loan.
+  ...(game==='firered'&&!fireRedPartner?{extraSaves:postgame?.state().agenda?.workflows?.extraSaves?.presentation??adventureState?.workflows?.extraSaves?.presentation??null}:{}),
+  // Story flags are read only from a stable field frame (the save blocks move during map loads).
+  ...(fireRedPartner?{extraSaveInventory:o?.phase==='stable'?(lastExtraSaveInventory=describeSaveInventory({observation:o,world:inputs.world,source:{kind:'partner-owner',owner,label:cfg.label??owner,grants:extraSaveLedger?.grants??[]},roamer:m?.postgameEvidence?.roamer??null})):lastExtraSaveInventory,
+   extraSaveLedger:extraSaveLedger?{open:extraSaveLedger.open?{exchangeId:extraSaveLedger.open.exchangeId,mode:extraSaveLedger.open.mode,sourceOwner:extraSaveLedger.open.sourceOwner}:null,grants:extraSaveLedger.grants.length}:null}:{}),
   lastCommand,commandError,save:{updatedAt:gameVault.current()?.updatedAt,frame:gameVault.current()?.metadata?.frame,imported},
   // A blank New Game profile (no in-game save yet): a goal starts a new game.
-  newProfile:game==='firered'?newProfile:null,huntSave:mission?{updatedAt:vault.current()?.updatedAt,frame:vault.current()?.metadata?.frame}:null,
-  gameProgress:game==='firered'?fireRedProgress(o):readEmeraldProgress?.()??null,
-  storage:game==='firered'?collectionStorage(m?.trainer,{scope:botPolicy.runScope,records:collectionRecords,quantity:mission?.request.quantity??0,caught:mission?.state.caught??0}):null,
+  newProfile:frlg?newProfile:null,huntSave:mission?{updatedAt:vault.current()?.updatedAt,frame:vault.current()?.metadata?.frame}:null,
+  gameProgress:frlg?fireRedProgress(o,game):readEmeraldProgress?.()??null,
+  storage:frlg?collectionStorage(m?.trainer,{scope:botPolicy.runScope,records:collectionRecords,quantity:mission?.request.quantity??0,caught:mission?.state.caught??0}):null,
   postgame:game==='firered'&&o?(postgameSnapshot=postgamePresentation(o,agenda,postgameSnapshot)):null,
   pendingHunt:queuedHunt?{id:queuedHunt.record.id,state:queuedHunt.error?'blocked':'queued',phase:'waiting-for-current-game',caught:0,encounters:0,elapsedMs:0,reason:queuedHunt.error??'Finish the current battle and save, then start this hunt.'}:null,
   tradePreparation:tradePreparation?.state??resume?.tradePreparation??null,
@@ -589,9 +604,20 @@ async function runMission(){
   }
  }catch(error){console.error(error.stack);if(running)stop(error.message,'blocked');}
 }
+// The host's partner advertisement (postgame_partner.py rewrites it every tick).
+// Only a fresh document counts. A new postgame client starts with no partner.
+function publishPartnerAvailability(){
+ if(game!=='firered'||fireRedPartner||!postgame)return;
+ const path=join(directory,'partner-availability.json'),availability=existsSync(path)?json(path):null;
+ const fresh=availability?.available===true&&Date.now()-availability.checkedAt<10000&&Date.now()>=availability.checkedAt;
+ postgame.publishPartnerAvailability(fresh&&(Array.isArray(availability.partners)?{available:true,partners:availability.partners}:true));
+}
 async function startPostgame(){
  await task;
  postgame??=createPostgameClient({...inputs,mechanics:inputs.battle,qmmSupply:qmmSupplyOption(),leagueTraining:leagueTrainingOption(),...(botPolicy.runScope==='postgame'&&existsSync(adventurePath)?{state:{schema:'pokemon-suite/postgame/v1',agenda:json(adventurePath)}}:{})});
+ // A hunt closes the client, so this one may be new: its first resolution after
+ // the hunt must see a ready partner (commands run in order).
+ publishPartnerAvailability();
  if(mission?.state.status==='complete'&&mission.state.postgameObjective){
   await postgame.completeHunt(mission.state.postgameObjective,mission.state.id);
  }
@@ -603,7 +629,8 @@ async function startPostgame(){
  lastObservation=observe();persist('postgame-continued');progress();task=runPostgame();
 }
 async function continueCompletedCampaign(){
- if(!campaign||botPolicy.runScope!=='campaign')return false;
+ // LeafGreen (build 124) has no postgame yet: its run waits for commands.
+ if(!campaign||botPolicy.runScope!=='campaign'||game!=='firered')return false;
  const receipt=campaignPostgameHandoff({record:campaign.record,state:campaign.state(),policy:botPolicy});
  if(!receipt)return false;
  // Write the durable controller first. A crash before the policy update can
@@ -875,7 +902,7 @@ async function beginEvolution(value){
  await postgame.beginEvolution({requestId:value.requestId,sourceId:value.sourceId,pokemon,request:value.request,steps:value.route.steps});await postgame.resume();
 }
 async function continueBotSave(){
- if(game==='firered'){
+ if(frlg){
   const o=observe();
   if(inspectNativeSaveContinuation(o))lastObservation=await continueNativeSaveAsync(session,observer);
  }else{
@@ -906,11 +933,15 @@ async function holdForUpdate(o){
  updateCheckpoint=checkpoint;persist('update-checkpoint');progress();return true;
 }
 // The invisible FireRed partner is never assigned tasks.
+const HELPER_DENIED=new Set(['start','player-task','postgame-goal','trade-pokemon','trade-shiny','prepare-trade','prepare-acquisition','host-trade','defer-partner-evolution','preserve-source','archive','prepare-partner','restore-save']);// extra-saves
 const PARTNER_DENIED=new Set(['start','player-task','postgame-goal','trade-pokemon','trade-shiny','restore-save','new-save','start-campaign','resume-campaign','prepare-trade','prepare-acquisition','host-trade','defer-partner-evolution','preserve-source','archive','start-bot']);
 async function command(c){
  commandError=null;
  if(c.sessionId&&c.sessionId!==sessionId)throw Error('The game owner changed. Refresh before sending another command.');
  if(fireRedPartner&&PARTNER_DENIED.has(c.type))throw Error('The FireRed trade partner is never assigned tasks. It only serves paired trade evolutions.');
+ // extra-saves: a helper FireRed save only plays its reviewed story campaign toward its goal.
+ // A parking helper (an archived save seeded to serve as a partner) only travels to a Pokémon Center and saves there.
+ if(fireRedHelper&&HELPER_DENIED.has(c.type)&&!helperTaskAllows(cfg,c))throw Error('A helper FireRed save only plays its story campaign toward its goal.');
  if(c.type==='stop'||c.type==='set-bot'&&c.enabled===false)assertNativeTradeCanStop(nativeTrade?.state??resume?.nativeTrade);
  if(c.type==='stop'&&!nativeTradeFinished(nativeTrade?.state??resume?.nativeTrade)){
   if(!tradeState()||c.id!==tradeState().id)throw Error('This is not the current task.');
@@ -958,7 +989,7 @@ async function command(c){
  }
  if(c.runScope!==undefined&&!['task','collection','postgame'].includes(c.runScope))throw Error('Choose a single task, collection, or postgame.');
  if(c.type==='start-campaign'){
-  if(game!=='firered'||!/^run-[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(c.previewId??''))throw Error('Review a FireRed campaign before starting it.');
+  if(!frlg||!/^run-[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(c.previewId??''))throw Error(`Review a ${frlg?frlgGame(game).title:'FireRed'} campaign before starting it.`);
   if(campaign?.record.id===c.previewId)return;
   const review=json(join(directory,'run-previews',`${c.previewId}.json`));
   if(review.started)throw Error('This campaign was already created. Restore its save to resume it.');
@@ -981,6 +1012,8 @@ async function command(c){
   try{lastObservation=await continueNativeSaveAsync(session,observer);}catch(error){engine('manual',false,1);throw error;}
  }
  if(c.type==='defer-partner-evolution'){
+  // extra-saves: an exchange leg waiting for its partner defers (clean) or keeps waiting (borrowed).
+  if(game==='firered'&&!localBridge?.busy()&&postgame?.state().preparation?.kind==='extra-save'&&postgame.state().preparation.requestId===c.requestId){await postgame.deferExtraSave(c.reason??'The partner game is unavailable.');persist('extra-save-deferred');progress();return;}
   if(game!=='firered'||localBridge?.busy()||postgame?.state().dexEvolution?.requestId!==c.requestId)throw Error('The automatic partner reservation changed.');
   await postgame.deferPartnerEvolution(c.reason??'The partner game is unavailable.');persist('automatic-evolution-deferred');progress();return;
  }
@@ -1023,7 +1056,7 @@ async function command(c){
  }
  if(c.type==='start-bot'){
   if(campaign&&campaign.state().status!=='complete'){await startCampaign({retryBlockedPolicy:true});return;}
-  if(!['firered','emerald'].includes(game))throw Error('This game has no command bot yet.');
+  if(!frlg&&game!=='emerald')throw Error('This game has no command bot yet.');
   if(c.presentationId!==undefined&&!/^[a-f0-9]{32}$/.test(c.presentationId))throw Error('Invalid startup presentation.');
   if(botPolicy.enabled)return;
   await startCommandReady({newProfile,local:localBridge?.state(),trade:nativeTrade?.state??resume?.nativeTrade,
@@ -1057,7 +1090,7 @@ async function command(c){
   });return;
  }
  if(c.type==='new-save'||c.type==='restore-save'){
-  if(game!=='firered')throw Error('Separate new-save profiles are currently supported for FireRed.');
+  if(!frlg)throw Error('Separate new-save profiles are currently supported for FireRed and LeafGreen.');
   const restored=c.type==='restore-save'?readGameProfile(directory,c.profileId,identity):null;
   if(c.type==='new-save'&&(typeof c.label!=='string'||!c.label.trim()||c.label.length>50))throw Error('Name this save using 1 to 50 characters.');
   if(c.campaignId&&!/^run-[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(c.campaignId))throw Error('Invalid campaign save identity.');
@@ -1066,7 +1099,7 @@ async function command(c){
   if(capture&&!capture.nativeSaveVerified||mission?.state.protected&&mission.state.status!=='complete')throw Error('Save the protected Pokémon before changing save profiles.');
   await command({type:'manual-game',boot:false});emulator.pause('Opening a save profile.');
   const oldActive=existsSync(activePath)?json(activePath):null;
-  backupGameProfile(directory,vault,{label:oldActive?.label||'Previous FireRed save',active:oldActive,usingNativeRadio});
+  backupGameProfile(directory,vault,{label:oldActive?.label||`Previous ${frlgGame(game).title} save`,active:oldActive,usingNativeRadio});
   emulator.close();nativeRadio?.close();nativeRadio=null;
   ownedTrade=null;mission=null;await postgame?.close();postgame=null;await campaign?.close();campaign=null;benchmark=null;campaignActive=false;player=null;resume=null;captureEvidence=null;nativeTrade=null;tradePreparation=null;queuedHunt=null;
   if(existsSync(queuedHuntPath))unlinkSync(queuedHuntPath);
@@ -1106,7 +1139,8 @@ async function command(c){
    if(typeof c.requestId!=='string'||!/^[a-zA-Z0-9_-]{1,100}$/.test(c.requestId)||!/^[a-z0-9][a-z0-9-]{0,39}$/.test(sourceOwner)||sourceOwner===owner||(config.games[sourceOwner]?.title??sourceOwner)!=='firered'||config.games[sourceOwner]?.role==='partner')throw Error('Choose the source FireRed evolution request for this partner.');
    if(localBridge?.busy())throw Error('This partner is serving another evolution request.');
    botPolicy={enabled:true,awaitingCommand:false,consolePowered:true,mode:'evolution-partner'};atomicJson(botPolicyPath,botPolicy);
-   await prepareFireRedPartner(c.requestId,sourceOwner);persist('firered-partner-prepared');progress();return;
+   if(c.offer!==undefined&&(!c.offer||typeof c.offer!=='object'||Array.isArray(c.offer)))throw Error('Choose a valid extra-save offer for this partner.');// extra-saves
+   await prepareFireRedPartner(c.requestId,sourceOwner,c.offer??null);persist('firered-partner-prepared');progress();return;
   }
   if(c.type==='set-bot'&&typeof c.enabled!=='boolean')throw Error('Choose whether to run the partner bot.');
   const enabled=c.type==='set-bot'&&c.enabled===true;
@@ -1138,7 +1172,7 @@ async function command(c){
   if(wasQueued)return command({type:'set-bot',enabled:false});
  }
  if(c.type==='set-bot'){
-  if(game!=='firered'||typeof c.enabled!=='boolean')throw new Error('Choose whether to run the FireRed bot.');
+  if(!frlg||typeof c.enabled!=='boolean')throw new Error(`Choose whether to run the ${frlg?frlgGame(game).title:'FireRed'} bot.`);
   if(!c.enabled&&!nativeTradeFinished(nativeTrade?.state??resume?.nativeTrade)){
    const prepared=tradePreparation?.state??resume?.tradePreparation;
    nativeTrade??=new FireRedNativeTradeHost({world:inputs.world,center:prepared.center,fingerprint:prepared.fingerprint,state:resume?.nativeTrade});
@@ -1478,14 +1512,14 @@ async function ensureEmeraldRuntime(){
 }
 // Readiness is verified against a cold boot of this owner's own native save in
 // a separate pinned emulator; the running game is never changed by the check.
-async function prepareFireRedPartner(requestId,sourceOwner){
+async function prepareFireRedPartner(requestId,sourceOwner,offer=null){
  lastObservation=observe();
  const sram=Buffer.from(session.saveSram()),check=await makeFireRedSession(coreDirectory,coreManifest);
  let saved;
  try{check.loadSram(sram);saved=continueNativeSave(check,createFireRedObserver({session:check,...inputs,runId:'firered-partner-native-save',storyWatch:{flags:[...FIRERED_PARTNER_WATCH.flags],variables:[]}}));}
  catch(error){saved=null;console.error(error.stack);}
  finally{check.close();}
- companionPreparation=inspectFireRedPartnerReadiness({live:lastObservation,saved,world:inputs.world,owner,requestId,sourceOwner,sramSha256:digest(sram)});
+ companionPreparation=inspectFireRedPartnerReadiness({live:lastObservation,saved,world:inputs.world,owner,requestId,sourceOwner,sramSha256:digest(sram),offer,ledger:extraSaveLedger});
  companionPreparation.checkedAt=Date.now();
 }
 async function startEmeraldCompanion(){
@@ -1501,6 +1535,8 @@ if(['firered','emerald'].includes(game))localBridge=createLocalEvolutionWorker({
  fireRedState:()=>postgame?.state(),
  companionState:()=>emeraldCompanion?.state()??companionPreparation,
  acceptRoundTrip:(result,o)=>postgame.acceptEvolutionRoundTrip(result,o),
+ // extra-saves: a verified single leg belongs to the main save's exchange; a partner proves it against its ledger.
+ acceptExtraSaveTrade:(result,o)=>postgame.acceptExtraSaveTrade(result,o),extraSaveLedger:()=>extraSaveLedger,
  async pause(reason){running=false;emulator.pause(reason);await task;postgameActive=false;emeraldActive=false;localActive=false;},
  startEngine(speed,frameInput){localActive=true;localFrameInput=frameInput;running=true;engine('bot',false,speed);},
  finishEngine(reason){running=false;localActive=false;emulator.pause(reason);},
@@ -1540,17 +1576,19 @@ while(!exiting){
   }
   if(fireRedPartner&&canAutomate(botPolicy)&&!running&&!localBridge?.busy()){
    // Re-verify a waiting partner; after a verified net-zero return, idle.
-   if(companionPreparation?.phase==='waiting'&&Date.now()-(companionPreparation.checkedAt??0)>60000){await prepareFireRedPartner(companionPreparation.requestId,companionPreparation.sourceOwner);persist('firered-partner-rechecked');progress();}
+   if(companionPreparation?.phase==='waiting'&&Date.now()-(companionPreparation.checkedAt??0)>60000){await prepareFireRedPartner(companionPreparation.requestId,companionPreparation.sourceOwner,companionPreparation.offer??null);persist('firered-partner-rechecked');progress();}
    const local=localBridge?.state();
    if(local?.phase==='complete'&&local.requestId===companionPreparation?.requestId&&companionPreparation.phase==='ready-for-transfer'){
-    companionPreparation={...companionPreparation,phase:'complete',reason:'The round trip finished; the partner holds exactly its original Pokémon again.',netZeroVerified:local.netZeroVerified===true};
+    if(local.exchangeProof)extraSaveLedger=applyPartnerLegProof(extraSaveLedger,local.exchangeProof);// extra-saves
+    companionPreparation={...companionPreparation,phase:'complete',reason:local.exchangeProof?.summary??'The round trip finished; the partner holds exactly its original Pokémon again.',netZeroVerified:local.netZeroVerified===true};
     botPolicy={...botPolicy,awaitingCommand:true};atomicJson(botPolicyPath,botPolicy);persist('firered-partner-round-trip-complete');progress();
    }
   }
   if(game==='firered'&&!fireRedPartner&&postgame){
-   const path=join(directory,'partner-availability.json'),availability=existsSync(path)?json(path):null;
-   const fresh=availability?.available===true&&Date.now()-availability.checkedAt<10000&&Date.now()>=availability.checkedAt;
-   postgame.publishPartnerAvailability(fresh&&(Array.isArray(availability.partners)?{available:true,partners:availability.partners}:true));
+   publishPartnerAvailability();
+   // extra-saves: the host's inventory of other owned FireRed saves, re-read when it changes.
+   const sourcesPath=join(directory,'extra-save-sources.json'),sourcesAt=existsSync(sourcesPath)?statSync(sourcesPath).mtimeMs:null;
+   if(sourcesAt!==extraSaveSourcesAt||postgame!==extraSaveSourcesOwner){extraSaveSourcesAt=sourcesAt;extraSaveSourcesOwner=postgame;try{postgame.publishExtraSaveSources(sourcesAt===null?null:json(sourcesPath));}catch(error){console.error(error.message);}}
   }
   await localBridge?.poll();
   if(game==='firered'&&!fireRedPartner&&!running)await tryRecoverSavedTrade();

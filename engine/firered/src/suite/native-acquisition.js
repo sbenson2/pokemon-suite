@@ -1,7 +1,10 @@
 import {NativeAcquisitionTask,acquisitionField,acquiredPokemon} from './acquisition-task.js';
 import {BreedingTask} from './native-breeding.js';
 import {PcReleaseTask} from './pc-release.js';
-export {selectOwnedBreeding} from './native-breeding.js';
+// extra-saves: a verified exchange with another owned FireRed save.
+import {ExtraSaveExchangeTask} from './extra-save-exchange.js';
+import {NpcTradeTask} from './native-npc-trade.js';
+export {selectOwnedBreeding,selectBreedToEvolve} from './native-breeding.js';
 import {encounterFingerprint} from '../player/encounter-tracker.js';
 import {storageCapacity} from './storage-capacity.js';
 
@@ -132,5 +135,7 @@ export function createPostgameAcquisition(options){
  if(options.kind==='breeding')return new BreedingTask(options);
  if(options.kind==='game-corner')return new GameCornerTask(options);
  if(options.kind==='pc-release')return new PcReleaseTask(options);
+ if(options.kind==='extra-save')return new ExtraSaveExchangeTask(options);// extra-saves
+ if(options.kind==='npc-trade')return new NpcTradeTask(options);
  throw Error('This native acquisition workflow is unavailable.');
 }

@@ -4,18 +4,10 @@ import SuiteCore
 
 struct SuiteSettingsView: View {
     @EnvironmentObject var model: SuiteModel
-    @AppStorage("appearance") private var appearance = "system"
     @AppStorage("settingsPane") private var pane = "General"
     var body: some View {
         TabView(selection: $pane) {
             Form {
-                Section {
-                    Picker("Appearance", selection: $appearance) {
-                        Text("System").tag("system")
-                        Text("Light").tag("light")
-                        Text("Dark").tag("dark")
-                    }.pickerStyle(.segmented)
-                }
                 Section("Windows and games") {
                     LabeledContent("Close window", value: "Keep games running")
                     LabeledContent("Quit app", value: "Save and close games")
@@ -32,7 +24,7 @@ struct SuiteSettingsView: View {
                 }
                 Section("Games") {
                     Button("Choose ROM Folder…", action: model.chooseROMFolder).disabled(model.busy || model.api == nil)
-                    Button("Add FireRed…", action: model.addFireRed).disabled(model.busy || model.api == nil)
+                    Button("Add FireRed or LeafGreen…", action: model.addFireRed).disabled(model.busy || model.api == nil)
                     Button("Rescan Games") {
                         model.perform { try await model.api?.post("/api/pokemon-suite/scan-library"); model.notice = "Library refreshed." }
                     }.disabled(model.busy || model.api == nil)
@@ -63,9 +55,8 @@ struct SuiteSettingsView: View {
             }.formStyle(.grouped)
                 .tabItem { Label("Support", systemImage: "questionmark.circle") }.tag("Support")
         }
-        .frame(width: 580, height: pane == "General" ? 270 : pane == "Library" ? 420 : pane == "Updates" ? 600 : 460)
+        .frame(width: 580, height: pane == "General" ? 200 : pane == "Library" ? 420 : pane == "Updates" ? 600 : 460)
         .navigationTitle(pane)
-        .preferredColorScheme(appearance == "light" ? .light : appearance == "dark" ? .dark : nil)
     }
     func openResource(_ path: String) {
         if let url = Bundle.main.resourceURL?.appendingPathComponent(path) { NSWorkspace.shared.open(url) }

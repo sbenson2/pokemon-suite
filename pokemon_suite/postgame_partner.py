@@ -1,9 +1,13 @@
 """Coordinate existing native game owners without depending on an open viewer."""
 import json
+import subprocess
 import threading
 import time
 from .suite_save_store import atomic_file
 from .trade_state import native_trade_finished
+from .extra_saves import ExtraSaves
+
+NO_PARTNER='No trade partner game is set up, so trade evolutions wait. Other postgame work continues.'
 
 class PostgamePartners:
     def __init__(self,sessions):
@@ -11,6 +15,8 @@ class PostgamePartners:
         self._stop=threading.Event()
         self._thread=None
         self.error=None
+        # extra-saves: what other owned FireRed saves hold, published for the main save.
+        self.extra_saves=ExtraSaves(sessions);self.extra_error=None;self._extra_at=0
 
     def start(self):
         if self._thread is not None:return
@@ -68,9 +74,24 @@ class PostgamePartners:
         if hasattr(s,'partner_owners'):return s.partner_owners()
         return [('emerald','emerald')] if s.configured('emerald') else []
 
+    def publish_extra_saves(self,interval=30):
+        if time.time()-self._extra_at<interval:return
+        self._extra_at=time.time()
+        try:
+            # build 126: an archived save's helper starts its next task, then its park.
+            self.extra_saves.advance_helpers()
+            # A helper save that saved its goal becomes a started partner; its own owner stops.
+            for owner in self.extra_saves.finish_helpers():
+                helper=((self.sessions.config()['games'].get(owner) or {}).get('extraSaveSource') or {}).get('helperOwner')
+                if hasattr(self.sessions,'start_partner'):self.sessions.start_partner(owner)
+                if helper and self.sessions._live(helper):self.sessions.command(helper,{'type':'set-bot','enabled':False},session_id=self.sessions._live(helper).get('sessionId'))
+            self.extra_saves.publish();self.extra_error=None
+        except (OSError,ValueError,KeyError,AttributeError,subprocess.SubprocessError) as error:self.extra_error=str(error)
+
     def tick(self):
         s=self.sessions
         if not s.configured('firered'):return
+        self.publish_extra_saves()
         with s.lock:
             source=s._live('firered') or {};bot=source.get('bot') or {};p=bot.get('preparation') or {};request=p.get('requestId')
             partners=self.partners();peers={owner:s._live(owner) for owner,_ in partners}
@@ -79,15 +100,19 @@ class PostgamePartners:
             # The request's own partner decides; without one, any ready partner.
             target=p.get('partnerOwner') or 'emerald'
             if target in results:available,reason=results[target] if request else (bool(listed),None if listed else results[target][1])
-            elif not partners:available,reason=self.available(None,request)
+            # A library with no partner game at all (a new user's FireRed-only
+            # library) has nothing to start; say so instead of naming Emerald.
+            elif not partners:available,reason=False,NO_PARTNER
             else:available,reason=(bool(listed),None if listed else next(iter(results.values()))[1]) if not request else (False,'The partner game for this evolution is not configured.')
             path=s.directory/'firered/partner-availability.json';path.parent.mkdir(parents=True,exist_ok=True)
             atomic_file(path,json.dumps({'schema':'pokemon-suite/partner-availability/v1','available':bool(listed) if not request else available,'reason':reason,'partners':listed,'checkedAt':int(time.time()*1000)}).encode())
-            if not bot.get('enabled') or bot.get('runScope')!='postgame' or p.get('automatic') is not True or p.get('phase')!='waiting-for-transfer' or not request:return
+            if not bot.get('enabled') or p.get('automatic') is not True or p.get('phase')!='waiting-for-transfer' or not request:return
             if (source.get('localEvolution') or {}).get('phase') not in (None,'complete'):return
             if not available:
                 s.command('firered',{'type':'defer-partner-evolution','requestId':request,'reason':reason},session_id=source['sessionId']);return
             peer=peers[target];title=dict(partners)[target]
             existing=(peer.get('bot') or {}).get('preparation') or {}
             if existing.get('requestId')==request:return
-            s.command(target,{'type':'prepare-partner','requestId':request,'automatic':True,**({'sourceOwner':'firered'} if title=='firered' else {})},session_id=peer['sessionId'])
+            # extra-saves: an exchange leg names the partner's offer (FireRed partners only).
+            if p.get('offer') and title!='firered':return
+            s.command(target,{'type':'prepare-partner','requestId':request,'automatic':True,**({'sourceOwner':'firered'} if title=='firered' else {}),**({'offer':p['offer']} if p.get('offer') else {})},session_id=peer['sessionId'])

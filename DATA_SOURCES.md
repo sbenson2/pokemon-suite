@@ -18,6 +18,20 @@ The item ID/name mapping, hunt route table, and evolution rules describe functio
 
 The Mac app's FireRed bot knowledge (`runtime.json`, `world.json`, `story.json`, `battle.json`, pinned in `pokemon_suite/game_resources.py`) was extracted from [pret/pokefirered at c75f352304d529f6ba92d4f74b9cf8b5c3810788](https://github.com/pret/pokefirered/tree/c75f352304d529f6ba92d4f74b9cf8b5c3810788) by a verified build that reproduces FireRed US revision 1. It records symbol addresses and structure layouts, map layouts, warps, connections and events, encounter tables, script control flow with flag, variable, item and trainer references, and trainer parties, moves, species stats and the type chart. It contains no ROM bytes, graphics, audio or dialogue text; all of those are read from the user's own ROM or not used. It ships only in the Mac app, not in the source release.
 
+LeafGreen's bot knowledge (build 124) is extracted the same way from pret's LeafGreen US revision 1 build of that same checkout (`make compare_leafgreen_rev1`, SHA-1 `7862c67bdecbe21d1d69ce082ce34327e1c6ed5e`), pinned as `LEAFGREEN_FILES`. Its runtime symbols come from the LeafGreen build and its world data keeps LeafGreen's own wild tables; story and battle data are the same source facts as FireRed's. `engine/firered/src/suite/leafgreen-catchable.json`, LeafGreen's catchable species goal, is made by `scripts/derive-leafgreen-catchable.py` from the same source and holds species identifiers only.
+
+`pokedex/firered-builder.json` is a projection of that knowledge for the competitive builder and legality checker, made by `scripts/build-builder-facts.py`. Its `source` field records the input hashes. It holds numbers and identifiers only:
+
+- met-location section numbers;
+- wild encounter slots;
+- gift, static and event encounters;
+- growth rates;
+- native move power, accuracy and PP;
+- the type chart;
+- items and Poké Balls FireRed supplies.
+
+The in-game trade table (species, PID, IVs, trainer ID) and the Tanoby Unown letter table are copied as numbers from pret `src/data/ingame_trades.h` and `src/wild_encounter.c` at the same revision. Trade nicknames and trainer names are not copied. The builder bundles no community set data; its set guidance is computed from these facts.
+
 `data/champions.json` in the public tree is an explicit empty availability record. No Smogon set or analysis data is distributed. The farming form still accepts custom capture/evolution requirements. Existing saved references to unavailable presets require review; they are not silently replaced with a different build.
 
 `PACKAGE-MANIFEST.json` records every exported file hash. `release/manifest.json` binds the reviewed build inputs; in an exported tree it binds the sanitized output bytes. Hashes establish identity, not ownership or a legal guarantee.

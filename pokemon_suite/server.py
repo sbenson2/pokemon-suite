@@ -82,7 +82,7 @@ class SuiteServer(ThreadingHTTPServer):
         current = next((s for s in sessions if s['game'] == selected), None)
         pack = next((p for p in packs if p['game']['id'] == 'pokemon-' + str(selected)), None)
         cards = [{**p, 'id': p['game']['id']} for p in packs]
-        return {'product': 'pokemon-suite', 'version': '0.1.1', 'controlAvailable': True,
+        return {'product': 'pokemon-suite', 'version': '0.2.0', 'controlAvailable': True,
                 'selected': pack['id'] if pack else '', 'packs': packs, 'cartridges': cards,
                 'library': library, 'sessions': sessions, 'session': current,
                 'software':{**self.updates.status(),'feed':self.update_feed.status()},
@@ -245,6 +245,15 @@ class Handler(SuiteRoutes, BaseHTTPRequestHandler):
                     raise ValueError('Choose a game image on this computer.')
                 with self.server.pokemon_sessions.lock:
                     result=install_firered(self.server.directory,payload['rom'],payload.get('resources') or None)
+                return self._json(200,result)
+            if path == '/api/install/frlg':
+                # LeafGreen (build 124): the Mac app's one Add flow for either
+                # FRLG cartridge; the verified image says which game it is.
+                from .installation import install_frlg
+                if set(payload)!={'rom'} or not isinstance(payload['rom'],str):
+                    raise ValueError('Choose a game image on this computer.')
+                with self.server.pokemon_sessions.lock:
+                    result=install_frlg(self.server.directory,payload['rom'])
                 return self._json(200,result)
             if path == '/api/select':
                 game = payload.get('game')

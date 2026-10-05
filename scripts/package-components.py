@@ -11,6 +11,23 @@ from pokemon_suite.package_builder import build_package
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
+ENGINE_ENTRYPOINTS={'worker':'engine/firered/src/suite/session-worker.js','researchBots':'engine/shared','campaignPlanner':'engine/firered/src/suite/campaign-run.js'}
+
+
+def engine_games():
+    # The Mac build accepts only an engine capsule serving exactly its
+    # ENGINE_GAMES (LeafGreen since build 124), so both read one list.
+    spec=importlib.util.spec_from_file_location('mac_build',ROOT/'scripts/build-macos.py');module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    return list(module.ENGINE_GAMES)
+
+
+def package_spec(action):
+    """The games and entrypoints a component package serves."""
+    if action=='engine':return engine_games(),dict(ENGINE_ENTRYPOINTS)
+    if action=='planner':return ['firered'],{'campaignPlanner':ENGINE_ENTRYPOINTS['campaignPlanner']}
+    if action=='data':return ['firered','leafgreen','emerald','crystal'],{'data':'data'}
+    raise ValueError('Choose an engine, planner or data package.')
+
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
@@ -32,13 +49,11 @@ def main():
     if not isinstance(key,Ed25519PrivateKey):raise ValueError('Choose an Ed25519 release key.')
     spec=importlib.util.spec_from_file_location('reviewed_export',ROOT/'scripts/package-source.py');module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
     reviewed=module.reviewed_files(ROOT)
+    games,entries=package_spec(args.action)
     if args.action in {'engine','planner'}:
         files={p:b for p,b in reviewed.items() if p.startswith(('engine/firered/src/','engine/shared/')) or p in {'engine/firered/package.json'}}
-        entries={'worker':'engine/firered/src/suite/session-worker.js','researchBots':'engine/shared','campaignPlanner':'engine/firered/src/suite/campaign-run.js'}
-        games=['firered','emerald','crystal']
-        if args.action=='planner':entries={'campaignPlanner':entries['campaignPlanner']};games=['firered']
     else:
-        files={p.removeprefix('pokemon_suite/static/'):b for p,b in reviewed.items() if p.startswith('pokemon_suite/static/data/')};entries={'data':'data'};games=['firered','leafgreen','emerald','crystal']
+        files={p.removeprefix('pokemon_suite/static/'):b for p,b in reviewed.items() if p.startswith('pokemon_suite/static/data/')}
     proof=None
     if args.action in {'engine','planner'}:
         from pokemon_suite.bot_verification import verified_payload

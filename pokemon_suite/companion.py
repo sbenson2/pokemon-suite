@@ -24,8 +24,9 @@ from urllib.parse import urlsplit
 GET_PATHS = {'/api/pokemon-suite/pokedex', '/api/state', '/data/champions.json', '/api/pokemon-suite/inventory', '/api/pokemon-suite/player-tasks',
              '/api/pokemon-suite/bot-settings', '/api/pokemon-suite/campaign-runs',
              '/api/pokemon-suite/sessions', '/api/pokemon-suite/shinies', '/api/pokemon-suite/reports', '/api/pokemon-farming/requests',
-             '/api/pokemon-suite/goals'}
-POST_PATHS = {'/api/select', '/api/pokemon-suite/start-game', '/api/pokemon-suite/stop-game',
+             '/api/pokemon-suite/goals', '/api/pokemon-suite/bank', '/api/pokemon-suite/builder/guidance',
+             '/api/pokemon-suite/builder/individual', '/api/pokemon-suite/builder/legality'}
+POST_PATHS = {'/api/pokemon-suite/builder/plan', '/api/pokemon-suite/builder/request', '/api/select', '/api/pokemon-suite/start-game', '/api/pokemon-suite/stop-game',
               '/api/pokemon-suite/save', '/api/pokemon-suite/input', '/api/pokemon-suite/player-tasks',
               '/api/pokemon-suite/bot-settings', '/api/pokemon-suite/inventory-source',
               '/api/pokemon-suite/trade-plan', '/api/pokemon-suite/trade-pokemon',
@@ -34,7 +35,7 @@ POST_PATHS = {'/api/select', '/api/pokemon-suite/start-game', '/api/pokemon-suit
               '/api/pokemon-farming/preview', '/api/pokemon-farming/requests',
               '/api/pokemon-farming/start', '/api/pokemon-farming/stop', '/api/pokemon-farming/remove',
               '/api/pokemon-suite/goals', '/api/pokemon-suite/goals/cancel',
-              '/api/pokemon-suite/requests/interpret', '/api/pokemon-suite/requests/commit', '/api/pokemon-suite/requests/cancel',
+              '/api/pokemon-suite/requests/interpret', '/api/pokemon-suite/requests/select', '/api/pokemon-suite/requests/commit', '/api/pokemon-suite/requests/cancel',
               '/api/pokemon-suite/requests/warm'}
 
 def allowed_route(method, target):

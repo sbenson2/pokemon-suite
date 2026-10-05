@@ -29,7 +29,7 @@ final class NavigationMenuUITests: XCTestCase {
         XCTAssertTrue(app.switches["In my library"].firstMatch.waitForExistence(timeout: 10))
         navigate(app, to: "Trading")
         XCTAssertTrue(app.buttons["Shiny"].firstMatch.waitForExistence(timeout: 15))
-        navigate(app, to: "Pokédex")
+        navigate(app, to: "Bank")
         XCTAssertTrue(app.searchFields["Search Pokémon"].firstMatch.waitForExistence(timeout: 15))
         navigate(app, to: "Live game")
         let screen = app.descendants(matching: .any).matching(identifier: "live-screen").firstMatch
@@ -53,7 +53,7 @@ final class NavigationMenuUITests: XCTestCase {
         XCTAssertTrue(menu.waitForExistence(timeout: 40))
         let wordmark = app.otherElements["suite-wordmark"]
         let activity = app.buttons["Network and trades"].firstMatch
-        for page in ["Live game", "Games", "Trading", "Pokédex", "Hunting", "Bot Settings"] {
+        for page in ["Live game", "Games", "Trading", "Bank", "Hunting", "Bot Settings"] {
             navigateToSuitePage(app, page)
             XCTAssertTrue(activity.waitForExistence(timeout: 5), "Network stays available from every page")
             XCTAssertTrue(menu.isHittable && activity.isHittable)
@@ -61,7 +61,7 @@ final class NavigationMenuUITests: XCTestCase {
             XCTAssertLessThanOrEqual(menu.frame.maxX, wordmark.frame.minX)
             XCTAssertGreaterThanOrEqual(activity.frame.minX, wordmark.frame.maxX)
             XCTAssertGreaterThanOrEqual(menu.frame.height, 44)
-            if page == "Games" || page == "Pokédex" || page == "Trading" {
+            if page == "Games" || page == "Bank" || page == "Trading" {
                 let field = app.searchFields[page == "Games" ? "Find a game" : "Search Pokémon"].firstMatch
                 XCTAssertTrue(field.waitForExistence(timeout: 10))
                 XCTAssertTrue(field.isHittable, "Search stays available below the shared header")

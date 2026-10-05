@@ -57,6 +57,28 @@ class SuiteRoutes:
             except (ValueError,TypeError,KeyError,OSError,subprocess.SubprocessError) as error:
                 self._error(HTTPStatus.BAD_REQUEST,str(error));return
             self._json(HTTPStatus.OK,{'ok':True,**result},head=head);return
+        if path in {'/api/pokemon-suite/builder/guidance', '/api/pokemon-suite/builder/individual', '/api/pokemon-suite/builder/legality'}:
+            if not self._authenticated():self._error(HTTPStatus.FORBIDDEN,'owner authentication required');return
+            try:
+                from .data_provider import DataProvider
+                from . import pokemon_builder
+                query = parse_qs(parsed.query, keep_blank_values=True)
+                if any(len(v) != 1 for v in query.values()):raise ValueError('Choose one value per builder setting.')
+                q = {key: value[0] for key, value in query.items()}
+                with DataProvider(self.server.directory).snapshot():
+                    if path.endswith('/guidance'):
+                        if set(q) - {'species', 'game'}:raise ValueError('Choose a species.')
+                        if q.get('game', 'firered') != 'firered':raise ValueError('The competitive builder reads FireRed data.')
+                        result = {'guidance': pokemon_builder.guidance(q.get('species'))}
+                    elif path.endswith('/individual'):
+                        if set(q) != {'game', 'source', 'pokemon'}:raise ValueError('Choose a game, save and Pokémon.')
+                        result = pokemon_builder.individual(self.server.trading, q['game'], q['source'], q['pokemon'])
+                    else:
+                        if not {'game', 'source'} <= set(q) or set(q) - {'game', 'source', 'pokemon'}:raise ValueError('Choose a game and save.')
+                        result = pokemon_builder.legality(self.server.trading, q['game'], q['source'], q.get('pokemon'))
+            except (ValueError, TypeError, KeyError, OSError, subprocess.SubprocessError) as error:
+                self._error(HTTPStatus.BAD_REQUEST, str(error));return
+            self._json(HTTPStatus.OK, {'ok': True, **result}, head=head);return
         if path == '/api/pokemon-suite/inventory':
             if not self._authenticated():self._error(HTTPStatus.FORBIDDEN,'owner authentication required');return
             try:
@@ -64,6 +86,28 @@ class SuiteRoutes:
                 if set(query)-{'game','source'} or len(game)!=1 or len(source)>1 or source==['']:raise ValueError('Choose one game and save for its PC inventory.')
                 result=self.server.trading.inventory(game[0],source[0] if source else None)
             except (ValueError,TypeError,KeyError,OSError,subprocess.SubprocessError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True,**result},head=head);return
+        if path == '/api/pokemon-suite/bank':
+            # The Bank (read-only): every species, its owned counts across all known saves and how FireRed obtains it;
+            # with species=N, that species' individuals in every save (pokemon_bank.py).
+            if not self._authenticated():self._error(HTTPStatus.FORBIDDEN,'owner authentication required');return
+            try:
+                from .pokemon_bank import bank
+                query=parse_qs(parsed.query,keep_blank_values=True);game=query.get('game',[]);species=query.get('species',[])
+                if set(query)-{'game','species'} or len(game)!=1 or len(species)>1:raise ValueError('Choose one game, and optionally one Pokédex number, for the Bank.')
+                if species and not species[0].isdigit():raise ValueError('Choose a Pokédex number from 1 to 386.')
+                result=bank(self.server.trading,game[0],int(species[0]) if species else None)
+            except (ValueError,TypeError,KeyError,OSError,subprocess.SubprocessError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True,**result},head=head);return
+        if path == '/api/pokemon-suite/extra-saves':
+            # extra-saves: which other owned FireRed save supplies each one-per-save family and what it is doing (extra_saves.py).
+            if not self._authenticated():self._error(HTTPStatus.FORBIDDEN,'owner authentication required');return
+            try:
+                from .extra_saves import ExtraSaves
+                result=ExtraSaves(self.server.pokemon_sessions).progress()
+            except (ValueError,TypeError,KeyError,OSError) as error:
                 self._error(HTTPStatus.BAD_REQUEST,str(error));return
             self._json(HTTPStatus.OK,{'ok':True,**result},head=head);return
         if path in {"/api/pokemon-suite/bot-settings","/api/pokemon-suite/player-tasks","/api/pokemon-suite/campaign-runs"}:
@@ -120,6 +164,21 @@ class SuiteRoutes:
         return False
 
     def route_post(self, path, payload):
+        if path in {'/api/pokemon-suite/builder/plan', '/api/pokemon-suite/builder/request'}:
+            # Read-only: a plan or a goal draft; starting anything uses the player-task and goal endpoints.
+            try:
+                from .data_provider import DataProvider
+                from . import pokemon_builder
+                with DataProvider(self.server.directory).snapshot():
+                    if path.endswith('/plan'):
+                        result = {'plan': pokemon_builder.plan(self.server.trading, payload)}
+                    else:
+                        if set(payload) != {'target'}:
+                            raise ValueError('Send the target set.')
+                        result = pokemon_builder.request(payload['target'])
+            except (ValueError, TypeError, KeyError, OSError, subprocess.SubprocessError) as error:
+                self._error(HTTPStatus.BAD_REQUEST, str(error));return
+            self._json(HTTPStatus.OK, {'ok': True, **result});return
         if path == '/api/pokemon-suite/trade-plan':
             try:
                 if set(payload)!={'game','pokemonId','sourceId'} or any(not isinstance(v,str) for v in payload.values()):raise ValueError('Choose a Pokémon and its saved collection.')
@@ -192,6 +251,28 @@ class SuiteRoutes:
             except (ValueError,TypeError,KeyError,OSError,subprocess.SubprocessError) as error:
                 self._error(HTTPStatus.BAD_REQUEST,str(error));return
             self._json(HTTPStatus.OK,{'ok':True,'goal':result});return
+        if path == '/api/pokemon-suite/extra-saves/start-helper':
+            # extra-saves: start the planned helper FireRed save (a new save played only to its goal),
+            # or (build 126) a row's helper task on an archived save ({"needId": ...}).
+            try:
+                if len(payload)!=1 or not (set(payload)<={'saveId','needId'}) or not isinstance(next(iter(payload.values())),str):raise ValueError('Choose a helper save from the extra-save plan.')
+                from .extra_saves import ExtraSaves
+                result=ExtraSaves(self.server.pokemon_sessions).start_helper(payload['saveId']) if 'saveId' in payload else ExtraSaves(self.server.pokemon_sessions).start_helper(need_id=payload['needId'])
+            except (ValueError,TypeError,KeyError,OSError,subprocess.SubprocessError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True,**result});return
+        if path == '/api/pokemon-suite/extra-saves/seed-partner':
+            # extra-saves: the owner lets an archived FireRed save serve as a trade partner (a read-only seed copy).
+            try:
+                if set(payload)-{'profileId','lineage'} or not isinstance(payload.get('profileId'),str) or not isinstance(payload.get('lineage',''),str):raise ValueError('Choose an archived FireRed save.')
+                from .extra_saves import ExtraSaves
+                sessions=self.server.pokemon_sessions
+                # build 126: an archive outside a linked Center (or with planned helper tasks) is prepared by a helper first.
+                result=ExtraSaves(sessions).seed_or_park(payload['profileId'],lineage=payload.get('lineage') or None)
+                if result['role']=='partner' and hasattr(sessions,'start_partner'):sessions.start_partner(result['owner'])
+            except (ValueError,TypeError,KeyError,OSError,subprocess.SubprocessError) as error:
+                self._error(HTTPStatus.BAD_REQUEST,str(error));return
+            self._json(HTTPStatus.OK,{'ok':True,**result});return
         if path in {"/api/pokemon-suite/campaign-runs/preview","/api/pokemon-suite/campaign-runs/start"}:
             try:
                 if path.endswith('/preview'):
@@ -292,18 +373,19 @@ class SuiteRoutes:
                 self._error(HTTPStatus.BAD_REQUEST, str(error));return
             self._json(HTTPStatus.OK, {"ok":True,"session":result});return
         # ---- Natural-language requests (G3, pokemon_requests.py) -------------------------------
-        # interpret: {text, via, answers?} -> draft; commit: {draftId|goal, answers?, idempotencyKey}
+        # interpret: {text, via, answers?} -> draft; select: {selection, answers?} -> the same draft from the Bank's
+        # "Get it" fields; commit: {draftId|goal, answers?, idempotencyKey}
         # -> the goal supervisor (server.goals); cancel: {draftId} drops a proposed draft (the owner's Cancel, a logged
         # outcome); warm: {} starts Laya without waiting (Ask opened, mic tapped). Same session auth as every control endpoint.
-        if path in {'/api/pokemon-suite/requests/interpret','/api/pokemon-suite/requests/commit','/api/pokemon-suite/requests/cancel','/api/pokemon-suite/requests/warm'}:
+        if path in {'/api/pokemon-suite/requests/interpret','/api/pokemon-suite/requests/select','/api/pokemon-suite/requests/commit','/api/pokemon-suite/requests/cancel','/api/pokemon-suite/requests/warm'}:
             if not self._control_request():self._error(HTTPStatus.FORBIDDEN,'Control requires the current Pokémon Suite session.');return
             from .pokemon_requests import service as request_service,RequestError
             try:
                 requests=request_service(self.server)
                 headers=getattr(self,'headers',None)  # the client, for the request log's rephrase check: the app's or browser's User-Agent, else the relay's Origin
                 client=(headers.get('User-Agent') or headers.get('Origin') or '') if headers is not None else ''
-                result=requests.interpret(payload,client=client) if path.endswith('/interpret') else requests.commit(payload) if path.endswith('/commit') \
-                    else requests.cancel(payload) if path.endswith('/cancel') else requests.warm(payload)
+                result=requests.interpret(payload,client=client) if path.endswith('/interpret') else requests.select(payload) if path.endswith('/select') \
+                    else requests.commit(payload) if path.endswith('/commit') else requests.cancel(payload) if path.endswith('/cancel') else requests.warm(payload)
             except RequestError as error:
                 self._error(error.status,str(error));return
             except (ValueError,TypeError,KeyError,OSError,subprocess.SubprocessError) as error:

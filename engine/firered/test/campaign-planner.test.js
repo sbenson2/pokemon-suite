@@ -14899,6 +14899,189 @@ test("the completed Mansion quest yields its interior to an explicit training ob
   assert.equal(recommendation?.mansionPhase, undefined);
 });
 
+// The Mansion switch (flag 620) toggles barriers on every floor: each floor's
+// ON_LOAD script applies PokemonMansion_EventScript_PressSwitch_<floor> while
+// it is set. This fixture keeps the real barrier coordinates: 2F x=12, y=4..8
+// seals the north-west pocket around the 3F stairs; 3F (17..19,11..12) opens
+// the way to the holes; 1F (32..34,25..26) opens the east exit to the hole
+// landings. The current floor is read from the live grid, as on the cartridge.
+function mansionSwitchFixture() {
+  const range = (from, to) => Array.from({ length: to - from + 1 }, (_, index) => from + index);
+  const walls = (cells, xs, ys) => {
+    for (const x of xs) for (const y of ys) cells[`${x},${y}`] = 1;
+    return cells;
+  };
+  const firstFloor = openMap("MAP_POKEMON_MANSION_1F", {
+    width: 38,
+    height: 35,
+    collisions: walls(walls(walls({}, [15], range(0, 34)), [29], range(25, 34)),
+      [...range(30, 31), ...range(32, 34), ...range(35, 37)], [25, 26]),
+    behaviors: {
+      "8,33": "MB_SOUTH_ARROW_WARP",
+      "10,13": "MB_UP_RIGHT_STAIR_WARP",
+      "19,22": "MB_CAVE",
+      "20,22": "MB_CAVE",
+      "34,33": "MB_SOUTH_ARROW_WARP",
+    },
+    warpEvents: [
+      { x: 8, y: 33, dest_map: "MAP_CINNABAR_ISLAND", dest_warp_id: "0" },
+      { x: 10, y: 13, dest_map: "MAP_POKEMON_MANSION_2F", dest_warp_id: "1" },
+      { x: 19, y: 22, dest_map: "MAP_POKEMON_MANSION_3F", dest_warp_id: "1" },
+      { x: 20, y: 22, dest_map: "MAP_POKEMON_MANSION_3F", dest_warp_id: "2" },
+      { x: 34, y: 33, dest_map: "MAP_CINNABAR_ISLAND", dest_warp_id: "0" },
+    ],
+  });
+  const secondFloor = openMap("MAP_POKEMON_MANSION_2F", {
+    width: 38,
+    height: 20,
+    collisions: walls(
+      walls({}, [12], [...range(0, 5), ...range(9, 14), ...range(16, 19)]),
+      range(0, 11), [10]),
+    behaviors: { "9,3": "MB_UP_RIGHT_STAIR_WARP", "30,14": "MB_DOWN_LEFT_STAIR_WARP" },
+    warpEvents: [
+      { x: 9, y: 3, dest_map: "MAP_POKEMON_MANSION_3F", dest_warp_id: "0" },
+      { x: 30, y: 14, dest_map: "MAP_POKEMON_MANSION_1F", dest_warp_id: "1" },
+    ],
+    backgroundEvents: [{ x: 2, y: 16, script: "PokemonMansion_2F_EventScript_Statue" }],
+  });
+  const thirdFloor = openMap("MAP_POKEMON_MANSION_3F", {
+    width: 38,
+    height: 20,
+    collisions: walls({}, range(0, 37), [11, 12]),
+    behaviors: {
+      "8,3": "MB_DOWN_LEFT_STAIR_WARP",
+      "18,18": "MB_FALL_WARP",
+      "19,18": "MB_FALL_WARP",
+      "20,18": "MB_FALL_WARP",
+    },
+    warpEvents: [
+      { x: 8, y: 3, dest_map: "MAP_POKEMON_MANSION_2F", dest_warp_id: "0" },
+      { x: 18, y: 18, dest_map: "MAP_POKEMON_MANSION_1F", dest_warp_id: "2" },
+      { x: 19, y: 18, dest_map: "MAP_POKEMON_MANSION_1F", dest_warp_id: "3" },
+      { x: 20, y: 18, dest_map: "MAP_POKEMON_MANSION_1F", dest_warp_id: "3" },
+    ],
+    backgroundEvents: [{ x: 12, y: 5, script: "PokemonMansion_3F_EventScript_Statue" }],
+  });
+  const island = openMap("MAP_CINNABAR_ISLAND", {
+    width: 20,
+    height: 15,
+    behaviors: { "8,3": "MB_WARP_DOOR", "14,11": "MB_WARP_DOOR" },
+    warpEvents: [
+      { x: 8, y: 3, dest_map: "MAP_POKEMON_MANSION_1F", dest_warp_id: "0" },
+      { x: 14, y: 11, dest_map: "MAP_CINNABAR_ISLAND_POKEMON_CENTER_1F", dest_warp_id: "0" },
+    ],
+  });
+  const center = openMap("MAP_CINNABAR_ISLAND_POKEMON_CENTER_1F", {
+    width: 10,
+    height: 8,
+    behaviors: { "5,7": "MB_SOUTH_ARROW_WARP" },
+    warpEvents: [{ x: 5, y: 7, dest_map: "MAP_CINNABAR_ISLAND", dest_warp_id: "1" }],
+    objectEvents: [{ x: 5, y: 2, graphics_id: "OBJ_EVENT_GFX_NURSE" }],
+  });
+  const at = (map, position, { switchSet, live = {} }) => {
+    const observation = campaignObservation({
+      map: map.id,
+      flags: { 424: false, 620: switchSet },
+      party: [{ slot: 0, species: 101, level: 45, hp: 38, maxHp: 116, moves: [] }],
+    });
+    observation.playerMemory.position = position;
+    observation.playerMemory.mapGrid = {
+      width: map.layout.width,
+      height: map.layout.height,
+      cells: map.layout.cells.map((cell) => ({
+        ...cell,
+        collision: live[`${cell.x},${cell.y}`] ?? cell.collision,
+      })),
+    };
+    return observation;
+  };
+  return {
+    world: { maps: [firstFloor, secondFloor, thirdFloor, island, center] },
+    floors: { firstFloor, secondFloor, thirdFloor },
+    at,
+    heal: {
+      id: "recover-training-party",
+      target: { kind: "object", map: center.id, index: 0 },
+    },
+    secretKey: {
+      id: "secret-key",
+      target: { kind: "mansion-secret-key", map: "MAP_POKEMON_MANSION_B1F", index: 5 },
+      completion: { kind: "flag-set", id: 424 },
+    },
+    // Live cells PressSwitch_2F/3F leave on the current floor.
+    sealedPocket: { "12,6": 3, "12,7": 3, "12,8": 3 },
+    openHoles: { "17,11": 0, "18,11": 0, "19,11": 0, "17,12": 0, "18,12": 0, "19,12": 0 },
+  };
+}
+
+test("a heal trip from Mansion 3F with the switch set drops through a hole, not into the sealed 2F pocket", () => {
+  const fixture = mansionSwitchFixture();
+  const recommendation = campaignNavigationRecommendation({
+    world: fixture.world,
+    observation: fixture.at(fixture.floors.thirdFloor, { x: 12, y: 7 },
+      { switchSet: true, live: fixture.openHoles }),
+    objective: fixture.heal,
+  });
+
+  assert.equal(recommendation?.kind, "move-toward");
+  assert.equal(recommendation?.transit?.destinationMap, "MAP_POKEMON_MANSION_1F");
+  assert.equal(recommendation?.transit?.y, 18);
+  assert.ok([18, 19, 20].includes(recommendation?.transit?.x));
+});
+
+test("a heal trip that starts in the sealed 2F pocket climbs back to 3F instead of stalling", () => {
+  const fixture = mansionSwitchFixture();
+  const recommendation = campaignNavigationRecommendation({
+    world: fixture.world,
+    observation: fixture.at(fixture.floors.secondFloor, { x: 9, y: 3 },
+      { switchSet: true, live: fixture.sealedPocket }),
+    objective: fixture.heal,
+  });
+
+  assert.ok(recommendation, "a route out of the pocket exists through 3F");
+  assert.equal(recommendation.transit?.destinationMap, "MAP_POKEMON_MANSION_3F");
+  assert.deepEqual([recommendation.transit?.x, recommendation.transit?.y], [9, 3]);
+});
+
+test("the Secret Key search from the sealed 2F pocket climbs back to 3F instead of stalling", () => {
+  const fixture = mansionSwitchFixture();
+  const recommendation = campaignNavigationRecommendation({
+    world: fixture.world,
+    observation: fixture.at(fixture.floors.secondFloor, { x: 9, y: 3 },
+      { switchSet: true, live: fixture.sealedPocket }),
+    objective: fixture.secretKey,
+  });
+
+  assert.ok(recommendation, "the switch-set route leaves the pocket through 3F");
+  assert.equal(recommendation.mansionPhase, "seek-secret-key");
+  assert.equal(recommendation.transit?.destinationMap, "MAP_POKEMON_MANSION_3F");
+});
+
+test("with the Mansion switch reset the floors keep their authored layouts", () => {
+  const fixture = mansionSwitchFixture();
+  // Plan once with the switch set so a cached switch-set graph cannot leak.
+  campaignNavigationRecommendation({
+    world: fixture.world,
+    observation: fixture.at(fixture.floors.thirdFloor, { x: 12, y: 7 },
+      { switchSet: true, live: fixture.openHoles }),
+    objective: fixture.heal,
+  });
+  const fromPocket = campaignNavigationRecommendation({
+    world: fixture.world,
+    observation: fixture.at(fixture.floors.secondFloor, { x: 9, y: 3 }, { switchSet: false }),
+    objective: fixture.heal,
+  });
+  const fromThirdFloor = campaignNavigationRecommendation({
+    world: fixture.world,
+    observation: fixture.at(fixture.floors.thirdFloor, { x: 12, y: 7 }, { switchSet: false }),
+    objective: fixture.heal,
+  });
+
+  assert.equal(fromPocket?.transit?.destinationMap, "MAP_POKEMON_MANSION_1F");
+  assert.deepEqual([fromPocket?.transit?.x, fromPocket?.transit?.y], [30, 14]);
+  assert.equal(fromThirdFloor?.transit?.destinationMap, "MAP_POKEMON_MANSION_2F");
+});
+
 test("the Cinnabar Gym planner enters through the island before routing behind quiz doors", () => {
   const cinnabar = openMap("MAP_CINNABAR_ISLAND", {
     width: 3,
@@ -15679,6 +15862,21 @@ test('the National Dex layout capability neither revives exhausted income traine
  p=createCampaignPlanner({...fresh.args,initialState:legacy(p.state())});
  fresh.o.playerMemory.map.id=b.id;
  assert.equal(p.selectIncomePreparation(fresh.o).trainer.id,41,'the committed trainer survives the update');
+});
+
+// The Mansion switch (flag 620) is a navigation capability too. Income records
+// written before it existed keep their budget whichever way the switch is set.
+test('the Mansion switch capability neither revives exhausted income trainers nor splits their records',()=>{
+ const {args,o}=incomeReliabilityFixture();
+ let p=createCampaignPlanner(args);const first=p.selectIncomePreparation(o,1000);assert.equal(first.trainer.id,41);
+ for(let attempt=1;attempt<=3;attempt++)p.rejectIncomePreparation(first,o,attempt*1000);
+ const recorded=JSON.parse(JSON.stringify(p.state()));
+ assert.ok(recorded.incomeFailures.every(f=>!f.context.includes('mansionSwitchSet')));
+ for(const on of [true,false]){
+  o.playerMemory.storyState.flagIds[620]=on;
+  p=createCampaignPlanner({...args,initialState:JSON.parse(JSON.stringify(recorded))});
+  assert.equal(p.selectIncomePreparation(o,10000000),null,`an exhausted trainer stays excluded (switch ${on?'set':'reset'})`);
+ }
 });
 
 test('income uses the chosen paid trainer and capable battler rather than starting unrelated training',()=>{

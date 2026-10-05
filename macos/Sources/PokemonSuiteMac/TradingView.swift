@@ -107,17 +107,7 @@ struct TradingView: View {
                 } trailing: {
                     VStack(spacing: 0) {
                         if let selected {
-                            HStack(spacing: 12) {
-                                ROMAsset(kind: "pokemon", key: selected["nationalSpeciesId"].text, shiny: selected["shiny"].bool, size: 80, label: selected["name"].string)
-                                VStack(alignment: .leading, spacing: 6) {
-                                    Text(selected["name"].string).font(.title3.weight(.semibold))
-                                    Text(selected["types"].array.map { $0.string.capitalized }.joined(separator: " / ")).font(.callout).foregroundStyle(.secondary)
-                                    if selected["shiny"].bool { Label("Shiny", systemImage: "sparkles").font(.caption).foregroundStyle(.orange) }
-                                }
-                                Spacer(minLength: 0)
-                            }.padding(16)
-                            SectionTabs(label: "Pokémon details", items: ["Overview", "Stats", "Moves"], selection: $detailSection)
-                            BorderedScroll { detail(selected) }
+                            PokemonIndividualDetail(mon: selected, section: $detailSection)
                         } else {
                             ContentUnavailableView("Select a Pokémon", systemImage: "cursorarrow.click").frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
@@ -160,8 +150,7 @@ struct TradingView: View {
                 }
                 Text(mon["nickname"].string.nonempty ?? mon["name"].string).font(.system(size: 12, weight: .medium)).lineLimit(1)
             }.frame(maxWidth: .infinity).frame(height: 80)
-                .background(selectedID == mon["id"].string ? Color.accentColor.opacity(0.13) : Color(nsColor: .controlBackgroundColor), in: RoundedRectangle(cornerRadius: 6))
-                .overlay { RoundedRectangle(cornerRadius: 6).stroke(selectedID == mon["id"].string ? Color.accentColor : Color(nsColor: .separatorColor), lineWidth: selectedID == mon["id"].string ? 2 : 1) }
+                .gameTile(selected: selectedID == mon["id"].string)
         }.buttonStyle(.plain).help("\(mon["name"].string), \(location(mon))")
             .accessibilityLabel("\(mon["name"].string), \(mon["shiny"].bool ? "shiny, " : "")\(location(mon))")
             .accessibilityIdentifier("pc-" + mon["slotId"].string)
@@ -171,30 +160,6 @@ struct TradingView: View {
             .frame(maxWidth: .infinity).frame(height: 80)
             .overlay { RoundedRectangle(cornerRadius: 6).stroke(Color(nsColor: .separatorColor).opacity(0.55)) }
             .accessibilityLabel("Slot \(slot + 1), \(filtered ? "filtered" : "empty")")
-    }
-    @ViewBuilder private func detail(_ mon: JSONValue) -> some View {
-        if detailSection == "Overview" {
-            VStack(alignment: .leading, spacing: 14) {
-                LabeledContent("Location", value: location(mon))
-                if mon["level"].int > 0 { LabeledContent("Level", value: mon["level"].text) }
-                if let nature = mon["natureName"].string.nonempty { LabeledContent("Nature", value: nature) }
-                if let ability = mon["ability"].string.nonempty { LabeledContent("Ability", value: ability) }
-                LabeledContent("Held item", value: mon["heldItem"].int == 0 ? "None" : CartridgeItem.name(nativeID: mon["heldItem"].int, catalog: model.dex["heldItems"].array) ?? "Item \(mon["heldItem"].int)")
-            }
-        } else if detailSection == "Stats" {
-            Grid(alignment: .leading, horizontalSpacing: 20, verticalSpacing: 12) {
-                GridRow { Text("Stat"); Text("IV"); Text("EV") }.font(.caption.weight(.semibold)).foregroundStyle(.secondary)
-                ForEach(["hp", "attack", "defense", "spAttack", "spDefense", "speed"], id: \.self) { key in
-                    GridRow { Text(["hp":"HP","attack":"Attack","defense":"Defense","spAttack":"Sp. Attack","spDefense":"Sp. Defense","speed":"Speed"][key]!); Text(mon["ivs"][key].text); Text(mon["evs"][key].text) }.monospacedDigit()
-                }
-            }
-        } else {
-            VStack(spacing: 14) {
-                ForEach(Array(mon["moveDetails"].array.enumerated()), id: \.offset) { _, move in
-                    HStack { Text(move["name"].string); Spacer(); Text("\(move["pp"].text) PP").foregroundStyle(.secondary).monospacedDigit() }
-                }
-            }
-        }
     }
     private var tradeFooter: some View {
         VStack(alignment: .leading, spacing: 10) {

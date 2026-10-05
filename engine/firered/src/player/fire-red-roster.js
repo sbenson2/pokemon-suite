@@ -8,6 +8,7 @@ import { typeMultiplier, effectPenalty } from "./mechanics-data.js";
 import { isHmUtilityCarrier } from './hm-policy.js';
 import { MAIN_STORY_CAMPAIGN, CAMPAIGN_MAJOR_BATTLE_LEVEL_TARGETS, IMPORTANT_BATTLE_TRAINER_NAMES,
   buildCollectionCatalog, buildRegionalEncounterCatalog } from "./campaign.js";
+import { FRLG_GAMES } from "../frlg.js";
 
 const VERSION = "coherent-generated-v2";
 export const RANDOM_ROSTER_VERSION = "random-families-v1";
@@ -71,6 +72,9 @@ export function createFireRedRosterContext({ world, story, mechanics, facts }) {
   if (facts?.schema !== "master-red/firered-roster-facts/v1" || !world || !mechanics) {
     throw new TypeError("generated FireRed rosters require verified cartridge facts and world data");
   }
+  // The roster identity seeds team draws: LeafGreen facts give LeafGreen teams
+  // (build 124). Every other cartridge, the peer-trade FireRed included, stays FireRed.
+  const gameId = facts.cartridgeSha1 === FRLG_GAMES.leafgreen.sha1 ? "leafgreen-rev1-stock" : "firered-rev1-stock";
   const data = mechanics.data ?? mechanics, worldData = world.data ?? world;
   const species = facts.species;
   const levelMethod = facts.constants.EVO_LEVEL?.value ?? 4, itemMethod = facts.constants.EVO_ITEM?.value ?? 7;
@@ -368,7 +372,7 @@ export function createFireRedRosterContext({ world, story, mechanics, facts }) {
         qualification: "generated plan, not an autonomous completion" },
     });
   };
-  return Object.freeze({ gameId: "firered-rev1-stock", version: VERSION, revision, candidates, exclusions: freeze(exclusions), evaluate,
+  return Object.freeze({ gameId, version: VERSION, revision, candidates, exclusions: freeze(exclusions), evaluate,
     createFieldTeamPlan(committed) {
       // Runtime policy is separate from the historical random draw. Rebuilding
       // old run commitments must keep producing the exact original roster.
@@ -427,7 +431,7 @@ export function createFireRedRosterContext({ world, story, mechanics, facts }) {
     },
     createTeamPlan(starterSpecies, seed, teamSeed, acquisitionIds = null) {
       const starter = starterEntry(starterSpecies);
-      if (!generators.has(starterSpecies)) generators.set(starterSpecies, createRosterGenerator({ gameId: `firered-rev1-stock:${starterSpecies}:${revision}`,
+      if (!generators.has(starterSpecies)) generators.set(starterSpecies, createRosterGenerator({ gameId: `${gameId}:${starterSpecies}:${revision}`,
         candidates: candidates.filter(x => x.familyKey !== starter.familyKey),
         acceptTeam: selected => evaluate({ starterFamily: starter.family, acquisitions: selected }).viable }));
       const selected = acquisitionIds ? acquisitionIds.map(id => { const entry = byId.get(id); if (!entry) throw new Error(`unknown committed roster acquisition ${id}`); return entry; })

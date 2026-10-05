@@ -111,6 +111,9 @@ class Game(SuiteSessions):
                 live['mission']['state'] = 'paused'
         elif kind == 'start-bot':
             bot.update(enabled=True, awaitingCommand=True, runScope='task')
+        elif kind == 'resume-campaign':
+            live['campaign'].update(status='running', reason=None)
+            bot.update(enabled=True, awaitingCommand=False, runScope='campaign')
         return live
 
 
@@ -364,6 +367,25 @@ class ChainTests(GoalTestCase):
         self.assertRegex(goal['result']['summary'], 'Mewtwo')
         self.assertEqual(len(self.game.sent), 2, 'the checklist already continues; standing goals need no command')
 
+    def test_campaign_progress_shows_objective_labels_never_ids(self):
+        live = owner()
+        supervisor = self.supervisor(live)
+        self.submit(supervisor, self.goal(save={'mode': 'new', 'trainerName': None, 'starter': None, 'label': None}))
+        self.ticks(supervisor, 3)
+        live['campaign']['objective'] = {'id': 'master-native-12-capture', 'target': {'kind': 'encounter-zone', 'map': 'MAP_ROUTE2'}}
+        goal = self.ticks(supervisor, 1)
+        self.assertEqual(goal['progress']['detail'], 'Playing the story campaign (0/8 badges).')
+        # The story progress names the same objective: its label is shown.
+        live['campaign']['storyProgress']['current'] = {'id': 'master-native-12-capture', 'label': 'Acquire Caterpie'}
+        goal = self.ticks(supervisor, 1)
+        self.assertEqual(goal['progress']['detail'], 'Playing the story campaign (0/8 badges): Acquire Caterpie.')
+        live['campaign']['objective'] = {'id': 'badge-boulder', 'label': 'Win the Boulder Badge'}
+        goal = self.ticks(supervisor, 1)
+        self.assertEqual(goal['progress']['detail'], 'Playing the story campaign (0/8 badges): Win the Boulder Badge.')
+        live['campaign']['objective'] = 'rival-route22'  # a bare id
+        goal = self.ticks(supervisor, 1)
+        self.assertEqual(goal['progress']['detail'], 'Playing the story campaign (0/8 badges).')
+
     def test_hunt_queued_during_an_unfinished_campaign_starts_after_it(self):
         live = owner(league=False, dex=False, link=False,
                      campaign={'id': 'run-00000000-0000-0000-0000-000000000000', 'status': 'running', 'storyProgress': {'badges': {'earned': 7}}})
@@ -581,6 +603,49 @@ class StepReferenceTests(GoalTestCase):
         self.assertEqual(task['fingerprint'], identity)
         self.assertEqual(goal['execution']['plan'][1]['task']['fingerprint'], identity)
         self.assertEqual(goal['steps'][1]['task']['fingerprint'], {'$ref': 'steps[0].result.fingerprint'})
+
+    def test_catch_several_then_trade_each_by_its_inventory_id(self):
+        """The Bank's "send to the Switch" for any catch: the hunt records each caught individual's inventory
+        pokemonId, and one trade step per Pokémon sends them one at a time through the existing trade flow."""
+        import hashlib
+        live = owner()
+        traded = []
+
+        class Trading:
+            def trade(self, game, identifier, session_id, source_id='current'):
+                traded.append((game, identifier, session_id, source_id))
+                live['nativeTrade'] = {'fingerprint': f'trade-{len(traded)}', 'phase': 'advertising'}
+                return live
+        self.game = Game(self.root, live)
+        self.farming = FarmingRequests(self.root/'farming', self.game)
+        from pokemon_suite.pokemon_goals import GoalSupervisor
+        supervisor = GoalSupervisor(self.game, self.farming, Trading(), clock=lambda: self.now)
+        abra = request(63, shiny='any', quantity=2)
+        trades = [{'kind': 'trade', 'via': 'trade-pokemon', 'payload': {'pokemonId': {'$ref': f'steps[0].result.captures.{k}.pokemonId'}, 'sourceId': 'current'}}
+                  for k in range(2)]
+        goal = self.submit(supervisor, self.goal({'kind': 'farming', 'request': abra}, *trades))
+        self.assertEqual(goal['steps'][2]['payload']['pokemonId'], {'$ref': 'steps[0].result.captures.1.pokemonId'})
+        goal = self.ticks(supervisor, 3)
+        rid = goal['execution']['steps'][0]['requestId']
+        identities = ['[63,1001,7,31,30,29,28,27,26]', '[63,1002,7,1,2,3,4,5,6]']
+        captures = [{'fingerprint': f, 'pokemon': {'species': 63, 'shiny': False}, 'savedSramSha256': 'f' * 64, 'target': True} for f in identities]
+        self.hunt_receipt(rid, captures)
+        live['mission'].update(state='complete', caught=2)
+        live['bot'].update(awaitingCommand=True)
+        goal = self.ticks(supervisor, 2)
+        ids = [hashlib.sha256(('firered:' + f).encode()).hexdigest() for f in identities]
+        result = goal['execution']['steps'][0]['result']
+        self.assertEqual([c['pokemonId'] for c in result['captures']], ids, 'the inventory id of each caught individual')
+        self.assertEqual(result['pokemonId'], ids[0])
+        self.assertEqual([t[1] for t in traded], ids[:1], 'one trade at a time')
+        self.assertEqual(traded[0][2:], ('red', 'current'))
+        live['nativeTrade'].update(phase='complete', completion={'nativeSaveVerified': True})
+        goal = self.ticks(supervisor, 2)
+        self.assertEqual([t[1] for t in traded], ids, 'the second trade starts once the first is verified')
+        live['nativeTrade'].update(phase='complete', completion={'nativeSaveVerified': True})
+        goal = self.ticks(supervisor, 2)
+        self.assertEqual(goal['status'], 'done')
+        self.assertEqual(len(traded), 2)
 
     def test_invalid_references_are_rejected_at_submit(self):
         supervisor = self.supervisor(owner())
@@ -889,3 +954,113 @@ class FarmingDatabaseTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+STORY = {'kind': 'campaign', 'settings': {'starter': 'random', 'afterCampaign': 'postgame'}, 'continue': True}
+RUN = 'run-00000000-0000-0000-0000-000000000009'
+
+
+class StoryGoalTests(GoalTestCase):
+    """"play the story": continue this save's story campaign; on a brand-new library, start it from New Game."""
+
+    def story(self, **fields):
+        return self.goal(dict(STORY), source={'text': 'play the story', 'via': 'typed', 'interpreter': {'parser': 'deterministic', 'confidence': 0.95}}, **fields)
+
+    def mid_story(self, enabled):
+        live = owner(league=False, dex=False, link=False, campaign={'id': RUN, 'status': 'running', 'reason': None, 'objective': None,
+                                                                    'storyProgress': {'badges': {'earned': 3, 'known': 8, 'total': 8}}})
+        live['bot'].update(enabled=enabled, awaitingCommand=False, runScope='campaign')
+        return live
+
+    def test_a_brand_new_library_starts_the_story_from_new_game(self):
+        live = owner(league=False, dex=False, link=False, newProfile=True)
+        supervisor = self.supervisor(live)
+        self.submit(supervisor, self.story())
+        goal = self.ticks(supervisor, 3)
+        self.assertEqual((goal['execution']['save']['decision'], goal['execution']['save'].get('blank')), ('new', True))
+        self.assertEqual(self.types(), ['start-campaign'])
+        self.assertEqual(goal['progress']['phase'], 'campaign')
+        self.assertNotIn('backed up', ' '.join(s.get('detail') or '' for s in goal['execution']['steps']), 'nothing existed to back up')
+        live['campaign']['storyProgress']['badges']['earned'] = 2
+        goal = self.ticks(supervisor, 2)
+        self.assertRegex(goal['progress']['detail'], '2/8')
+        live['campaign'].update(status='complete')
+        live['gameProgress']['leagueComplete'] = True
+        live['bot'].update(awaitingCommand=False, runScope='postgame')
+        goal = self.ticks(supervisor, 3)
+        self.assertEqual(goal['status'], 'done')
+        self.assertEqual(self.types(), ['start-campaign'])
+
+    def test_mid_story_the_stopped_campaign_resumes_on_the_same_save(self):
+        live = self.mid_story(enabled=False)
+        supervisor = self.supervisor(live)
+        self.submit(supervisor, self.story())
+        goal = self.ticks(supervisor, 3)
+        self.assertEqual(goal['execution']['save']['decision'], 'current')
+        self.assertEqual(goal['execution']['steps'][0]['campaignId'], RUN)
+        self.assertEqual(self.types(), ['resume-campaign'], 'never a new save')
+        goal = self.ticks(supervisor, 3)
+        self.assertEqual(self.types(), ['resume-campaign'], 'resumed once')
+        self.assertEqual((goal['status'], goal['progress']['phase']), ('running', 'campaign'))
+        self.assertRegex(goal['progress']['detail'], '3/8')
+        live['campaign'].update(status='complete')
+        live['gameProgress']['leagueComplete'] = True
+        live['bot'].update(awaitingCommand=False, runScope='postgame')
+        goal = self.ticks(supervisor, 3)
+        self.assertEqual(goal['status'], 'done')
+        self.assertEqual(goal['result']['summary'], 'This save entered the Hall of Fame.')
+        self.assertEqual(self.types(), ['resume-campaign'])
+
+    def test_a_running_campaign_is_only_followed(self):
+        live = self.mid_story(enabled=True)
+        supervisor = self.supervisor(live)
+        self.submit(supervisor, self.story())
+        goal = self.ticks(supervisor, 4)
+        self.assertEqual(self.types(), [])
+        self.assertEqual((goal['execution']['save']['decision'], goal['progress']['phase']), ('current', 'campaign'))
+
+    def test_after_the_hall_of_fame_the_goal_asks_for_a_new_save(self):
+        for campaign in ({'id': RUN, 'status': 'complete'}, None):
+            with self.subTest(campaign=campaign):
+                self.fresh()
+                supervisor = self.supervisor(owner(campaign=campaign))
+                self.submit(supervisor, self.story())
+                goal = self.ticks(supervisor, 3)
+                self.assertEqual((goal['status'], goal['progress']['phase']), ('waiting', 'needs-decision'))
+                self.assertEqual(goal['question']['kind'], 'save-choice')
+                self.assertIn('Hall of Fame', goal['question']['text'])
+                self.assertIn('rematch', goal['question']['text'])
+                self.assertEqual(self.types(), [])
+
+    def test_a_save_the_bot_did_not_start_asks_for_a_new_save(self):
+        supervisor = self.supervisor(owner(league=False, dex=False, link=False))
+        self.submit(supervisor, self.story())
+        goal = self.ticks(supervisor, 3)
+        self.assertEqual((goal['status'], goal['progress']['phase']), ('waiting', 'needs-decision'))
+        self.assertIn('start a new game', goal['question']['text'])
+        self.assertEqual(self.types(), [])
+
+    def test_unknown_story_progress_waits(self):
+        supervisor = self.supervisor(owner(league=None, dex=None, link=None))
+        self.submit(supervisor, self.story())
+        goal = self.ticks(supervisor, 3)
+        self.assertEqual(goal['progress']['phase'], 'checking-save')
+        self.assertIsNone(goal['execution']['plan'])
+        self.assertEqual(self.types(), [])
+
+    def test_on_a_new_save_the_story_is_a_new_run(self):
+        live = self.mid_story(enabled=False)
+        supervisor = self.supervisor(live)
+        self.submit(supervisor, self.story(save={'mode': 'new', 'trainerName': None, 'starter': None, 'label': None}))
+        goal = self.ticks(supervisor, 3)
+        self.assertEqual(goal['execution']['save']['decision'], 'new')
+        self.assertEqual(self.types(), ['start-campaign'])
+        self.assertNotEqual(live['campaign']['id'], RUN)
+
+    def test_continue_is_a_flag(self):
+        supervisor = self.supervisor(owner())
+        for value in (False, 'yes', 1):
+            with self.subTest(value=value), self.assertRaisesRegex(ValueError, 'continue'):
+                supervisor.submit(self.goal({**STORY, 'continue': value}))
+        self.assertEqual(self.game.sent, [])
+

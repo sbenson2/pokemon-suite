@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
 import { parseNumericDefines } from "./primitives.js";
+import { knowledgeVersion } from "./versions.js";
 
 const DEFAULT_REQUIRED_SYMBOLS = [
   "gSaveBlock1Ptr",
@@ -103,7 +104,8 @@ function arrayElementSize(symbol, count) {
 export async function extractRuntimeSymbols(
   root,
   {
-    symbolFile = "pokefirered_rev1.sym",
+    version = "firered",
+    symbolFile = `${knowledgeVersion(version).buildName}.sym`,
     requiredSymbols = DEFAULT_REQUIRED_SYMBOLS,
   } = {},
 ) {

@@ -1,6 +1,23 @@
 import {decodeBoxPokemonRecord} from '../evidence/pokemon-record.js';
-const indexes=new WeakMap();
+const indexes=new WeakMap(),learnsetCache=new WeakMap();
 const ram=(a,n=1)=>Number.isInteger(a)&&a>=0x02000000&&a+n<=0x02040000;
+const rom=(a,n=1)=>Number.isInteger(a)&&a>=0x08000000&&a+n<=0x0a000000;
+// VAR_HAPPINESS_STEP_COUNTER (include/constants/vars.h 0x4021), stored in
+// SaveBlock1.vars[id-0x4000]; it wraps every 128 steps.
+const HAPPINESS_STEP_COUNTER=0x4021;
+// A species' level-up table from ROM gLevelUpLearnsets (src/data/pokemon/
+// level_up_learnsets.h: u16 entries (level<<9)|move ending in 0xFFFF), as
+// [[level,move],...]. Immutable cartridge data, cached per runtime.
+function readLearnset(read,symbols,cache,species){
+ if(cache.has(species))return cache.get(species);
+ const table=symbols.gLevelUpLearnsets;let value=null;
+ if(table&&Number.isInteger(species)&&species>0&&species*4+4<=table.size){
+  const pointer=read(table.address+species*4,4)?.readUInt32LE();
+  const bytes=rom(pointer,202)?read(pointer,202):null;
+  if(bytes){const entries=[];for(let i=0;i<101;i++){const v=bytes.readUInt16LE(i*2);if(v===0xffff){value=entries;break;}entries.push([v>>9,v&511]);}}
+ }
+ cache.set(species,value);return value;
+}
 
 // BPRE revision 1 structures from the pinned cartridge source. Read-only: no
 // writes, coin synthesis, egg generation or RNG changes occur in this decoder.
@@ -33,7 +50,15 @@ export function readAcquisitionEvidence(session,runtime,o){
   }
  }
  const context=symbol('sGlobalScriptContext')?word(symbol('sGlobalScriptContext')+100):null;
+ // Level-up tables for every Pokémon a protected Day Care parent can be: shinies
+ // in the party or PC, and both Day Care parents (native-breeding.js budget).
+ let cache=learnsetCache.get(data);if(!cache){cache=new Map();learnsetCache.set(data,cache);}
+ const t=o?.playerMemory?.trainer,learnsets={};
+ for(const p of [...(t?.party??[]),...(t?.storage?.pokemon??[]),...(daycare?.parents??[])])
+  if(p?.validity==='valid'&&!p.isEgg&&(p.shiny===true||daycare?.parents?.includes(p))&&!Object.hasOwn(learnsets,p.species)){const l=readLearnset(read,symbols,cache,p.species);if(l)learnsets[p.species]=l;}
+ const happiness=Number.isInteger(fields.vars?.offset)&&ram(b1+fields.vars.offset+(HAPPINESS_STEP_COUNTER-0x4000)*2,2)?read(b1+fields.vars.offset+(HAPPINESS_STEP_COUNTER-0x4000)*2,2)?.readUInt16LE():null;
  const prompt=index.get(context)??null;
  const variable=name=>symbol(name)?read(symbol(name),2)?.readUInt16LE()??null:null;
- return {coins:coins>=0&&coins<=9999?coins:null,slots,daycare,prompt,selectedParent:variable('gSpecialVar_0x8004'),withdrawalCost:variable('gSpecialVar_0x8005')};
+ return {coins:coins>=0&&coins<=9999?coins:null,slots,daycare,prompt,selectedParent:variable('gSpecialVar_0x8004'),withdrawalCost:variable('gSpecialVar_0x8005'),
+  learnsets,happinessStepCounter:Number.isInteger(happiness)?happiness:null};
 }

@@ -6,25 +6,25 @@ final class CompanionUITests:XCTestCase {
         XCUIDevice.shared.orientation = .portrait
         defer { XCUIDevice.shared.orientation = .portrait }
         let app = XCUIApplication(); app.launch()
-        navigateToSuitePage(app,"Pokédex")
+        navigateToSuitePage(app,"Bank")
         let bulbasaur = app.buttons.matching(NSPredicate(format: "label CONTAINS 'Bulbasaur'")).firstMatch
         XCTAssertTrue(bulbasaur.waitForExistence(timeout: 20)); bulbasaur.tap()
         // A smaller iPad uses a sheet; a 13-inch iPad can fit inline details
         // even in portrait. Both must keep the selected Pokémon and action visible.
-        XCTAssertTrue(app.buttons["Set Up Hunt"].firstMatch.waitForExistence(timeout: 5), app.debugDescription)
+        XCTAssertTrue(app.buttons["Get It"].firstMatch.waitForExistence(timeout: 5), app.debugDescription)
         let portraitUsesSheet = app.buttons["Done"].firstMatch.exists
-        XCTAssertTrue(app.buttons["Set Up Hunt"].firstMatch.isHittable)
-        capture(app, "Portrait Pokédex detail")
+        XCTAssertTrue(app.buttons["Get It"].firstMatch.isHittable)
+        capture(app, "Portrait Bank detail")
         if portraitUsesSheet { app.buttons["Done"].firstMatch.tap() }
         XCUIDevice.shared.orientation = .landscapeLeft
-        capture(app, "Pokédex after rotation")
-        XCTAssertTrue(app.buttons["Set Up Hunt"].firstMatch.waitForExistence(timeout: 10), app.debugDescription)
+        capture(app, "Bank after rotation")
+        XCTAssertTrue(app.buttons["Get It"].firstMatch.waitForExistence(timeout: 10), app.debugDescription)
         XCTAssertFalse(app.buttons["Done"].firstMatch.exists)
         bulbasaur.tap()
-        capture(app, "Landscape Pokédex split")
+        capture(app, "Landscape Bank split")
         XCUIDevice.shared.orientation = .portrait
         if portraitUsesSheet { XCTAssertTrue(app.buttons["Done"].firstMatch.waitForExistence(timeout: 10)) }
-        XCTAssertTrue(app.buttons["Set Up Hunt"].firstMatch.isHittable)
+        XCTAssertTrue(app.buttons["Get It"].firstMatch.isHittable)
         XCTAssertTrue(app.staticTexts["Bulbasaur"].firstMatch.exists)
         if portraitUsesSheet { app.buttons["Done"].firstMatch.tap() }
     }
@@ -121,11 +121,15 @@ final class CompanionUITests:XCTestCase {
         navigateToSuitePage(app,"Bot Settings")
         XCTAssertTrue(app.staticTexts["storyProgress"].firstMatch.waitForExistence(timeout:20) || app.buttons["Start Task"].exists,app.debugDescription)
         capture(app,"Bot settings")
-        navigateToSuitePage(app,"Pokédex")
+        navigateToSuitePage(app,"Bank")
         let bulbasaur=app.buttons.matching(NSPredicate(format:"label CONTAINS 'Bulbasaur'")).firstMatch
         XCTAssertTrue(bulbasaur.waitForExistence(timeout:20),app.debugDescription);bulbasaur.tap()
-        XCTAssertTrue(app.buttons["Set Up Hunt"].waitForExistence(timeout:10));capture(app,"Pokédex")
-        app.buttons["Set Up Hunt"].tap()
+        XCTAssertTrue(app.buttons["Get It"].waitForExistence(timeout:10));capture(app,"Bank")
+        app.buttons["Get It"].tap()
+        XCTAssertTrue(app.buttons["Preview Plan"].waitForExistence(timeout:10),app.debugDescription);capture(app,"Get It")
+        app.navigationBars["Get Bulbasaur"].buttons["Done"].tap()
+        if app.navigationBars["Bank"].buttons["Done"].exists{app.navigationBars["Bank"].buttons["Done"].tap()}
+        navigateToSuitePage(app,"Hunting")
         capture(app,"Farming")
         app.buttons["Game menu"].firstMatch.tap();app.buttons["Appearance"].firstMatch.tap();app.buttons["Dark"].firstMatch.tap()
         app.buttons["Hunting"].firstMatch.tap()

@@ -176,7 +176,7 @@ except the never-tuned split:
 
 ## G4 result
 
-See `.private/laya-g4-20260924/NOTES.txt`. The zero-shot English checkpoint
+The evaluation notes are internal and not published. The zero-shot English checkpoint
 did not improve the deterministic parser, so no calibration ships and the
 recommended mode is `off`, or `shadow` to collect data. A fine-tuned
 checkpoint (L0.6) would be exported to ONNX with the same tool, pinned as a
@@ -274,8 +274,9 @@ tuning):
 | Deterministic | 68.3% | 6/102 |
 | Laya-primary | 79.8% | 8/102 |
 
-The owner chose to ship it with those numbers. Details are in
-`.private/laya-primary-20260925/NOTES.txt`.
+The author runs it with those numbers. Laya is not included in the
+release; without it, Ask uses the deterministic parser. The detailed
+evaluation notes are internal and not published.
 
 ## Battle tape and dataset (L2 groundwork, recording only)
 

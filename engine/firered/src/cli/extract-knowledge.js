@@ -9,6 +9,7 @@ import { promisify } from "node:util";
 
 import { digestSourceBundle } from "../extractor/artifact.js";
 import { generateKnowledgePack } from "../extractor/knowledge-pack.js";
+import { KNOWLEDGE_VERSIONS, knowledgeVersionForProfile } from "../extractor/versions.js";
 import { loadResearchBundle } from "../research.js";
 
 const execFile = promisify(execFileCallback);
@@ -21,17 +22,21 @@ const GENERATOR_SOURCE_FILES = [
   "src/extractor/primitives.js",
   "src/extractor/runtime.js",
   "src/extractor/story.js",
+  "src/extractor/versions.js",
   "src/extractor/world.js",
 ];
 
+const PROFILES = Object.values(KNOWLEDGE_VERSIONS).map(({ cartridgeProfileId }) => cartridgeProfileId);
 const usage = `Usage:
-  npm run extract:knowledge -- --source PATH --stock-rom PATH [--output PATH]
+  npm run extract:knowledge -- --source PATH --stock-rom PATH [--profile ID] [--output PATH]
 
 Required private inputs:
   --source PATH       Pinned pret/pokefirered checkout with an exact Rev1 build
-  --stock-rom PATH    Stock FireRed Rev1 ROM used only for local hash verification
+                      of the chosen profile (make firered_rev1 or leafgreen_rev1)
+  --stock-rom PATH    Stock Rev1 ROM of that profile, used only for local hash verification
 
 Options:
+  --profile ID        ${PROFILES.join(" or ")} (default: the qualification profile)
   --output PATH       Private artifact directory (default: private/knowledge)
   --collected-at ISO  Receipt timestamp; artifacts themselves contain no timestamp
   --help              Show this help
@@ -44,7 +49,7 @@ function parseArguments(args) {
   for (let index = 0; index < args.length; index += 1) {
     const argument = args[index];
     if (argument === "--help") return { help: true };
-    if (!["--source", "--stock-rom", "--output", "--collected-at"].includes(argument)) {
+    if (!["--source", "--stock-rom", "--profile", "--output", "--collected-at"].includes(argument)) {
       throw new UsageError(`unknown argument ${argument}`);
     }
     const value = args[index + 1];
@@ -56,6 +61,9 @@ function parseArguments(args) {
   }
   if (!parsed.source) throw new UsageError("--source is required");
   if (!parsed.stock_rom) throw new UsageError("--stock-rom is required");
+  if (parsed.profile !== undefined && !PROFILES.includes(parsed.profile)) {
+    throw new UsageError(`--profile must be ${PROFILES.join(" or ")}`);
+  }
   return parsed;
 }
 
@@ -96,9 +104,12 @@ async function main() {
   const bundle = await loadResearchBundle(
     new URL("../../research/", import.meta.url),
   );
-  const profile = bundle.cartridges.profiles.find(
-    ({ id }) => id === bundle.cartridges.qualificationProfileId,
-  );
+  const profileId = options.profile ?? bundle.cartridges.qualificationProfileId;
+  const profile = bundle.cartridges.profiles.find(({ id }) => id === profileId);
+  const version = knowledgeVersionForProfile(profileId);
+  if (!profile || !version || profile.relationship !== "stock") {
+    throw new Error(`${profileId} is not a stock FRLG profile in the research ledger`);
+  }
   const sourceRecord = bundle.sources.sources.find(
     ({ id }) => id === profile.decompilation.sourceId,
   );
@@ -117,10 +128,10 @@ async function main() {
   }
 
   const builtPaths = {
-    rom: join(sourceRoot, "pokefirered_rev1.gba"),
-    symbols: join(sourceRoot, "pokefirered_rev1.sym"),
-    map: join(sourceRoot, "pokefirered_rev1.map"),
-    elf: join(sourceRoot, "pokefirered_rev1.elf"),
+    rom: join(sourceRoot, `${version.buildName}.gba`),
+    symbols: join(sourceRoot, `${version.buildName}.sym`),
+    map: join(sourceRoot, `${version.buildName}.map`),
+    elf: join(sourceRoot, `${version.buildName}.elf`),
   };
   const [stockRom, builtRom, symbols, map, elf, generator] = await Promise.all([
     fileFingerprint(stockRomPath),
@@ -143,7 +154,7 @@ async function main() {
   }
 
   const build = {
-    target: "FIRERED REVISION=1 MODERN=0",
+    target: version.target,
     sourceTreeTrackedClean: true,
     romBytes: builtRom.bytes,
     romSha1: builtRom.sha1,
@@ -156,6 +167,7 @@ async function main() {
     elfSha256: elf.sha256,
   };
   const generated = await generateKnowledgePack({
+    version: version.game,
     sourceRoot,
     outputDirectory,
     cartridgeProfileId: profile.id,

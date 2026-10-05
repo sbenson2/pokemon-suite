@@ -34,23 +34,29 @@ You tell it what you want in plain words, typed or spoken: *"get me a shiny Mewt
 - **Works through the postgame.** A checklist of goals it picks up on its own: the Sevii Islands, the legendaries, Trainer Tower, the Fame Checker, Unown, League rematches and the National Pokédex.
 - **Trains while it fights.** In Elite Four rounds, five level 100 sweepers carry the battles while a sixth Pokémon holds the Exp. Share and never takes a hit. It stops if the trainee is ever in danger.
 - **Hunts shinies with RNG timing.** Gen III shiny hunting by timing inputs to the frame, including nature and Hidden Power targets. Each plan is rehearsed in throwaway emulators before the real attempt.
+- **Keeps a Bank.** One list of all 386 species with the Pokémon you own in every save the app knows, and how FireRed gets each one. **Get it** asks the bot for a species with the shiny, nature, IVs, Hidden Power, ability and gender you pick. It is the same request as typing it into Ask, so you see the plan and confirm before anything runs. An owned Pokémon in the current game can be sent to your Switch from its details.
 - **Breeds and hatches eggs** at the Day Care, and waits out the steps like a player would.
-- **Trades.** Link trades between two emulated saves, which is how it gets trade evolutions like Machamp and Steelix. Trading with a real Nintendo Switch works too, with an extra USB Wi-Fi adapter ([experimental](docs/HARDWARE.md)).
+- **Trades.** Link trades between two emulated saves, which is how it gets trade evolutions like Machamp and Steelix. This needs a second save set up as a trade partner (see [Status](#status)). Trading with a real Nintendo Switch works too, with an extra USB Wi-Fi adapter ([experimental](docs/HARDWARE.md)).
 - **Tells you why it stopped.** When something goes wrong it keeps the save, stops, and shows what happened and what you can do about it.
+- **Plans competitive builds legitimately.** Set suggestions for every species, which traits of an owned Pokémon are fixed and which can still change, the in-game steps to get there, and a read-only Gen III legality check. It never edits a save ([details](docs/COMPETITIVE-BUILDER.md)).
 
-Every change to the bot is checked against 120 recorded game situations, replayed on the real emulator, before it ships. See [how that works](docs/BOT-REGRESSION-GATE.md).
+Every change to the bot is checked against more than 130 recorded game situations, replayed on the real emulator, before it ships. See [how that works](docs/BOT-REGRESSION-GATE.md).
 
 ## Status
 
 | | |
 |---|---|
 | FireRed (US, rev 1): story to Hall of Fame | Works |
+| LeafGreen (US, rev 1): story from a new game | Plays from a new game with the same engine and story campaign as FireRed. The longest run so far reached Cinnabar Island; a full run to the Hall of Fame on LeafGreen is not yet verified. |
+| LeafGreen postgame, hunts and trades | Not yet. A LeafGreen run waits for commands after the Hall of Fame. Its "catch all" goal is set: 190 species catchable in LeafGreen. |
 | FireRed postgame checklist | Works. A few targets still get deferred when it can't find a route yet. |
 | Shiny hunting by RNG | Works for the supported encounter types |
-| Emulated trades and trade evolutions | Works |
+| Emulated trades and trade evolutions | Works once a second save is set up as a trade partner. A new install has none, and setting one up isn't in the app yet, so trade evolutions wait while the rest of the postgame continues. |
+| Pokémon one save can't get alone (the other starters and fossil, the other roaming legendaries, the other Dojo prize) | Not in the app yet. The bot lists them as needing another save. |
+| Bank: every species, owned Pokémon across saves, Get it | Works for FireRed. Reads saves only; storage saves are not built yet. |
 | Trading with a Switch or Switch 2 | Experimental. Tested on one Mac with a Switch 2 and LeafGreen. |
 | iPhone and iPad companion | Works. You build it yourself. |
-| Other Pokémon games | Library, Pokédex and artwork only. No bot. |
+| Other Pokémon games | Library, Pokédex details and artwork only. No bot. |
 | Windows and Linux | Not supported |
 
 ## Requirements
@@ -58,6 +64,8 @@ Every change to the bot is checked against 120 recorded game situations, replaye
 - A Mac with Apple silicon running macOS 14 or later
 - Your own dump of Pokémon FireRed, English revision 1 ([No-Intro record](https://datomatic.no-intro.org/?page=show_record&s=23&n=1672)):<br>
   SHA-1 `dd5945db9b930750cb39d00c84da8571feebf417`
+- Or Pokémon LeafGreen, English revision 1 ("LeafGreen Version (USA, Europe) (Rev 1)"):<br>
+  SHA-1 `7862c67bdecbe21d1d69ce082ce34327e1c6ed5e`
 
 The app checks the hash and won't run the bot on anything else. Everything else it needs, including the emulator core and the game data the bot plans with, ships inside the app. No ROMs, BIOS files, saves or game artwork are included; sprites and palettes are read from your ROM while the app runs.
 
@@ -71,11 +79,15 @@ The app checks the hash and won't run the bot on anything else. Everything else 
 > The app isn't notarized by Apple. Notarization needs a paid developer account, and this is a free project. You only have to allow it once. If you prefer Terminal:
 > `xattr -dr com.apple.quarantine "/Applications/Pokémon Suite.app"`
 
-Then choose **Add FireRed**, pick your ROM, and press **Start game**. Open **Ask the bot** and tell it what you want.
+Then choose **Add FireRed or LeafGreen** (the **+** button in Games, or the File menu) and pick your ROM. To have the bot play the story from a new game, open **Bot settings → New run**, press **Preview Team**, check the team it picked, and press **Start New Run**. Or press **Start game**, open **Ask the bot** and say *"play the story"*: it starts the story from New Game, or continues the bot's story campaign on a save that has one. A goal works too: on a new save, *"get me a shiny Mewtwo"* plays the story until Mewtwo can be caught.
+
+### LeafGreen
+
+LeafGreen is built from the same source as FireRed, so the bot plays it with the same engine. Its own pinned game data holds LeafGreen's wild Pokémon and code addresses; maps, story scripts and trainers are the same. On LeafGreen the bot plays the story campaign from a new game (**Bot settings → New run**). The postgame checklist, shiny hunts and trades are FireRed-only for now, so a LeafGreen run waits for commands after the Hall of Fame. Its "catch all the Pokémon" goal counts the 190 species catchable in LeafGreen, not FireRed's list. Bring your own LeafGreen ROM; none is included.
 
 ## iPhone and iPad
 
-The iPhone and iPad app shows the live game, the team, the Pokédex and trades, and takes requests by voice. The game itself keeps running on your Mac, so closing the app never stops the bot. It connects over your home network or [Tailscale](https://tailscale.com).
+The iPhone and iPad app shows the live game, the team, the Bank and trades, and takes requests by voice. The game itself keeps running on your Mac, so closing the app never stops the bot. It connects over your home network or [Tailscale](https://tailscale.com).
 
 <p align="center">
   <img src="docs/images/iphone-live.png" width="30%" alt="iPhone: the live game during an Elite Four battle, with trainer, location, team and session cards">
@@ -115,7 +127,7 @@ python3 -m unittest discover -s tests
 (cd engine/firered && node --test test/*.test.js)
 ```
 
-The Mac app builder only packages bot code that has passed `scripts/verify-bot.py`, which replays a corpus of recorded save states on the real emulator. My corpus stays private because the states contain game data, so a fork needs to record its own. [docs/BOT-REGRESSION-GATE.md](docs/BOT-REGRESSION-GATE.md) explains the format and [docs/MACOS.md](docs/MACOS.md) the build. The builder also needs the FireRed resource pack that's attached to each release.
+The Mac app builder only packages bot code that has passed `scripts/verify-bot.py`, which replays a corpus of recorded save states on the real emulator. My corpus stays private because the states contain game data, so a fork needs to record its own. [docs/BOT-REGRESSION-GATE.md](docs/BOT-REGRESSION-GATE.md) explains the format and [docs/MACOS.md](docs/MACOS.md) the build. The builder also needs the game resource packs (FireRed and LeafGreen) in the `game-resources` zip attached to each release.
 
 To run just the service in a browser, you need Python 3.11+ and Node.js 22+:
 

@@ -72,6 +72,33 @@ test('withdraws the exact source and removes Everstone through the party menu',(
  o.playerMemory.ui.party={stage:'selection-menu',selectedPartySlot:2,actions:['give-item','take-item','cancel']};
  assert.equal(evolutionItemRecommendation(o,e.inspect(o).objective).targetAction,'take-item');
 });
+test('generic item removal still refuses Mail prompts without a preserving transaction',()=>{
+ const p={...mon(),heldItem:131},o=observe(p),objective={id:'remove-item',target:{kind:'take-held-item',map:o.playerMemory.map.id,fingerprint:encounterFingerprint(p),itemId:131}};
+ for(const stage of ['confirm-send-mail-to-pc','confirm-lose-mail']){
+  o.playerMemory.ui.party={stage,cursor:0};
+  assert.equal(evolutionItemRecommendation(o,objective).kind,'stop-for-review');
+ }
+});
+test('an NPC-trade Mail objective preserves its letter only when PC mailbox capacity is verified',()=>{
+ const p={...mon(),heldItem:131},o=observe(p),objective={id:'preserve-trade-mail',target:{kind:'take-held-item',map:o.playerMemory.map.id,fingerprint:encounterFingerprint(p),itemId:131,preserveLetter:true}};
+ const slots=Array.from({length:16},(_,slot)=>({slot,itemId:slot<6?0:slot===6?0:132,species:slot<6?1:122}));
+ o.playerMemory.mail={slots};o.playerMemory.ui.party={stage:'confirm-send-mail-to-pc',cursor:1};
+ assert.deepEqual(evolutionItemRecommendation(o,objective),{kind:'choose-menu-option',targetOption:'yes',targetIndex:0},'send the intact NPC letter to the verified free mailbox slot');
+ o.playerMemory.ui.party={stage:'confirm-lose-mail',cursor:1};
+ assert.match(evolutionItemRecommendation(o,objective).reason,/preserve/i,'never fall through to erasing a received letter');
+ o.playerMemory.mail.slots[6].itemId=132;o.playerMemory.ui.party={stage:'selection-menu',selectedPartySlot:p.slot,actions:['summary','switch','mail','cancel']};
+ assert.match(evolutionItemRecommendation(o,objective).reason,/full/i,'a full mailbox stops before opening the Mail transaction');
+ delete o.playerMemory.mail;
+ assert.match(evolutionItemRecommendation(o,objective).reason,/verified/i,'unknown mailbox capacity stops before opening the Mail transaction');
+});
+test('a completed Mail removal drains its message and closes menus without reopening the transaction',()=>{
+ const p={...mon(),heldItem:0},o=observe(p),objective={id:'preserve-trade-mail',target:{kind:'take-held-item',map:o.playerMemory.map.id,fingerprint:encounterFingerprint(p),itemId:131,preserveLetter:true}};
+ o.playerMemory.mail={slots:Array.from({length:16},(_,slot)=>({slot,itemId:slot===6?131:0,species:slot===6?p.species:1}))};
+ o.playerMemory.ui.party={stage:'message'};assert.deepEqual(evolutionItemRecommendation(o,objective),{kind:'acknowledge-cartridge-prompt'});
+ o.playerMemory.ui.party={stage:'choose-pokemon'};assert.deepEqual(evolutionItemRecommendation(o,objective),{kind:'close-menu'});
+ o.playerMemory.ui={startMenu:{order:['pokemon','bag','save','exit']}};assert.deepEqual(evolutionItemRecommendation(o,objective),{kind:'close-menu'});
+ o.playerMemory.ui={};assert.equal(evolutionItemRecommendation(o,objective),null);
+});
 test('ordinary friendship waits for the National Dex and friendship before using a level-up',()=>{
  const p=mon(113),o=observe(p),e=task(p,242);o.playerMemory.storyState.flagIds[2112]=false;
  assert.equal(e.inspect(o).kind,'national-dex');

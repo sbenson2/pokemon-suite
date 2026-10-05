@@ -11,11 +11,12 @@ export function verifiedReplayInputs(corpusPath, fixture, receipt) {
   const matches = receipt.cases?.filter(c => c.id === fixture.id) ?? [];
   assert.equal(matches.length, 1, 'ROM integrity receipt must identify this case exactly once');
   const evidence = matches[0];
-  assert.ok(evidence.game === 'firered' && (fixture.game ?? 'firered') === evidence.game &&
+  // LeafGreen (build 124) cases run its reviewed stock image only.
+  assert.ok(['firered', 'leafgreen'].includes(evidence.game) && (fixture.game ?? 'firered') === evidence.game &&
     evidence.nativeRadio === fixture.nativeRadio, 'ROM integrity receipt belongs to a different game or mode');
   const raw = readFileSync(resolve(dirname(corpusPath), fixture.config));
   assert.equal(sha256(raw), evidence.configSha256, 'The replay config changed after ROM verification');
-  const cfg = JSON.parse(raw).games.firered;
+  const cfg = JSON.parse(raw).games[evidence.game];
   const cartridge = fixture.nativeRadio ? cfg.nativeRadio.cartridge : cfg.cartridge;
   assert.equal(cartridge.id, evidence.profile, 'ROM integrity profile changed');
   const romBytes = readFileSync(cartridge.path);

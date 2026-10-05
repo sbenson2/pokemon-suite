@@ -9,19 +9,32 @@ import {evaluateRngTraits} from '../rng/target-traits.js';
 import {unownForm} from '../evidence/unown-form.js';
 import {nativeUnownForms} from './postgame-collection-extras.js';
 import {supportsFireRedLandRngMethod} from '../rng/fire-red-rng.js';
+import {FIRE_RED_RODS} from './national-dex-agenda.js';
 
 const BALLS={'master-ball':1,'ultra-ball':2,'great-ball':3,'poke-ball':4};
 const shops={2:'MAP_FUCHSIA_CITY_MART',3:'MAP_SAFFRON_CITY_MART',4:'MAP_VIRIDIAN_CITY_MART'};
 const prices={2:1200,3:600,4:200};
 const martOpen=o=>Boolean(o.playerMemory?.ui?.mart||/BuyMenu/.test(o.emulator?.callback2??''));
 function validateWildRoute(r,route,world,mechanics){
- if(r.game!=='firered'||!route||!['wild-land','safari-land'].includes(route.method))throw new Error('Choose a supported FireRed land route.');
+ if(r.game!=='firered'||!route||!['wild-land','safari-land','fishing'].includes(route.method))throw new Error('Choose a supported FireRed land or fishing route.');
  if(!Number.isInteger(r.quantity)||r.quantity<1||r.quantity>99)throw new Error('Choose a quantity from 1 to 99.');
  if(r.moves?.length||r.heldItemId!=null||r.finalLevel!=null)throw new Error('Wild hunts save Pokémon as caught.');
  if(route.speciesId!==r.speciesId||(r.locationId!=='any'&&route.locationId!==r.locationId))throw new Error('The encounter location does not match the request.');
  if(route.unownForm!==undefined&&(r.speciesId!==201||!Number.isInteger(route.unownForm)||route.unownForm<0||route.unownForm>27))throw Error('Choose a native Unown form from 0 through 27.');
  if(route.unownForm!==undefined&&!nativeUnownForms(route.map).includes(route.unownForm))throw Error('The requested Unown form does not occur in this native chamber.');
  const safari=/^MAP_SAFARI_ZONE_(NORTH|SOUTH|EAST|WEST|CENTER)$/.test(route.map);
+ if(route.method==='fishing'){
+  // A fishing hunt names the rod whose native table slots hold the species
+  // (pokefirered src/wild_encounter.c: slots 0-1 Old, 2-4 Good, 5-9 Super Rod).
+  const rod=FIRE_RED_RODS.find(x=>x.itemId===route.rodItemId);
+  if(!rod)throw new Error('Choose the fishing rod for this route.');
+  if(safari||route.unownForm!==undefined)throw new Error('Choose a supported FireRed fishing route.');
+  if(r.ball.requirement==='required'&&!['any',...Object.keys(BALLS)].includes(r.ball.id))throw new Error('The required ball is incompatible with this route.');
+  const species=(mechanics.data??mechanics).species?.find(s=>s.id===(route.nativeSpecies??r.speciesId));
+  const table=world?(world.data??world).wildEncounters?.find(t=>t.map===route.map&&t.base_label.endsWith('_FireRed'))?.fishing_mons?.mons:null;
+  if(!table?.slice(rod.start,rod.end).some(s=>s.species===species?.name&&s.min_level<=r.encounterLevel.max&&s.max_level>=r.encounterLevel.min))throw new Error(`The current cartridge has no matching ${rod.name} fishing encounter.`);
+  return;
+ }
  if(safari!==(route.method==='safari-land'))throw new Error('Encounter table and capture method disagree.');
  if(r.ball.requirement==='required'&&!(safari?['any','safari-ball']:['any',...Object.keys(BALLS)]).includes(r.ball.id))throw new Error('The required ball is incompatible with this route.');
  if(world){
@@ -34,7 +47,7 @@ function validateWildRoute(r,route,world,mechanics){
 export class WildMission{
  constructor({id,request,state=null,route=null,world=null,story=null,mechanics={},fundingPlanner=null}){
   route={...route,...state?.route};validateWildRoute(request,route,world,mechanics);
-  this.mechanics=mechanics;this.nativeSpecies=route.nativeSpecies??request.speciesId;
+  this.mechanics=mechanics;this.world=world;this.nativeSpecies=route.nativeSpecies??request.speciesId;
   this.ballShops=world&&story?buildPokeBallMartCatalog(world,story):null;
   this.fundingPlanner=fundingPlanner;
   this.request=request;
@@ -42,7 +55,23 @@ export class WildMission{
   this.state.route=structuredClone(route);
   if(this.state.id!==id)throw new Error('Wild hunt checkpoint belongs to another hunt.');
  }
- storyWatch(){return campaignNavigationWatch(this.state.route.map);}
+ storyWatch(){
+  const watch=campaignNavigationWatch(this.state.route.map),rod=this.rod();
+  return rod?{...watch,flags:[...new Set([...(watch.flags??[]),rod.flagId])]}:watch;
+ }
+ rod(){return this.state.method==='fishing'?FIRE_RED_RODS.find(x=>x.itemId===this.state.route.rodItemId)??null:null;}
+ // The rod the route names, collected legitimately from its giver when the
+ // save has not received it yet (a one-time gift; its flag stays set).
+ rodPreparation(o){
+  const rod=this.rod();if(!rod)return null;
+  const m=o.playerMemory??{},owned=Object.values(m.trainer?.bag??{}).flat().some(i=>i?.itemId===rod.itemId&&i.quantity>0);
+  if(owned)return null;
+  if(m.storyState?.flagIds?.[rod.flagId]!==false)return {kind:'stop',reason:`The ${rod.name} is recorded as received but is not in the Bag.`};
+  const index=(this.world?.data??this.world)?.maps?.find(x=>x.id===rod.map)?.objectEvents?.findIndex(e=>e.script===rod.script)??-1;
+  if(index<0)return {kind:'stop',reason:`The ${rod.name} giver is not in the current cartridge.`};
+  this.state.phase='collecting-rod';
+  return {kind:'policy',objective:{id:'hunt-collect-rod',target:{kind:'object',map:rod.map,index},completion:{kind:'flag-set',id:rod.flagId},dialogue:'advance',choice:'yes',deferOptionalDetours:true}};
+ }
  initialize(o){
   if(o.playerMemory?.trainer?.partyValidity!=='valid'||!Number.isSafeInteger(o.playerMemory.trainer.money))throw new Error('The current party and money could not be verified.');
   if(!(knownCaptureFreeSlots(o.playerMemory.trainer)>0))throw new Error('Capture needs verified free storage.');
@@ -148,7 +177,15 @@ export class WildMission{
   if(!o.emulator.inBattle&&s.encounters>=this.request.limits.maxEncounters)return {kind:'stop',reason:'Maximum encounter limit reached.'};
   if(s.initialMoney-m.trainer?.money>this.request.limits.maxSpend)return {kind:'stop',reason:'Hunt spending limit reached.'};
   if(s.method==='safari-land'&&!o.emulator.inBattle&&m.safari?.balls===0&&m.trainer?.money<500)return {kind:'stop',reason:'Not enough money for the next Safari entry.'};
-  if(!o.emulator.inBattle&&s.method==='wild-land'){const supply=this.supplies(o);if(supply)return supply;}
+  if(!o.emulator.inBattle&&['wild-land','fishing'].includes(s.method)){const supply=this.supplies(o);if(supply)return supply;}
+  if(!o.emulator.inBattle&&s.method==='fishing'){
+   const rod=this.rodPreparation(o);if(rod)return rod;
+   // Fishing has no land RNG plan or Sweet Scent: the cartridge rolls each cast
+   // (src/field_player_avatar.c Fishing6) and FishingWildEncounter picks the slot.
+   s.phase=m.map?.id===s.route.map?'hunting':'traveling';
+   if(s.phase==='hunting'&&o.phase!=='stable')return {kind:'wait'};
+   return {kind:'policy',objective:{id:'hunt-requested-pokemon',target:{kind:'fishing-zone',map:s.route.map,rodItemId:s.route.rodItemId},dialogue:'advance',choice:'yes',deferOptionalDetours:true}};
+  }
   if(!o.emulator.inBattle&&!m.trainer?.party?.some(p=>p.moves?.includes(230))){
    s.phase='preparing-sweet-scent';
    if(/^MAP_SAFARI_ZONE_/.test(m.map?.id??'')){

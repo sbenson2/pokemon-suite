@@ -5,6 +5,25 @@ export const PLAYER_PRESET_NAMES = Object.freeze({
 
 export const RIVAL_PRESET_NAMES = Object.freeze(["GREEN", "GARY", "KAZ"]);
 
+// LeafGreen (build 124): pret src/oak_speech.c builds LeafGreen with its own
+// sMaleNameChoices, sFemaleNameChoices and sRivalNameChoices. The rival menu
+// row picks a name, so a LeafGreen run commits LeafGreen's names.
+const VERSION_PRESET_NAMES = Object.freeze({
+  firered: Object.freeze({ player: PLAYER_PRESET_NAMES, rival: RIVAL_PRESET_NAMES }),
+  leafgreen: Object.freeze({
+    player: Object.freeze({
+      BOY: Object.freeze(["GREEN", "LEAF", "GARY"]),
+      GIRL: Object.freeze(["GREEN", "LEAF", "OMI"]),
+    }),
+    rival: Object.freeze(["RED", "ASH", "KENE"]),
+  }),
+});
+
+export function presetNames(game = "firered") {
+  if (!Object.hasOwn(VERSION_PRESET_NAMES, game)) throw new TypeError("choose FireRed or LeafGreen");
+  return VERSION_PRESET_NAMES[game];
+}
+
 const STARTERS = Object.freeze([
   Object.freeze({
     id: "bulbasaur",
@@ -47,8 +66,9 @@ function normalizedSeed(seed) {
 // FireRed player name holds at most seven characters (PLAYER_NAME_LENGTH).
 export const PLAYER_NAME_PATTERN = /^[A-Za-z]{1,7}$/;
 
-export function createRunProfile(seed, { starter: selectedStarter = "random", playerName: ownerName = null } = {}) {
+export function createRunProfile(seed, { starter: selectedStarter = "random", playerName: ownerName = null, game = "firered" } = {}) {
   const value = normalizedSeed(seed);
+  const presets = presetNames(game);
   if (selectedStarter !== "random" && !STARTERS.some(starter => starter.id === selectedStarter)) {
     throw new TypeError("choose a native FireRed starter or random");
   }
@@ -68,14 +88,14 @@ export function createRunProfile(seed, { starter: selectedStarter = "random", pl
     seed: value,
     gender,
     genderMenuRow: gender === "GIRL" ? 1 : 0,
-    playerName: ownerName ?? PLAYER_PRESET_NAMES[gender][playerIndex],
+    playerName: ownerName ?? presets.player[gender][playerIndex],
     // FireRed opens a keyboard for the player; unlike the rival it has no
     // preset-name menu. This index selects one of the first three official
     // source-defined names that the keyboard controller enters verbatim. An
     // owner-chosen name replaces the preset (older runs have no such key).
     playerPresetIndex: ownerName === null ? playerIndex : null,
     ...(ownerName === null ? {} : { playerNameSource: "owner" }),
-    rivalName: RIVAL_PRESET_NAMES[rivalIndex],
+    rivalName: presets.rival[rivalIndex],
     rivalMenuRow: rivalIndex + 1,
     starter,
     nicknamePolicy: "species-name-only",

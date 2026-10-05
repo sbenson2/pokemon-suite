@@ -1,4 +1,5 @@
-import {selectOwnedBreeding,FIRE_RED_PRIZES} from './native-acquisition.js';
+import {selectOwnedBreeding,selectBreedToEvolve,FIRE_RED_PRIZES} from './native-acquisition.js';
+import {selectNpcTrade,NPC_TRADE_FLAGS} from './native-npc-trade.js';
 import {createHash} from 'node:crypto';
 export const postgameFailureContext=o=>createHash('sha256').update(JSON.stringify([
  Object.entries(o.playerMemory?.storyState?.flagIds??{}).filter(([id])=>Number(id)>=32).sort(([a],[b])=>Number(a)-Number(b)),o.playerMemory?.trainer?.bag?.keyItems,
@@ -24,8 +25,10 @@ import {postgameProgress,nationalDexProgress,POSTGAME_PROGRESS_WATCH,missedLorel
 import {unownForm} from '../evidence/unown-form.js';
 import {selectFameChecker,selectUnownForm,fameRosterRestorationComplete} from './postgame-collection-extras.js';
 import {postgameSideQuest,readNativeEggHatch,observeTrainerTower} from './postgame-workflows.js';
-import {selectNationalDexCapture,postgameCaptureRequest,ALTERING_CAVE_WILD_SET} from './national-dex-agenda.js';
-import {selectOwnedDexEvolution,selectOwnedPartnerEvolution,selectTeamPartnerEvolution,availablePartners} from './fire-red-evolution.js';
+import {selectNationalDexCapture,postgameCaptureRequest,ALTERING_CAVE_WILD_SET,ROD_FLAGS,COLLECTION_ITEM_FLAGS,nationalDexSources,nationalCollectionSummary,nationalCollectionFinishedReason,FIRERED_CATCHABLE,fireRedCatchableText} from './national-dex-agenda.js';
+import {nationalDexNumbers,nationalSpeciesId} from '../evidence/gen3-national-species.js';
+import {ownedDexEvolutionOptions,selectOwnedPartnerEvolution,partnerEvolutionNeeds,selectTeamPartnerEvolution,availablePartners} from './fire-red-evolution.js';
+import {ruinValleySunStoneStep,RUIN_VALLEY,RUIN_VALLEY_APPROACH,SUN_STONE} from './ruin-valley-route.js';
 import {recordComplete,resolvePostgameRecord,observeLeagueReceipt,eggRecordNeedsSpace} from './postgame-records.js';
 
 export const POSTGAME_WATCH={flags:[147,566,582,606,611,626,627,632,675,679,680,700,701,702,703,724,730,731,732,733,738,748,749,750,1208,1209,1210,1211,2092,2112,2116,2121],variables:[0x4001,0x4002,0x4003,0x4004,0x4005,0x4006,0x4007,0x4008,0x400e,0x400f,0x4031,0x4069,0x406A,0x4082,0x4083,
@@ -48,7 +51,32 @@ const beforeLink=BEFORE_LINK;
 // ready FireRed partner trades with the Pokédex alone (pair prerequisites are
 // re-checked per trade, including the National Dex above #151).
 export const postgameEntryNeedsLink=(id,{partnerAvailable=false}={})=>!beforeLink.has(id)&&!(id==='team-evolution'&&availablePartners(partnerAvailable).some(p=>p.title==='firered'));
-POSTGAME_WATCH.flags.push(84,128,579,614);
+// FLAG_GOT_POKE_FLUTE (573): campaign navigation keeps Route 12 unavailable
+// until it reads it (player/campaign.js); the worker has always watched it.
+POSTGAME_WATCH.flags.push(84,128,573,579,614,...ROD_FLAGS,...COLLECTION_ITEM_FLAGS,...NPC_TRADE_FLAGS);
+
+// What the National Dex collection can use: registered species, every held
+// individual (species, identity, level, item, Egg, shiny), the Bag's items and
+// key items, story flags (gifts, rods, item balls) and the Altering Cave set.
+// Walking, money and experience inside a level are not collection changes.
+const collectionContexts=new WeakMap();
+export function collectionContext(o){
+ const m=o?.playerMemory;if(!m)return null;
+ if(collectionContexts.has(m))return collectionContexts.get(m);
+ const t=m.trainer??{},identity=p=>[p.species,p.personality,p.otId,p.isEgg===true,p.shiny===true,p.level??null,p.heldItem??0];
+ const items=pocket=>(t.bag?.[pocket]??[]).map(i=>[i.itemId,i.quantity]).sort((a,b)=>a[0]-b[0]||a[1]-b[1]);
+ const value=createHash('sha256').update(JSON.stringify([[...(t.pokedex?.ownedSpecies??[])].sort((a,b)=>a-b),t.partyValidity,t.storage?.validity,
+  [...(t.party??[]),...(t.storage?.pokemon??[])].map(identity).map(x=>JSON.stringify(x)).sort(),items('items'),items('keyItems'),
+  Object.entries(m.storyState?.flagIds??{}).filter(([id])=>Number(id)>=32).sort(([a],[b])=>Number(a)-Number(b)),m.storyState?.variableIds?.[ALTERING_CAVE_WILD_SET]??null])).digest('hex');
+ collectionContexts.set(m,value);return value;
+}
+// The collection executor's workflow revision. An exhausted record written by
+// an older engine is evaluated again once: new workflows (126: the cross-island
+// Fire Stone purchase, Ruin Valley's Sun Stone, a teammate's King's Rock) do not
+// change the collection context the record was written for.
+export const COLLECTION_WORKFLOWS=2;
+export const exhaustedCollection=(o,workflows)=>{const e=workflows?.dex?.exhausted;return e&&e.context===collectionContext(o)&&e.workflows===COLLECTION_WORKFLOWS?e:null;};
+const collectionExhausted=exhaustedCollection;
 
 export function readPostgameEvidence(session,runtime,o){
  const eggHatch=readNativeEggHatch(session,runtime,o),acquisition=readAcquisitionEvidence(session,runtime,o);
@@ -106,8 +134,21 @@ function leagueTraining(workflows,rematch){
  return plan?.active?[false,{reason:d.label}]:[true,{reason:plan?.reason??null}];
 }
 
-export function postgameChecklist(o,workflows={},teamPlan=null){
+// The owner's collection goal: every species FireRed can register by itself
+// (national-dex-agenda.js FIRERED_CATCHABLE). With the agenda's source table,
+// the one-per-save choices another FireRed save must supply are planned work,
+// not a blocker; without it, every goal species must be registered.
+function fireRedGoal(o,collection){
+ const owned=new Set(nationalDexNumbers(o.playerMemory?.trainer?.pokedex?.ownedSpecies));
+ const rows=Array.isArray(collection)&&collection.length===386?collection:null;
+ const summary=rows?nationalCollectionSummary(rows):null;
+ const caught=FIRERED_CATCHABLE.filter(id=>owned.has(id)).length,total=FIRERED_CATCHABLE.length;
+ return {caught,total,summary,complete:summary?summary.fireRed.complete:caught===total,
+  planned:summary?.fireRed.planned??null,otherGames:summary?.categories['other-games']??null};
+}
+export function postgameChecklist(o,workflows={},teamPlan=null,collection=null){
  const m=o.playerMemory??{},owned=new Set(m.trainer?.pokedex?.ownedSpecies??[]),space=storageCapacity(m.trainer);
+ const goal=Array.isArray(m.trainer?.pokedex?.ownedSpecies)?fireRedGoal(o,collection):null;
  const rematch=Number.isInteger(m.gameStats?.leagueEntries)?Boolean(flag(o,2116)&&workflows.league?.receipt?.nativeSaveVerified&&m.gameStats.leagueEntries>=workflows.league.receipt.leagueEntries&&m.gameStats.savedGame>=workflows.league.receipt.savedGame):undefined;
  const entry=(id,label,value,extra={})=>({id,label,status:booleanStatus(value),executable:runnable.has(id),...extra});
  const capture=(id,label,value,speciesId)=>entry(id,label,value,{speciesId,addsPokemon:true,storageBlocked:!space.canStart});
@@ -144,7 +185,18 @@ export function postgameChecklist(o,workflows={},teamPlan=null){
   // availability is checked when the objective resolves).
   entry('team-evolution','Evolve teammates through partner trades',m.trainer?.partyValidity==='valid'&&m.trainer.storage?.validity==='valid'?
    !selectTeamPartnerEvolution({trainer:m.trainer,partnerAvailable:true,teamPlan}):undefined),
-  entry('national-collection','Complete the National Pokédex',Array.isArray(m.trainer?.pokedex?.ownedSpecies)?nationalDexProgress(m.trainer.pokedex.ownedSpecies).complete:undefined),
+  // A save that has done everything it can alone is idle, not retrying; any
+  // collection change (a trade, a new item) makes the entry runnable again.
+  entry('national-collection',goal?`Catch every FireRed Pokémon (${goal.caught} of ${goal.total})`:'Catch every FireRed Pokémon',goal?.complete,
+   {...(goal?{fireRed:{caught:goal.caught,total:goal.total,planned:goal.planned,otherGames:goal.otherGames}}:{}),
+    ...(collectionExhausted(o,workflows)?{executable:false,exhausted:true,reason:workflows.dex.exhausted.reason,summary:workflows.dex.exhausted.summary}:{})}),
+  // Outside what this save can do now; listed, never waited for.
+  ...(goal?.summary?[
+   entry('firered-planned',`Planned: ${goal.planned} FireRed Pokémon need another FireRed save or a partner Pokémon`,goal.planned===0,{executable:false,conditional:true,
+    species:goal.summary.plannedSpecies,reason:'The other starters, the other Mt. Moon fossil and the other roaming beasts need another FireRed save played by the bot; Tyrogue needs a Hitmon borrowed from the FireRed partner. Both are planned for a later build.'}),
+   entry('other-games',`Other games and events: ${goal.otherGames} Pokédex entries outside FireRed`,goal.otherGames===0,{executable:false,conditional:true,
+    reason:'LeafGreen, Ruby, Sapphire, Emerald and event Pokémon are outside the FireRed goal and never hold up the bot.'}),
+  ]:[]),
   capture('unown-forms','Collect all 28 Unown forms',Array.isArray(m.postgameEvidence?.unownForms)?new Set(m.postgameEvidence.unownForms).size===28:undefined,201),
   entry('fame-checker','Complete the Fame Checker',m.postgameEvidence?.fameChecker?.length===16?m.postgameEvidence.fameChecker.every(p=>p.entries===63)&&fameRosterRestorationComplete(workflows):undefined),
   entry('oak-completion','Show Oak the completed Pokédex',flag(o,756),{executable:runnable.has('oak-completion')&&nationalDexProgress(m.trainer?.pokedex?.ownedSpecies).diploma.complete}),
@@ -170,7 +222,7 @@ const PC_RELEASE_ENTRY=Object.freeze({id:'pc-release',label:'Free PC space by re
  reason:'Releases only non-shiny, unreserved hatchlings from the Egg sticker’s own breeding, then saves.'});
 export function postgamePresentation(o,agenda,previous=null){
  const current=o.phase==='stable',retained=!current&&previous?.evidenceFrame!=null&&previous.evidenceFrame<=o.frame;
- const listed=retained?previous.entries.filter(e=>e.id!=='pc-release'):leagueTrainingWait(postgameChecklist(o,agenda?.workflows,agenda?.continuation?.teamPlan),agenda);
+ const listed=retained?previous.entries.filter(e=>e.id!=='pc-release'):leagueTrainingWait(postgameChecklist(o,agenda?.workflows,agenda?.continuation?.teamPlan,agenda?.collection),agenda);
  const entries=agenda?.active==='pc-release'?[...listed,{...PC_RELEASE_ENTRY}]:listed;
  return {...agenda,evidenceCurrent:current,evidenceFrame:current?o.frame:retained?previous.evidenceFrame:null,
   progress:retained?previous.progress:postgameProgress(o,agenda),
@@ -236,7 +288,7 @@ export class PostgameAgenda{
  // True while the priority target is eligible; the postgame is not finished.
  priorityPending(o,now=Date.now(),{partnerAvailable=false}={}){
   const s=this.state;if(!s.priorityTarget)return false;
-  s.entries=postgameChecklist(o,s.workflows,s.continuation?.teamPlan);
+  s.entries=postgameChecklist(o,s.workflows,s.continuation?.teamPlan,s.collection);
   return Boolean(this.#priority(o,now,partnerAvailable));
  }
  observe(o){
@@ -245,10 +297,14 @@ export class PostgameAgenda{
   observeLeagueReceipt(o,this.state.workflows?.records?.['hall-sticker']?.cycle);
   observeLeagueTraining(o,this.state.workflows,this.state.active);
  }
- defer(id,reason,now=Date.now(),observation=null){
+ // options.collection: the collection context of a National Dex deferral
+ // without a failure context (a cooldown); a collection change retries it.
+ defer(id,reason,now=Date.now(),observation=null,{collection=null,retryAt=null}={}){
   const context=observation?postgameFailureContext(observation):null;
   const previous=this.state.failures[id],attempts=previous?.context&&context&&previous.context!==context?1:(previous?.attempts??0)+1;
-  this.state.failures[id]={reason,attempts,retryAt:now+Math.min(3600000,300000*2**Math.min(attempts-1,3)),...(context?{context,contextVersion:3}:{}),requiresStateChange:Boolean(context&&attempts>=3)};
+  const retry=Number.isSafeInteger(retryAt)&&retryAt>now?Math.min(retryAt,now+3600000):now+Math.min(3600000,300000*2**Math.min(attempts-1,3));
+  const collected=id==='national-collection'?collection??(observation?collectionContext(observation):null):null;
+  this.state.failures[id]={reason,attempts,retryAt:retry,...(context?{context,contextVersion:3}:{}),requiresStateChange:Boolean(context&&attempts>=3),...(collected?{collection:collected}:{})};
   const dex=this.state.workflows?.dex;
   // A capture failure belongs to its encounter map; other maps of the species stay eligible.
   if(id==='national-collection'&&dex?.target){dex.failed??={};dex.failed[dex.target.map?`${dex.target.speciesId}:${dex.target.map}`:dex.target.speciesId]={...this.state.failures[id]};dex.target=null;}
@@ -256,8 +312,16 @@ export class PostgameAgenda{
   if(id==='fame-checker'&&fame?.active){fame.failed??={};fame.failed[fame.active]={...this.state.failures[id]};fame.active=null;}
   this.state.active=null;
  }
+ // Nothing is executable and nothing is merely deferred: record the finished
+ // collection for this exact collection context (not a failure, no retry).
+ exhaust(id,o,target,now=Date.now()){
+  const dex=(this.state.workflows??={}).dex??={};
+  dex.exhausted={id,context:collectionContext(o),workflows:COLLECTION_WORKFLOWS,reason:target.reason,summary:target.summary??null,at:new Date(now).toISOString(),frame:o?.frame??null};
+  dex.target=null;delete this.state.failures[id];
+  if(this.state.active===id)this.state.active=null;
+ }
  select(o,now=Date.now(),{partnerAvailable=false,priorityOnly=false}={}){
-  const s=this.state;s.entries=postgameChecklist(o,s.workflows,s.continuation?.teamPlan);
+  const s=this.state;s.entries=postgameChecklist(o,s.workflows,s.continuation?.teamPlan,s.collection);
   if(!s.enabled)return null;
   if(flag(o,2092)!==true)return null;
   // Hash-only legacy contexts cannot be decoded. Establish the new baseline
@@ -265,8 +329,10 @@ export class PostgameAgenda{
   for(const failure of Object.values(s.failures??{}))if(failure.context&&failure.contextVersion!==3){failure.context=postgameFailureContext(o);failure.contextVersion=3;}
   // A used encounter retires the priority target with a receipt.
   if(s.priorityTarget&&staticAvailability(o).find(x=>x.id===s.priorityTarget.id)?.used===true)this.#retirePriority('used',now);
-  const eligible=e=>e.status==='pending'&&e.executable&&!e.storageBlocked&&!(s.failures[e.id]?.retryAt>now)&&
-   !(s.failures[e.id]?.requiresStateChange&&s.failures[e.id].context===postgameFailureContext(o))&&(flag(o,2116)===true||!postgameEntryNeedsLink(e.id,{partnerAvailable}));
+  // A National Dex deferral also ends when the collection itself changes.
+  const collectionChanged=f=>Boolean(f?.collection&&f.collection!==collectionContext(o));
+  const eligible=e=>e.status==='pending'&&e.executable&&!e.storageBlocked&&!(s.failures[e.id]?.retryAt>now&&!collectionChanged(s.failures[e.id]))&&
+   !(s.failures[e.id]?.requiresStateChange&&s.failures[e.id].context===postgameFailureContext(o)&&!collectionChanged(s.failures[e.id]))&&(flag(o,2116)===true||!postgameEntryNeedsLink(e.id,{partnerAvailable}));
   const pick=()=>this.#priority(o,now,partnerAvailable)??(priorityOnly?null:s.entries.find(eligible));
   let selected=pick();
   // Asked only for an eligible priority target: leave the current owner alone.
@@ -292,6 +358,42 @@ export class PostgameAgenda{
  }
 }
 
+// Ruin Valley's walled Sun Stone is the cartridge's only one (ruin-valley-route.js).
+// An owned evolution that needs it and has a plain source (a PC Oddish for
+// Bellossom; League trainees stay protected) takes the boulder route while the
+// ball is on the ground, no ordinary supply exists and a Strength user is owned.
+const knowsStrength=p=>p?.validity==='valid'&&!p.isEgg&&p.moves?.includes(70);
+function selectWalledSunStone({trainer,protectedFingerprints,flags,canSupply,deferred=()=>false}){
+ if(flags?.[SUN_STONE.flagId]!==false||canSupply(SUN_STONE.itemId))return null;
+ if(![...(trainer?.party??[]),...(trainer?.storage?.pokemon??[])].some(knowsStrength))return null;
+ const option=ownedDexEvolutionOptions({trainer,scope:'national',protectedFingerprints,canSupply:id=>id===SUN_STONE.itemId,chains:true})
+  .find(x=>x.rule.item?.nativeId===SUN_STONE.itemId&&!deferred(x.rule.speciesId));
+ return option?{speciesId:option.rule.speciesId}:null;
+}
+function sunStoneObjective(o,objective,here){
+ const m=o.playerMemory,party=m.trainer?.party??[];
+ if(!party.some(knowsStrength)){
+  const mon=(m.trainer?.storage?.pokemon??[]).find(knowsStrength);
+  return mon?objective('sun-stone-strength',{kind:'party-roster',map:fireRedPokemonCenter(here),minimumPartySize:2,maximumPartySize:6,requiredFingerprints:[encounterFingerprint(mon)],
+   requiredFamilies:party.filter(p=>p.moves?.some(id=>[19,57].includes(id))).map(p=>[p.species])}):
+   objective('sun-stone-strength-needed',{kind:'stop-for-review',reason:'Ruin Valley’s Sun Stone needs a verified Strength user in the party or PC.'});
+ }
+ const step=ruinValleySunStoneStep(o);
+ if(step.kind==='reach')return objective('sun-stone-travel',{kind:'map-arrival',map:step.map});
+ if(step.kind==='read')return objective('sun-stone-approach',{kind:'walk-to',map:RUIN_VALLEY,...RUIN_VALLEY_APPROACH});
+ if(step.kind==='reset')return objective('sun-stone-reset',{kind:'map-arrival',map:step.map});
+ if(step.kind==='push')return objective(`sun-stone-boulder-${step.step}`,{kind:'push-boulder',map:RUIN_VALLEY,objectIndex:step.push.index,...step.push.to},
+  {authoredBoulderPath:[{...step.push.from},{...step.push.to}]});
+ return objective('sun-stone-collect',step.target,{completion:step.completion,collectionKind:'visible',itemId:SUN_STONE.itemId,underfoot:false});
+}
+// The League Exp. Share trainees (league-exp-share.js): the current trainee,
+// every completed one, a restored or lent one, by personality and OT.
+function leagueTrainees(workflows,trainer){
+ const s=workflows?.leagueExpShare??{},keys=new Set((s.completed??[]).map(String));
+ for(const x of [s.trainee,s.restored,s.lent])if(x&&Number.isInteger(Number(x.personality)))keys.add(JSON.stringify([Number(x.personality),Number(x.otId)]));
+ for(const key of Object.keys(workflows?.training?.byTrainee??{})){const [p,o]=key.split(':').map(Number);if(Number.isInteger(p))keys.add(JSON.stringify([p,o]));}
+ return [...(trainer?.party??[]),...(trainer?.storage?.pokemon??[])].filter(p=>keys.has(JSON.stringify([Number(p.personality),Number(p.otId)]))).map(encounterFingerprint);
+}
 const TANOBY='MAP_SEVEN_ISLAND_SEVAULT_CANYON_TANOBY_KEY';
 const path=(x,y,segments)=>{const points=[{x,y}];for(const [dx,dy,n] of segments)for(let i=0;i<n;i++){x+=dx;y+=dy;points.push({x,y});}return points;};
 const BOULDERS=[
@@ -439,21 +541,78 @@ export function resolvePostgameObjective(id,o,world,state={},context={}){
   return objective('dependency',{kind:'stop-for-review',reason:partners.length?'No teammate has an available trade evolution.':'Teammate trade evolutions wait for the partner game to be ready for commands.'});
  }
  if(id==='national-collection'){
-  const dex=state.dex??={};
-  const selected=selectOwnedDexEvolution({trainer:m.trainer,scope:'national',protectedFingerprints:context.protectedFingerprints??[],canSupply:item=>Boolean(context.planner?.selectItemPreparation(o,item))});
-  if(selected&&!(dex.failed?.[selected.rule.speciesId]?.retryAt>Date.now())){
-   const {pokemon,rule}=selected;dex.target={speciesId:rule.speciesId,method:'evolution'};
+  const dex=state.dex??={},now=context.now??Date.now(),retryAt=key=>dex.failed?.[key]?.retryAt>now?dex.failed[key].retryAt:null;
+  const canSupply=item=>Boolean(context.planner?.selectItemPreparation(o,item));
+  // League-trained individuals (the Exp. Share trainees) stay as trained: they
+  // are never an evolution, breeding or trade source for the collection.
+  const trained=leagueTrainees(state,m.trainer);
+  const protectedFingerprints=[...(context.protectedFingerprints??[]),...trained];
+  const flags=m.storyState?.flagIds??{};
+  // Every owned evolution in rank order; a deferred one no longer hides the next.
+  const evolutions=ownedDexEvolutionOptions({trainer:m.trainer,scope:'national',protectedFingerprints,canSupply,chains:true});
+  const selected=evolutions.find(x=>!retryAt(x.rule.speciesId));
+  if(selected){
+   const {pokemon,rule}=selected,chain=selected.chain??[rule];dex.target={speciesId:rule.speciesId,method:'evolution'};
    return objective('evolve-'+rule.speciesId,{kind:'postgame-evolve'},{evolution:{requestId:`dex-${pokemon.otId}-${pokemon.personality}-${rule.speciesId}`,sourceId:'owned-national-dex',pokemon,
-    request:postgameCaptureRequest(rule.speciesId),steps:[{kind:'evolve',game:'firered',fromSpecies:rule.fromSpecies,speciesId:rule.speciesId},{kind:'verify',game:'firered',speciesId:rule.speciesId}]}});
+    request:postgameCaptureRequest(rule.speciesId),steps:[...chain.map(r=>({kind:'evolve',game:'firered',fromSpecies:r.fromSpecies,speciesId:r.speciesId})),{kind:'verify',game:'firered',speciesId:rule.speciesId}]}});
   }
-  const partner=selectOwnedPartnerEvolution({trainer:m.trainer,partnerAvailable:context.partnerAvailable,protectedFingerprints:context.protectedFingerprints??[]});
-  if(partner&&!(dex.failed?.[partner.request.speciesId]?.retryAt>Date.now())){dex.target={speciesId:partner.request.speciesId,method:'partner-evolution'};return objective('partner-'+partner.request.speciesId,{kind:'postgame-evolve'},{evolution:partner});}
-  const breeding=context.mechanics?selectOwnedBreeding({trainer:m.trainer,mechanics:context.mechanics,protectedFingerprints:context.protectedFingerprints??[]}):null;
-  if(breeding&&!(dex.failed?.[breeding.speciesId]?.retryAt>Date.now())){dex.target={speciesId:breeding.speciesId,method:'breeding'};return objective('breed-'+breeding.speciesId,{kind:'postgame-acquire'},{acquisition:{kind:'breeding',...breeding}});}
-  const capture=selectNationalDexCapture({o,world,mechanics:context.mechanics,state:dex});if(capture)return capture;
+  // Trade evolutions: a FireRed-to-FireRed round trip with the FireRed partner
+  // game when it is ready (the evolution happens in FireRed).
+  const partner=selectOwnedPartnerEvolution({trainer:m.trainer,partnerAvailable:context.partnerAvailable,protectedFingerprints,preferFireRed:true});
+  if(partner&&!retryAt(partner.request.speciesId)){dex.target={speciesId:partner.request.speciesId,method:'partner-evolution'};return objective('partner-'+partner.request.speciesId,{kind:'postgame-evolve'},{evolution:partner});}
+  const needs=partnerEvolutionNeeds({trainer:m.trainer,partnerAvailable:context.partnerAvailable,protectedFingerprints,canSupply});
+  if(needs?.itemId&&!retryAt(needs.rule.speciesId)){
+   const supply=context.planner?.selectItemPreparation(o,needs.itemId);
+   if(supply){dex.target={speciesId:needs.rule.speciesId,method:'evolution-item'};return resolveFireRedTravel({...supply,id:`postgame-national-collection-item-${needs.itemId}`},o,world);}
+  }
+  const breeding=context.mechanics?selectOwnedBreeding({trainer:m.trainer,mechanics:context.mechanics,protectedFingerprints,canSupply}):null;
+  if(breeding&&!retryAt(breeding.speciesId)){dex.target={speciesId:breeding.speciesId,method:'breeding'};return objective('breed-'+breeding.speciesId,{kind:'postgame-acquire'},{acquisition:{kind:'breeding',...breeding}});}
+  // FireRed in-game trades with a spare of the requested species in the PC.
+  const npc=selectNpcTrade({trainer:m.trainer,flags,protectedFingerprints,deferred:id=>Boolean(retryAt(id))});
+  if(npc?.source){dex.target={speciesId:npc.trade.received,method:'npc-trade'};return objective('trade-'+npc.trade.received,{kind:'postgame-acquire'},{acquisition:{kind:'npc-trade',tradeKey:npc.trade.key,source:npc.source}});}
+  // Land and fishing catches (fishing collects a missing rod from its giver).
+  const capture=selectNationalDexCapture({o,world,mechanics:context.mechanics,state:dex,now});if(capture)return capture;
   const water=context.planner?.selectPokedexPreparation(o,386);
   if(water&&['surf','fishing'].includes(water.encounterMethod))return resolveFireRedTravel(water,o,world);
-  return objective('source-required',{kind:'stop-for-review',reason:'No remaining local catch or ordinary evolution is currently executable. Missing entries retain their partner, breeding, gift or event requirements.'});
+  // A plain spare that an in-game trade or a trade evolution still needs.
+  const spare=[npc&&!npc.source?npc.trade.requested:null,needs&&!needs.source&&!needs.itemId?needs.rule.fromSpecies:null].filter(Boolean);
+  if(spare.length){
+   // A spare caught into a party with room is stored first: the trade and the
+   // partner round trip take their spare from the PC, never the travelling team.
+   const team=new Set((context.teamPlan?.permanentFamilies??[]).flat());
+   const carried=(m.trainer?.party??[]).find(p=>p.validity==='valid'&&!p.isEgg&&p.shiny===false&&spare.includes(nationalSpeciesId(p.species))&&!team.has(nationalSpeciesId(p.species))&&
+    !protectedFingerprints.includes(encounterFingerprint(p)));
+   if(carried)return resolveFireRedTravel(objective('store-spare',{kind:'party-roster',map:fireRedPokemonCenter(here),excludedFingerprints:[encounterFingerprint(carried)]}),o,world);
+   const hunt=selectNationalDexCapture({o,world,mechanics:context.mechanics,state:dex,now,targets:spare});
+   if(hunt)return {...hunt,id:'postgame-national-spare-'+hunt.request.speciesId};
+  }
+  // A base form owned only as a protected shiny: breed a plain copy to evolve.
+  const learnsets=m.postgameEvidence?.acquisition?.learnsets??{};
+  const bred=context.mechanics?selectBreedToEvolve({trainer:m.trainer,mechanics:context.mechanics,protectedFingerprints,learnsets,canSupply,deferred:base=>Boolean(retryAt(base))}):null;
+  if(bred){
+   dex.target={speciesId:bred.speciesId,method:'breed-to-evolve',evolutionTarget:bred.evolutionTarget};
+   return objective(`breed-${bred.speciesId}-for-${bred.evolutionTarget}`,{kind:'postgame-acquire'},{acquisition:{kind:'breeding',...bred}});
+  }
+  // An owned evolution whose only missing piece is Ruin Valley's walled Sun
+  // Stone (Bellossom): collect it on the reviewed boulder route. With the stone
+  // stocked, the owned evolution above is selected.
+  const walled=selectWalledSunStone({trainer:m.trainer,protectedFingerprints,flags,canSupply,deferred:id=>Boolean(retryAt(id))});
+  if(walled){dex.target={speciesId:walled.speciesId,method:'evolution-item'};return sunStoneObjective(o,objective,here);}
+  // Nothing now. A route only waiting out a retry is a cooldown; otherwise the
+  // save has finished what it can do alone.
+  const failedRetries=()=>Object.values(dex.failed??{}).map(f=>f?.retryAt>now?f.retryAt:null);
+  const waits=[...evolutions.map(x=>retryAt(x.rule.speciesId)),partner?retryAt(partner.request.speciesId):null,breeding?retryAt(breeding.speciesId):null,
+   needs?retryAt(needs.rule.speciesId):null,npc?retryAt(npc.trade.received):null];
+  const walledRoute=selectWalledSunStone({trainer:m.trainer,protectedFingerprints,flags,canSupply});
+  if(walledRoute)waits.push(retryAt(walledRoute.speciesId));
+  if(selectNationalDexCapture({o,world,mechanics:context.mechanics,state:{failed:{}},now})||spare.length&&selectNationalDexCapture({o,world,mechanics:context.mechanics,state:{failed:{}},now,targets:spare}))waits.push(...failedRetries());
+  if(context.mechanics&&selectBreedToEvolve({trainer:m.trainer,mechanics:context.mechanics,protectedFingerprints,learnsets,canSupply}))waits.push(...failedRetries());
+  const next=waits.filter(Boolean).sort((a,b)=>a-b)[0];
+  if(next)return objective('source-deferred',{kind:'stop-for-review',retryAt:next,reason:`The remaining local routes failed recently and will retry at ${new Date(next).toISOString().slice(11,16)} UTC.`});
+  if(!context.mechanics)return objective('source-required',{kind:'stop-for-review',reason:'No remaining local catch or ordinary evolution is currently executable. Missing entries retain their partner, breeding, gift or event requirements.'});
+  const rows=nationalDexSources({o,world,mechanics:context.mechanics}),summary=nationalCollectionSummary(rows);
+  const fireRedPartnerReady=availablePartners(context.partnerAvailable).some(p=>p.title==='firered');
+  return objective('finished',{kind:'collection-exhausted',reason:nationalCollectionFinishedReason(summary,rows,{fireRedPartnerReady,extraSaves:state.extraSaves?.presentation}),summary});
  }
  if(id==='fly-carrier'){
   // Long ground travel is only a fallback. Keep one verified Fly user in the

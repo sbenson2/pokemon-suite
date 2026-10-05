@@ -31,16 +31,18 @@ test('postgame begins with observed National Dex and link prerequisites, and ret
 
 test('National Dex completion distinguishes the cartridge diploma from all 386 species',()=>{
  assert.equal(typeof progress.nationalDexProgress,'function');
- // IDs 252–276 are unused in this cartridge; actual Hoenn species start at 277.
- const native=Array.from({length:411},(_,i)=>i+1);
- const full=progress.nationalDexProgress(native);
+ // The observer's owned list is the Pokédex flag bits, already National Dex
+ // numbers (fire-red-observer.js decodePokedex); internal ids 252–276 are unused
+ // only in party/PC records, never in the Pokédex (Castform is #351, not #325).
+ const national=Array.from({length:386},(_,i)=>i+1);
+ const full=progress.nationalDexProgress(national);
  assert.equal(full.caught,386);assert.equal(full.total,386);assert.equal(full.complete,true);assert.equal(full.diploma.total,380);
- const missingEvents=native.filter(id=>![151,249,250,251,409,410].includes(id));
+ const missingEvents=national.filter(id=>![151,249,250,251,385,386].includes(id));
  const partial=progress.nationalDexProgress(missingEvents);
  assert.equal(partial.complete,false);assert.equal(partial.caught,380);assert.equal(partial.diploma.complete,true);
  assert.deepEqual(partial.missing,[151,249,250,251,385,386]);
  assert.equal(progress.nationalDexProgress(null).known,false);
- assert.equal(progress.nationalDexProgress([...native,999,277]).caught,386);
+ assert.equal(progress.nationalDexProgress([...national,999,277]).caught,386);
 });
 
 test('unknown or partner-gated checkpoints never become completed by exhausting local work',()=>{

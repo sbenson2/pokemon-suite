@@ -9,6 +9,11 @@ import sys
 SCHEMA = 'pokemon-suite/capabilities/v1'
 DEX_GAMES = frozenset({'firered', 'leafgreen', 'emerald', 'crystal'})
 FIRERED_SHA1 = 'dd5945db9b930750cb39d00c84da8571feebf417'
+# LeafGreen US revision 1 (build 124). The FRLG family shares one engine; a
+# LeafGreen bot profile runs the story campaign. Captures, trades and
+# evolution partners are not qualified on LeafGreen yet.
+LEAFGREEN_SHA1 = '7862c67bdecbe21d1d69ce082ce34327e1c6ed5e'
+FRLG_CARTRIDGES = {'firered': ('FireRed', FIRERED_SHA1), 'leafgreen': ('LeafGreen', LEAFGREEN_SHA1)}
 FEATURES = ('play', 'audio', 'input', 'touch', 'nativeSave', 'checkpoint',
             'telemetry', 'campaign', 'companion', 'travel', 'battle', 'heal',
             'save', 'storage', 'capture.land', 'capture.safari', 'capture.static',
@@ -26,7 +31,7 @@ def game_features(game, descriptor, config=None, live=None, *, dex_available=Non
     backend = (config or {}).get('backend', 'wasm')
     configured = config is not None
     implemented = set()
-    if backend in {'libretro', 'desktop'} or game in {'firered', 'emerald', 'crystal'}:
+    if backend in {'libretro', 'desktop'} or game in {'firered', 'leafgreen', 'emerald', 'crystal'}:
         implemented.update({'play', 'audio', 'input', 'nativeSave', 'save'})
         if backend != 'desktop':
             implemented.add('checkpoint')
@@ -43,6 +48,8 @@ def game_features(game, descriptor, config=None, live=None, *, dex_available=Non
                                 'capture.gift', 'evolution'})
         else:
             implemented.update({'companion', 'evolution'})
+    if backend == 'wasm' and game == 'leafgreen':
+        implemented.update({'telemetry', 'campaign', 'travel', 'battle', 'heal', 'storage'})
     if (dex_available if dex_available is not None else game in DEX_GAMES):
         implemented.add('dex')
     runtime_ready = configured
@@ -69,9 +76,9 @@ def game_features(game, descriptor, config=None, live=None, *, dex_available=Non
         reason = None if ready else runtime_reason if supported else 'This game adapter does not implement this feature.'
         readiness = 'ready' if ready else 'needs-setup' if supported else 'blocked'
         if name in automation and configured:
-            if game == 'firered' and (config.get('cartridge') or {}).get('sha1') != FIRERED_SHA1:
-                readiness = 'needs-setup'; reason = 'Automation requires the verified FireRed US revision 1 cartridge.'
-            if game == 'firered' and not all(_file(config.get('inputs', {}).get(k)) for k in ('runtime', 'world', 'story', 'battle')):
+            if game in FRLG_CARTRIDGES and (config.get('cartridge') or {}).get('sha1') != FRLG_CARTRIDGES[game][1]:
+                readiness = 'needs-setup'; reason = f'Automation requires the verified {FRLG_CARTRIDGES[game][0]} US revision 1 cartridge.'
+            if game in FRLG_CARTRIDGES and not all(_file(config.get('inputs', {}).get(k)) for k in ('runtime', 'world', 'story', 'battle')):
                 readiness = 'needs-setup'; reason = 'Install the matching runtime, world, story, and battle resources.'
         if supported and live and live.get('capabilities', {}).get(name) is False:
             readiness = 'blocked'; reason = live.get('message') or 'The current game owner cannot provide this feature.'

@@ -1,0 +1,1538 @@
+{
+ "schema": "pokemon-suite/leafgreen-catchable/v1",
+ "source": {
+  "repository": "pret/pokefirered",
+  "commit": "c75f352304d529f6ba92d4f74b9cf8b5c3810788",
+  "files": [
+   "src/data/wild_encounters.json",
+   "src/data/pokemon/evolution.h",
+   "src/data/pokemon/species_info.h",
+   "src/data/ingame_trades.h",
+   "src/daycare.c",
+   "src/pokemon.c",
+   "data/scripts/item_ball_scripts.inc",
+   "data/maps"
+  ],
+  "sources": {
+   "starter": "data/maps/PalletTown_ProfessorOaksLab/scripts.inc (one per save)",
+   "fossil": "data/maps/MtMoon_B2F/scripts.inc (one of the two per save), CinnabarIsland_PokemonLab_ExperimentRoom",
+   "amber": "data/maps/PewterCity_Museum_1F/scripts.inc (Old Amber)",
+   "roamer": "src/roamer.c (one per save, chosen by the starter)",
+   "dojo": "data/maps/SaffronCity_Dojo/scripts.inc (one per save)",
+   "gift": "SilphCo_7F, CeladonCity_Condominiums_RoofRoom, MtMoon Pokemon Center salesman, FiveIsland_WaterLabyrinth",
+   "prize": "data/maps/CeladonCity_GameCorner_PrizeRoom/scripts.inc (LEAFGREEN)",
+   "static": "setwildbattle in data/maps/*/scripts.inc",
+   "trade": "src/data/ingame_trades.h (LEAFGREEN)"
+  }
+ },
+ "excluded": "Event tickets (Lugia, Ho-Oh, Deoxys), Mew, Celebi, Jirachi, Altering Cave tables 2-9, day/night friendship, Beauty and other-game species.",
+ "total": 190,
+ "species": [
+  {
+   "id": 1,
+   "name": "BULBASAUR",
+   "via": [
+    "breeding",
+    "starter"
+   ],
+   "onePerSave": [
+    "starter"
+   ]
+  },
+  {
+   "id": 2,
+   "name": "IVYSAUR",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 3,
+   "name": "VENUSAUR",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 4,
+   "name": "CHARMANDER",
+   "via": [
+    "breeding",
+    "starter"
+   ],
+   "onePerSave": [
+    "starter"
+   ]
+  },
+  {
+   "id": 5,
+   "name": "CHARMELEON",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 6,
+   "name": "CHARIZARD",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 7,
+   "name": "SQUIRTLE",
+   "via": [
+    "breeding",
+    "starter"
+   ],
+   "onePerSave": [
+    "starter"
+   ]
+  },
+  {
+   "id": 8,
+   "name": "WARTORTLE",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 9,
+   "name": "BLASTOISE",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 10,
+   "name": "CATERPIE",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 11,
+   "name": "METAPOD",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 12,
+   "name": "BUTTERFREE",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 13,
+   "name": "WEEDLE",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 14,
+   "name": "KAKUNA",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 15,
+   "name": "BEEDRILL",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 16,
+   "name": "PIDGEY",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 17,
+   "name": "PIDGEOTTO",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 18,
+   "name": "PIDGEOT",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 19,
+   "name": "RATTATA",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 20,
+   "name": "RATICATE",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 21,
+   "name": "SPEAROW",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 22,
+   "name": "FEAROW",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 25,
+   "name": "PIKACHU",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 26,
+   "name": "RAICHU",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 27,
+   "name": "SANDSHREW",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 28,
+   "name": "SANDSLASH",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 29,
+   "name": "NIDORAN_F",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 30,
+   "name": "NIDORINA",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 31,
+   "name": "NIDOQUEEN",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 32,
+   "name": "NIDORAN_M",
+   "via": [
+    "breeding",
+    "trade",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 33,
+   "name": "NIDORINO",
+   "via": [
+    "evolution",
+    "trade",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 34,
+   "name": "NIDOKING",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 35,
+   "name": "CLEFAIRY",
+   "via": [
+    "evolution",
+    "prize",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 36,
+   "name": "CLEFABLE",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 37,
+   "name": "VULPIX",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 38,
+   "name": "NINETALES",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 39,
+   "name": "JIGGLYPUFF",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 40,
+   "name": "WIGGLYTUFF",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 41,
+   "name": "ZUBAT",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 42,
+   "name": "GOLBAT",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 46,
+   "name": "PARAS",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 47,
+   "name": "PARASECT",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 48,
+   "name": "VENONAT",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 49,
+   "name": "VENOMOTH",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 50,
+   "name": "DIGLETT",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 51,
+   "name": "DUGTRIO",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 52,
+   "name": "MEOWTH",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 53,
+   "name": "PERSIAN",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 56,
+   "name": "MANKEY",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 57,
+   "name": "PRIMEAPE",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 60,
+   "name": "POLIWAG",
+   "via": [
+    "breeding",
+    "wild-fishing"
+   ]
+  },
+  {
+   "id": 61,
+   "name": "POLIWHIRL",
+   "via": [
+    "evolution",
+    "wild-fishing"
+   ]
+  },
+  {
+   "id": 62,
+   "name": "POLIWRATH",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 63,
+   "name": "ABRA",
+   "via": [
+    "breeding",
+    "prize",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 64,
+   "name": "KADABRA",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 65,
+   "name": "ALAKAZAM",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 66,
+   "name": "MACHOP",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 67,
+   "name": "MACHOKE",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 68,
+   "name": "MACHAMP",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 69,
+   "name": "BELLSPROUT",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 70,
+   "name": "WEEPINBELL",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 71,
+   "name": "VICTREEBEL",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 72,
+   "name": "TENTACOOL",
+   "via": [
+    "breeding",
+    "wild-water"
+   ]
+  },
+  {
+   "id": 73,
+   "name": "TENTACRUEL",
+   "via": [
+    "evolution",
+    "wild-water"
+   ]
+  },
+  {
+   "id": 74,
+   "name": "GEODUDE",
+   "via": [
+    "breeding",
+    "wild-land",
+    "wild-rock_smash"
+   ]
+  },
+  {
+   "id": 75,
+   "name": "GRAVELER",
+   "via": [
+    "evolution",
+    "wild-rock_smash"
+   ]
+  },
+  {
+   "id": 76,
+   "name": "GOLEM",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 77,
+   "name": "PONYTA",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 78,
+   "name": "RAPIDASH",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 79,
+   "name": "SLOWPOKE",
+   "via": [
+    "breeding",
+    "wild-fishing",
+    "wild-land",
+    "wild-water"
+   ]
+  },
+  {
+   "id": 80,
+   "name": "SLOWBRO",
+   "via": [
+    "evolution",
+    "wild-fishing",
+    "wild-land",
+    "wild-water"
+   ]
+  },
+  {
+   "id": 81,
+   "name": "MAGNEMITE",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 82,
+   "name": "MAGNETON",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 83,
+   "name": "FARFETCHD",
+   "via": [
+    "breeding",
+    "trade"
+   ]
+  },
+  {
+   "id": 84,
+   "name": "DODUO",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 85,
+   "name": "DODRIO",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 86,
+   "name": "SEEL",
+   "via": [
+    "breeding",
+    "trade",
+    "wild-land",
+    "wild-water"
+   ]
+  },
+  {
+   "id": 87,
+   "name": "DEWGONG",
+   "via": [
+    "evolution",
+    "wild-land",
+    "wild-water"
+   ]
+  },
+  {
+   "id": 88,
+   "name": "GRIMER",
+   "via": [
+    "breeding",
+    "wild-fishing",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 89,
+   "name": "MUK",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 92,
+   "name": "GASTLY",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 93,
+   "name": "HAUNTER",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 94,
+   "name": "GENGAR",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 95,
+   "name": "ONIX",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 96,
+   "name": "DROWZEE",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 97,
+   "name": "HYPNO",
+   "via": [
+    "evolution",
+    "static",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 98,
+   "name": "KRABBY",
+   "via": [
+    "breeding",
+    "wild-fishing",
+    "wild-water"
+   ]
+  },
+  {
+   "id": 99,
+   "name": "KINGLER",
+   "via": [
+    "evolution",
+    "wild-fishing"
+   ]
+  },
+  {
+   "id": 100,
+   "name": "VOLTORB",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 101,
+   "name": "ELECTRODE",
+   "via": [
+    "evolution",
+    "static",
+    "trade",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 102,
+   "name": "EXEGGCUTE",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 103,
+   "name": "EXEGGUTOR",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 104,
+   "name": "CUBONE",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 105,
+   "name": "MAROWAK",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 106,
+   "name": "HITMONLEE",
+   "via": [
+    "dojo",
+    "evolution"
+   ],
+   "onePerSave": [
+    "dojo"
+   ]
+  },
+  {
+   "id": 107,
+   "name": "HITMONCHAN",
+   "via": [
+    "dojo",
+    "evolution"
+   ],
+   "onePerSave": [
+    "dojo"
+   ]
+  },
+  {
+   "id": 108,
+   "name": "LICKITUNG",
+   "via": [
+    "breeding",
+    "trade"
+   ]
+  },
+  {
+   "id": 109,
+   "name": "KOFFING",
+   "via": [
+    "breeding",
+    "wild-land",
+    "wild-water"
+   ]
+  },
+  {
+   "id": 110,
+   "name": "WEEZING",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 111,
+   "name": "RHYHORN",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 112,
+   "name": "RHYDON",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 113,
+   "name": "CHANSEY",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 114,
+   "name": "TANGELA",
+   "via": [
+    "breeding",
+    "trade",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 115,
+   "name": "KANGASKHAN",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 116,
+   "name": "HORSEA",
+   "via": [
+    "breeding",
+    "wild-fishing"
+   ]
+  },
+  {
+   "id": 117,
+   "name": "SEADRA",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 118,
+   "name": "GOLDEEN",
+   "via": [
+    "breeding",
+    "wild-fishing"
+   ]
+  },
+  {
+   "id": 119,
+   "name": "SEAKING",
+   "via": [
+    "evolution",
+    "wild-fishing"
+   ]
+  },
+  {
+   "id": 120,
+   "name": "STARYU",
+   "via": [
+    "breeding",
+    "wild-fishing"
+   ]
+  },
+  {
+   "id": 121,
+   "name": "STARMIE",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 122,
+   "name": "MR_MIME",
+   "via": [
+    "breeding",
+    "trade"
+   ]
+  },
+  {
+   "id": 124,
+   "name": "JYNX",
+   "via": [
+    "evolution",
+    "trade"
+   ]
+  },
+  {
+   "id": 126,
+   "name": "MAGMAR",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 127,
+   "name": "PINSIR",
+   "via": [
+    "breeding",
+    "prize",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 128,
+   "name": "TAUROS",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 129,
+   "name": "MAGIKARP",
+   "via": [
+    "breeding",
+    "gift",
+    "wild-fishing"
+   ]
+  },
+  {
+   "id": 130,
+   "name": "GYARADOS",
+   "via": [
+    "evolution",
+    "wild-fishing"
+   ]
+  },
+  {
+   "id": 131,
+   "name": "LAPRAS",
+   "via": [
+    "breeding",
+    "gift",
+    "wild-water"
+   ]
+  },
+  {
+   "id": 132,
+   "name": "DITTO",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 133,
+   "name": "EEVEE",
+   "via": [
+    "breeding",
+    "gift"
+   ]
+  },
+  {
+   "id": 134,
+   "name": "VAPOREON",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 135,
+   "name": "JOLTEON",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 136,
+   "name": "FLAREON",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 137,
+   "name": "PORYGON",
+   "via": [
+    "breeding",
+    "prize"
+   ]
+  },
+  {
+   "id": 138,
+   "name": "OMANYTE",
+   "via": [
+    "breeding",
+    "fossil"
+   ],
+   "onePerSave": [
+    "fossil"
+   ]
+  },
+  {
+   "id": 139,
+   "name": "OMASTAR",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 140,
+   "name": "KABUTO",
+   "via": [
+    "breeding",
+    "fossil"
+   ],
+   "onePerSave": [
+    "fossil"
+   ]
+  },
+  {
+   "id": 141,
+   "name": "KABUTOPS",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 142,
+   "name": "AERODACTYL",
+   "via": [
+    "amber",
+    "breeding"
+   ]
+  },
+  {
+   "id": 143,
+   "name": "SNORLAX",
+   "via": [
+    "breeding",
+    "static"
+   ]
+  },
+  {
+   "id": 144,
+   "name": "ARTICUNO",
+   "via": [
+    "static"
+   ]
+  },
+  {
+   "id": 145,
+   "name": "ZAPDOS",
+   "via": [
+    "static"
+   ]
+  },
+  {
+   "id": 146,
+   "name": "MOLTRES",
+   "via": [
+    "static"
+   ]
+  },
+  {
+   "id": 147,
+   "name": "DRATINI",
+   "via": [
+    "breeding",
+    "prize",
+    "wild-fishing"
+   ]
+  },
+  {
+   "id": 148,
+   "name": "DRAGONAIR",
+   "via": [
+    "evolution",
+    "wild-fishing"
+   ]
+  },
+  {
+   "id": 149,
+   "name": "DRAGONITE",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 150,
+   "name": "MEWTWO",
+   "via": [
+    "static"
+   ]
+  },
+  {
+   "id": 161,
+   "name": "SENTRET",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 162,
+   "name": "FURRET",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 165,
+   "name": "LEDYBA",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 166,
+   "name": "LEDIAN",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 167,
+   "name": "SPINARAK",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 168,
+   "name": "ARIADOS",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 169,
+   "name": "CROBAT",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 172,
+   "name": "PICHU",
+   "via": [
+    "breeding"
+   ]
+  },
+  {
+   "id": 173,
+   "name": "CLEFFA",
+   "via": [
+    "breeding"
+   ]
+  },
+  {
+   "id": 174,
+   "name": "IGGLYBUFF",
+   "via": [
+    "breeding"
+   ]
+  },
+  {
+   "id": 175,
+   "name": "TOGEPI",
+   "via": [
+    "breeding",
+    "gift"
+   ]
+  },
+  {
+   "id": 176,
+   "name": "TOGETIC",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 177,
+   "name": "NATU",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 178,
+   "name": "XATU",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 183,
+   "name": "MARILL",
+   "via": [
+    "evolution",
+    "wild-land",
+    "wild-water"
+   ]
+  },
+  {
+   "id": 184,
+   "name": "AZUMARILL",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 186,
+   "name": "POLITOED",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 187,
+   "name": "HOPPIP",
+   "via": [
+    "breeding",
+    "wild-land",
+    "wild-water"
+   ]
+  },
+  {
+   "id": 188,
+   "name": "SKIPLOOM",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 189,
+   "name": "JUMPLUFF",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 193,
+   "name": "YANMA",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 199,
+   "name": "SLOWKING",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 200,
+   "name": "MISDREAVUS",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 201,
+   "name": "UNOWN",
+   "via": [
+    "wild-land"
+   ]
+  },
+  {
+   "id": 202,
+   "name": "WOBBUFFET",
+   "via": [
+    "evolution",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 206,
+   "name": "DUNSPARCE",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 208,
+   "name": "STEELIX",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 214,
+   "name": "HERACROSS",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 215,
+   "name": "SNEASEL",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 218,
+   "name": "SLUGMA",
+   "via": [
+    "breeding",
+    "wild-land",
+    "wild-rock_smash"
+   ]
+  },
+  {
+   "id": 219,
+   "name": "MAGCARGO",
+   "via": [
+    "evolution",
+    "wild-rock_smash"
+   ]
+  },
+  {
+   "id": 220,
+   "name": "SWINUB",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 221,
+   "name": "PILOSWINE",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 223,
+   "name": "REMORAID",
+   "via": [
+    "breeding",
+    "wild-fishing"
+   ]
+  },
+  {
+   "id": 224,
+   "name": "OCTILLERY",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 226,
+   "name": "MANTINE",
+   "via": [
+    "breeding",
+    "wild-water"
+   ]
+  },
+  {
+   "id": 230,
+   "name": "KINGDRA",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 231,
+   "name": "PHANPY",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 232,
+   "name": "DONPHAN",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 233,
+   "name": "PORYGON2",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 236,
+   "name": "TYROGUE",
+   "via": [
+    "breeding"
+   ]
+  },
+  {
+   "id": 237,
+   "name": "HITMONTOP",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 238,
+   "name": "SMOOCHUM",
+   "via": [
+    "breeding"
+   ]
+  },
+  {
+   "id": 240,
+   "name": "MAGBY",
+   "via": [
+    "breeding"
+   ]
+  },
+  {
+   "id": 242,
+   "name": "BLISSEY",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 243,
+   "name": "RAIKOU",
+   "via": [
+    "roamer"
+   ],
+   "onePerSave": [
+    "roamer"
+   ]
+  },
+  {
+   "id": 244,
+   "name": "ENTEI",
+   "via": [
+    "roamer"
+   ],
+   "onePerSave": [
+    "roamer"
+   ]
+  },
+  {
+   "id": 245,
+   "name": "SUICUNE",
+   "via": [
+    "roamer"
+   ],
+   "onePerSave": [
+    "roamer"
+   ]
+  },
+  {
+   "id": 246,
+   "name": "LARVITAR",
+   "via": [
+    "breeding",
+    "wild-land"
+   ]
+  },
+  {
+   "id": 247,
+   "name": "PUPITAR",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 248,
+   "name": "TYRANITAR",
+   "via": [
+    "evolution"
+   ]
+  },
+  {
+   "id": 298,
+   "name": "AZURILL",
+   "via": [
+    "breeding"
+   ]
+  },
+  {
+   "id": 360,
+   "name": "WYNAUT",
+   "via": [
+    "breeding"
+   ]
+  }
+ ]
+}

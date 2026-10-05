@@ -15,27 +15,7 @@ struct LiveView: View {
     var body: some View {
         SuiteSplit(leadingFraction: 0.60) {
             VStack(spacing: 12) {
-                GeometryReader { geometry in
-                    ZStack {
-                        Rectangle().fill(.black)
-                        if let image = playback.image {
-                            Image(decorative: image, scale: 1).resizable().interpolation(.none).aspectRatio(contentMode: .fit).padding(4)
-                        } else {
-                            VStack(spacing: 12) {
-                                Image(systemName: "gamecontroller").font(.system(size: 40, weight: .light))
-                                Text(playback.message).multilineTextAlignment(.center).frame(maxWidth: 320)
-                                if model.installed && !model.gameRunning { Button("Start Game", action: model.startGame).buttonStyle(.borderedProminent).disabled(model.busy) }
-                            }.foregroundStyle(.white)
-                        }
-                        if model.session["bot"]["awaitingCommand"].bool && model.session["observation"]["mode"].string == "boot" {
-                            HStack {
-                                Button("Bot Settings") { model.page = .bot }
-                                Button("Manual Play") { model.setManual(true) }
-                            }.disabled(model.busy).padding(20).background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
-                        }
-                        if model.manual { KeyboardSurface(playback: playback, platform: platform, focusRequest: focusRequest).frame(maxWidth: .infinity, maxHeight: .infinity) }
-                    }.frame(width: geometry.size.width, height: geometry.size.height)
-                }
+                GameScreenFrame(ratio: GameScreenGeometry.ratio(image: playback.image, platform: platform)) { screen }.layoutPriority(1)
                 HStack {
                     if model.session["state"].string == "reconnecting" { Text("Updating game status…").font(.caption).foregroundStyle(.secondary) }
                     else if !playback.message.isEmpty && playback.image != nil { Text(playback.message).font(.caption).foregroundStyle(.secondary) }
@@ -63,12 +43,14 @@ struct LiveView: View {
                         HStack(spacing: 24) { GameStick(title: "Left stick", offset: 0, playback: playback); GameStick(title: "Right stick", offset: 2, playback: playback) }
                     }
                 }
+                if !model.manual && model.gameRunning { SessionPanel() }
+                Spacer(minLength: 0)
             }.padding(16)
         } trailing: {
             VStack(spacing: 0) {
-                TrainerPanel().padding(16)
+                TrainerPanel().padding([.horizontal, .top], 12)
                 SectionTabs(label: "Game information", items: ["Team", "Hunt", "Activity"], selection: $section)
-                BorderedScroll {
+                TitledScroll(title: section, symbol: section == "Team" ? "circle.grid.2x2" : section == "Hunt" ? "scope" : "list.bullet.rectangle") {
                     if section == "Team" { PartyPanel() }
                     else if section == "Hunt" { HuntDetailView() }
                     else {
@@ -77,10 +59,42 @@ struct LiveView: View {
                             Button("Bot Settings") { model.page = .bot }
                         }
                     }
-                }
+                }.padding([.horizontal, .bottom], 12)
             }
         }
         .onDisappear { playback.releaseInput() }
+    }
+    /// The black game screen inside the bezel. The image keeps a 4-point inset that the
+    /// keyboard and touch surface (GameKeyView) maps against.
+    private var screen: some View {
+        ZStack {
+            Rectangle().fill(.black)
+            if let image = playback.image {
+                Image(decorative: image, scale: 1).resizable().interpolation(.none).aspectRatio(contentMode: .fit).padding(4)
+            } else {
+                VStack(spacing: 12) {
+                    Image(systemName: "gamecontroller").font(.system(size: 40, weight: .light))
+                    Text(playback.message).multilineTextAlignment(.center).frame(maxWidth: 320)
+                    if model.installed && !model.gameRunning { Button("Start Game", action: model.startGame).buttonStyle(.borderedProminent).disabled(model.busy) }
+                }.foregroundStyle(.white).padding()
+            }
+            if model.session["bot"]["awaitingCommand"].bool && model.session["observation"]["mode"].string == "boot" {
+                VStack(spacing: 10) {
+                    if SessionProgress.isBrandNewSave(model.session) {
+                        Text("This save is brand new. Start a run and the bot plays the story from the beginning.")
+                            .font(.callout).multilineTextAlignment(.center).frame(maxWidth: 320)
+                        Button("New Run…") { model.openBotSection("New run") }.buttonStyle(.borderedProminent)
+                            .help("Choose the starter and team, then the bot plays the story").accessibilityIdentifier("live-new-run")
+                    }
+                    HStack {
+                        Button("Bot Settings") { model.page = .bot }
+                        Button("Manual Play") { model.setManual(true) }
+                    }
+                }.disabled(model.busy).padding(20).background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
+            }
+            if model.manual { KeyboardSurface(playback: playback, platform: platform, focusRequest: focusRequest).frame(maxWidth: .infinity, maxHeight: .infinity) }
+        }
+        .accessibilityElement(children: .contain).accessibilityLabel("Live game screen")
     }
     func duration(_ ms: Double) -> String { let seconds = Int(ms / 1000); return String(format: "%d:%02d:%02d", seconds / 3600, seconds / 60 % 60, seconds % 60) }
 }
@@ -95,6 +109,9 @@ struct TrainerPanel: View {
     @EnvironmentObject var model: SuiteModel
     var trainer: JSONValue { model.session["spectator"]["trainer"] }
     var body: some View {
+        GamePanel(title: "Trainer", symbol: "person.crop.square") { content }
+    }
+    private var content: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 if !trainer["gender"].isNull {
@@ -131,38 +148,94 @@ struct TrainerPanel: View {
     }
 }
 
+/// What the bot is doing, under the game screen: status, goal and why it waits (details stay in Activity).
+struct SessionPanel: View {
+    @EnvironmentObject var model: SuiteModel
+    private var status: BotRunStatus { BotRunStatus(session: model.session) }
+    var body: some View {
+        let session = model.session
+        let headline = ActivityPresentation(session: session, catalog: model.dex, now: .now).headline ?? gameGoal(session)
+        let reason = session["bot"]["reason"].string
+        GamePanel(title: "Session", symbol: "hourglass") {
+            Label(status.label, systemImage: status == .blocked ? "exclamationmark.circle" : status == .running ? "play.circle" : status == .waiting ? "hourglass" : status == .ready ? "checkmark.circle" : "pause.circle")
+                .font(.headline)
+            if let headline { Text(headline).font(.callout).lineLimit(2).help(headline) }
+            if !reason.isEmpty && reason != headline && [.waiting, .blocked, .ready, .paused].contains(status) {
+                Text(reason).font(.callout).foregroundStyle(.secondary).lineLimit(3).help(reason)
+            }
+        }.accessibilityIdentifier("live-session")
+    }
+}
+
 struct PartyPanel: View {
     @EnvironmentObject var model: SuiteModel
     var party: [JSONValue] { let party = model.session["spectator"]["party"].array; return party.isEmpty ? model.session["observation"]["party"].array : party }
     var body: some View {
-        VStack(spacing: 12) {
-            if party.isEmpty { Text("No team loaded").foregroundStyle(.secondary) }
-            ForEach(Array(party.enumerated()), id: \.offset) { index, pokemon in
-                let item = pokemon["heldItem"]
-                let itemID = item["id"].isNull ? item.int : item["id"].int
-                HStack(spacing: 8) {
-                    Text(String(index + 1)).font(.caption).foregroundStyle(.secondary)
-                    ROMSprite(id: pokemon["speciesId"].isNull ? pokemon["species"].int : pokemon["speciesId"].int, shiny: pokemon["shiny"].bool, size: 40).accessibilityHidden(true)
-                    VStack(alignment: .leading, spacing: 4) {
-                        HStack {
-                            Text(pokemon["speciesName"].string.nonempty ?? "Pokémon \(pokemon["species"].text)").fontWeight(.medium)
-                            Spacer(); Text("Lv. \(pokemon["level"].text)").font(.caption).foregroundStyle(.secondary)
-                        }
-                        Gauge(value: Double(max(0, pokemon["hp"].int)), in: 0...Double(max(1, pokemon["maxHp"].int))) { EmptyView() }.controlSize(.small).accessibilityLabel("Health").accessibilityValue("\(pokemon["hp"].text) of \(pokemon["maxHp"].text)")
-                        if let ratio = pokemon["experience"]["ratio"].finiteNumber, pokemon["level"].int < 100 {
-                            ProgressView(value: max(0, min(1, ratio))).tint(.cyan).accessibilityLabel("Experience to next level").accessibilityValue("\(pokemon["experience"]["remaining"].text) XP remaining")
-                        }
-                        HStack {
-                            Text("\(pokemon["hp"].text)/\(pokemon["maxHp"].text) HP")
-                            Spacer()
-                            if !["", "OK", "NONE", "HEALTHY"].contains(pokemon["status"].string.uppercased()) { Text(pokemon["status"].string) }
-                        }.font(.caption).foregroundStyle(.secondary)
-                    }
-                    if itemID > 0 { ROMAsset(kind: "item", key: String(itemID), size: 20, fallback: "shippingbox").help(item["name"].string.nonempty ?? CartridgeItem.name(nativeID: itemID, catalog: model.dex["heldItems"].array) ?? "Held item") }
-                    InfoButton(title: "\(pokemon["speciesName"].string.nonempty ?? "Pokémon \(index + 1)") details", message: "Held item: \(itemID == 0 ? "None" : item["name"].string.nonempty ?? CartridgeItem.name(nativeID: itemID, catalog: model.dex["heldItems"].array) ?? "Unknown")\n" + (pokemon["experience"].isNull ? "" : pokemon["level"].int >= 100 ? "Maximum level" : "\(pokemon["experience"]["remaining"].int.formatted()) XP to next level"))
-                }
-            }
+        if party.isEmpty { Text("No team loaded").foregroundStyle(.secondary) }
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 168), spacing: 8)], spacing: 8) {
+            ForEach(Array(party.enumerated()), id: \.offset) { index, pokemon in PartyTile(index: index, pokemon: pokemon) }
         }
+    }
+}
+
+/// One team member: sprite, level, HP and EXP meters. Clicking shows the details the row used to hide behind an info button.
+struct PartyTile: View {
+    @EnvironmentObject var model: SuiteModel
+    let index: Int
+    let pokemon: JSONValue
+    @State private var details = false
+    private var item: JSONValue { pokemon["heldItem"] }
+    private var itemID: Int { item["id"].isNull ? item.int : item["id"].int }
+    private var itemName: String { itemID == 0 ? "None" : item["name"].string.nonempty ?? CartridgeItem.name(nativeID: itemID, catalog: model.dex["heldItems"].array) ?? "Unknown" }
+    private var name: String { pokemon["speciesName"].string.nonempty ?? "Pokémon \(pokemon["species"].text)" }
+    private var member: PartyMemberPresentation { PartyMemberPresentation(member: pokemon, index: index) }
+    private var hpReading: String { member.hp.flatMap { hp in member.maxHP.map { "\(hp)/\($0) HP" } } ?? "HP unknown" }
+    /// EXP progress below level 100 only; at 100 there is nothing left to fill.
+    private var experience: Double? { (member.level ?? 100) < 100 ? member.experienceRatio : nil }
+    private var experienceReading: String {
+        if (member.level ?? 0) >= 100 { return "Maximum level" }
+        return member.experienceRemaining.map { "\($0.formatted()) XP to next level" } ?? "Unknown"
+    }
+    var body: some View {
+        Button { details.toggle() } label: {
+            HStack(alignment: .top, spacing: 8) {
+                ROMSprite(id: pokemon["speciesId"].isNull ? pokemon["species"].int : pokemon["speciesId"].int, shiny: pokemon["shiny"].bool, size: 44).accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack(spacing: 4) {
+                        Text(name).fontWeight(.semibold).lineLimit(1)
+                        Spacer(minLength: 2)
+                        if itemID > 0 { ROMAsset(kind: "item", key: String(itemID), size: 16, fallback: "shippingbox", label: "Holds \(itemName)").help(itemName) }
+                    }
+                    Text("Lv. \(pokemon["level"].text)").font(.caption).foregroundStyle(.secondary)
+                    GameMeter(value: member.hpRatio, color: GameMeter.hpColor(member.hpRatio ?? 0), label: "Health", reading: hpReading)
+                    HStack {
+                        Text(hpReading).monospacedDigit()
+                        Spacer(minLength: 2)
+                        if let status = member.status { Text(status).fontWeight(.semibold).foregroundStyle(.orange) }
+                    }.font(.caption2).foregroundStyle(.secondary)
+                    if let experience {
+                        HStack(spacing: 4) {
+                            Text("EXP").font(.system(size: 8, weight: .bold)).foregroundStyle(.secondary).accessibilityHidden(true)
+                            GameMeter(value: experience, color: GameMeter.experienceColor, label: "Experience to next level", reading: experienceReading, height: 3)
+                        }
+                    }
+                }
+            }.padding(8).frame(maxWidth: .infinity, alignment: .leading).contentShape(Rectangle())
+        }.buttonStyle(.plain).gameTile(selected: details)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("\(name), level \(pokemon["level"].text), \(hpReading)\(member.status.map { ", " + $0 } ?? "")")
+            .accessibilityHint("Shows held item and experience").accessibilityAddTraits(.isButton)
+            .help("\(name): click for details")
+            .popover(isPresented: $details, arrowEdge: .leading) {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("\(index + 1). \(name)").font(.headline)
+                    LabeledContent("Level", value: pokemon["level"].text)
+                    LabeledContent("HP", value: hpReading)
+                    if let status = member.status { LabeledContent("Status", value: status) }
+                    LabeledContent("Held item", value: itemName)
+                    LabeledContent("Experience", value: experienceReading)
+                }.padding(16).frame(width: 280)
+            }
     }
 }
 

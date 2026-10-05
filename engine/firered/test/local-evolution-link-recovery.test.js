@@ -30,6 +30,11 @@ const atCounter=(callback2='CB2_Overworld',party=[source,other])=>({frame:1,phas
  playerMemory:{map:{id:MAP},position:{x:10,y:4},ui:{},scripts:{},trainer:{trainerId:2,partyValidity:'valid',party}}});
 const coldBoot=(party=[source,other],tradeCount=7)=>({observation:atCounter('CB2_Overworld',party),wireless:{validity:'valid',remotePlayers:0,tradeCount},sramSha256:'b'.repeat(64)});
 const OVERFLOW='Native wireless queue overflowed; stop the link.';
+// Gates 118-02 and 122-01: the FireRed partner restarted itself in the trade
+// room (its frame counter kept running, so no owner reset it). Its boot screen
+// shows no loaded game and an empty party.
+const bootScreen=()=>({frame:22289,phase:'transition',emulator:{mode:'boot',callback2:'CB2_InitCopyrightScreenAfterBootup',mainState:0},
+ playerMemory:{map:{id:'MAP_BATTLE_COLOSSEUM_2P'},ui:{},scripts:{},trainer:{trainerId:0,partyValidity:'valid',party:[]}}});
 
 async function trading(t,{observe=()=>atCounter(),execute,restartNative,restarts=0}={}){
  const directory=mkdtempSync(join(tmpdir(),'evolution-link-recovery-'));t.after(()=>rmSync(directory,{recursive:true,force:true}));
@@ -96,6 +101,49 @@ test('the other owner\'s link failure before the exchange also restarts and prov
  assert.match(calls.reason,/partner disconnected/);
 });
 
+test('a console that restarts itself before the exchange is a lost link: the owner cold-boots and proves its save instead of reporting a party change',async t=>{
+ let restarted=false;
+ const {worker,guest,calls}=await trading(t,{observe:()=>restarted?bootScreen():atCounter(),
+  execute:()=>sleep(5).then(()=>{restarted=true;return {};}),restartNative:()=>(restarted=false,coldBoot())});
+ await settle(worker,['reconciling','waiting']);
+ const state=worker.state();
+ assert.equal(state.phase,'reconciling',state.reason);
+ assert.equal(calls.restarts,1,'the owner restarts its own native game once');
+ assert.match(calls.reason,/restarted to its boot screen/);
+ assert.equal(state.trade.identityCheck,undefined,'the boot screen is not an identity check');
+ assert.equal(state.restartProof.outcome,'not-committed');assert.equal(state.restartProof.tradeCount,7);
+ await settle({state:()=>({phase:guest.status().reason?'closed':'open'})},['closed']);
+ assert.ok(guest.status().reason,'the link is closed so the other owner reconciles too');
+});
+
+test('a console restart after the exchange started keeps the preserving stop and never cold-boots',async t=>{
+ let restarted=false;
+ const {worker,calls}=await trading(t,{observe:()=>restarted?bootScreen():atCounter('CB2_LinkTrade'),
+  execute:()=>sleep(5).then(()=>{restarted=true;return {};}),restartNative:()=>coldBoot()});
+ await settle(worker,['reconciling','waiting']);
+ assert.equal(worker.state().phase,'waiting');
+ assert.equal(worker.state().trade.phase,'trade-outcome-unresolved');
+ assert.match(worker.state().reason,/restarted after the exchange started/);
+ assert.equal(calls.restarts,0);
+});
+
+// Gate 122-01's first theory: a second trade loop inspected the console while
+// the first loop's restart cold-booted it. The restart holds the only loop;
+// poll and resume during the cold boot neither inspect nor press input.
+test('an owner cold boot holds the only trade loop: poll and resume meanwhile neither inspect nor press input',async t=>{
+ let first=true,booting=false,during=0,release;
+ const booted=new Promise(resolve=>{release=resolve;});
+ const {worker}=await trading(t,{observe:()=>{if(booting)during++;return atCounter();},
+  execute:()=>{if(booting)during++;return first?(first=false,Promise.reject(Error(OVERFLOW))):sleep(5).then(()=>({}));},
+  restartNative:()=>{booting=true;return booted.then(()=>{booting=false;return coldBoot();});}});
+ for(let i=0;i<100&&!booting;i++)await sleep(5);
+ assert.ok(booting,'the owner is cold-booting');
+ for(let i=0;i<5;i++){await worker.poll();worker.resume();await sleep(5);}
+ assert.equal(during,0,'nothing inspected or pressed during the cold boot');
+ release();await settle(worker,['reconciling','waiting']);
+ assert.equal(worker.state().phase,'reconciling',worker.state().reason);
+});
+
 test('a cold boot that does not hold the original party and trade count stays stopped for review',async t=>{
  for(const [label,boot] of [['party',coldBoot([other,source])],['trade count',coldBoot(undefined,8)]]){
   let first=true;
@@ -138,9 +186,10 @@ test('verified retries are bounded: the fourth attempt stops for review instead 
 });
 
 // Both FireRed owners in one process: the partner's FIFO overflows in the
-// trade menu, both owners restart and prove their saves in-process, and the
-// source reopens the same leg once with both proofs as evidence.
-test('two FireRed owners recover an overflow before the exchange and retry the same leg once',async t=>{
+// trade menu (or its console restarts itself), both owners restart and prove
+// their saves in-process, and the source reopens the same leg once with both
+// proofs as evidence.
+async function twoOwnersRecover(t,failure){
  const {FireRedEvolutionTask,selectTeamPartnerEvolution}=await import('../src/suite/fire-red-evolution.js');
  const {partnerHoldings}=await import('../src/suite/local-evolution.js');
  const mon=(species,personality,extra={})=>({validity:'valid',species,personality,otId:10,shiny:false,isEgg:false,heldItem:0,level:70,moves:[84],ivs,...extra});
@@ -158,27 +207,29 @@ test('two FireRed owners recover an overflow before the exchange and retry the s
  let ended=false;
  const publish=owner=>{if(!ended)writeFileSync(join(directory,owner,'status.json'),JSON.stringify({game:'firered',owner,bot:{enabled:true,...(owner==='firered-partner'?{preparation}:{})},localEvolution:workers[owner]?.status()??null}));};
  const view=(trainerId,party,extra={})=>{const o=atCounter('CB2_Overworld',party);o.playerMemory.trainer={...o.playerMemory.trainer,trainerId,storage:{validity:'valid',pokemon:[]}};Object.assign(o.playerMemory,extra);return o;};
- let failPartner=false;
+ let failPartner=null;
  const hooks=(owner,extra)=>({enabled:()=>true,pause:async()=>{},persist:()=>publish(owner),progress:()=>publish(owner),startEngine(){},finishEngine(){},
-  engine:()=>({execute:()=>owner==='firered-partner'&&failPartner?(failPartner=false,Promise.reject(Error(OVERFLOW))):sleep(2).then(()=>({}))}),
-  restartNative:async()=>{restarts[owner]++;const boot=coldBoot(owner==='firered'?sourceParty:partnerParty);boot.observation=view(owner==='firered'?10933:8185,owner==='firered'?sourceParty:partnerParty);boot.sramSha256=(owner==='firered'?'c':'d').repeat(64);return boot;},...extra});
+  engine:()=>({execute:()=>owner==='firered-partner'&&failPartner==='overflow'?(failPartner=null,Promise.reject(Error(OVERFLOW))):sleep(2).then(()=>({}))}),
+  restartNative:async()=>{restarts[owner]++;if(owner==='firered-partner')failPartner=null;const boot=coldBoot(owner==='firered'?sourceParty:partnerParty);boot.observation=view(owner==='firered'?10933:8185,owner==='firered'?sourceParty:partnerParty);boot.sramSha256=(owner==='firered'?'c':'d').repeat(64);return boot;},...extra});
  const fakeSession={...session,attachWireless:()=>peripheral(1)};
  workers.firered=createLocalEvolutionWorker({game:'firered',owner:'firered',role:'source',config,session:fakeSession,coreManifest:{native_rfu:true},inputs,hooks:hooks('firered',{
   observe:()=>view(10933,sourceParty,{storyState:{flagIds:{2092:true,2112:true}}}),
   fireRedState:()=>({dexEvolution:evolution,preparation:{phase:'waiting-for-transfer',tradePreparation:{pokemon:machoke,center:CENTER}}})})});
  workers['firered-partner']=createLocalEvolutionWorker({game:'firered',owner:'firered-partner',role:'partner',config,session:fakeSession,coreManifest:{native_rfu:true},inputs,hooks:hooks('firered-partner',{
-  observe:()=>view(8185,partnerParty),companionState:()=>preparation})});
+  observe:()=>failPartner==='console'?bootScreen():view(8185,partnerParty),companionState:()=>preparation})});
  t.after(async()=>{ended=true;for(const w of Object.values(workers))await w.stop('Test ended',{shutdown:true});});
  publish('firered');publish('firered-partner');
  const pairPath=join(directory,'evolution-pairs',`${route.requestId}.json`);
  const until=async(check,label)=>{for(let i=0;i<400;i++){if(check())return;await workers.firered.poll();await workers['firered-partner'].poll();publish('firered');publish('firered-partner');await sleep(5);}assert.fail(label+' '+JSON.stringify(Object.fromEntries(Object.entries(workers).map(([k,w])=>[k,w.status()]))));};
  await until(()=>workers.firered.state()?.phase==='trading'&&workers['firered-partner'].state()?.phase==='trading','both owners trade');
  const first=JSON.parse(readFileSync(pairPath));
- failPartner=true;
+ failPartner=failure;
  await until(()=>JSON.parse(readFileSync(pairPath)).restarts===1,'the source reopens the leg once');
  const retried=JSON.parse(readFileSync(pairPath));
  assert.equal(retried.previousPairId,first.pairId);assert.notEqual(retried.pairId,first.pairId);assert.equal(retried.leg,'outbound');
  assert.equal(retried.restartEvidence.source.savedSramSha256,'c'.repeat(64));assert.equal(retried.restartEvidence.partner.savedSramSha256,'d'.repeat(64));
  assert.deepEqual(restarts,{firered:1,'firered-partner':1},'each owner restarted its own game once');
  await until(()=>workers.firered.state()?.phase==='trading'&&workers['firered-partner'].state()?.phase==='trading'&&workers['firered-partner'].state().pairId===retried.pairId,'both owners trade the retried leg');
-});
+}
+test('two FireRed owners recover an overflow before the exchange and retry the same leg once',t=>twoOwnersRecover(t,'overflow'));
+test('two FireRed owners recover the partner console\'s own restart before the exchange and retry the same leg once',t=>twoOwnersRecover(t,'console'));

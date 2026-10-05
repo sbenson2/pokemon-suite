@@ -1,8 +1,11 @@
 import rulesDocument from './fire-red-evolution-rules.json' with {type:'json'};
+import fireRedCatchable from './firered-catchable.json' with {type:'json'};
+const FIRERED_GOAL=new Set(fireRedCatchable.species.map(x=>x.id));
 import {encounterFingerprint} from '../player/encounter-tracker.js';
-import {nationalSpeciesId} from '../evidence/gen3-national-species.js';
+import {nationalSpeciesId,nationalDexNumbers} from '../evidence/gen3-national-species.js';
 import {fireRedPokemonCenter} from './fire-red-link-quest.js';
 import {verifyLocalEvolutionExchange,sameEvolutionIndividual} from './local-evolution.js';
+import {itemIsMail} from '../evidence/mail-state.js';
 
 const IVS=['hp','attack','defense','speed','spAttack','spDefense'];
 const lineage=p=>p?.validity==='valid'&&Number.isInteger(p.personality)&&Number.isInteger(p.otId)&&IVS.every(k=>Number.isInteger(p.ivs?.[k]))?JSON.stringify([p.personality,p.otId,...IVS.map(k=>p.ivs[k])]):null;
@@ -28,15 +31,32 @@ function candyWorthwhile(p,rule,{renewableCandies=false}={}){
 }
 export function selectOwnedDexEvolution(options){return ownedDexEvolutionOptions(options)[0]??null;}
 // Every owned Dex evolution source, best rank first (one source per rule).
-export function ownedDexEvolutionOptions({trainer,protectedFingerprints=[],canSupply=()=>false,scope='preparation'}){
+// chains: also plan a two-step line through an earlier plain level-up form
+// (Oddish to Gloom to Bellossom) when no individual of the direct form qualifies.
+export function ownedDexEvolutionOptions({trainer,protectedFingerprints=[],canSupply=()=>false,scope='preparation',chains=false}){
  if(trainer?.partyValidity!=='valid'||trainer.storage?.validity!=='valid')return [];
- const owned=new Set((trainer.pokedex?.ownedSpecies??[]).map(nationalSpeciesId).filter(Boolean)),all=[...trainer.party,...trainer.storage.pokemon],options=[];
+ const owned=new Set(nationalDexNumbers(trainer.pokedex?.ownedSpecies)),all=[...trainer.party,...trainer.storage.pokemon],options=[];
  for(const rule of rulesDocument.rules){
   const earlyLevel=rule.nativeMethod==='EVO_LEVEL'&&rule.level<=10;
   if(owned.has(rule.speciesId)||scope!=='national'&&(rule.speciesId>151||rule.nationalDexRequired||scope!=='kanto'&&rule.trigger!=='use-item'&&!earlyLevel))continue;
   if(rule.trigger==='trade'||rule.evolutionGame||rule.beauty)continue;
-  const pokemon=all.find(p=>p.validity==='valid'&&p.shiny===false&&!p.isEgg&&p.heldItem!==195&&nationalSpeciesId(p.species)===rule.fromSpecies&&!protectedFingerprints.includes(encounterFingerprint(p)));
+  const eligible=species=>all.find(p=>p.validity==='valid'&&p.shiny===false&&!p.isEgg&&p.heldItem!==195&&nationalSpeciesId(p.species)===species&&!protectedFingerprints.includes(encounterFingerprint(p)));
+  let pokemon=eligible(rule.fromSpecies),chain=null;
+  if(!pokemon&&chains&&scope==='national'){
+   const pre=rulesDocument.rules.find(r=>r.speciesId===rule.fromSpecies&&r.trigger==='level-up'&&r.nativeMethod==='EVO_LEVEL'&&!r.item&&!r.friendship);
+   const early=pre&&eligible(pre.fromSpecies);
+   if(early&&!(Number(early.level)>=Number(pre.level??100))&&(!rule.item||Object.values(trainer.bag??{}).flat().some(i=>i.itemId===rule.item.nativeId&&i.quantity>0)||canSupply(rule.item.nativeId))){pokemon=early;chain=[pre,rule];}
+  }
   if(!pokemon)continue;
+  // A chain costs its whole route, ranked like the direct options: the first
+  // step's levels, then the second step (a stocked item 0, an item trip 2, or
+  // its own levels and friendship), just after a direct option of equal cost.
+  if(chain){
+   const [pre]=chain,from=Number(pokemon.level)||0,reached=Math.max(from,Number(pre.level)||0);
+   const second=rule.item?(Object.values(trainer.bag??{}).flat().some(i=>i.itemId===rule.item.nativeId&&i.quantity>0)?0:2):
+    rule.trigger==='level-up'?Math.max(0,(Number(rule.level)||reached+1)-reached)+(rule.friendship?Math.max(0,rule.friendship-(Number(pokemon.friendship)||0)):0):2;
+   options.push({pokemon,rule,chain,rank:1+Math.max(0,(Number(pre.level)||0)-from)+second+0.5});continue;
+  }
   if(rule.trigger==='level-up'&&pokemon.level>=100)continue;
   if(rule.personalityRemainders&&!rule.personalityRemainders.includes((pokemon.personality>>>rule.personalityShift)%rule.personalityModulus))continue;
   if(rule.relativeStats!==undefined&&(!canSupply(68)||projectedTyrogueBranch(pokemon,Math.max(rule.level,pokemon.level+1))!==rule.relativeStats))continue;
@@ -57,7 +77,11 @@ export function availablePartners(available){
   .map(p=>p.title==='emerald'?EMERALD_PARTNER:{owner:p.owner,title:'firered',methods:['trade']});
 }
 // Emerald stays first whenever it is ready, so its qualified routes are unchanged.
-const partnerFor=(rule,available)=>availablePartners(available).find(p=>p.methods.includes(rule.trigger==='trade'?'trade':rule.beauty?'beauty':'time')&&(p.title==='emerald'||rule.trigger==='trade'))??null;
+const partnerFor=(rule,available,{preferFireRed=false}={})=>{
+ const partners=availablePartners(available).filter(p=>p.methods.includes(rule.trigger==='trade'?'trade':rule.beauty?'beauty':'time')&&(p.title==='emerald'||rule.trigger==='trade'));
+ // The owner's FireRed goal: a trade evolution happens in a FireRed game when one is ready.
+ return (preferFireRed&&rule.trigger==='trade'?partners.find(p=>p.title==='firered'):null)??partners[0]??null;
+};
 // Pair-dependent link prerequisites (both saves; the partner reports its own).
 // Emerald needs the National Dex and Celio's link. A FireRed partner needs the
 // Pokédex (the League implies it), plus the National Dex only when the source
@@ -70,10 +94,13 @@ export function partnerTradeReady(flags,step){
 }
 // The partner round trip: equip a held trade item from the bag if needed, trade
 // to the partner (evolving there), trade back and verify. Null without the item.
-function partnerSteps(rule,pokemon,trainer,partner=EMERALD_PARTNER){
+function partnerSteps(rule,pokemon,trainer,partner=EMERALD_PARTNER,holder=null){
  const steps=[];
  if(rule.heldItem&&pokemon.heldItem!==rule.heldItem.nativeId){
-  if(!Object.values(trainer.bag??{}).flat().some(i=>i.itemId===rule.heldItem.nativeId&&i.quantity>0))return null;
+  const inBag=Object.values(trainer.bag??{}).flat().some(i=>i.itemId===rule.heldItem.nativeId&&i.quantity>0);
+  if(!inBag&&!holder)return null;
+  // The only one is held by a teammate (tradeItemHolder): into the Bag first.
+  if(!inBag)steps.push({kind:'take-evolution-item',game:'firered',item:rule.heldItem,holder:encounterFingerprint(holder)});
   steps.push({kind:'equip-evolution-item',game:'firered',item:rule.heldItem});
  }
  if(partner.title==='firered'){
@@ -87,16 +114,43 @@ function partnerSteps(rule,pokemon,trainer,partner=EMERALD_PARTNER){
  steps.push({kind:'trade',fromGame:'emerald',toGame:'firered',speciesId:rule.speciesId},{kind:'verify',game:'firered',speciesId:rule.speciesId});
  return steps;
 }
-export function selectOwnedPartnerEvolution({trainer,partnerAvailable=false,protectedFingerprints=[]}){
+// A plain, unprotected party member holding a trade evolution's item (the
+// held-item advisor equips the King's Rock to a teammate): the route takes it
+// into the Bag, then equips the traded Pokémon. Shinies and protected Pokémon
+// keep their items.
+export function tradeItemHolder(trainer,itemId,{protectedFingerprints=[],source=null}={}){
+ const protectedIds=new Set(protectedFingerprints),own=source?encounterFingerprint(source):null;
+ return (trainer?.party??[]).find(p=>p.validity==='valid'&&!p.isEgg&&p.shiny===false&&Number(p.heldItem)===itemId&&
+  !protectedIds.has(encounterFingerprint(p))&&encounterFingerprint(p)!==own)??null;
+}
+export function selectOwnedPartnerEvolution({trainer,partnerAvailable=false,protectedFingerprints=[],preferFireRed=false}){
  if(!availablePartners(partnerAvailable).length||trainer?.partyValidity!=='valid'||trainer.storage?.validity!=='valid')return null;
- const protectedIds=new Set([...protectedFingerprints,...trainer.party.map(encounterFingerprint)]),owned=new Set((trainer.pokedex?.ownedSpecies??[]).map(nationalSpeciesId));
+ const protectedIds=new Set([...protectedFingerprints,...trainer.party.map(encounterFingerprint)]),owned=new Set(nationalDexNumbers(trainer.pokedex?.ownedSpecies));
  for(const rule of rulesDocument.rules){
   if(owned.has(rule.speciesId)||!(rule.trigger==='trade'||rule.evolutionGame==='emerald'||rule.beauty))continue;
-  const partner=partnerFor(rule,partnerAvailable);if(!partner)continue;
+  const partner=partnerFor(rule,partnerAvailable,{preferFireRed});if(!partner)continue;
   const pokemon=trainer.storage.pokemon.find(p=>p.validity==='valid'&&p.shiny===false&&!p.isEgg&&p.heldItem!==195&&nationalSpeciesId(p.species)===rule.fromSpecies&&!protectedIds.has(encounterFingerprint(p))&&(!(rule.beauty||rule.evolutionGame)||p.level<100)&&(!rule.beauty||Number.isInteger(p.beauty)&&Number.isInteger(p.sheen)&&(p.beauty>=170||p.sheen<255)));
-  const steps=pokemon&&partnerSteps(rule,pokemon,trainer,partner);
+  const holder=pokemon&&rule.heldItem?tradeItemHolder(trainer,rule.heldItem.nativeId,{protectedFingerprints,source:pokemon}):null;
+  const steps=pokemon&&partnerSteps(rule,pokemon,trainer,partner,holder);
   if(!steps)continue;
   return {requestId:`dex-partner-${pokemon.otId}-${pokemon.personality}-${rule.speciesId}`,sourceId:'owned-national-dex',pokemon,steps,automatic:true,request:{game:'firered',speciesId:rule.speciesId,quantity:1,shiny:'any'}};
+ }
+ return null;
+}
+// What a missing trade evolution still needs before its FireRed partner round
+// trip can start: its held item (collectible) or a plain source to catch.
+// Null when nothing is missing or no FireRed partner is ready.
+export function partnerEvolutionNeeds({trainer,partnerAvailable=false,protectedFingerprints=[],canSupply=()=>false}){
+ if(!availablePartners(partnerAvailable).length||trainer?.partyValidity!=='valid'||trainer.storage?.validity!=='valid')return null;
+ const protectedIds=new Set([...protectedFingerprints,...trainer.party.map(encounterFingerprint)]),owned=new Set(nationalDexNumbers(trainer.pokedex?.ownedSpecies));
+ const inBag=id=>Object.values(trainer.bag??{}).flat().some(i=>i.itemId===id&&i.quantity>0);
+ for(const rule of rulesDocument.rules){
+  // Only the owner's FireRed goal: a Slowking needs a LeafGreen Slowpoke, a Huntail a Deep Sea Tooth.
+  if(owned.has(rule.speciesId)||rule.trigger!=='trade'||!FIRERED_GOAL.has(rule.speciesId)||!partnerFor(rule,partnerAvailable,{preferFireRed:true}))continue;
+  const source=trainer.storage.pokemon.find(p=>p.validity==='valid'&&p.shiny===false&&!p.isEgg&&p.heldItem!==195&&nationalSpeciesId(p.species)===rule.fromSpecies&&!protectedIds.has(encounterFingerprint(p)))??null;
+  const item=rule.heldItem?.nativeId,itemMissing=Boolean(item&&!inBag(item)&&source?.heldItem!==item&&!tradeItemHolder(trainer,item,{protectedFingerprints,source}));
+  if(itemMissing&&!canSupply(item))continue;
+  if(itemMissing||!source)return {rule,itemId:itemMissing?item:null,source};
  }
  return null;
 }
@@ -140,6 +194,34 @@ export function projectedTyrogueBranch(p,level){
 }
 
 // Recommendations are consumed by the existing observed-menu input mapper.
+export function takeMailRecommendation(o,p,{itemId=p?.heldItem,preserveLetter=false}={}){
+ const ui=o.playerMemory?.ui??{},party=o.playerMemory?.trainer?.party??[],slot=Number.isSafeInteger(p?.slot)?p.slot:party.indexOf(p);
+ if(ui.party?.stage==='message')return {kind:'acknowledge-cartridge-prompt'};
+ if(Number(p?.heldItem)!==Number(itemId)||!itemIsMail(p?.heldItem)){
+  if(itemIsMail(p?.heldItem))return {kind:'stop-for-review',reason:'The Mail target changed before its letter was preserved.'};
+  return Object.values(ui).some(Boolean)?{kind:'close-menu'}:null;
+ }
+ if(preserveLetter){
+  if(ui.party?.stage==='confirm-lose-mail')return {kind:'stop-for-review',reason:'Preserve the received NPC letter; never erase it.'};
+  const slots=o.playerMemory?.mail?.slots,known=Array.isArray(slots)&&slots.length===16&&slots.every((entry,index)=>entry?.slot===index&&Number.isSafeInteger(entry.itemId));
+  if(!known)return {kind:'stop-for-review',reason:'PC mailbox capacity is not verified; preserve the received NPC letter.'};
+  if(!slots.slice(6).some(entry=>entry.itemId===0))return {kind:'stop-for-review',reason:'The PC mailbox is full; preserve the received NPC letter.'};
+  if(ui.party?.stage==='confirm-send-mail-to-pc')return {kind:'choose-menu-option',targetOption:'yes',targetIndex:0};
+ }else{
+  if(ui.party?.stage==='confirm-send-mail-to-pc')return {kind:'choose-menu-option',targetOption:'no',targetIndex:1};
+  if(ui.party?.stage==='confirm-lose-mail')return {kind:'choose-menu-option',targetOption:'yes',targetIndex:0};
+ }
+ if(ui.party?.stage==='selection-menu'){
+  if(ui.party.selectedPartySlot!==slot)return {kind:'close-menu'};
+  const actions=ui.party.actions??[],action=actions.includes('take-mail')?'take-mail':'mail';
+  return actions.includes(action)?{kind:'choose-party-action',targetAction:action,targetIndex:actions.indexOf(action)}:{kind:'close-menu'};
+ }
+ if(ui.party?.stage==='choose-pokemon')return {kind:'choose-party-member',targetPartySlot:slot,targetSpecies:p.species};
+ if(ui.startMenu){const index=ui.startMenu.order?.indexOf('pokemon')??-1;return index>=0?{kind:'choose-start-menu-item',targetItem:'pokemon',targetIndex:index}:{kind:'stop-for-review',reason:'Required party item menu is unavailable.'};}
+ if(Object.values(ui).some(Boolean))return {kind:'close-menu'};
+ return o.emulator?.mode==='overworld'?{kind:'open-start-menu'}:null;
+}
+
 export function evolutionItemRecommendation(o,objective){
  const t=objective?.target,ui=o.playerMemory?.ui??{};
  if(!['evolve-with-item','use-party-item','give-held-item','take-held-item','lead-party-member'].includes(t?.kind)||!t.fingerprint||o.emulator?.inBattle)return null;
@@ -147,6 +229,7 @@ export function evolutionItemRecommendation(o,objective){
  if(matches.length!==1)return {kind:'stop-for-review',reason:'Evolution item target is missing or duplicated.'};
  const p=matches[0],itemId=t.itemId,take=t.kind==='take-held-item',lead=t.kind==='lead-party-member';
  const choose={kind:'choose-party-member',targetPartySlot:p.slot,targetSpecies:p.species,objective:objective.id};
+ if(take&&itemIsMail(itemId)&&t.preserveLetter===true)return takeMailRecommendation(o,p,{itemId,preserveLetter:true});
  if(lead){
   if(p.slot===0)return ui.party||ui.startMenu?{kind:'close-menu'}:null;
   if(ui.party?.stage==='choose-switch-target'){
@@ -223,6 +306,13 @@ export class FireRedEvolutionTask{
   const policy=(id,target,extra={})=>({kind:'policy',objective:{id:`evolution-${s.requestId}-${id}`,target,dialogue:'advance',choice:'yes',deferOptionalDetours:true,identityEvolution:true,...extra}});
   const stop=reason=>{s.phase='waiting';s.reason=reason;return {kind:'stop',reason};};
   const external=(game,reason)=>{s.phase='waiting-for-transfer';s.reason=reason;return {kind:'external',game,reason,step:s.steps[s.index]};};
+  // A supply detour waits while this task's last item use is still on screen:
+  // its party menu, level-up, move-learning and evolution prompts finish first
+  // (a supply task closes menus with B, which declines "Stop trying to
+  // teach?"). Other menus (a mart, the travel-lead reorder) belong to the supply.
+  if(s.itemUse&&field(o))delete s.itemUse;
+  const supply=item=>s.itemUse?policy('drain-menu',{kind:'map',map:m.map.id}):{kind:'supply',item};
+  const use=(id,target)=>{s.itemUse=true;return policy(id,target);};
   if(s.phase==='complete')return {kind:'complete',receipt:s.receipt};
   if(o.phase!=='stable'||t.partyValidity!=='valid'||t.storage?.validity!=='valid')return {kind:'wait'};
   const all=[...(t.party??[]),...(t.storage.pokemon??[])],family=all.filter(p=>lineage(p)===s.lineage);
@@ -295,6 +385,14 @@ export class FireRedEvolutionTask{
   if(rule?.nationalDexRequired&&m.storyState?.flagIds?.[2112]!==true){s.phase='national-dex';return {kind:'national-dex'};}
   if(rule?.personalityRemainders&&!rule.personalityRemainders.includes((p.personality>>>rule.personalityShift)%rule.personalityModulus))return stop('This Wurmple’s fixed personality produces the other branch. Preserve this shiny and acquire another suitable source.');
   if(rule?.trigger==='level-up'&&p.level>=100)return stop('FireRed cannot trigger a level-up evolution at level 100.');
+  // The trade item a plain teammate holds goes to the Bag first. A holder that
+  // no longer has it falls back to an ordinary supply; nothing is assumed.
+  if(step.kind==='take-evolution-item'){
+   if(count(o,step.item.nativeId)>0){s.index++;return this.inspect(o);}
+   const holder=(t.party??[]).find(q=>encounterFingerprint(q)===step.holder);
+   if(holder?.heldItem!==step.item.nativeId||holder.shiny!==false)return supply(step.item);
+   s.dirty=true;return policy('take-trade-item',{kind:'take-held-item',map:m.map.id,fingerprint:step.holder,itemId:step.item.nativeId});
+  }
   const member=(t.party??[]).find(q=>encounterFingerprint(q)===encounterFingerprint(p));
   s.partyMaximum=rule?.extraPartySlot?5:6;
   if(!member||t.party.length>s.partyMaximum)return policy('withdraw',{kind:'party-roster',map:CENTER,minimumPartySize:1,maximumPartySize:s.partyMaximum,requiredFingerprints:[encounterFingerprint(p)],requiredFamilies:t.party.filter(q=>q.moves?.includes(19)).map(q=>[q.species])});
@@ -303,14 +401,14 @@ export class FireRedEvolutionTask{
   if((rule&&p.heldItem===195)||(itemStep&&p.heldItem!==0))return policy('remove-item',{kind:'take-held-item',fingerprint:encounterFingerprint(p),map:m.map.id,itemId:p.heldItem});
   if(itemStep){
    if(!Number.isInteger(step.item?.nativeId))return stop('The requested held item has no verified FireRed item ID.');
-   if(count(o,step.item.nativeId)<1)return {kind:'supply',item:step.item};
+   if(count(o,step.item.nativeId)<1)return supply(step.item);
    s.dirty=true;return policy('give-item',{kind:'give-held-item',map:m.map.id,fingerprint:encounterFingerprint(p),itemId:step.item.nativeId});
   }
   if(step.kind==='train-final-level'){
    if(p.level>step.level)return stop('The individual is already above the requested final level.');
    if(p.level===step.level){s.index++;return this.inspect(o);}
    s.dirty=true;s.phase='training-final-level';
-   if(count(o,68)>0)return policy('final-level-candy',{kind:'use-party-item',map:m.map.id,fingerprint:encounterFingerprint(p),itemId:68});
+   if(count(o,68)>0)return use('final-level-candy',{kind:'use-party-item',map:m.map.id,fingerprint:encounterFingerprint(p),itemId:68});
    return policy('final-level-training',{kind:'map',map:m.map.id},{minimumCoreLevel:step.level,coreSpecies:[p.species],trainingFingerprint:encounterFingerprint(p)});
   }
   if(!rule)return stop('The remaining final setup step needs its native executor.');
@@ -331,11 +429,11 @@ export class FireRedEvolutionTask{
    const plan=plans[0];
    if(!plan)return stop('Tyrogue’s branch needs additional EV training; the current vitamin limits cannot produce the requested stats safely.');
    const itemId=plan.attack?64:65;s.phase='preparing-stats';
-   if(count(o,itemId)<1)return {kind:'supply',item:{nativeId:itemId,name:plan.attack?'Protein':'Iron'}};
-   return policy('prepare-stats',{kind:'use-party-item',map:m.map.id,fingerprint:encounterFingerprint(p),itemId});
+   if(count(o,itemId)<1)return supply({nativeId:itemId,name:plan.attack?'Protein':'Iron'});
+   return use('prepare-stats',{kind:'use-party-item',map:m.map.id,fingerprint:encounterFingerprint(p),itemId});
   }
-  if(rule.relativeStats!==undefined&&count(o,68)<1)return {kind:'supply',item:{nativeId:68,name:'Rare Candy'}};
-  if(rule.item&&count(o,rule.item.nativeId)<1)return {kind:'supply',item:rule.item};
+  if(rule.relativeStats!==undefined&&count(o,68)<1)return supply({nativeId:68,name:'Rare Candy'});
+  if(rule.item&&count(o,rule.item.nativeId)<1)return supply(rule.item);
   if(!s.baseline){
    if(!field(o))return policy('drain-menu',{kind:'map',map:m.map.id});
    if(!Number.isSafeInteger(m.gameStats?.savedGame)||!o.sram?.sha256)return stop('The native save baseline is unavailable.');
@@ -343,12 +441,12 @@ export class FireRedEvolutionTask{
    s.trainingLevel=Math.max(rule.level??0,p.level+1);
   }
   s.phase='evolving';s.progress={level:p.level,required:s.trainingLevel,friendship:p.friendship};
-  if(rule.item)return policy('use-item',{kind:'evolve-with-item',map:m.map.id,fingerprint:encounterFingerprint(p),itemId:rule.item.nativeId});
+  if(rule.item)return use('use-item',{kind:'evolve-with-item',map:m.map.id,fingerprint:encounterFingerprint(p),itemId:rule.item.nativeId});
   const candy=candyWorthwhile(p,rule,options);
-  if(candy&&count(o,68)>0)return policy('use-item',{kind:'use-party-item',map:m.map.id,fingerprint:encounterFingerprint(p),itemId:68});
+  if(candy&&count(o,68)>0)return use('use-item',{kind:'use-party-item',map:m.map.id,fingerprint:encounterFingerprint(p),itemId:68});
   const level=candyLevel(p);
   // A renewable supply (question-mark Mail) serves every level; a finite one only expensive, fresh levels.
-  if((options.renewableCandies||level?.expensive&&level.fresh)&&options.canSupply?.(68))return {kind:'supply',item:{nativeId:68,name:'Rare Candy'}};
+  if((options.renewableCandies||level?.expensive&&level.fresh)&&options.canSupply?.(68))return supply({nativeId:68,name:'Rare Candy'});
   // The owned Exp. Share rides with the trainee. From the PC, its holder is
   // withdrawn with the trainee; the training objective then moves the item.
   const shareHeld=count(o,182)>0||(t.party??[]).some(q=>q.heldItem===182);

@@ -532,6 +532,9 @@ class AnswerOnlyQuestions(unittest.TestCase):
         ctx['session']['postgame']['collection'] = [{'speciesId': 3, 'status': 'local'}, {'speciesId': 151, 'status': 'external'}, {'speciesId': 1, 'status': 'complete'}]
         self.assertTrue(self.answered('what pokemon am i missing', 'status-missing', ctx)['answer'].endswith(
             'Kanto 116/150. 1 of them can be caught or evolved on this cartridge.'))
+        ctx['session']['postgame']['progress']['dex']['fireRed'] = {'caught': 162, 'total': 189, 'planned': 13, 'otherGames': 196}
+        self.assertTrue(self.answered('what pokemon am i missing', 'status-missing', ctx)['answer'].endswith(
+            '1 of them can be caught or evolved on this cartridge. FireRed goal: 162 of 189 catchable in FireRed, 13 planned through another FireRed save or a partner Pokémon.'))
         del ctx['session']['postgame']['progress']['dex']
         self.assertEqual(self.answered('what pokemon am i missing', 'status-missing', ctx)['answer'],
                          'Pokédex: 116/386 caught, 270 left. The list of missing species isn’t visible right now.')
@@ -688,6 +691,34 @@ class AbilitiesIVsAndEVs(unittest.TestCase):
         self.assertEqual((both['maxIvs'], both['minIvs']), ({'speed': 0}, {'hp': 31}))
         capped = request_of(ask('catch a slowpoke with speed iv at most 10'))
         self.assertEqual(capped['maxIvs'], {'speed': 10})
+
+    def test_iv_range_numbers_are_never_a_quantity_or_an_encounter_level(self):
+        """"speed iv between 20 and 31" once became 20 Abra met at level 20-31 (bank-20260928)."""
+        default_levels = {'min': 1, 'max': 100}
+        for text, quantity, mins, maxs in [
+                ('catch a shiny abra with speed iv between 20 and 31', 1, {'speed': 20}, {}),
+                ('catch an abra with speed ivs between 20 and 31', 1, {'speed': 20}, {}),
+                ('catch an abra with between 20 and 31 speed', 1, {'speed': 20}, {}),
+                ('catch an abra with speed iv from 20 to 31', 1, {'speed': 20}, {}),
+                ('catch an abra with speed ivs of 20 to 31', 1, {'speed': 20}, {}),
+                ('catch an abra with speed 20 to 31', 1, {'speed': 20}, {}),
+                ('catch an abra with ivs 20-31 in speed', 1, {'speed': 20}, {}),
+                ('catch an abra with 20-31 speed ivs', 1, {'speed': 20}, {}),
+                ('catch 2 abra with speed iv between 10 and 20', 2, {'speed': 10}, {'speed': 20}),
+                ('catch 3 abra with 10 to 20 attack ivs and 31 speed', 3, {'attack': 10, 'speed': 31}, {'attack': 20}),
+                ('catch an abra with at least 25 attack iv', 1, {'attack': 25}, {}),
+                ('catch an abra with 31 speed', 1, {'speed': 31}, {}),
+                ('catch an abra with speed iv at most 31', 1, {}, {})]:
+            with self.subTest(text=text):
+                request = request_of(ask(text))
+                self.assertEqual(request['quantity'], quantity)
+                self.assertEqual(request['minIvs'], mins)
+                self.assertEqual(request.get('maxIvs', {}), maxs, '0 and 31 are no bound and are left out')
+                self.assertEqual(request['encounterLevel'], default_levels)
+        for text, quantity in (('catch 2 abra between level 20 and 30', 2), ('catch an abra at level 20-30', 1), ('catch 5 abra levels 20-30', 5)):
+            with self.subTest(text=text):
+                levels = request_of(ask(text))
+                self.assertEqual((levels['quantity'], levels['encounterLevel']), (quantity, {'min': 20, 'max': 30}), 'encounter levels still parse')
 
     def test_catch_then_ev_train_references_the_caught_pokemon(self):
         r = ask('catch a jolly scyther then EV train it 252 attack 252 speed')
@@ -1350,3 +1381,158 @@ class OwnedPokemonIsNotACatch(unittest.TestCase):
             r = ask(text)
             self.assertFalse(r['understood'], text)
             self.assertFalse(r.get('goal'), text)
+
+
+def story_context(state):
+    """The live FireRed session for a story request. 'hof' is the default context (Hall of Fame entered)."""
+    c = context()
+    s = c['session']
+    if state == 'new':  # a brand-new library after Start game: the title screen, no save yet
+        s.update(newProfile=True, campaign=None, mission=None, pendingHunt=None, collection=[], postgame=None, map='MAP_BATTLE_COLOSSEUM_2P',
+                 gameProgress={'game': 'firered', 'leagueComplete': False, 'nationalDex': False, 'canLinkNationally': False,
+                               'ownedSpecies': 0, 'trainerId': 0, 'statics': []},
+                 bot={'enabled': True, 'status': 'ready', 'awaitingCommand': True, 'activity': 'ready', 'runScope': 'task',
+                      'reason': 'Ready for commands. Choose a task in Bot settings.'})
+        c['shinies'] = []
+    elif state == 'mid':  # the bot's own story campaign, stopped at three badges
+        s.update(newProfile=False, campaign={'id': 'run-00000000-0000-0000-0000-000000000009', 'status': 'running', 'label': 'FireRed adventure',
+                                             'storyProgress': {'badges': {'earned': 3}}},
+                 gameProgress={**s['gameProgress'], 'leagueComplete': False, 'nationalDex': False, 'canLinkNationally': False},
+                 bot={'enabled': False, 'status': 'stopped', 'awaitingCommand': False, 'activity': 'campaign', 'runScope': 'campaign', 'reason': 'Stopped by you.'})
+    elif state == 'manual':  # a save partway through the story that the bot did not start
+        s.update(newProfile=False, campaign=None, gameProgress={**s['gameProgress'], 'leagueComplete': False, 'nationalDex': False, 'canLinkNationally': False})
+    elif state == 'offline':
+        c['session'] = None
+    return c
+
+
+def ask_in(state, text, **extra):
+    return interpreter(**extra).interpret(text, via='typed', context=story_context(state))
+
+
+def accepted(result):
+    return [c['intent'] for c in result['clauses'] if c['status'] == 'accepted']
+
+
+STORY_STEP = {'kind': 'campaign', 'settings': {'starter': 'random', 'afterCampaign': 'postgame'}, 'continue': True}
+BLANK_PREVIEW = lambda request: {'canStart': False, 'state': 'unsupported', 'limitations': ['No save exists yet.'], 'pokemon': {}}
+
+
+class StoryRequests(unittest.TestCase):
+    """"play the story", "beat the elite four": the same Goal v1 pipeline as "get me a shiny Mewtwo" (plan, confirm, progress, cancel)."""
+
+    PHRASES = ['play the story', 'beat the game', 'beat the elite four', 'play through the story', 'finish the game', 'defeat the elite four',
+               'become the champion', 'win the pokemon league', 'enter the hall of fame', 'beat pokemon firered', 'beat the e4', 'beat the champion']
+
+    def test_on_a_brand_new_save_the_story_starts_from_new_game(self):
+        for text in self.PHRASES:
+            with self.subTest(text=text):
+                r = ask_in('new', text)
+                self.assertTrue(r['understood'], r['message'])
+                self.assertEqual(accepted(r), ['story'])
+                self.assertEqual(r['goal']['steps'], [STORY_STEP])
+                self.assertEqual(r['goal']['save']['mode'], 'current-if-able')
+                self.assertEqual(r['goal']['then'], 'standing-goals')
+                self.assertFalse(r['confirmation']['required'], 'a new library has no save to back up')
+                self.assertIn('New Game', r['summary'])
+                self.assertIn('Hall of Fame', r['summary'])
+
+    def test_mid_story_the_bots_campaign_continues_on_the_same_save(self):
+        for text in self.PHRASES[:6] + ['continue the story', 'keep playing the story', 'finish the story']:
+            with self.subTest(text=text):
+                r = ask_in('mid', text)
+                self.assertTrue(r['understood'], r['message'])
+                self.assertEqual(accepted(r), ['story'])
+                self.assertEqual(r['goal']['steps'], [STORY_STEP])
+                self.assertEqual(r['goal']['save']['mode'], 'current-if-able', 'never a new save')
+                self.assertFalse(r['confirmation']['required'])
+                self.assertIn('Continue', r['summary'])
+                self.assertIn('3/8 badges', r['summary'])
+
+    def test_with_the_game_closed_the_goal_decides_when_it_starts(self):
+        r = ask_in('offline', 'play the story')
+        self.assertTrue(r['understood'], r['message'])
+        self.assertEqual(r['goal']['steps'], [STORY_STEP])
+        self.assertIn('continues', r['summary'])
+        self.assertIn('New Game', r['summary'])
+
+    def test_after_the_hall_of_fame_it_says_what_runs_instead(self):
+        story = ask_in('hof', 'play the story')
+        self.assertFalse(story['understood'])
+        self.assertEqual(story['unsupported'], 'story-complete')
+        self.assertIsNone(story['goal'])
+        self.assertIn('Hall of Fame', story['message'])
+        self.assertIn('start a new game', story['suggestions'])
+        league = ask_in('hof', 'beat the elite four')
+        self.assertFalse(league['understood'])
+        self.assertEqual(league['unsupported'], 'league-rematch')
+        self.assertIsNone(league['goal'])
+        self.assertIn('rematch', league['message'])
+        self.assertIn('postgame checklist', league['message'])
+        self.assertIn('do the postgame', league['suggestions'])
+        for result in (story, league):
+            for text in result['suggestions']:
+                with self.subTest(suggestion=text):
+                    self.assertTrue(ask_in('hof', text)['understood'], text)
+
+    def test_a_save_the_bot_did_not_start_cannot_continue_its_story(self):
+        r = ask_in('manual', 'play the story')
+        self.assertFalse(r['understood'])
+        self.assertEqual(r['unsupported'], 'story-no-campaign')
+        self.assertIn('start a new game', r['message'])
+        self.assertIn('start a new game', r['suggestions'])
+
+    def test_new_game_wording_still_starts_a_new_save(self):
+        for state in ('new', 'mid', 'hof'):
+            for text in ['start a new game', 'play through the game from the start', 'play the whole game again', 'start over',
+                         'beat the game on a new save', 'start a new adventure named RED with squirtle']:
+                with self.subTest(state=state, text=text):
+                    r = ask_in(state, text)
+                    self.assertEqual(accepted(r), ['new-game'])
+                    self.assertEqual(r['goal']['save']['mode'], 'new')
+                    self.assertTrue(r['confirmation']['required'])
+
+    def test_new_game_summary_reads_as_a_sentence(self):
+        self.assertEqual(ask_in('new', 'start a new game')['summary'], 'New save with a random starter → play the story to the Hall of Fame')
+        self.assertEqual(ask_in('new', 'start a new game with squirtle')['summary'], 'New save with Squirtle → play the story to the Hall of Fame')
+
+    def test_other_meanings_are_unchanged(self):
+        for state in ('new', 'hof'):
+            with self.subTest(state=state):
+                self.assertEqual(ask_in(state, 'battle the elite four')['unsupported'], 'battle')
+                self.assertEqual(ask_in(state, 'rematch the elite four')['unsupported'], 'battle')
+                self.assertEqual(accepted(ask_in(state, 'go back to the elite four')), ['travel'])
+                self.assertEqual(accepted(ask_in(state, 'keep going')), ['bot-resume'])
+                for text in ["don't play the story", "let's not beat the elite four", 'never mind beating the game']:
+                    r = ask_in(state, text)
+                    self.assertFalse(r['understood'], text)
+                    self.assertIsNone(r['goal'], text)
+
+    def test_tasks_that_need_a_save_say_so_on_a_brand_new_save(self):
+        for text in ['go to cinnabar and heal', 'buy 10 ultra balls', 'save the game']:
+            with self.subTest(text=text):
+                r = ask_in('new', text)
+                self.assertIsNone(r['goal'], 'nothing that cannot run is offered to Run')
+                self.assertIn('no save yet', r['message'])
+                self.assertEqual(r['suggestions'], pr.BLANK_SUGGESTIONS)
+        # A step that plays the story first makes the rest runnable.
+        for text in ['get me a shiny mewtwo then heal', 'play the story then go to cinnabar', 'start a new game then heal']:
+            with self.subTest(text=text):
+                self.assertIsNotNone(ask_in('new', text)['goal'], text)
+        self.assertIsNotNone(ask_in('hof', 'go to cinnabar and heal')['goal'], 'an existing save runs tasks as before')
+        for text in ['stop the bot', 'start the bot', 'resume']:  # the bot's own controls need no save
+            with self.subTest(text=text):
+                self.assertIsNotNone(ask_in('new', text)['goal'], text)
+
+    def test_every_suggestion_on_a_brand_new_save_runs(self):
+        for text in ('', 'do a barrel roll', 'battle the elite four', 'go to cinnabar and heal'):
+            with self.subTest(text=text):
+                result = ask_in('new', text, preview=BLANK_PREVIEW)
+                self.assertTrue(result['suggestions'], result)
+                for suggestion in result['suggestions']:
+                    follow = ask_in('new', suggestion, preview=BLANK_PREVIEW)
+                    self.assertTrue(follow['understood'], (suggestion, follow['message']))
+                    self.assertIsNotNone(follow['goal'], suggestion)
+        helped = ask_in('new', 'what can you do')
+        self.assertIn('play the story', helped['answer'])
+        self.assertNotIn('Cinnabar', helped['answer'])

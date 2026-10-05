@@ -106,3 +106,34 @@ test("the Misc substructure exposes the Gen 3 met level that marks a hatched Pok
     assert.deepEqual(decoded.ivs, { hp: 31, attack: 0, defense: 1, speed: 2, spAttack: 3, spDefense: 4 });
   }
 });
+
+// The read-only legality checker needs the rest of the origins word, the
+// language byte and the ribbon word (bit 31: the fateful-encounter flag).
+test("the Misc substructure exposes met location, origin game, ball, OT gender, ribbons and the fateful flag", () => {
+  for (let personality = 0; personality < 24; personality++) {
+    const bytes = record(personality), otId = 0x12345678;
+    const view = new DataView(bytes.buffer), order = orders[personality % 24], misc = order.indexOf("M") * 12;
+    const plain = new DataView(new ArrayBuffer(48));
+    for (let index = 0; index < 48; index += 4) plain.setUint32(index, view.getUint32(32 + index, true) ^ personality ^ otId, true);
+    const fresh = decodeBoxPokemonRecord(bytes);
+    assert.deepEqual([fresh.metLocation, fresh.metGame, fresh.ball, fresh.otGender, fresh.ribbons, fresh.fatefulEncounter],
+      [0, 0, 0, 0, 0, false]);
+    // Met at Birth Island (0xBB), level 30, FireRed (4), Ultra Ball (2), female OT; Champion ribbon and the fateful flag.
+    plain.setUint8(misc + 1, 0xbb);
+    plain.setUint16(misc + 2, 30 | (4 << 7) | (2 << 11) | (1 << 15), true);
+    plain.setUint32(misc + 8, ((1 << 15) | 0x80000000) >>> 0, true);
+    bytes[18] = 2;
+    let checksum = 0;
+    for (let index = 0; index < 48; index += 2) checksum += plain.getUint16(index, true);
+    view.setUint16(28, checksum & 0xffff, true);
+    for (let index = 0; index < 48; index += 4) view.setUint32(32 + index, plain.getUint32(index, true) ^ personality ^ otId, true);
+    const decoded = decodeBoxPokemonRecord(bytes);
+    assert.equal(decoded.validity, "valid");
+    assert.deepEqual([decoded.metLocation, decoded.metLevel, decoded.metGame, decoded.ball, decoded.otGender, decoded.language],
+      [0xbb, 30, 4, 2, 1, 2]);
+    assert.equal(decoded.ribbons, 1 << 15);
+    assert.equal(decoded.fatefulEncounter, true);
+    assert.deepEqual(decoded.ivs, { hp: 31, attack: 0, defense: 1, speed: 2, spAttack: 3, spDefense: 4 });
+    assert.equal(decoded.abilityNum, 1);
+  }
+});

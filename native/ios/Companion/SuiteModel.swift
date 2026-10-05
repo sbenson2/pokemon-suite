@@ -4,7 +4,7 @@ import Security
 import Network
 
 enum SuitePage: String, CaseIterable, Identifiable {
-    case library="Games", live="Live game", pokedex="Pokédex", farming="Farming", trading="Trading", bot="Bot settings"
+    case library="Games", live="Live game", pokedex="Bank", farming="Farming", trading="Trading", bot="Bot settings"
     var id: String { rawValue }
     var symbol: String { switch self { case .library:"square.stack.3d.up";case .live:"gamecontroller";case .pokedex:"book.closed";case .farming:"scope";case .trading:"arrow.left.arrow.right";case .bot:"slider.horizontal.3" } }
 }
@@ -46,6 +46,16 @@ enum SuitePage: String, CaseIterable, Identifiable {
             guard let self,self.connected,let api=self.api else{throw SuiteError("Mac unavailable. Reconnecting…")}
             return try await api.post(path,body)
         }))
+    /// The Bank's "Get it": the same request flow as Ask, with its own draft so the two never replace each other's preview.
+    lazy var bankRequests=BotRequestFlow(client:"ios-bank",transport:BotRequestTransport(
+        get:{[weak self] path in
+            guard let self,self.connected,let api=self.api else{throw SuiteError("Mac unavailable. Reconnecting…")}
+            return try await api.get(path)
+        },
+        post:{[weak self] path,body in
+            guard let self,self.connected,let api=self.api else{throw SuiteError("Mac unavailable. Reconnecting…")}
+            return try await api.post(path,body)
+        }))
     var games: [JSONValue] { state["library"].array }
     var game: JSONValue { games.first { $0["id"].string==selectedGame } ?? .null }
     var session: JSONValue { state["sessions"].array.first { $0["game"].string==selectedGame } ?? .null }
@@ -67,7 +77,7 @@ enum SuitePage: String, CaseIterable, Identifiable {
             guard let self,self.active else{return};await self.refresh()
         }}
         network.start(queue:DispatchQueue(label:"suite-companion-network"))
-        if let value=UserDefaults.standard.string(forKey:"companion-page"),let page=SuitePage(rawValue:value) { self.page=page }
+        if let value=UserDefaults.standard.string(forKey:"companion-page"),let page=SuitePage(rawValue:value=="Pokédex" ? SuitePage.pokedex.rawValue:value) { self.page=page }  // the Pokédex became the Bank
         selectedGame=UserDefaults.standard.string(forKey:"companion-game") ?? "firered"
     }
     func launch() async {

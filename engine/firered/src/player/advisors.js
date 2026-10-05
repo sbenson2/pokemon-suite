@@ -36,6 +36,7 @@ export { scoreBattleMoves } from "./battle-model.js";
 import { createHash } from "node:crypto";
 import {encounterFingerprint} from './encounter-tracker.js';
 import {evolutionItemRecommendation} from '../suite/fire-red-evolution.js';
+import evolutionRules from '../suite/fire-red-evolution-rules.json' with {type:'json'};
 import {fieldMoveAtRecommendation,seagallopChoiceIndex,fireRedIsland} from '../suite/fire-red-link-quest.js';
 
 import { assertAdvisorProposal } from "../foundation.js";
@@ -356,6 +357,12 @@ const HELD_TYPE_BOOSTS = Object.freeze(new Map([
   [217, "TYPE_NORMAL"],
   [220, "TYPE_WATER"],
 ]));
+// Items an evolution consumes (trade-held items such as the King's Rock or Metal
+// Coat, and the evolution stones; pokefirered evolution data) stay free for that
+// evolution: the equipment policy never chooses one as a held item (owner, 2026-10-04).
+const EVOLUTION_ITEMS = Object.freeze(new Set(
+  evolutionRules.rules.flatMap((rule) => [rule.heldItem?.nativeId, rule.item?.nativeId]).filter(Number.isInteger),
+));
 const HELD_ITEM_PRIORITIES = Object.freeze(new Map([
   [200, 100], // Leftovers
   [182, 95],  // Exp. Share
@@ -369,7 +376,8 @@ const HELD_ITEM_PRIORITIES = Object.freeze(new Map([
   [186,85], [191,85], [192,85], [193,85], [202,85], [223,85], [224,85],
   [222,70], [225,70], [221,50], [196,45], [194,35], [197,94],
   ...itemCatalog.items.filter(i=>describeHeldItem(i.id)?.consumable).map(i=>[i.id,30]),
-]));
+].filter(([itemId]) => !EVOLUTION_ITEMS.has(itemId))));
+export const heldItemEquipPriority = (itemId) => HELD_ITEM_PRIORITIES.get(Number(itemId)) ?? null;
 
 function coordinateKey(x, y) {
   return `${x},${y}`;
@@ -2067,11 +2075,18 @@ function planStorageOperation(memory, objective, teamPlan, mechanics) {
   const excludedSpecies = new Set(
     (target?.excludedFamilies ?? []).flat().map(Number),
   );
+  // Named individuals (a protected Day Care parent) are stored and never withdrawn.
+  const excludedIndividuals = new Set(target?.excludedFingerprints ?? []);
+  const individuallyExcluded = (pokemon) => excludedIndividuals.has(encounterFingerprint(pokemon));
   const combatDeficit = Number.isSafeInteger(target?.minimumCombatPartySize) &&
     party.filter(pokemon => !isHmUtilityCarrier(pokemon, teamPlan)).length < target.minimumCombatPartySize;
   const isExcluded = (pokemon) => excludedSpecies.has(Number(pokemon?.species)) ||
     Boolean((target?.excludeHmUtilityCarriers || combatDeficit) && isHmUtilityCarrier(pokemon, teamPlan));
-  const eligibleStored = stored.filter((pokemon) => !isExcluded(pokemon));
+  const eligibleStored = stored.filter((pokemon) => !isExcluded(pokemon) && !individuallyExcluded(pokemon));
+  const evicted = party.find(individuallyExcluded) ?? null;
+  if (target && evicted) {
+    return { party, stored, boxCounts, missingFingerprint: null, storedTarget: null, depositCandidate: evicted, operation: "deposit" };
+  }
   const excludedPartyMember = party.find(isExcluded) ?? null;
   const missingFamily = target?.requiredFamilies?.find((family) =>
     !rosterFamilyPresent(party, family)
@@ -2081,12 +2096,12 @@ function planStorageOperation(memory, objective, teamPlan, mechanics) {
     !party.some(pokemon => (pokemon.moves ?? []).some(move => Number(move) === Number(moveId))));
   const rosterBelowMinimum = Number.isSafeInteger(target?.minimumPartySize) &&
     party.length < Number(target.minimumPartySize);
-  const storedTarget = missingFingerprint?stored.find(p=>encounterFingerprint(p)===missingFingerprint):missingFamily
-    ? selectStoredRosterCandidate(stored.filter(({ species }) =>
-        missingFamily.some((candidate) => Number(candidate) === Number(species))
+  const storedTarget = missingFingerprint?stored.find(p=>encounterFingerprint(p)===missingFingerprint&&!individuallyExcluded(p)):missingFamily
+    ? selectStoredRosterCandidate(stored.filter((pokemon) => !individuallyExcluded(pokemon) &&
+        missingFamily.some((candidate) => Number(candidate) === Number(pokemon.species))
       ), party, mechanics)
     : missingMoveId !== undefined
-      ? selectStoredRosterCandidate(stored.filter(pokemon =>
+      ? selectStoredRosterCandidate(stored.filter(pokemon => !individuallyExcluded(pokemon) &&
           (pokemon.moves ?? []).some(move => Number(move) === Number(missingMoveId))), party, mechanics)
     : rosterBelowMinimum || excludedPartyMember
       ? selectStoredRosterCandidate(eligibleStored, party, mechanics)
@@ -3286,7 +3301,7 @@ function battleAdvice(observation, mechanics, world, campaignPlanner, teamPlan) 
   const isObservedPokedex = Array.isArray(ownedSpecies);
   const isNewPokedexSpecies = pokedexEnabled && isObservedPokedex &&
     Number.isSafeInteger(encounterSpecies) && encounterSpecies > 0 &&
-    !ownedSpecies.some((species) => Number(species) === encounterSpecies);
+    !ownedSpecies.some((species) => Number(species) === nationalSpeciesId(encounterSpecies));
   const captureAnyNewSpecies = Boolean(storyObjective?.captureAnyNewSpecies);
   const captureEncounter = (
     captureSpecies.size > 0 && captureSpecies.has(encounterSpecies)

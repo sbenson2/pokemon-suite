@@ -30,7 +30,7 @@ class MacInfoPlistTests(unittest.TestCase):
     def setUp(self):
         self.source = MAC.read_text()
         tree = ast.parse(self.source)
-        build = next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == 'build')
+        build = next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == 'info_plist')  # build() writes info_plist()
         assigned = [n for n in ast.walk(build) if isinstance(n, ast.Assign) and any(isinstance(t, ast.Name) and t.id == 'info' for t in n.targets)]
         self.assertEqual(len(assigned), 1, 'one Info.plist dictionary')
         self.info = {k.value: v for k, v in zip(assigned[0].value.keys, assigned[0].value.values)}
@@ -126,18 +126,22 @@ class AskSourceTests(unittest.TestCase):
         self.assertIn('flow.warm()', mic[:mic.index('dictation.toggle')], 'a mic tap starts Laya loading before the owner speaks')
 
     def test_ask_ui_only_calls_the_request_and_goal_endpoints(self):
-        sources = [(self.SHARED/'BotAskView.swift').read_text(), (ROOT/'macos/Sources/SuiteCore/BotRequest.swift').read_text()]
+        # The Bank's "Get it" (BankGetItView) is Ask's request flow with fields instead of words (requests/select).
+        sources = [(self.SHARED/'BotAskView.swift').read_text(), (ROOT/'macos/Sources/SuiteCore/BotRequest.swift').read_text(),
+                   (self.SHARED/'BankGetItView.swift').read_text()]
         for source in sources:
             for forbidden in ('/api/pokemon-suite/input', 'player-tasks', 'playback', 'GameInput', 'pressButton', 'sendInput'):
                 self.assertNotIn(forbidden, source, 'the Ask UI never sends game input')
         endpoints = set(re.findall(r'"(/api/[^"]+)"', sources[1]))
-        self.assertEqual(endpoints, {'/api/pokemon-suite/requests/interpret', '/api/pokemon-suite/requests/commit', '/api/pokemon-suite/requests/cancel',
-                                     '/api/pokemon-suite/requests/warm', '/api/pokemon-suite/goals', '/api/pokemon-suite/goals/cancel'})
+        self.assertEqual(endpoints, {'/api/pokemon-suite/requests/interpret', '/api/pokemon-suite/requests/select', '/api/pokemon-suite/requests/commit',
+                                     '/api/pokemon-suite/requests/cancel', '/api/pokemon-suite/requests/warm', '/api/pokemon-suite/goals',
+                                     '/api/pokemon-suite/goals/cancel'})
+        self.assertEqual(set(re.findall(r'"(/api/[^"]+)"', sources[2])), set(), 'Get it only goes through the request flow')
 
     def test_companion_relay_allows_every_ask_endpoint(self):
         from pokemon_suite.companion import allowed_route
-        for path in ('/api/pokemon-suite/requests/interpret', '/api/pokemon-suite/requests/commit', '/api/pokemon-suite/requests/cancel',
-                     '/api/pokemon-suite/requests/warm', '/api/pokemon-suite/goals/cancel'):
+        for path in ('/api/pokemon-suite/requests/interpret', '/api/pokemon-suite/requests/select', '/api/pokemon-suite/requests/commit',
+                     '/api/pokemon-suite/requests/cancel', '/api/pokemon-suite/requests/warm', '/api/pokemon-suite/goals/cancel'):
             self.assertTrue(allowed_route('POST', path), path)
         self.assertTrue(allowed_route('GET', '/api/pokemon-suite/goals'))
 

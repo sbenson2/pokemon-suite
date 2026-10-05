@@ -121,7 +121,7 @@ The subsequent Switch 2 / English LeafGreen retry completed in installed app bui
 
 There were no automatic retries or emulator RFU drops. Periodic observations reached the eight-slot flow limit without triggering the old 32-slot failure; the relay continued through acknowledgement-window delays. The guest powered down normally after the owner completed its room exit, and no QEMU/relay process remained. This qualifies one complete exchange on this Mac, adapter and Switch 2 setup. Repeated-trade, interruption and other-machine qualification remain separate release work; it does not prove every radio loss recoverable.
 
-Local receipt: `.private/radio-relay-integration-20260911/verified-lightweight-wigglytuff-completion.json`. It records the native save hash, outgoing/received identity, counter change, six save handshakes, normal exit, runtime version and observed queue/drop counts. No credential contents or game files are included in the public source export.
+The receipt is kept privately, outside the source export. It records the native save hash, outgoing/received identity, counter change, six save handshakes, normal exit, runtime version and observed queue/drop counts. No credential contents or game files are included in the public source export.
 
 
 ## Second exchange: saved result, interrupted room exit

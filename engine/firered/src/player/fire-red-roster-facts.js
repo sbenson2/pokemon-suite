@@ -8,7 +8,9 @@ export const FIRE_RED_FIELD_MOVES = Object.freeze({ cut: 15, fly: 19, surf: 57, 
 export function readFireRedRosterFacts({ romBytes, cartridge, runtime, mechanics }) {
   const peerProfile = cartridge?.id === "firered-rev1-peer-trade-v2" &&
     cartridge.sha1 === "85a259c7b7a74d4f2322e5b9f89d22a53dfd6fce";
-  if (!(romBytes instanceof Uint8Array) || !(cartridge?.id === "firered-rev1-stock" || peerProfile) ||
+  // LeafGreen rev 1 (build 124) is the same stock ABI built from the same source.
+  const stockProfile = ["firered-rev1-stock", "leafgreen-rev1-stock"].includes(cartridge?.id);
+  if (!(romBytes instanceof Uint8Array) || !(stockProfile || peerProfile) ||
       romBytes.length !== cartridge.bytes || createHash("sha1").update(romBytes).digest("hex") !== cartridge.sha1) {
     throw new Error("roster cartridge fingerprint does not match the stock profile");
   }

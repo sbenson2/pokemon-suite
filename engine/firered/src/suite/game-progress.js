@@ -1,17 +1,21 @@
 import {join} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {staticAvailability} from './static-availability.js';
+import {catchableProgress} from './catchable-goal.js';
 
-export function fireRedProgress(o){
+// The same story flags on either FRLG cartridge (LeafGreen: build 124).
+export function fireRedProgress(o,game='firered'){
  if(!o)return null;
  const flag=id=>o.phase==='stable'&&typeof o.playerMemory?.storyState?.flagIds?.[id]==='boolean'?o.playerMemory.storyState.flagIds[id]:null;
  const gift=flag(611);
- return {game:'firered',frame:o.frame,leagueComplete:flag(2092),nationalDex:flag(2112),canLinkNationally:flag(2116),eeveeGiftAvailable:gift===null?null:!gift,ownedSpecies:o.playerMemory?.trainer?.pokedex?.ownedSpecies?.length??null,
+ return {game,frame:o.frame,leagueComplete:flag(2092),nationalDex:flag(2112),canLinkNationally:flag(2116),eeveeGiftAvailable:gift===null?null:!gift,ownedSpecies:o.playerMemory?.trainer?.pokedex?.ownedSpecies?.length??null,
   // Lets the host refuse a FireRed partner that shares this save's trainer ID.
   ...(Number.isInteger(o.playerMemory?.trainer?.trainerId)?{trainerId:o.playerMemory.trainer.trainerId}:{}),
   // One-time static encounters: used flag and the engine's story gates, so a
   // goal can choose this save, play the story first, or report the encounter used.
-  statics:staticAvailability(o)};
+  statics:staticAvailability(o),
+  // LeafGreen's per-game goal: "X of N catchable in LeafGreen" (build 124).
+  ...(game==='leafgreen'?{catchable:catchableProgress(game,o.playerMemory?.trainer?.pokedex?.ownedSpecies??null)}:{})};
 }
 export function emeraldProgress(o){
  const flag=name=>o.player?.map?.id?o.flag(name):null;

@@ -52,4 +52,11 @@ final class HuntProgressTests: XCTestCase {
         XCTAssertEqual(HuntWorkflow.startStage(try json(#"{"session":{"mission":{"state":"complete"}}}"#)), .complete)
         XCTAssertEqual(BotRunStatus(session: try json(#"{"sessionId":"run","state":"running","bot":{"enabled":true,"awaitingCommand":true}}"#)), .ready)
     }
+
+    /// The live 125.1 bot after its collection ran out of local work: enabled, status "waiting".
+    func testAWaitingBotIsNotReportedAsRunning() throws {
+        let session = try JSONDecoder().decode(JSONValue.self, from: Data(#"{"sessionId":"s","state":"waiting","bot":{"enabled":true,"status":"waiting","awaitingCommand":false,"reason":"This save has finished what it can do alone"}}"#.utf8))
+        XCTAssertEqual(BotRunStatus(session: session), .waiting)
+        XCTAssertEqual(BotRunStatus(session: session).label, "Bot waiting")
+    }
 }

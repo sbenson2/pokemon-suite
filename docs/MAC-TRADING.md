@@ -4,6 +4,8 @@ The native Mac app has a **Trading** destination in its sidebar. Choose FireRed 
 
 The Save selector includes the current game and preserved profiles in the same library. **Add Saved Game…** links a saved profile from another Suite library using its profile record or `current.json` checkpoint. Its own cartridge and emulator are verified before reading. The reference stays local; the save and its Pokémon are not copied, and browsing does not activate it over the current campaign. The selected save and appearance filter are remembered. A missing collection reports an error instead of silently showing a different save. Choosing Prepare Trade now validates the selected individual, opens the saved profile in its owning library, checks the radio, and revalidates the live owner before starting preparation. The current library and its campaign remain saved. The confirmation explains the save change; viewing a collection alone still has no effect on gameplay.
 
+The **Bank** lists the same individuals for one species across every save at once. Its **Send to Switch** is this Prepare Trade flow for the current game; Pokémon in other saves show the browsing reason instead.
+
 Sprites and shiny palettes come from the user's ROM. Inventory is a read-only view of the latest verified checkpoint, not historical catch receipts. An isolated local emulator loads that checkpoint without advancing the game, sending controls or writing its saves. The snapshot timestamp is displayed. Stored Pokémon levels and custom box names are not yet decoded; unknown levels are omitted and boxes remain numbered.
 
 ## Physical connection

@@ -575,3 +575,29 @@ test('an unexpected party change still stops, and keeps what the check saw for d
   before:task.state.partyBefore,prepared:fingerprint});
  assert.equal(observed.length,2);assert.ok(!observed.includes(fingerprint));
 });
+
+test('a restarted console is not a party change: before the exchange its link is lost, afterwards the outcome stays unresolved',()=>{
+ // Gates 118-02 and 122-01: the FireRed partner restarted itself in the trade room (its frame counter
+ // kept running; its stack held nested RFU interrupt frames). The boot screen's empty party was
+ // read as "The prepared trade party changed unexpectedly".
+ const room=()=>{const o=observation();o.emulator.callback2='CB2_TradeMenu';o.playerMemory.map.id='MAP_TRADE_CENTER';return o;};
+ const menu=callback=>({tradeCount:8,remotePlayers:1,tradeMenu:{callback,cursor:0,partyCount:2}});
+ const boot={frame:22289,phase:'transition',emulator:{mode:'boot',callback2:'CB2_InitCopyrightScreenAfterBootup',mainState:0},
+  playerMemory:{map:{id:'MAP_BATTLE_COLOSSEUM_2P'},trainer:{partyValidity:'valid',party:[]},ui:{}}};
+ const reset={validity:'valid',wirelessCommType:0,remotePlayers:0,tradeCount:0,standby:{round:0,callbackActive:false,errorState:0}};
+ const radio={available:true,connected:false,reason:null,link:{session:true}};
+ const waiting=create();waiting.inspect(room(),menu(100),radio,1000);
+ assert.equal(waiting.inspect(boot,reset,radio,2000).kind,'retry','before the exchange: a lost link, proven by the owner\'s cold boot');
+ assert.equal(waiting.state.phase,'retry-wait');assert.equal(waiting.state.identityCheck,undefined);
+ assert.equal(waiting.state.partyBefore.length,2);assert.equal(waiting.state.tradeCountBefore,8,'the proof still compares the original party and trade count');
+ const started=create();started.inspect(room(),menu(9),radio,1000);assert.equal(started.state.exchangeStarted,true);
+ assert.equal(started.inspect(boot,reset,radio,2000).kind,'stop');
+ assert.equal(started.state.phase,'trade-outcome-unresolved');assert.equal(started.state.retries,undefined);
+ const cancelling=create();cancelling.inspect(room(),menu(8),radio,1000);assert.equal(cancelling.state.phase,'cancelling-trade');
+ assert.equal(cancelling.inspect(boot,reset,radio,2000).kind,'stop');
+ assert.equal(cancelling.state.phase,'cancel-exit-incomplete');assert.equal(cancelling.state.retries,undefined);
+ // A changed party in a loaded game still stops (the previous test).
+ const loaded=create();loaded.inspect(room(),menu(100),radio,1000);
+ const changed=room();changed.playerMemory.trainer.party=[];
+ assert.equal(loaded.inspect(changed,menu(100),radio,2000).kind,'stop');assert.equal(loaded.state.phase,'identity-unavailable');
+});

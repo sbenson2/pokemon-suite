@@ -7,6 +7,8 @@ import { isDeepStrictEqual } from "node:util";
 import { normalizeTeamSeed } from "./roster-generator.js";
 
 export const ROSTER_MODES = Object.freeze(["random", "coherent", "origins", "fixed"]);
+// Generated rosters come from a verified FRLG cartridge's own facts (LeafGreen: build 124).
+const FRLG_ROSTERS = Object.freeze(["firered-rev1-stock", "leafgreen-rev1-stock"]);
 const SCHEMA = "master-red/roster-selection/v1";
 const VERSIONS = Object.freeze({ random: "random-families-v1", coherent: "coherent-generated-v2", origins: "origins-preset-v1",
   fixed: "starter-optimized-forward-team" });
@@ -104,13 +106,13 @@ export function createRosterPlanForRun(starterSpecies, seed, resumePlayerState =
   let plan;
   if (version === VERSIONS.random) {
     const context = options.rosterContext;
-    if (context?.gameId !== "firered-rev1-stock" || typeof context.createRandomTeamPlan !== "function") throw new Error("a verified FireRed roster context is required for random teams");
+    if (!FRLG_ROSTERS.includes(context?.gameId) || typeof context.createRandomTeamPlan !== "function") throw new Error("a verified FireRed roster context is required for random teams");
     if (saved && saved.catalogRevision !== context.revision) throw new Error("checkpoint roster catalog cannot change on resume");
     if (saved && options.helpers !== undefined && options.helpers !== saved.helpers) throw new Error("checkpoint helper policy cannot change on resume");
     plan = context.createRandomTeamPlan(starter.species,seed,teamSeed,saved?.acquisitionIds,{ helpers: saved?.helpers ?? options.helpers ?? "allowed" });
   } else if (version === VERSIONS.coherent) {
     const context = options.rosterContext;
-    if (context?.gameId !== "firered-rev1-stock" || context.version !== version || typeof context.createTeamPlan !== "function") {
+    if (!FRLG_ROSTERS.includes(context?.gameId) || context.version !== version || typeof context.createTeamPlan !== "function") {
       throw new Error("a verified FireRed roster context is required for generated teams");
     }
     if (saved && saved.catalogRevision !== context.revision) throw new Error("checkpoint roster catalog cannot change on resume");

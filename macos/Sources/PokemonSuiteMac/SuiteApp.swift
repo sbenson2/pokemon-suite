@@ -19,12 +19,17 @@ struct PokemonSuiteApp: App {
         .commands {
             CommandGroup(replacing: .newItem) {
                 Button("Open Library…", action: model.chooseProfile).keyboardShortcut("o")
-                Button("Add FireRed…", action: model.addFireRed)
+                Button("Add FireRed or LeafGreen…", action: model.addFireRed)
+                Button("Choose ROM Folder…", action: model.chooseROMFolder)
             }
             CommandGroup(after: .appInfo) {
                 Button("Check for Updates…", action: appUpdater.check).disabled(!appUpdater.available)
             }
             CommandMenu("Game") {
+                Picker("Choose Game", selection: Binding(get: { model.selectedGame }, set: { id in Task { await model.selectGame(id) } })) {
+                    ForEach(model.games.filter { $0["status"].string == "installed" }, id: \.gameID) { game in Text(game["title"].string).tag(game["id"].string) }
+                }.disabled(model.busy || model.starting || model.api == nil)
+                Divider()
                 Button("Start Game", action: model.startGame).disabled(!model.installed || model.gameRunning || model.busy)
                 Button("Stop Game", action: model.stopGame).disabled(!model.gameRunning || model.busy)
                 Button("Save Game", action: model.saveGame).keyboardShortcut("s").disabled(!model.gameRunning || model.busy)
@@ -84,7 +89,6 @@ struct MainWindowIdentity: NSViewRepresentable {
 
 struct SuiteWindow: View {
     @EnvironmentObject var model: SuiteModel
-    @AppStorage("appearance") private var appearance = "system"
     var body: some View {
         NavigationSplitView {
             List(selection: $model.page) {
@@ -98,6 +102,14 @@ struct SuiteWindow: View {
 
         } detail: {
             VStack(spacing: 0) {
+                if let notice = model.notice {
+                    HStack(alignment: .top, spacing: 12) {
+                        Label(notice, systemImage: "info.circle").font(.callout).textSelection(.enabled)
+                        Spacer(minLength: 0)
+                        Button { model.notice = nil } label: { Image(systemName: "xmark") }
+                            .buttonStyle(.borderless).accessibilityLabel("Dismiss message").help("Dismiss this message")
+                    }.padding(12).background(.bar).overlay(alignment: .bottom) { Divider() }
+                }
                 if model.starting {
                     VStack(spacing: 14) { ProgressView(); Text("Opening your library…").foregroundStyle(.secondary) }.frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else if model.api == nil {
@@ -115,29 +127,23 @@ struct SuiteWindow: View {
                     case .bot: BotView()
                     }
                 }
-                if let notice = model.notice {
-                    HStack(alignment: .top, spacing: 12) {
-                        Label(notice, systemImage: "info.circle").font(.callout).textSelection(.enabled)
-                        Spacer(minLength: 0)
-                        Button { model.notice = nil } label: { Image(systemName: "xmark") }
-                            .buttonStyle(.borderless).accessibilityLabel("Dismiss message").help("Dismiss this message")
-                    }.padding(12).background(.bar).overlay(alignment: .top) { Divider() }
-                }
             }
+            .gameCanvas()
             .navigationTitle(model.page.rawValue)
             .toolbar {
                 if model.page != .library {
                     ToolbarItem(placement: .principal) {
+                    // macOS 26 and later show a toolbar picker's plain-Text items icon-only, an empty capsule;
+                    // a Label shown with its title keeps the selected game readable.
                     Picker("Selected game", selection: Binding(get: { model.selectedGame }, set: { id in Task { await model.selectGame(id) } })) {
-                        ForEach(model.games, id: \.gameID) { game in Text(game["title"].string).tag(game["id"].string) }
-                    }.frame(maxWidth: 260).disabled(model.busy || model.starting)
+                        ForEach(model.games, id: \.gameID) { game in Label(game["title"].string, systemImage: GameSwitcher.symbol(game)).tag(game["id"].string) }
+                    }.labelStyle(.titleAndIcon).frame(maxWidth: 280).disabled(model.busy || model.starting)
                         .help("Choose the game for this view").accessibilityIdentifier("selected-game")
                     }
                 }
                 ToolbarItem { if model.busy { ProgressView("Working…").labelsHidden().controlSize(.small).accessibilityLabel("Working") } }
             }
         }
-        .preferredColorScheme(appearance == "light" ? .light : appearance == "dark" ? .dark : nil)
         .onChange(of: model.page) { _, page in UserDefaults.standard.set(page.rawValue, forKey: "selectedPage") }
         .alert("Action couldn’t finish", isPresented: Binding(get: { model.error != nil && model.api != nil }, set: { if !$0 { model.error = nil } })) {
             Button("OK") { model.error = nil }
@@ -153,11 +159,12 @@ extension JSONValue {
 struct Panel<Content: View>: View {
     let title: String
     @ViewBuilder var content: Content
-    var body: some View {
-        GroupBox {
-            VStack(alignment: .leading, spacing: 12) { content }.frame(maxWidth: .infinity, alignment: .leading).padding(8)
-        } label: { Text(title).font(.headline) }
-    }
+    var body: some View { GamePanel(title: title) { VStack(alignment: .leading, spacing: 12) { content }.frame(maxWidth: .infinity, alignment: .leading) } }
+}
+
+/// The toolbar game switcher's icon: a filled controller for an installed game, a dashed outline otherwise.
+enum GameSwitcher {
+    static func symbol(_ game: JSONValue) -> String { game["status"].string == "installed" ? "gamecontroller.fill" : "circle.dashed" }
 }
 
 struct BorderedScroll<Content: View>: View {
@@ -165,7 +172,7 @@ struct BorderedScroll<Content: View>: View {
     var body: some View {
         ScrollView { content.padding(16).frame(maxWidth: .infinity, alignment: .leading) }
             .scrollIndicators(.visible).scrollBounceBehavior(.basedOnSize)
-            .overlay { Rectangle().stroke(.separator, lineWidth: 1).allowsHitTesting(false) }
+            .gameWell().padding(.horizontal, 12).padding(.bottom, 12)
     }
 }
 

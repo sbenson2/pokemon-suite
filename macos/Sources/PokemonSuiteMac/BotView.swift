@@ -23,7 +23,7 @@ struct BotView: View {
     @State private var teamSeed = ""
     @State private var preview: JSONValue = .null
     var settings: JSONValue {
-        .object(["label": .string(label), "starter": .string(starter), "teamMode": .string(team), "helpers": .string(team == "balanced" ? "none" : helpers), "afterCampaign": .string(afterCampaign), "seedMode": .string(replay ? "replay" : "fresh"), "seed": replay ? Double(seed).map(JSONValue.number) ?? .string(seed) : .null, "teamSeed": replay && !teamSeed.isEmpty ? Double(teamSeed).map(JSONValue.number) ?? .string(teamSeed) : .null])
+        .object(["label": .string(label), "starter": .string(starter), "teamMode": .string(team), "helpers": .string(team == "balanced" ? "none" : helpers), "afterCampaign": .string(model.selectedGame == "leafgreen" ? "wait" : afterCampaign), "seedMode": .string(replay ? "replay" : "fresh"), "seed": replay ? Double(seed).map(JSONValue.number) ?? .string(seed) : .null, "teamSeed": replay && !teamSeed.isEmpty ? Double(teamSeed).map(JSONValue.number) ?? .string(teamSeed) : .null])
     }
     var runValidation: String? {
         if label.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || label.count > 50 { return "Enter a run name with 1–50 characters." }
@@ -36,14 +36,14 @@ struct BotView: View {
             VStack(alignment: .leading, spacing: 10) {
                 HStack(alignment: .top) {
                     VStack(alignment: .leading, spacing: 5) {
-                        Label(BotRunStatus(session: model.session).label, systemImage: BotRunStatus(session: model.session) == .blocked ? "exclamationmark.circle" : model.session["bot"]["enabled"].bool ? "play.circle" : "pause.circle").font(.headline)
+                        Label(BotRunStatus(session: model.session).label, systemImage: BotRunStatus(session: model.session) == .blocked ? "exclamationmark.circle" : BotRunStatus(session: model.session) == .waiting ? "hourglass" : model.session["bot"]["enabled"].bool ? "play.circle" : "pause.circle").font(.headline)
                         if BotRunStatus(session: model.session) == .blocked {
                             Button("Review Stop Report") { section = "Activity"; activitySection = "Reports" }.controlSize(.small)
                         }
                         if let goal = ActivityPresentation(session: model.session, catalog: model.dex, now: .now).headline ?? gameGoal(model.session) { Text(goal).font(.callout).foregroundStyle(.secondary).lineLimit(1).help(goal) }
                     }
                     Spacer()
-                    Button("Resume Bot") { model.botAction("resume") }.disabled(!model.game["capabilities"]["bot"].bool || model.busy || [.running, .ready, .reconnecting].contains(BotRunStatus(session: model.session)))
+                    Button("Resume Bot") { model.botAction("resume") }.disabled(!model.game["capabilities"]["bot"].bool || model.busy || [.running, .waiting, .ready, .reconnecting].contains(BotRunStatus(session: model.session)))
                     Button("Stop Bot") { model.botAction("stop") }.disabled(!model.session["bot"]["enabled"].bool || model.busy)
                 }
                 if model.selectedGame == "firered" && model.game["capabilities"]["bot"].bool { BotAskView() }
@@ -57,6 +57,10 @@ struct BotView: View {
                         Text("Shiny collection").tag("Collection")
                         Text("New run").tag("New run")
                         Text("Saves").tag("Saves")
+                    } else if model.selectedGame == "leafgreen" {
+                        // LeafGreen (build 124): the story campaign from a new game.
+                        Text("Story progress").tag("Story")
+                        Text("New run").tag("New run")
                     }
                     Text("Hunting defaults").tag("Defaults")
                     Text("Activity").tag("Activity")
@@ -77,7 +81,13 @@ struct BotView: View {
                     #if os(iOS)
                     .listRowBackground(GameFormRowBackground())
                     #endif
-                }.formStyle(.grouped).overlay { Rectangle().stroke(.separator, lineWidth: 1).allowsHitTesting(false) } }
+                }
+                #if os(macOS)
+                .gameForm().padding(.horizontal, 12).padding(.bottom, 12)
+                #else
+                .formStyle(.grouped).overlay { Rectangle().stroke(.separator, lineWidth: 1).allowsHitTesting(false) }
+                #endif
+                }
             } else {
                 ContentUnavailableView {
                     Label("Bot setup unavailable", systemImage: "slider.horizontal.3")
@@ -87,7 +97,11 @@ struct BotView: View {
         }
         .task(id: model.selectedGame) {
             options = .null; preferences = .null; preview = .null
-            section = model.selectedGame == "firered" ? (model.session["campaign"].isNull ? "Task" : "Story") : "Defaults"
+            section = model.selectedGame == "firered" ? (model.session["campaign"].isNull ? "Task" : "Story") : model.selectedGame == "leafgreen" ? (model.session["campaign"].isNull ? "New run" : "Story") : "Defaults"
+            #if os(macOS)
+            takeSectionRequest()
+            #endif
+            if model.selectedGame == "leafgreen" && label == "FireRed adventure" { label = "LeafGreen adventure" } else if model.selectedGame == "firered" && label == "LeafGreen adventure" { label = "FireRed adventure" }
             guard model.installed else { return }
             do {
                 options = try await model.api?.get("/api/pokemon-suite/player-tasks?game=\(model.selectedGame)") ?? .null
@@ -97,8 +111,21 @@ struct BotView: View {
             } catch { model.notice = error.localizedDescription }
         }
         .onChange(of: settings) { _, _ in preview = .null }
+        #if os(macOS)
+        .onChange(of: model.botSectionRequest) { _, _ in takeSectionRequest() }
+        #endif
         .sheet(isPresented: Binding(get: { !preview.isNull }, set: { if !$0 { preview = .null } })) { teamPreview }
     }
+    #if os(macOS)
+    /// Another page asked for a section (Live game's New Run… on a brand-new save).
+    private func takeSectionRequest() {
+        guard let request = model.botSectionRequest else { return }
+        model.botSectionRequest = nil
+        let available = model.selectedGame == "firered" ? ["Story", "Task", "Collection", "New run", "Saves", "Defaults", "Activity"]
+            : model.selectedGame == "leafgreen" ? ["Story", "New run", "Defaults", "Activity"] : ["Defaults", "Activity"]
+        if model.game["capabilities"]["bot"].bool && available.contains(request) { section = request }
+    }
+    #endif
     @ViewBuilder var taskForm: some View {
 Picker("Task", selection: $kind) { Text("Heal team").tag("heal"); Text("Save game").tag("save"); Text("Travel to a location").tag("travel"); Text("Find an item").tag("item"); Text("Train competitive EVs").tag("ev-training") }.pickerStyle(.menu)
                         if kind == "ev-training" { EffortTrainingForm() }
@@ -124,11 +151,13 @@ Toggle("Hunt every National Pokédex entry", isOn: $national)
                         Button("Start Shiny Collection") { model.botAction("collection", task: .object(["collectionStages": .string(national ? "each-stage" : collection), "goal": .string(national ? "national-dex" : "supported")])) }.disabled(model.busy)
     }
     @ViewBuilder var newRunForm: some View {
-TextField("Run name", text: $label, prompt: Text("FireRed adventure")).textFieldStyle(.roundedBorder)
+TextField("Run name", text: $label, prompt: Text(model.selectedGame == "leafgreen" ? "LeafGreen adventure" : "FireRed adventure")).textFieldStyle(.roundedBorder)
                         Picker("Starter", selection: $starter) { ForEach(["random","bulbasaur","charmander","squirtle"], id: \.self) { Text($0.capitalized).tag($0) } }
                         Picker("Team", selection: $team) { Text("Random").tag("random"); Text("Balanced").tag("balanced") }
                         if team == "random" { Picker("Helpers", selection: $helpers) { Text("Allowed").tag("allowed"); Text("Field moves only").tag("field-only"); Text("None").tag("none") } }
-                        Picker("After the League", selection: $afterCampaign) { Text("Continue postgame and National Dex").tag("postgame"); Text("Wait for a command").tag("wait") }
+                        // LeafGreen (build 124) has no postgame yet: its run waits after the League.
+                        if model.selectedGame == "leafgreen" { LabeledContent("After the League", value: "Wait for a command") }
+                        else { Picker("After the League", selection: $afterCampaign) { Text("Continue postgame and National Dex").tag("postgame"); Text("Wait for a command").tag("wait") } }
                         Toggle("Replay a seed", isOn: $replay)
                         if replay { TextField("Run seed", text: $seed); TextField("Team seed (optional)", text: $teamSeed) }
                         Button("Preview Team") {

@@ -327,16 +327,17 @@ class SuiteSessions:
             from .pokemon_main_series import MAIN_GAMES
             if MAIN_GAMES.get(game,{}).get('platform')!='gba':raise ValueError('This console has no verified startup recording yet.')
         live=self.open_game(game,manual=True)
-        if game=='firered' and live.get('campaign') and live['campaign'].get('status')!='complete':
+        # LeafGreen (build 124) plays the same story campaign as FireRed.
+        if game in {'firered','leafgreen'} and live.get('campaign') and live['campaign'].get('status')!='complete':
             if (live.get('bot') or {}).get('enabled') and live['campaign'].get('status')=='running':return live
             return self.command(game,{'type':'resume-campaign'},session_id=live.get('sessionId'))
         native_backend=self.config()['games'].get(game,{}).get('backend') in {'libretro','desktop'}
-        if game in {'firered','emerald'} and not native_backend:
+        if game in {'firered','leafgreen','emerald'} and not native_backend:
             # Starting is idempotent; it never replaces a running user task.
             if (live.get('bot') or {}).get('enabled'):return live
             self.pause_collection(game,'Ready for commands. Choose a goal to resume collection.')
-        if game in {'firered','emerald','crystal'} or self.config()['games'].get(game,{}).get('backend')=='libretro':
-            command={'type':'start-bot'} if game in {'firered','emerald'} and not native_backend else {'type':'manual-game','boot':True}
+        if game in {'firered','leafgreen','emerald','crystal'} or self.config()['games'].get(game,{}).get('backend')=='libretro':
+            command={'type':'start-bot'} if game in {'firered','leafgreen','emerald'} and not native_backend else {'type':'manual-game','boot':True}
             if wait_for_presentation:command['presentationId']=uuid.uuid4().hex
             live=self.command(game,command,session_id=live.get('sessionId'))
             if wait_for_presentation and (live.get('consolePresentation') or {}).get('id')!=command['presentationId']:
@@ -580,7 +581,7 @@ class SuiteSessions:
 
     def input(self,game,value):
         cfg=self.config()['games'].get(game)
-        if not cfg or not (cfg.get('backend') in {'libretro','desktop'} or self.title(game) in {'firered','emerald','crystal'}):raise ValueError('Choose a configured Suite playback game.')
+        if not cfg or not (cfg.get('backend') in {'libretro','desktop'} or self.title(game) in {'firered','leafgreen','emerald','crystal'}):raise ValueError('Choose a configured Suite playback game.')
         if cfg.get('backend') not in {'libretro','desktop'}:
             if set(value)!={'buttons'} or not isinstance(value['buttons'],list):raise ValueError('This handheld accepts button input only.')
             value={'buttons':[str(button).lower() for button in value['buttons']]}
@@ -688,8 +689,8 @@ class SuiteSessions:
     def set_bot(self,game,enabled):
         if enabled:
             from .capabilities import require_feature
-            require_feature(self.title(game),self.config()['games'].get(game),'campaign' if game=='firered' else 'companion')
-        if (game not in {'firered','emerald'} and not self.is_partner(game)) or not self.configured(game) or type(enabled) is not bool:raise ValueError('Choose whether to run the configured Pokémon bot.')
+            require_feature(self.title(game),self.config()['games'].get(game),'campaign' if game in {'firered','leafgreen'} else 'companion')
+        if (game not in {'firered','leafgreen','emerald'} and not self.is_partner(game)) or not self.configured(game) or type(enabled) is not bool:raise ValueError('Choose whether to run the configured Pokémon bot.')
         live=self.command(game,{'type':'set-bot','enabled':enabled})
         local=live.get('localEvolution') or {}
         if game=='firered' and (not enabled or local.get('phase') not in (None,'complete')):

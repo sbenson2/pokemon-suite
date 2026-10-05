@@ -195,6 +195,80 @@ Storage forecasts follow the selected goal: ordinary National Dex registration,
 shiny collection, or the current capture quantity. Registered ordinary species
 are not incorrectly counted as 386 missing shinies.
 
+### The FireRed goal and what one save does alone
+
+"Catch every Pokémon" means every species FireRed itself can register: 189 of
+the 386, derived from pret/pokefirered by `scripts/derive-firered-catchable.py`
+(`engine/firered/src/suite/firered-catchable.json`, pinned by
+`test/firered-catchable.test.js`). It covers the FireRed wild tables (not the
+Altering Cave tables a Mystery Event selects), gifts, statics, fossils,
+starters, roaming beasts, FireRed in-game trades, and every evolution and Egg
+FireRed can make: level, friendship, stones and held items the cartridge
+provides, and trade evolutions through a FireRed-to-FireRed trade. Day/night
+evolution is compiled out of FireRed (`src/pokemon.c`), so Espeon and Umbreon
+are outside the goal. The checklist entry reads "Catch every FireRed Pokémon
+(X of 189)" and completes when every goal species is registered except planned
+work:
+
+- **Planned: another FireRed save.** The other starters, the other Mt. Moon
+  fossil and the other roaming beasts. A save gets one of each.
+- **Planned: a partner Pokémon.** Tyrogue, and through it Hitmonchan and
+  Hitmontop, needs a Hitmon to breed; a save that no longer holds one borrows
+  it from the FireRed partner.
+- **Other games and events.** LeafGreen, Ruby, Sapphire, Emerald and event
+  species are listed separately and never make the bot wait.
+
+The Pokédex owned flags are National Dex numbers (`decodePokedex`); only party
+and PC records carry internal species ids. They are never converted twice.
+
+What the national collection now does alone, in order:
+
+1. Evolve an owned plain individual, including a two-step line through an
+   earlier level-up form (a PC Oddish to Gloom to Vileplume or Bellossom). A
+   line is ranked by its whole cost (its levels plus the item step), so a
+   shorter direct level-up comes first. League Exp. Share trainees stay as
+   trained and are never a source.
+2. Trade evolutions round-trip through the FireRed partner game when it is
+   ready (preferred over Emerald). A held item the save lacks is collected
+   first (the Memorial Pillar Metal Coat).
+
+An item evolution starts only when its item is in the Bag or the planner has a
+route to the item's own cell. An item ball on another island is measured from
+its Seagallop landing with the same exact test: entering the map is not
+reaching the ball. Ruin Valley's Sun Stone and Sevault Canyon's King's Rock sit
+behind Strength boulders the navigator does not move, so Bellossom and
+Politoed wait for that route (gate `gate-verification-124-01` stopped at Six
+Island's harbor chasing the Sun Stone). A Dex evolution whose supply stops
+verifying is retained for retry with its individual reserved; it never stops
+the owner. A supply detour starts from the free field, after the last item's
+level-up, move-learning and evolution prompts.
+3. Breed a missing Egg. An incense the save lacks (the Lost Cave Lax Incense
+   for Wynaut) is collected before either parent leaves the PC.
+4. FireRed in-game trades (ZYNX Jynx, MARC Lickitung, ...) with a plain boxed
+   spare. The trader's party picker offers the first Pokémon of the species, so
+   a teammate of that species is stored first and restored afterwards.
+5. Land and fishing catches. A fishing hunt uses the rod whose table slots hold
+   the species (Old: slots 0-1, Good: 2-4, Super: 5-9) and collects a missing
+   rod from its giver first. Fishing has no land RNG plan or Sweet Scent.
+6. A plain spare that a trade or trade evolution still needs (a Super Rod
+   Poliwhirl for ZYNX); a spare caught into the party is stored first.
+7. Breed-to-evolve: a base form owned only as a shiny (this save's Eevee and
+   Omanyte) is bred with a plain PC partner (Ditto) at the Four Island Day Care.
+   The shiny is the protected parent: it leaves the PC only early in the
+   128-step walking-friendship cycle, the Egg wait ends before its Day Care
+   steps reach the next level that teaches a move (the cartridge adds one
+   experience point per step on withdrawal, `src/daycare.c`), it returns to the
+   PC before the Egg hatches, and the receipt proves its species, moves, item,
+   effort values and friendship unchanged. Only the Day Care's own experience is
+   added. The hatchling then evolves through step 1.
+
+Item balls on another island are reached through the Seagallop leg. When
+nothing is executable and nothing is only waiting out a retry, the entry says
+"This save has finished what it can do alone: X of 189 catchable in FireRed",
+with the planned and other-game counts, and stays idle without a retry. Any
+collection change (a traded-in Pokémon, a new item or flag) makes it runnable at
+once; a National Dex cooldown ends early for the same reason.
+
 ## Trade evolution and independent owners
 
 The existing FireRed–Emerald workflow reserves both individuals, drives native

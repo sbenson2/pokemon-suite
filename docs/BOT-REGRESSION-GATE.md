@@ -268,6 +268,25 @@ partner owner's seed.
   start ("Unknown configured Suite game.").
 - The case runs alone after the parallel lanes.
 
+`task-firered-partner` repeats the clean FireRed round trip from a retained
+checklist under task scope. After both real workers publish their checkpoints, the
+replay pauses the real host coordinator and starts the source bot. It requires
+the source worker to publish `runScope: task` and the automatic
+`waiting-for-transfer` request while the partner remains unprepared, then
+resumes the host coordinator.
+- The host must prepare the partner and finish both exchanges, both native
+  saves, and both normal link exits.
+- The source must retain the same individual as Machamp and all other owned
+  Pokémon, retain task scope, and continue the original national-collection
+  checklist to its next automatic evolution. That preparation may rearrange
+  the party. The real host coordinator keeps publishing fresh availability; a
+  replay-only command boundary records and rejects the next preparation request
+  without dispatching it or fabricating success, preventing another exchange
+  during teardown. The partner
+  must remain net zero and the banked save immutable, as in the postgame case.
+- This covers the coordinator's task-scope dispatch with actual worker status,
+  rather than a fixture-only flag. The case runs alone after the parallel lanes.
+
 `postgame-firered-partner-stall` and `postgame-firered-partner-restart` repeat
 that round trip with one scheduling stall of the partner owner's process
 (SIGSTOP, then SIGCONT; no input and no memory access) once both games are in
@@ -287,6 +306,92 @@ clocks while one of them stalled.
 - The replay runs the coordinator as the host does: a command the partner has
   not acknowledged yet (its cold-boot readiness check is slow under load) is
   retried on a later tick instead of ending the replay.
+
+`postgame-firered-partner-console-reset` repeats that round trip with the
+partner console restarting itself in the outbound trade menu. Gates 118-02 and
+122-01 failed `postgame-firered-partner` when the partner FireRed restarted to
+its boot screen before any exchange. Its frame counter kept running, so no
+owner reset it, and its stack still held nested RFU interrupt frames. The
+partner reported the boot screen's empty party as "The prepared trade party
+changed unexpectedly".
+- Once both games are in the trade menu and the partner is still choosing its
+  Pokémon, the replay presses the partner console's own soft-reset chord
+  (A+B+Start+Select) through `scripts/replay-console-reset.mjs`. It is loaded
+  only into that owner's process and changes controller input only.
+- A console that has left its loaded game is not a party change. Before the
+  exchange it is a lost link: each owner cold-boots its unchanged native save
+  and proves its original party and trade count, and the source retries the leg
+  once (`restarts` 1). After the exchange starts it stays
+  `trade-outcome-unresolved`.
+
+Extra saves (families the main save can only get from another FireRed save:
+the other starters, the Dome Fossil, a Dojo Hitmon and the other roaming dogs)
+add four cases. Every leg is a single verified native trade between two FireRed
+owners (reservation method `single`), controller inputs only.
+
+`postgame-extra-save-loan` runs the main save and the FireRed partner with the
+coordinator. It starts from the owner's Sept 27 Four Island checkpoint (the
+`owned-trade-sevii` save, which lacks the Squirtle line), with every local
+checklist entry waiting on a retry so that only the extra-save plan can choose
+work. The partner is a working copy of the bank (Squirtle start, a non-shiny
+Blastoise in its party).
+- The coordinator publishes the partner's inventory; the main save's postgame
+  plans the loan and names the partner, its route and an unknown ETA.
+- The opening leg trades an ordinary PC duplicate for the Blastoise, which
+  registers it. The main save breeds a Squirtle Egg with its own Ditto at the
+  Four Island Day Care, withdraws both parents, and returns the Blastoise before
+  the Egg hatches (the closing leg). The Egg then hatches, the original team is
+  restored and saved.
+- Both pairs complete with both native saves verified; the receipt registers
+  Blastoise and Squirtle; the duplicate and the Ditto are back; a cold boot of
+  the partner's final save holds exactly its original individuals; the bank is
+  never written. The case runs alone after the parallel lanes.
+
+`postgame-extra-save-loan-resume` restarts both owners from native saves
+preserved mid-loan by the first native run of the loan, which stopped at the
+Day Care withdrawal menu: that list menu is not a stable field frame, and the
+exchange waited instead of letting the Day Care task answer it. The main save
+holds the Egg with both parents still in the Day Care; the partner holds the
+main save's duplicate with its loan open in its ledger. Both owners restart;
+the main save withdraws both parents, returns the Blastoise, hatches the Egg,
+restores its team (the first resume run stopped there with
+`repeated-menu-transaction`: the restore drained its own PC session) and saves;
+the partner closes its loan net zero against the holdings it recorded.
+
+`postgame-extra-save-loan-charmander` is the same loan for the Charmander line:
+the partner is the archived FIRE save (Charmander start, post-League) after
+`helper-park-archived-save` parked it in the Viridian City Pokémon Center, and
+it lends its Charizard. The main save registers Charizard and hatches a
+Charmander from its own Ditto; the FIRE save ends net zero.
+
+`helper-park-archived-save` parks an archived save before it can lend: the
+archived FIRE save (Charmander start, post-League, saved in Pallet Town) runs
+only the ordinary travel player task to the Viridian City Pokémon Center and
+saves there. A cold boot of that save passes the FireRed partner readiness with
+its Charizard as the named offer.
+
+`campaign-helper-fossil-goal` plays a helper record with a fossil goal from the
+owner's Cinnabar Island campaign checkpoint (Helix Fossil still unrevived): hand
+the fossil to the Lab, walk out and back, receive the revived Pokémon (declining
+the nickname), save it in the party at the Cinnabar Center and stop with the goal
+receipt, surviving a controller restart.
+
+`campaign-helper-dome-fossil` plays a helper record choosing the Dome Fossil
+from Mt. Moon B2F with the fossil objective active and neither fossil taken (a
+checkpoint preserved from `campaign-home-healing` by the ordinary default
+campaign): beat the Super Nerd, take the Dome Fossil (FLAG_GOT_DOME_FOSSIL) and
+leave the Helix Fossil, surviving a controller restart.
+
+`leafgreen-mansion-secret-key` resumes the owner's stopped LeafGreen campaign
+from Pokémon Mansion 2F (9,3), the pocket that the set Mansion switch seals.
+That run had stopped with no meaningful progress on its way to heal. The case
+applies the owner's reviewed retry, then requires the run to:
+- climb back to 3F, drop through a hole and heal at the Cinnabar Pokémon Center;
+- survive a controller restart;
+- obtain the Secret Key and leave the Mansion for the Cinnabar Gym objective.
+
+The campaign is never blocked along the way. The supervisor clock advances at
+the stopped run's own measured rate.
 
 Postgame workflow qualification retains every earlier required case and adds:
 
@@ -572,7 +677,13 @@ starts from the same screen after install 107 had resumed that stop through the
 postgame checklist (which dropped the evolution task) and the host restarted;
 the pre-change engine idled there with "Current task list is exhausted". The
 owner must answer the prompt, close the menus, select the Dugtrio evolution
-again and finish it the same way.
+again and finish it the same way. Gate `gate-verification-124-01` (build 124)
+failed both: the resumed owner ranked the new Oddish → Gloom → Bellossom chain
+ahead of Dugtrio and stopped `blocked` at Six Island's harbor (the walled Sun
+Stone had passed a map-entry test), and the retained owner, after Dugtrio,
+opened the Rare Candy supply while the last candy's level-up was on screen, so
+the supply pressed B at "Stop trying to teach …?". Every "Stop trying to
+teach" prompt in both cases must be answered YES.
 
 `postgame-safari-dex-capture` retains the live Safari Zone Center battle of
 September 24. The National Dex checklist hunted Nidoran♂ with shininess
@@ -1035,7 +1146,7 @@ navigation scenarios remain required alongside the interrupted puzzle case.
 ## Native postgame acquisitions and paired owners
 
 The required corpus preserves the earlier cases and adds `postgame-game-corner`,
-`postgame-breeding`, `postgame-recovery-storage`, and
+`postgame-breeding`, `postgame-npc-trade-start-menu`, `postgame-recovery-storage`, and
 `postgame-automatic-partner`. See `FIRERED-POSTGAME.md` for their actual proof
 boundaries. Paired cases require separate immutable checkpoints and a
 `partnerGame`/`partnerCheckpoint`; preflight verifies the companion against the
@@ -1043,6 +1154,14 @@ reviewed stock Emerald fingerprint. The replay rechecks those bytes and the
 configuration receipt before either owner runs. A local manifest cannot approve
 a modified companion cartridge. All temporary owners are isolated from live
 saves and stopped when the replay ends.
+
+`postgame-npc-trade-start-menu` resumes the retained Celadon checkpoint with
+Pokémon selected in the Start menu. It must finish Fly to Cerulean, the native
+Poliwhirl-for-Jynx trade, storage of its intact letter in the PC mailbox,
+restoration of the original team, and a native save.
+The replay proves the reserved Poliwhirl has exactly one owner before the trade,
+is absent afterward, and cold Continue retains Jynx, the trade flag, the
+stored letter, and the restored team.
 
 `postgame-egg-wait-progress` is live hatch 113 (Sept 26). Its same-trainer
 Rattata and Donphan get a 20% native Egg roll every 256 daycare steps and
@@ -1213,8 +1332,11 @@ cases are paced by the wall clock, so they run afterward with no other replay
 competing for the CPU:
 - the real-time wireless exchanges (`postgame-automatic-partner`,
   `postgame-team-trade-evolution`, `postgame-held-item-partner`,
-  `postgame-firered-partner`, `postgame-firered-partner-stall`,
-  `postgame-firered-partner-restart` and `postgame-recovery-storage`)
+  `postgame-firered-partner`, `task-firered-partner`,
+  `postgame-firered-partner-stall`,
+  `postgame-firered-partner-restart`, `postgame-firered-partner-console-reset`,
+  `postgame-extra-save-loan`, `postgame-extra-save-loan-resume`,
+  `postgame-extra-save-loan-charmander` and `postgame-recovery-storage`)
 - `campaign-transform`, whose planner supervision uses a one-second worker
   timeout; under a heavily loaded host it once saw an extra timeout restart.
 
@@ -1241,3 +1363,56 @@ The Unown successor replay bounds its worker by observed frame progress, with a
 stall limit and a wall-clock cleanup backstop, instead of a wall-clock duration,
 so a loaded gate host cannot expire it mid-capture. Gameplay deadlines are
 unchanged.
+
+FireRed collection goal (build 124) adds three required cases, all from the live
+September 28 checkpoint at the Lavender Pokémon Center 2F (162 of 189 FireRed
+species registered; the unfixed owner reported "Available routes are cooling
+down after failed attempts" after a Switch trade and stood still):
+
+- `postgame-fishing-collection`: the retained owner's first decision is a
+  fishing hunt. The real session worker resumes the checklist, collects the
+  Good Rod from the Fuchsia fishing guru's brother, fishes Krabby on Route 12,
+  restarts while fishing, catches and saves it (cold Continue: Krabby, the rod
+  and every original individual), then hands off the Kingler evolution. Other
+  local routes keep ordinary retry records for isolation.
+- `postgame-breed-to-evolve`: the shiny-only Eevee breeds a plain Eevee with
+  Ditto at the Four Island Day Care (restarts at the deposit menu, after a
+  withdrawal, while hatching and during the evolution). The shiny leaves the PC
+  early in the friendship cycle, comes back before hatching and keeps its moves,
+  item and friendship; only the Day Care's experience is added. The hatchling
+  (never the shiny) evolves with a stone and both native saves are verified.
+- `postgame-collection-sources`: selection only. The knowledge pack agrees with
+  the pinned goal list; the checkpoint counts 162 owned, 14 reachable, 13
+  planned and 196 other-game entries; Castform counts as #351; and each route
+  resolves to its real first step (Good Rod Krabby, Lax Incense Wynaut, a
+  Poliwhirl spare for ZYNX, the protected Eevee and Omanyte breedings). The
+  Sun Stone and King's Rock behind Strength boulders are not ordinary
+  supplies; the Metal Coat is. Since build 126 Bellossom's first step is the
+  reviewed Ruin Valley boulder route (`map-arrival` at Ruin Valley).
+
+National collection workflows (build 126) add three required cases. Two start
+from the live October 1 stop at the Four Island Pokémon Center (176 of 189
+registered, an engine-125 exhausted record that the new workflow revision
+evaluates again). The third starts from the October 4 save with the FireRed
+partner ready.
+
+- `postgame-flareon-fire-stone`: the plain hatched Eevee is withdrawn, a Fire
+  Stone is bought at the Celadon Department Store 4F across the Seagallop (the
+  only seller on the navigation graph), and Eevee becomes Flareon. The case
+  restarts in the mart, with the stone stocked, and during the evolution. A
+  cold Continue proves Flareon, the consumed stone, every original individual
+  and every unchanged shiny.
+- `postgame-bellossom-sun-stone`: with Flareon deferred, the owner travels to
+  Six Island's Ruin Valley and makes the four reviewed Strength pushes, each
+  chosen from the live boulders (11 east, 12 south, 13 east, 11 north). It
+  collects the Sun Stone (flag 0x1E6), raises the plain PC Oddish to Gloom
+  (never the League trainee Gloom) and uses the stone. The case restarts
+  mid-puzzle, with the stone stocked, and during the evolution. A cold Continue
+  proves Bellossom.
+- `postgame-politoed-kings-rock` (exclusive: two FireRed owners plus the host
+  coordinator): with Flareon and Bellossom deferred, the owner fishes a plain
+  spare Poliwhirl and takes the King's Rock from the party Dragonite that held
+  it. It withdraws and equips the Poliwhirl, trades it to the FireRed partner
+  (it evolves there) and receives the same individual back as Politoed, with
+  both native saves and link exits verified. The King's Rock is consumed, the
+  Dragonite holds nothing and the partner is net zero.

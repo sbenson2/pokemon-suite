@@ -46,6 +46,8 @@ export function decodeBoxPokemonRecord(bytes, offset = 0) {
   const species = secure.getUint16(growth, true);
   if (species <= 0 || species > 411) return unknown("invalid-species");
   const packedIvs = secure.getUint32(misc + 4, true);
+  const origins = secure.getUint16(misc + 2, true);
+  const ribbons = secure.getUint32(misc + 8, true);
   return {
     validity: "valid", ...pokemonIdentity(personality, otId), species,
     heldItem: secure.getUint16(growth + 2, true), experience: secure.getUint32(growth + 4, true),
@@ -60,6 +62,19 @@ export function decodeBoxPokemonRecord(bytes, offset = 0) {
     isEgg: Boolean((packedIvs & 0x40000000) || (bytes[offset + 19] & 4)), abilityNum: packedIvs >>> 31,
     // PokemonSubstruct3 origins word, low seven bits. Zero means the Pokémon
     // hatched from an Egg (daycare.c AddHatchedMonToParty).
-    metLevel: secure.getUint16(misc + 2, true) & 0x7f,
+    metLevel: origins & 0x7f,
+    // The rest of the origins word and the ribbon word (include/pokemon.h,
+    // PokemonSubstruct3), read for the read-only legality checker: met region
+    // map section (0xFD egg, 0xFE in-game trade, 0xFF fateful encounter),
+    // origin game (1 S, 2 R, 3 E, 4 FR, 5 LG, 15 Colosseum/XD), ball item id,
+    // OT gender, the language byte, and bit 31 of the ribbons ("obedience",
+    // the fateful-encounter flag).
+    metLocation: secure.getUint8(misc + 1),
+    metGame: (origins >>> 7) & 15,
+    ball: (origins >>> 11) & 15,
+    otGender: origins >>> 15,
+    language: bytes[offset + 18],
+    ribbons: ribbons & 0x7fffffff,
+    fatefulEncounter: Boolean(ribbons >>> 31),
   };
 }

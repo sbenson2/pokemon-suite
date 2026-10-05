@@ -1,3 +1,4 @@
+import {nationalSpeciesId} from '../evidence/gen3-national-species.js';
 const MASTER_BALL_ITEM_ID = 1;
 const SAFARI_BALL_ITEM_ID = 5;
 const WATER_TYPE_ID = 11;
@@ -62,9 +63,11 @@ function hasType(types, name, id) {
   );
 }
 
+// Pokédex flags are National numbers; the opponent carries an internal species id.
 function speciesIsOwned(ownedSpecies, species) {
-  return (ownedSpecies ?? []).some((owned) =>
-    Number(owned) === Number(species)
+  const national = nationalSpeciesId(Number(species));
+  return national !== null && (ownedSpecies ?? []).some((owned) =>
+    Number(owned) === national
   );
 }
 

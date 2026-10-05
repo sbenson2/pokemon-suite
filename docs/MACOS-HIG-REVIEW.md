@@ -4,6 +4,8 @@ Reviewed 10 September 2026 for the native SwiftUI/AppKit application. Apple’s 
 
 ## Design foundation
 
+**Update, October 2026 (build 126):** the content pages now use the iPhone companion's game theme: its palette, metal-framed panels, FireRed title tabs and team tiles, kept identical to the companion by a test. The window chrome stays native: sidebar, toolbar, menus, sheets and the Settings window. The app-specific Light/Dark setting was removed; the app follows the system appearance. The text below records the September review.
+
 The game screen and artwork extracted from the user's ROM supply the Pokémon identity. Surrounding navigation, forms, windows, and actions use the Mac's own appearance. System fonts, primary/secondary text colors, separator colors, window backgrounds, and the system accent replace the forced red tint. New macOS materials come from native components; the app does not draw an imitation of Liquid Glass. This follows [Designing for macOS](https://developer.apple.com/design/human-interface-guidelines/designing-for-macos), [Color](https://developer.apple.com/design/human-interface-guidelines/color), and [Typography](https://developer.apple.com/design/human-interface-guidelines/typography).
 
 The interface uses a stable navigation sidebar and bounded content panes. Long forms and lists scroll internally, with visible bounds. Labels are task-oriented, system text styles establish hierarchy, and advanced details expand only when needed.
@@ -12,7 +14,7 @@ The interface uses a stable navigation sidebar and bounded content panes. Long f
 
 | Area | Finding and implemented change | Apple guidance |
 | --- | --- | --- |
-| Global appearance | Removed the custom red accent. Controls follow the system accent and semantic light/dark colors. System appearance is the default; the existing user preference for a light/dark override remains available. | [Color](https://developer.apple.com/design/human-interface-guidelines/color) |
+| Global appearance | Removed the custom red accent. Controls follow the system accent and semantic light/dark colors. The app follows the system appearance; there is no app-specific appearance override. | [Color](https://developer.apple.com/design/human-interface-guidelines/color) |
 | App settings | Moved global settings out of the navigation sidebar into a native Settings scene, opened by Command-comma. General, Library, and Support use the Mac settings toolbar, pane titles, and content-dependent window sizes. | [Settings](https://developer.apple.com/design/human-interface-guidelines/settings) |
 | Navigation | Kept six peer destinations. Added View-menu navigation with Command-1 through Command-6 and the standard show/hide-sidebar command. Game selection appears on game-specific pages. | [Sidebars](https://developer.apple.com/design/human-interface-guidelines/sidebars), [The menu bar](https://developer.apple.com/design/human-interface-guidelines/the-menu-bar) |
 | Games | Removed the repeated page title. Open Library and Add FireRed are toolbar actions with File-menu equivalents. Missing-game requirements open in a focused details sheet. Search has an empty-results state. | [Toolbars](https://developer.apple.com/design/human-interface-guidelines/toolbars), [Sheets](https://developer.apple.com/design/human-interface-guidelines/sheets) |
@@ -31,7 +33,7 @@ The native application was exercised with a separate app identifier and disposab
 
 - Actual screenshots of Games, Live game, Pokédex, Farming, shiny collection, Bot settings, and Settings; light and dark appearance; compact and default window sizes.
 - Native accessibility-tree inspection, including `AXAttributedDescription` labels used by current SwiftUI controls, controller names, enabled states, and game focus transitions.
-- Command-comma opening a separate Settings window, appearance switching, and Command-number navigation.
+- Command-comma opening a separate Settings window, and Command-number navigation.
 - Searching for Snorlax, selecting it, and previewing its route without starting a hunt.
 - Typing an invalid nickname and confirming Start Hunt becomes disabled.
 - Editing the maximum hunt duration to 120 minutes and verifying the saved preference in the disposable library.

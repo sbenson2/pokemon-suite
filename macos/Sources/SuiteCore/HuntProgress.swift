@@ -1,17 +1,19 @@
 import Foundation
 
 public enum BotRunStatus: Equatable {
-    case offline, reconnecting, ready, running, paused, blocked
+    case offline, reconnecting, ready, running, waiting, paused, blocked
     public init(session: JSONValue) {
         if session["state"].string == "reconnecting" { self = .reconnecting }
         else if session["sessionId"].string.isEmpty || ["offline", "closed"].contains(session["state"].string) { self = .offline }
         else if ["blocked", "failed"].contains(session["state"].string) || ["blocked", "failed"].contains(session["bot"]["status"].string) { self = .blocked }
         else if session["bot"]["awaitingCommand"].bool { self = .ready }
+        // Enabled but with nothing it can do yet (PC space, a partner game, another save): not "running".
+        else if session["bot"]["enabled"].bool && session["bot"]["status"].string == "waiting" { self = .waiting }
         else if session["bot"]["enabled"].bool { self = .running }
         else { self = .paused }
     }
     public var label: String {
-        switch self { case .offline: "Game stopped"; case .reconnecting: "Reconnecting…"; case .ready: "Ready for a command"; case .running: "Bot running"; case .paused: "Bot paused"; case .blocked: "Needs attention" }
+        switch self { case .offline: "Game stopped"; case .reconnecting: "Reconnecting…"; case .ready: "Ready for a command"; case .running: "Bot running"; case .waiting: "Bot waiting"; case .paused: "Bot paused"; case .blocked: "Needs attention" }
     }
 }
 

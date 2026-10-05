@@ -8,15 +8,22 @@ enum CartridgeModels {
     private static var cache: [URL: SCNNode] = [:]
     private static let lock = NSLock()
 
+    /// A packaged app uses only its own resources. Only a debug build run from a checkout
+    /// (tests, swift run) falls back to the source tree, so release binaries carry no build-machine path.
+    static func modelFolder(bundle: Bundle = .main) -> URL? {
+        if bundle.bundleURL.pathExtension == "app" { return bundle.resourceURL?.appendingPathComponent("Suite/macos/Assets/Cartridges") }
+        #if DEBUG
+        return URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+            .deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Assets/Cartridges")
+        #else
+        return nil
+        #endif
+    }
+
     static func node(for style: CartridgeStyle) -> SCNNode? {
         let key = style.id == "crystal" ? "crystal" : style.platform == "gbc" ? "gb" : style.platform
         guard ["gb", "crystal", "gba", "nds", "3ds", "switch"].contains(key) else { return nil }
-        let development = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
-            .deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Assets/Cartridges")
-        let bundled = Bundle.main.resourceURL?.appendingPathComponent("Suite/macos/Assets/Cartridges")
-        // A packaged app must use its own resources, never a developer checkout.
-        let folder = Bundle.main.bundleURL.pathExtension == "app" ? bundled : development
-        guard let url = folder?.appendingPathComponent(key + ".obj"),
+        guard let url = modelFolder()?.appendingPathComponent(key + ".obj"),
               FileManager.default.isReadableFile(atPath: url.path) else { return nil }
         lock.lock(); defer { lock.unlock() }
         let base: SCNNode

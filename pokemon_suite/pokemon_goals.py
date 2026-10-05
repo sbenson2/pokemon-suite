@@ -49,7 +49,7 @@ USED_GRACE_SECONDS = 60
 # Step results a later step can reference: {"$ref": "steps[N].result.<path>"}.
 # Hunt results come from the capture/acquisition receipts (never guessed).
 HUNT_RESULT = ('requestId', 'speciesId', 'name', 'caught', 'fingerprint', 'identity', 'species', 'personality', 'otId',
-               'shiny', 'nature', 'ivs', 'location', 'shinyId', 'savedSramSha256', 'source', 'captures')
+               'shiny', 'nature', 'ivs', 'location', 'shinyId', 'pokemonId', 'savedSramSha256', 'source', 'captures')
 RESULT_FIELDS = {'farming': HUNT_RESULT, 'postgame': HUNT_RESULT, 'player-task': ('taskId', 'kind'),
                  'campaign': ('campaignId', 'trainerId'), 'status': ('answer',), 'trade': ('fingerprint',), 'collection': ()}
 CONTAINERS = {'identity', 'ivs', 'captures'}  # result fields a path may descend into
@@ -89,17 +89,27 @@ def lookup(value, path):
     return value
 
 
+def inventory_id(game, fingerprint):
+    """The PC inventory's id for an individual (engine pokemon-inventory.js: sha256 of "<game>:<fingerprint>")."""
+    return hashlib.sha256(f'{game}:{fingerprint}'.encode()).hexdigest()
+
+
 def sample_result(step):
     """A well-typed stand-in used only to validate a step that references this one."""
     if step['kind'] in ('farming', 'postgame'):
         target = step.get('request') or (step.get('priorityTarget') or {}).get('request') or step.get('priorityTarget') or {}
         species = target.get('speciesId') if type(target.get('speciesId')) is int else 1
         native = species if 1 <= species <= 411 else 1
-        capture = {'fingerprint': json.dumps([native, 0, 0, 0, 0, 0, 0, 0, 0], separators=(',', ':')), 'identity': [native, 0, 0, 0, 0, 0, 0, 0, 0],
-                   'species': native, 'personality': 0, 'otId': 0, 'shiny': False, 'nature': 'Hardy',
-                   'ivs': {stat: 0 for stat in IV_STATS}, 'location': 'Party slot 1', 'shinyId': 'a' * 64, 'savedSramSha256': '0' * 64,
-                   'source': 'hunt-save'}
-        return {'requestId': 'goal-reference', 'speciesId': species, 'name': 'Pokémon', 'caught': 1, **capture, 'captures': [capture]}
+        quantity = target.get('quantity') if type(target.get('quantity')) is int and 1 <= target.get('quantity') <= 99 else 1
+
+        def capture(k):
+            fingerprint = json.dumps([native, k, 0, 0, 0, 0, 0, 0, 0], separators=(',', ':'))
+            return {'fingerprint': fingerprint, 'identity': [native, k, 0, 0, 0, 0, 0, 0, 0],
+                    'species': native, 'personality': k, 'otId': 0, 'shiny': False, 'nature': 'Hardy',
+                    'ivs': {stat: 0 for stat in IV_STATS}, 'location': 'Party slot 1', 'shinyId': 'a' * 64,
+                    'pokemonId': inventory_id('firered', fingerprint), 'savedSramSha256': '0' * 64, 'source': 'hunt-save'}
+        captures = [capture(k) for k in range(quantity)]  # one per requested Pokémon, so "captures.N" can be referenced
+        return {'requestId': 'goal-reference', 'speciesId': species, 'name': 'Pokémon', 'caught': quantity, **captures[0], 'captures': captures}
     return {'player-task': {'taskId': 'reference', 'kind': (step.get('task') or {}).get('kind', 'task')},
             'campaign': {'campaignId': 'run-00000000-0000-0000-0000-000000000000', 'trainerId': 0},
             'status': {'answer': ''}, 'trade': {'fingerprint': json.dumps([1, 0, 0, 0, 0, 0, 0, 0, 0], separators=(',', ':'))}}.get(step['kind'], {})
@@ -183,6 +193,18 @@ def captured_species(record):
 
 def league_requirement(availability):
     return next((r.get('met') for r in (availability or {}).get('requirements') or [] if r.get('key') == 'leagueComplete'), None)
+
+
+def objective_label(campaign):
+    """The current story objective's label, or None. Objective ids are internal and never shown."""
+    objective = campaign.get('objective')
+    if not isinstance(objective, dict):
+        return None  # a bare objective is an id
+    label = objective.get('label')
+    current = (campaign.get('storyProgress') or {}).get('current') or {}
+    if not label and isinstance(current, dict) and objective.get('id') and current.get('id') == objective.get('id'):
+        label = current.get('label')
+    return label.strip() if isinstance(label, str) and label.strip() else None
 
 
 def brief(goal):
@@ -420,7 +442,7 @@ class GoalSupervisor:
             raise ValueError('Choose a native FireRed starter: Bulbasaur, Charmander, Squirtle or random.')
         if label is not None and (not isinstance(label, str) or not label.strip() or len(label) > 50):
             raise ValueError('Name the new save using 1 to 50 characters.')
-        if steps[0]['kind'] == 'campaign' and mode == 'current':
+        if steps[0]['kind'] == 'campaign' and not steps[0].get('continue') and mode == 'current':
             raise ValueError('A campaign starts a new save; choose save mode new or current-if-able.')
         return {'mode': mode, 'trainerName': name, 'starter': starter, 'label': label.strip() if label else None}
 
@@ -530,9 +552,11 @@ class GoalSupervisor:
         if kind == 'campaign':
             if index != 0:
                 raise ValueError("A campaign step must be the goal's first step.")
-            fields(raw, {'kind', 'settings'}, {'settings'}, 'Campaign step')
+            fields(raw, {'kind', 'settings', 'continue'}, {'settings'}, 'Campaign step')
+            if 'continue' in raw and raw['continue'] is not True:
+                raise ValueError('A campaign step’s continue setting is true (continue this save’s story campaign) or absent (a new run).')
             from .pokemon_campaigns import check_settings
-            return {'kind': kind, 'settings': check_settings(raw['settings'])}
+            return {'kind': kind, 'settings': check_settings(raw['settings']), **({'continue': True} if raw.get('continue') else {})}
         fields(raw, {'kind', 'question'}, {'question'}, 'Status step')
         if raw['question'] not in STATUS_QUESTIONS:
             raise ValueError('Choose a supported status question: ' + ', '.join(STATUS_QUESTIONS) + '.')
@@ -731,7 +755,7 @@ class GoalSupervisor:
                       'personality': pokemon.get('personality', identity[1]), 'otId': pokemon.get('otId', identity[2]),
                       'shiny': pokemon.get('shiny'), 'nature': nature.get('name') if isinstance(nature, dict) else nature,
                       'ivs': pokemon.get('ivs') or dict(zip(IV_STATS, identity[3:])), 'location': (owned.get(capture['fingerprint']) or {}).get('location'),
-                      'shinyId': (owned.get(capture['fingerprint']) or {}).get('id'),
+                      'shinyId': (owned.get(capture['fingerprint']) or {}).get('id'), 'pokemonId': inventory_id(game, capture['fingerprint']),
                       'savedSramSha256': capture.get('savedSramSha256'), 'source': source}
             return {k: v for k, v in values.items() if v is not None}
         captures = [d for d in map(describe, found) if d]
@@ -770,13 +794,15 @@ class GoalSupervisor:
 
     def _decide_save(self, goal, live):
         mode, steps = goal['save']['mode'], goal['steps']
+        if mode != 'new' and steps[0]['kind'] == 'campaign' and steps[0].get('continue'):
+            return self._decide_story(live)
         if mode == 'new' or steps[0]['kind'] == 'campaign':
             return {'decision': 'new', 'reason': 'A new save was requested.'}
         needs_save = any(s['kind'] in NEEDS_SAVE for s in steps)
         if needs_save and live.get('newProfile') is True:
             # A blank profile at New Game: only a new campaign can reach the goal.
             if mode == 'current-if-able':
-                return {'decision': 'new', 'reason': 'No save exists yet.'}
+                return {'decision': 'new', 'blank': True, 'reason': 'No save exists yet.'}
             return {'decision': 'waiting', 'reason': 'No save exists yet on the current profile. Say “on a new save” to start a new game.'}
         checks = [self._feasible(step, live) for step in steps]
         unknown = next((c for c in checks if c['ok'] is None), None)
@@ -789,6 +815,23 @@ class GoalSupervisor:
         if all(c.get('newSave') for c in blocked):
             return {'decision': 'waiting', 'reason': reason + ' Say “on a new save” to start a new game from New Game; the current save is backed up first.'}
         return {'decision': 'failed', 'reason': reason}
+
+    def _decide_story(self, live):
+        """"play the story": continue the save's unfinished story campaign; with no save yet, start one from New Game."""
+        campaign = live.get('campaign') or {}
+        if campaign.get('id') and campaign.get('status') != 'complete':
+            return {'decision': 'current', 'reason': 'Continues this save’s story campaign.', 'campaignId': campaign['id']}
+        league = (live.get('gameProgress') or {}).get('leagueComplete')
+        if league is True or campaign.get('status') == 'complete':
+            return {'decision': 'waiting', 'reason': 'This save has already entered the Hall of Fame, so its story is finished. The stronger League '
+                    'rematch is part of the postgame checklist (say “do the postgame”); say “start a new game” to play the story again on a new '
+                    'save (this save is backed up first). Cancel this goal to keep the save as it is.'}
+        if live.get('newProfile') is True:
+            return {'decision': 'new', 'blank': True, 'reason': 'No save exists yet, so the story starts from New Game.'}
+        if league is None:
+            return {'decision': 'unknown', 'reason': 'Waiting for the game to report its story progress.'}
+        return {'decision': 'waiting', 'reason': 'The bot didn’t start this save’s story, so it can’t continue it. Say “start a new game” to play '
+                'the story from New Game on a new save (this save is backed up first), or cancel this goal.'}
 
     def _feasible(self, step, live):
         if next(references(step), None):
@@ -863,6 +906,17 @@ class GoalSupervisor:
     # Steps.
     def _run_campaign(self, goal, index, step, state, live):
         game = goal['game']
+        decision = goal['execution'].get('save') or {}
+        continued = step.get('continue') and decision.get('decision') == 'current'
+        if not state.get('campaignId') and continued:
+            campaign, bot = live.get('campaign') or {}, live.get('bot') or {}
+            if campaign.get('id') != decision.get('campaignId') or campaign.get('status') == 'complete':
+                return 'waiting', 'yielded', 'The story campaign this goal continues is not the active save. Restore it from Save profiles to continue.'
+            if not (bot.get('enabled') and campaign.get('status') == 'running'):
+                self.sessions.command(game, {'type': 'resume-campaign'}, session_id=live.get('sessionId'))  # as Start game does
+            state.update(campaignId=campaign['id'], started=True, startedAt=now_iso())
+            self._commit(goal)
+            return 'running', 'campaign', 'Continuing this save’s story campaign.'
         if not state.get('campaignId'):
             if not state.get('previewId'):
                 state['previewId'] = self.sessions.preview_campaign(game, step['settings'])['preview']['id']
@@ -876,6 +930,8 @@ class GoalSupervisor:
                 raise
             state.update(campaignId=state['previewId'], started=True, startedAt=now_iso())
             self._commit(goal)
+            if decision.get('blank'):
+                return 'running', 'campaign', 'Started the story from New Game.'
             return 'running', 'campaign', 'Started a new save from New Game and its story campaign. The previous save was backed up.'
         campaign, bot = live.get('campaign') or {}, live.get('bot') or {}
         if campaign.get('id') != state['campaignId']:
@@ -886,14 +942,13 @@ class GoalSupervisor:
             if isinstance(trainer, int):
                 goal['execution']['save']['trainerId'] = trainer  # later steps run on this save only
             state['result'] = {'campaignId': state['campaignId'], **({'trainerId': trainer} if isinstance(trainer, int) else {})}
-            return 'done', 'hall-of-fame', 'The new save entered the Hall of Fame.'
+            return 'done', 'hall-of-fame', 'This save entered the Hall of Fame.' if continued else 'The new save entered the Hall of Fame.'
         if status == 'blocked':
             return 'waiting', 'attention', f"The story campaign needs attention: {campaign.get('reason') or 'see the game view'}. Start the bot to retry."
         if not bot.get('enabled'):
             return 'waiting', 'paused', 'Stopped by you. Start the bot to continue the story campaign.'
         badges = ((campaign.get('storyProgress') or {}).get('badges') or {}).get('earned')
-        objective = campaign.get('objective')
-        label = (objective.get('label') or objective.get('id')) if isinstance(objective, dict) else objective
+        label = objective_label(campaign)
         return 'running', 'campaign', 'Playing the story campaign' + (f' ({badges}/8 badges)' if isinstance(badges, int) else '') + (f': {label}' if label else '') + '.'
 
     def _run_farming(self, goal, index, step, state, live):

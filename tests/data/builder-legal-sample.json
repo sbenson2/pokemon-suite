@@ -1,0 +1,5836 @@
+{
+ "schema": "pokemon-suite/test-fixture/v1",
+ "description": "Legitimately caught FireRed Pokémon from the bot’s own saves (read-only decodes of private regression checkpoints with the met-data decoder, plus older-format records from a live inventory read). Numeric Pokémon fields only; no nicknames, trainer names or OT names.",
+ "detailed": [
+  {
+   "validity": "valid",
+   "personality": 3347322959,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 9,
+    "name": "Lax"
+   },
+   "shinyValue": 37062,
+   "shiny": false,
+   "species": 3,
+   "heldItem": 0,
+   "experience": 1059860,
+   "ppBonuses": 0,
+   "friendship": 255,
+   "evs": {
+    "hp": 41,
+    "attack": 62,
+    "defense": 113,
+    "speed": 255,
+    "spAttack": 27,
+    "spDefense": 12
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    75,
+    79,
+    235,
+    76
+   ],
+   "pp": [
+    25,
+    15,
+    5,
+    10
+   ],
+   "ivs": {
+    "hp": 4,
+    "attack": 21,
+    "defense": 15,
+    "speed": 12,
+    "spAttack": 18,
+    "spDefense": 26
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 5,
+   "metLocation": 88,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 32768,
+   "fatefulEncounter": false,
+   "id": "fc911d129742f4b78fc622b8da11365bbe1cc2671263aaf6d54367d8ca2907bd",
+   "fingerprint": "[3,3347322959,1706568373,4,21,15,12,18,26]",
+   "nationalSpeciesId": 3,
+   "location": {
+    "kind": "box",
+    "box": 3,
+    "slot": 23
+   },
+   "identityConflict": false,
+   "slotId": "box:3:23",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 465469484,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 9,
+    "name": "Lax"
+   },
+   "shinyValue": 54431,
+   "shiny": false,
+   "species": 36,
+   "heldItem": 0,
+   "experience": 1733,
+   "ppBonuses": 0,
+   "friendship": 154,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    1,
+    45,
+    227,
+    0
+   ],
+   "pp": [
+    35,
+    40,
+    5,
+    0
+   ],
+   "ivs": {
+    "hp": 8,
+    "attack": 15,
+    "defense": 0,
+    "speed": 4,
+    "spAttack": 7,
+    "spDefense": 4
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 8,
+   "metLocation": 94,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "bb8b090e6d7a2dca4823a253b297ca96370d2ec4ef3859685a836a4890b32ae0",
+   "fingerprint": "[36,465469484,1706568373,8,15,0,4,7,4]",
+   "nationalSpeciesId": 36,
+   "location": {
+    "kind": "box",
+    "box": 1,
+    "slot": 10
+   },
+   "identityConflict": false,
+   "slotId": "box:1:10",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 151549023,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 23,
+    "name": "Careful"
+   },
+   "shinyValue": 12890,
+   "shiny": false,
+   "species": 63,
+   "heldItem": 0,
+   "experience": 419,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    100,
+    0,
+    0,
+    0
+   ],
+   "pp": [
+    20,
+    0,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 8,
+    "attack": 17,
+    "defense": 7,
+    "speed": 30,
+    "spAttack": 7,
+    "spDefense": 21
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 9,
+   "metLocation": 94,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "878d612c092c4e6ff7751bd66e179a19d4cff27e69683e11921146331b5662c0",
+   "fingerprint": "[63,151549023,1706568373,8,17,7,30,7,21]",
+   "nationalSpeciesId": 63,
+   "location": {
+    "kind": "box",
+    "box": 1,
+    "slot": 22
+   },
+   "identityConflict": false,
+   "slotId": "box:1:22",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 130238670,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 20,
+    "name": "Calm"
+   },
+   "shinyValue": 0,
+   "shiny": true,
+   "species": 106,
+   "heldItem": 0,
+   "experience": 16320,
+   "ppBonuses": 0,
+   "friendship": 255,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 5,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    27,
+    26,
+    280,
+    116
+   ],
+   "pp": [
+    15,
+    25,
+    15,
+    30
+   ],
+   "ivs": {
+    "hp": 11,
+    "attack": 5,
+    "defense": 18,
+    "speed": 10,
+    "spAttack": 20,
+    "spDefense": 12
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 25,
+   "metLocation": 98,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "6a42fa27f9f1476213a0804d947fd7105e75003427310586b7b65ad978a583a6",
+   "fingerprint": "[106,130238670,1706568373,11,5,18,10,20,12]",
+   "nationalSpeciesId": 106,
+   "location": {
+    "kind": "box",
+    "box": 1,
+    "slot": 17
+   },
+   "identityConflict": false,
+   "slotId": "box:1:17",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 2650477006,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 6,
+    "name": "Docile"
+   },
+   "shinyValue": 49976,
+   "shiny": false,
+   "species": 123,
+   "heldItem": 0,
+   "experience": 15625,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    116,
+    228,
+    206,
+    97
+   ],
+   "pp": [
+    30,
+    20,
+    40,
+    30
+   ],
+   "ivs": {
+    "hp": 17,
+    "attack": 18,
+    "defense": 5,
+    "speed": 14,
+    "spAttack": 27,
+    "spDefense": 26
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 25,
+   "metLocation": 94,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "2a01d851a452ea79ac39e6ce5483d03c1fa0507ecd495f78cd38d0f6e2688eb5",
+   "fingerprint": "[123,2650477006,1706568373,17,18,5,14,27,26]",
+   "nationalSpeciesId": 123,
+   "location": {
+    "kind": "box",
+    "box": 1,
+    "slot": 26
+   },
+   "identityConflict": false,
+   "slotId": "box:1:26",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 1559106530,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 5,
+    "name": "Bold"
+   },
+   "shinyValue": 1,
+   "shiny": true,
+   "species": 131,
+   "heldItem": 0,
+   "experience": 19531,
+   "ppBonuses": 0,
+   "friendship": 75,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    54,
+    34,
+    109,
+    195
+   ],
+   "pp": [
+    30,
+    15,
+    10,
+    5
+   ],
+   "ivs": {
+    "hp": 31,
+    "attack": 6,
+    "defense": 19,
+    "speed": 7,
+    "spAttack": 5,
+    "spDefense": 8
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 25,
+   "metLocation": 134,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "a4ac8791cbf44f32abc27a29157f7a3bd75f5f6aa3cba1fa507f282c5cfe5afd",
+   "fingerprint": "[131,1559106530,1706568373,31,6,19,7,5,8]",
+   "nationalSpeciesId": 131,
+   "location": {
+    "kind": "box",
+    "box": 1,
+    "slot": 5
+   },
+   "identityConflict": false,
+   "slotId": "box:1:5",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 1506023118,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 18,
+    "name": "Bashful"
+   },
+   "shinyValue": 7,
+   "shiny": true,
+   "species": 133,
+   "heldItem": 0,
+   "experience": 15625,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    270,
+    28,
+    45,
+    98
+   ],
+   "pp": [
+    20,
+    15,
+    40,
+    30
+   ],
+   "ivs": {
+    "hp": 22,
+    "attack": 16,
+    "defense": 9,
+    "speed": 10,
+    "spAttack": 26,
+    "spDefense": 27
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 25,
+   "metLocation": 94,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "3680845cb03129c456908b68c4170754bce2006c003f8cdfda0b78d34b894b89",
+   "fingerprint": "[133,1506023118,1706568373,22,16,9,10,26,27]",
+   "nationalSpeciesId": 133,
+   "location": {
+    "kind": "box",
+    "box": 1,
+    "slot": 21
+   },
+   "identityConflict": false,
+   "slotId": "box:1:21",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 2653691454,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 4,
+    "name": "Naughty"
+   },
+   "shinyValue": 53023,
+   "shiny": false,
+   "species": 137,
+   "heldItem": 0,
+   "experience": 17576,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    97,
+    60,
+    105,
+    159
+   ],
+   "pp": [
+    30,
+    20,
+    20,
+    30
+   ],
+   "ivs": {
+    "hp": 21,
+    "attack": 21,
+    "defense": 22,
+    "speed": 14,
+    "spAttack": 26,
+    "spDefense": 21
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 26,
+   "metLocation": 94,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "424047d900342d7de49788ca8f5e6cdffc3358d7631f3842c7b8671c21762df9",
+   "fingerprint": "[137,2653691454,1706568373,21,21,22,14,26,21]",
+   "nationalSpeciesId": 137,
+   "location": {
+    "kind": "box",
+    "box": 1,
+    "slot": 27
+   },
+   "identityConflict": false,
+   "slotId": "box:1:27",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 1884831573,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 23,
+    "name": "Careful"
+   },
+   "shinyValue": 0,
+   "shiny": true,
+   "species": 138,
+   "heldItem": 0,
+   "experience": 125,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    132,
+    110,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    40,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 12,
+    "attack": 27,
+    "defense": 9,
+    "speed": 17,
+    "spAttack": 27,
+    "spDefense": 14
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 5,
+   "metLocation": 96,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "12a6bcd69df5401d09194fc17bea900f5b4ede10fbf32d4c2221e4f2b368d901",
+   "fingerprint": "[138,1884831573,1706568373,12,27,9,17,27,14]",
+   "nationalSpeciesId": 138,
+   "location": {
+    "kind": "box",
+    "box": 1,
+    "slot": 6
+   },
+   "identityConflict": false,
+   "slotId": "box:1:6",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 264782023,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 23,
+    "name": "Careful"
+   },
+   "shinyValue": 2,
+   "shiny": true,
+   "species": 142,
+   "heldItem": 0,
+   "experience": 156,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    17,
+    0,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    0,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 25,
+    "attack": 4,
+    "defense": 24,
+    "speed": 27,
+    "spAttack": 28,
+    "spDefense": 0
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 5,
+   "metLocation": 96,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "b7a13aa6b6a14fdb2d45c5a4aecaa97da8ab90bc0331cb42114efe35623e5319",
+   "fingerprint": "[142,264782023,1706568373,25,4,24,27,28,0]",
+   "nationalSpeciesId": 142,
+   "location": {
+    "kind": "box",
+    "box": 1,
+    "slot": 7
+   },
+   "identityConflict": false,
+   "slotId": "box:1:7",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 2557093703,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 3,
+    "name": "Adamant"
+   },
+   "shinyValue": 61472,
+   "shiny": false,
+   "species": 176,
+   "heldItem": 0,
+   "experience": 9428,
+   "ppBonuses": 0,
+   "friendship": 255,
+   "evs": {
+    "hp": 27,
+    "attack": 0,
+    "defense": 2,
+    "speed": 8,
+    "spAttack": 6,
+    "spDefense": 3
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    45,
+    204,
+    246,
+    186
+   ],
+   "pp": [
+    40,
+    20,
+    5,
+    10
+   ],
+   "ivs": {
+    "hp": 8,
+    "attack": 6,
+    "defense": 5,
+    "speed": 23,
+    "spAttack": 30,
+    "spDefense": 28
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 0,
+   "metLocation": 147,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "59e1e2b5bd6f4de83f639cb77296dd5fae15140a7ba19da0b521acf31020d046",
+   "fingerprint": "[176,2557093703,1706568373,8,6,5,23,30,28]",
+   "nationalSpeciesId": 176,
+   "location": {
+    "kind": "box",
+    "box": 1,
+    "slot": 25
+   },
+   "identityConflict": false,
+   "slotId": "box:1:25",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 3631215107,
+   "otId": 3465800771,
+   "trainerId": 60483,
+   "secretId": 52883,
+   "nature": {
+    "id": 7,
+    "name": "Relaxed"
+   },
+   "shinyValue": 2236,
+   "shiny": false,
+   "species": 6,
+   "heldItem": 0,
+   "experience": 334396,
+   "ppBonuses": 0,
+   "friendship": 255,
+   "evs": {
+    "hp": 44,
+    "attack": 109,
+    "defense": 47,
+    "speed": 236,
+    "spAttack": 65,
+    "spDefense": 9
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    17,
+    53,
+    290,
+    163
+   ],
+   "pp": [
+    35,
+    1,
+    20,
+    20
+   ],
+   "ivs": {
+    "hp": 12,
+    "attack": 1,
+    "defense": 9,
+    "speed": 29,
+    "spAttack": 31,
+    "spDefense": 23
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 5,
+   "metLocation": 88,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 32768,
+   "fatefulEncounter": false,
+   "level": 69,
+   "hp": 101,
+   "maxHp": 202,
+   "status1": 0,
+   "stats": {
+    "attack": 140,
+    "defense": 138,
+    "speed": 182,
+    "spAttack": 187,
+    "spDefense": 139
+   },
+   "id": "86dafa30d1525571eef1f7f60571a0b2ab3ba22b498fedd686c98e552c341d38",
+   "fingerprint": "[6,3631215107,3465800771,12,1,9,29,31,23]",
+   "nationalSpeciesId": 6,
+   "location": {
+    "kind": "party",
+    "slot": 2
+   },
+   "identityConflict": false,
+   "slotId": "party:2",
+   "fixtureSaveOtId": 3465800771
+  },
+  {
+   "validity": "valid",
+   "personality": 609760598,
+   "otId": 2161188857,
+   "trainerId": 8185,
+   "secretId": 32977,
+   "nature": {
+    "id": 23,
+    "name": "Careful"
+   },
+   "shinyValue": 36390,
+   "shiny": false,
+   "species": 9,
+   "heldItem": 0,
+   "experience": 285949,
+   "ppBonuses": 0,
+   "friendship": 255,
+   "evs": {
+    "hp": 22,
+    "attack": 44,
+    "defense": 71,
+    "speed": 255,
+    "spAttack": 81,
+    "spDefense": 37
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    130,
+    44,
+    70,
+    57
+   ],
+   "pp": [
+    15,
+    25,
+    15,
+    6
+   ],
+   "ivs": {
+    "hp": 24,
+    "attack": 31,
+    "defense": 13,
+    "speed": 18,
+    "spAttack": 31,
+    "spDefense": 12
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 5,
+   "metLocation": 88,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 32768,
+   "fatefulEncounter": false,
+   "level": 65,
+   "hp": 178,
+   "maxHp": 196,
+   "status1": 0,
+   "stats": {
+    "attack": 140,
+    "defense": 154,
+    "speed": 159,
+    "spAttack": 133,
+    "spDefense": 170
+   },
+   "id": "c06f09cdcd19f6e7d798ad4cf4bab0547529498995a6fbd4089408b54631edb2",
+   "fingerprint": "[9,609760598,2161188857,24,31,13,18,31,12]",
+   "nationalSpeciesId": 9,
+   "location": {
+    "kind": "party",
+    "slot": 2
+   },
+   "identityConflict": false,
+   "slotId": "party:2",
+   "fixtureSaveOtId": 2161188857
+  },
+  {
+   "validity": "valid",
+   "personality": 416214383,
+   "otId": 3465800771,
+   "trainerId": 60483,
+   "secretId": 52883,
+   "nature": {
+    "id": 8,
+    "name": "Impish"
+   },
+   "shinyValue": 55153,
+   "shiny": false,
+   "species": 131,
+   "heldItem": 189,
+   "experience": 341626,
+   "ppBonuses": 0,
+   "friendship": 255,
+   "evs": {
+    "hp": 13,
+    "attack": 138,
+    "defense": 50,
+    "speed": 255,
+    "spAttack": 28,
+    "spDefense": 26
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    58,
+    56,
+    70,
+    57
+   ],
+   "pp": [
+    9,
+    5,
+    15,
+    15
+   ],
+   "ivs": {
+    "hp": 5,
+    "attack": 21,
+    "defense": 23,
+    "speed": 5,
+    "spAttack": 27,
+    "spDefense": 12
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 25,
+   "metLocation": 134,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 32768,
+   "fatefulEncounter": false,
+   "level": 64,
+   "hp": 245,
+   "maxHp": 245,
+   "status1": 0,
+   "stats": {
+    "attack": 149,
+    "defense": 141,
+    "speed": 125,
+    "spAttack": 121,
+    "spDefense": 138
+   },
+   "id": "63567f6739f00652fec6a3cd370af97c6b308ec73784cfff528a629349791930",
+   "fingerprint": "[131,416214383,3465800771,5,21,23,5,27,12]",
+   "nationalSpeciesId": 131,
+   "location": {
+    "kind": "party",
+    "slot": 3
+   },
+   "identityConflict": false,
+   "slotId": "party:3",
+   "fixtureSaveOtId": 3465800771
+  },
+  {
+   "validity": "valid",
+   "personality": 4027482519,
+   "otId": 3465800771,
+   "trainerId": 60483,
+   "secretId": 52883,
+   "nature": {
+    "id": 19,
+    "name": "Rash"
+   },
+   "shinyValue": 21321,
+   "shiny": false,
+   "species": 135,
+   "heldItem": 0,
+   "experience": 260726,
+   "ppBonuses": 0,
+   "friendship": 255,
+   "evs": {
+    "hp": 10,
+    "attack": 175,
+    "defense": 47,
+    "speed": 255,
+    "spAttack": 10,
+    "spDefense": 13
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    24,
+    86,
+    87,
+    98
+   ],
+   "pp": [
+    30,
+    20,
+    7,
+    30
+   ],
+   "ivs": {
+    "hp": 1,
+    "attack": 3,
+    "defense": 7,
+    "speed": 14,
+    "spAttack": 31,
+    "spDefense": 4
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 25,
+   "metLocation": 94,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 32768,
+   "fatefulEncounter": false,
+   "level": 63,
+   "hp": 151,
+   "maxHp": 156,
+   "status1": 0,
+   "stats": {
+    "attack": 115,
+    "defense": 91,
+    "speed": 217,
+    "spAttack": 180,
+    "spDefense": 116
+   },
+   "id": "2bff56c7f87a9a4dfef0122d54682303ae8a810356d66e45b37f1b367ca3d151",
+   "fingerprint": "[135,4027482519,3465800771,1,3,7,14,31,4]",
+   "nationalSpeciesId": 135,
+   "location": {
+    "kind": "party",
+    "slot": 1
+   },
+   "identityConflict": false,
+   "slotId": "party:1",
+   "fixtureSaveOtId": 3465800771
+  },
+  {
+   "validity": "valid",
+   "personality": 28574783,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 8,
+    "name": "Impish"
+   },
+   "shinyValue": 19078,
+   "shiny": false,
+   "species": 19,
+   "heldItem": 0,
+   "experience": 125,
+   "ppBonuses": 0,
+   "friendship": 120,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    33,
+    39,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    30,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 4,
+    "attack": 22,
+    "defense": 7,
+    "speed": 29,
+    "spAttack": 6,
+    "spDefense": 30
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 0,
+   "metLocation": 146,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "a51c32e084dd4e33b0bd510d771cf49fa981ee0008939d2da7b4cbcf6a6e300d",
+   "fingerprint": "[19,28574783,1706568373,4,22,7,29,6,30]",
+   "nationalSpeciesId": 19,
+   "location": {
+    "kind": "box",
+    "box": 11,
+    "slot": 24
+   },
+   "identityConflict": false,
+   "slotId": "box:11:24",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 563963516,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 16,
+    "name": "Mild"
+   },
+   "shinyValue": 2284,
+   "shiny": false,
+   "species": 19,
+   "heldItem": 0,
+   "experience": 125,
+   "ppBonuses": 0,
+   "friendship": 120,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    33,
+    39,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    30,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 28,
+    "attack": 22,
+    "defense": 30,
+    "speed": 11,
+    "spAttack": 3,
+    "spDefense": 25
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 0,
+   "metLocation": 146,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "f94fb62d6240456f4aa7fc3740e2fb43cc9cf48393cf0a97b3b7fcb5dbfe2e66",
+   "fingerprint": "[19,563963516,1706568373,28,22,30,11,3,25]",
+   "nationalSpeciesId": 19,
+   "location": {
+    "kind": "box",
+    "box": 10,
+    "slot": 15
+   },
+   "identityConflict": false,
+   "slotId": "box:10:15",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 1212040463,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 13,
+    "name": "Jolly"
+   },
+   "shinyValue": 16956,
+   "shiny": false,
+   "species": 19,
+   "heldItem": 0,
+   "experience": 125,
+   "ppBonuses": 0,
+   "friendship": 120,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    33,
+    39,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    30,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 23,
+    "attack": 29,
+    "defense": 13,
+    "speed": 29,
+    "spAttack": 6,
+    "spDefense": 25
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 0,
+   "metLocation": 146,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "6ba533c0fa1e55ce6e8a95f5d78d02831ae0ef72af1f9fbf59622db7e0c31cd6",
+   "fingerprint": "[19,1212040463,1706568373,23,29,13,29,6,25]",
+   "nationalSpeciesId": 19,
+   "location": {
+    "kind": "box",
+    "box": 7,
+    "slot": 27
+   },
+   "identityConflict": false,
+   "slotId": "box:7:27",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 1745728048,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 23,
+    "name": "Careful"
+   },
+   "shinyValue": 38192,
+   "shiny": false,
+   "species": 19,
+   "heldItem": 0,
+   "experience": 125,
+   "ppBonuses": 0,
+   "friendship": 120,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    33,
+    39,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    30,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 13,
+    "attack": 22,
+    "defense": 14,
+    "speed": 10,
+    "spAttack": 3,
+    "spDefense": 7
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 0,
+   "metLocation": 146,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "f910b489feb2f5a8cb8c8892c734bd801ff972d651e41276fdafab2869c933e5",
+   "fingerprint": "[19,1745728048,1706568373,13,22,14,10,3,7]",
+   "nationalSpeciesId": 19,
+   "location": {
+    "kind": "box",
+    "box": 12,
+    "slot": 3
+   },
+   "identityConflict": false,
+   "slotId": "box:12:3",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 2204282536,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 11,
+    "name": "Hasty"
+   },
+   "shinyValue": 25287,
+   "shiny": false,
+   "species": 19,
+   "heldItem": 0,
+   "experience": 125,
+   "ppBonuses": 0,
+   "friendship": 120,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    33,
+    39,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    30,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 16,
+    "attack": 13,
+    "defense": 12,
+    "speed": 12,
+    "spAttack": 24,
+    "spDefense": 30
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 0,
+   "metLocation": 146,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "83bf25436e69505b4ae17c30c5bb916b6ac36cf3f714afa9bd8eaa81314cc496",
+   "fingerprint": "[19,2204282536,1706568373,16,13,12,12,24,30]",
+   "nationalSpeciesId": 19,
+   "location": {
+    "kind": "box",
+    "box": 4,
+    "slot": 18
+   },
+   "identityConflict": false,
+   "slotId": "box:4:18",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 2760149659,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 9,
+    "name": "Lax"
+   },
+   "shinyValue": 24850,
+   "shiny": false,
+   "species": 19,
+   "heldItem": 0,
+   "experience": 125,
+   "ppBonuses": 0,
+   "friendship": 120,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    33,
+    39,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    30,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 20,
+    "attack": 17,
+    "defense": 14,
+    "speed": 11,
+    "spAttack": 5,
+    "spDefense": 25
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 0,
+   "metLocation": 146,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "74068cd10d696913bdf5c6918b3774570d3e1dd64fce36988a03f70b8ccad2c7",
+   "fingerprint": "[19,2760149659,1706568373,20,17,14,11,5,25]",
+   "nationalSpeciesId": 19,
+   "location": {
+    "kind": "box",
+    "box": 11,
+    "slot": 4
+   },
+   "identityConflict": false,
+   "slotId": "box:11:4",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 3195769861,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 11,
+    "name": "Hasty"
+   },
+   "shinyValue": 25971,
+   "shiny": false,
+   "species": 19,
+   "heldItem": 0,
+   "experience": 125,
+   "ppBonuses": 0,
+   "friendship": 120,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    33,
+    39,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    30,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 22,
+    "attack": 13,
+    "defense": 12,
+    "speed": 29,
+    "spAttack": 1,
+    "spDefense": 4
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 0,
+   "metLocation": 146,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "ce06afcec7d6be6cb319338ebcc82adce2d81a156fff73ea8a341d1c11599a26",
+   "fingerprint": "[19,3195769861,1706568373,22,13,12,29,1,4]",
+   "nationalSpeciesId": 19,
+   "location": {
+    "kind": "box",
+    "box": 6,
+    "slot": 21
+   },
+   "identityConflict": false,
+   "slotId": "box:6:21",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 3842058990,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 15,
+    "name": "Modest"
+   },
+   "shinyValue": 32994,
+   "shiny": false,
+   "species": 19,
+   "heldItem": 0,
+   "experience": 125,
+   "ppBonuses": 0,
+   "friendship": 120,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    33,
+    39,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    30,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 13,
+    "attack": 13,
+    "defense": 7,
+    "speed": 18,
+    "spAttack": 6,
+    "spDefense": 30
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 0,
+   "metLocation": 146,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "ad259eb1546160f9272ed88f9a25290c6a0766a3996bb3ac20e01eab2f4ea37d",
+   "fingerprint": "[19,3842058990,1706568373,13,13,7,18,6,30]",
+   "nationalSpeciesId": 19,
+   "location": {
+    "kind": "box",
+    "box": 13,
+    "slot": 0
+   },
+   "identityConflict": false,
+   "slotId": "box:13:0",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 2111975180,
+   "otId": 776185341,
+   "trainerId": 42493,
+   "secretId": 11843,
+   "nature": {
+    "id": 5,
+    "name": "Bold"
+   },
+   "shinyValue": 55632,
+   "shiny": false,
+   "species": 16,
+   "heldItem": 0,
+   "experience": 96,
+   "ppBonuses": 0,
+   "friendship": 71,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    33,
+    0,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    0,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 10,
+    "attack": 4,
+    "defense": 6,
+    "speed": 2,
+    "spAttack": 29,
+    "spDefense": 14
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 4,
+   "metLocation": 101,
+   "metGame": 5,
+   "ball": 4,
+   "otGender": 0,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "e445e8b7cd0bfcf0bf2605118981c2267162d3e8886444bc173dd7ca4b3e67e1",
+   "fingerprint": "[16,2111975180,776185341,10,4,6,2,29,14]",
+   "nationalSpeciesId": 16,
+   "location": {
+    "kind": "box",
+    "box": 0,
+    "slot": 0
+   },
+   "identityConflict": false,
+   "slotId": "box:0:0",
+   "fixtureSaveOtId": 2161188857
+  },
+  {
+   "validity": "valid",
+   "personality": 4113436117,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 17,
+    "name": "Quiet"
+   },
+   "shinyValue": 47094,
+   "shiny": false,
+   "species": 244,
+   "heldItem": 0,
+   "experience": 156250,
+   "ppBonuses": 0,
+   "friendship": 35,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    52,
+    46,
+    83,
+    23
+   ],
+   "pp": [
+    25,
+    20,
+    15,
+    20
+   ],
+   "ivs": {
+    "hp": 25,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 50,
+   "metLocation": 101,
+   "metGame": 4,
+   "ball": 2,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "7fdb54d8178b62d7bae351eacb4ac6e4eccd9e90515337613159effcf8dcfdf3",
+   "fingerprint": "[244,4113436117,1706568373,25,0,0,0,0,0]",
+   "nationalSpeciesId": 244,
+   "location": {
+    "kind": "box",
+    "box": 1,
+    "slot": 18
+   },
+   "identityConflict": false,
+   "slotId": "box:1:18",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 2462386583,
+   "otId": 3465800771,
+   "trainerId": 60483,
+   "secretId": 52883,
+   "nature": {
+    "id": 8,
+    "name": "Impish"
+   },
+   "shinyValue": 47490,
+   "shiny": false,
+   "species": 143,
+   "heldItem": 134,
+   "experience": 33750,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    29,
+    281,
+    156,
+    173
+   ],
+   "pp": [
+    15,
+    10,
+    10,
+    15
+   ],
+   "ivs": {
+    "hp": 14,
+    "attack": 29,
+    "defense": 12,
+    "speed": 30,
+    "spAttack": 15,
+    "spDefense": 0
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 30,
+   "metLocation": 116,
+   "metGame": 4,
+   "ball": 3,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "21de6e30bf7b110143665d5280b69bacba1234f3386395382f1b57892f499c64",
+   "fingerprint": "[143,2462386583,3465800771,14,29,12,30,15,0]",
+   "nationalSpeciesId": 143,
+   "location": {
+    "kind": "box",
+    "box": 0,
+    "slot": 21
+   },
+   "identityConflict": false,
+   "slotId": "box:0:21",
+   "fixtureSaveOtId": 3465800771
+  },
+  {
+   "validity": "valid",
+   "personality": 3748958334,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 9,
+    "name": "Lax"
+   },
+   "shinyValue": 7,
+   "shiny": true,
+   "species": 143,
+   "heldItem": 0,
+   "experience": 33883,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 1,
+    "speed": 1,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    29,
+    281,
+    156,
+    173
+   ],
+   "pp": [
+    15,
+    10,
+    10,
+    15
+   ],
+   "ivs": {
+    "hp": 20,
+    "attack": 28,
+    "defense": 26,
+    "speed": 20,
+    "spAttack": 19,
+    "spDefense": 29
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 30,
+   "metLocation": 112,
+   "metGame": 4,
+   "ball": 2,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "72819653b8217906161254b992b5d01b7569e6f790cb64c5fe3550567d66eafe",
+   "fingerprint": "[143,3748958334,1706568373,20,28,26,20,19,29]",
+   "nationalSpeciesId": 143,
+   "location": {
+    "kind": "box",
+    "box": 3,
+    "slot": 3
+   },
+   "identityConflict": false,
+   "slotId": "box:3:3",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 4003045779,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 4,
+    "name": "Naughty"
+   },
+   "shinyValue": 7,
+   "shiny": true,
+   "species": 144,
+   "heldItem": 0,
+   "experience": 156250,
+   "ppBonuses": 0,
+   "friendship": 35,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    54,
+    97,
+    170,
+    58
+   ],
+   "pp": [
+    30,
+    30,
+    5,
+    10
+   ],
+   "ivs": {
+    "hp": 17,
+    "attack": 8,
+    "defense": 13,
+    "speed": 13,
+    "spAttack": 2,
+    "spDefense": 31
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 50,
+   "metLocation": 139,
+   "metGame": 4,
+   "ball": 2,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "f2916e659b7ccfffd7817b5d3970a88b9a4cc0bf486a93cbd5c163ef27b391fe",
+   "fingerprint": "[144,4003045779,1706568373,17,8,13,13,2,31]",
+   "nationalSpeciesId": 144,
+   "location": {
+    "kind": "box",
+    "box": 1,
+    "slot": 15
+   },
+   "identityConflict": false,
+   "slotId": "box:1:15",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 2449792270,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 20,
+    "name": "Calm"
+   },
+   "shinyValue": 7,
+   "shiny": true,
+   "species": 145,
+   "heldItem": 0,
+   "experience": 156250,
+   "ppBonuses": 0,
+   "friendship": 35,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    86,
+    97,
+    197,
+    65
+   ],
+   "pp": [
+    20,
+    30,
+    5,
+    20
+   ],
+   "ivs": {
+    "hp": 25,
+    "attack": 5,
+    "defense": 12,
+    "speed": 11,
+    "spAttack": 18,
+    "spDefense": 8
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 50,
+   "metLocation": 142,
+   "metGame": 4,
+   "ball": 2,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "fc3007cded3a41583fef23423c48e398f6d61ad814ea08719b7a18edb25025ec",
+   "fingerprint": "[145,2449792270,1706568373,25,5,12,11,18,8]",
+   "nationalSpeciesId": 145,
+   "location": {
+    "kind": "box",
+    "box": 1,
+    "slot": 16
+   },
+   "identityConflict": false,
+   "slotId": "box:1:16",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 3777867301,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 1,
+    "name": "Lonely"
+   },
+   "shinyValue": 5,
+   "shiny": true,
+   "species": 146,
+   "heldItem": 0,
+   "experience": 156250,
+   "ppBonuses": 0,
+   "friendship": 35,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    83,
+    97,
+    203,
+    53
+   ],
+   "pp": [
+    15,
+    30,
+    10,
+    15
+   ],
+   "ivs": {
+    "hp": 14,
+    "attack": 12,
+    "defense": 9,
+    "speed": 21,
+    "spAttack": 11,
+    "spDefense": 8
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 50,
+   "metLocation": 175,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "48aecd5b3aa7b7ae37ef6cb21727c57f7b353413f941747110e8ad1db92079f6",
+   "fingerprint": "[146,3777867301,1706568373,14,12,9,21,11,8]",
+   "nationalSpeciesId": 146,
+   "location": {
+    "kind": "box",
+    "box": 1,
+    "slot": 20
+   },
+   "identityConflict": false,
+   "slotId": "box:1:20",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 3125540166,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 16,
+    "name": "Mild"
+   },
+   "shinyValue": 0,
+   "shiny": true,
+   "species": 150,
+   "heldItem": 0,
+   "experience": 795551,
+   "ppBonuses": 0,
+   "friendship": 183,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 114,
+    "spDefense": 255
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    129,
+    105,
+    219,
+    94
+   ],
+   "pp": [
+    20,
+    20,
+    25,
+    10
+   ],
+   "ivs": {
+    "hp": 5,
+    "attack": 0,
+    "defense": 22,
+    "speed": 16,
+    "spAttack": 16,
+    "spDefense": 27
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 70,
+   "metLocation": 141,
+   "metGame": 4,
+   "ball": 2,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "be7dc869eec6df243595bae0b3e64331c41e09803c516f5a270f44c7c9e091b0",
+   "fingerprint": "[150,3125540166,1706568373,5,0,22,16,16,27]",
+   "nationalSpeciesId": 150,
+   "location": {
+    "kind": "box",
+    "box": 1,
+    "slot": 14
+   },
+   "identityConflict": false,
+   "slotId": "box:1:14",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 353977303,
+   "otId": 8810,
+   "trainerId": 8810,
+   "secretId": 0,
+   "nature": {
+    "id": 3,
+    "name": "Adamant"
+   },
+   "shinyValue": 29860,
+   "shiny": false,
+   "species": 83,
+   "heldItem": 225,
+   "experience": 32967,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 1,
+    "speed": 1,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 5,
+   "sheen": 10,
+   "pokerus": 0,
+   "moves": [
+    31,
+    282,
+    210,
+    14
+   ],
+   "pp": [
+    20,
+    20,
+    20,
+    30
+   ],
+   "ivs": {
+    "hp": 20,
+    "attack": 25,
+    "defense": 21,
+    "speed": 24,
+    "spAttack": 15,
+    "spDefense": 20
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 32,
+   "metLocation": 254,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 0,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "dab4e05492c2648a8d8f5e9ba506560f76b60dbfde118075dde4fa67589b47a9",
+   "fingerprint": "[83,353977303,8810,20,25,21,24,15,20]",
+   "nationalSpeciesId": 83,
+   "location": {
+    "kind": "box",
+    "box": 1,
+    "slot": 22
+   },
+   "identityConflict": false,
+   "slotId": "box:1:22",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 40110,
+   "otId": 1985,
+   "trainerId": 1985,
+   "secretId": 0,
+   "nature": {
+    "id": 10,
+    "name": "Timid"
+   },
+   "shinyValue": 39791,
+   "shiny": false,
+   "species": 122,
+   "heldItem": 134,
+   "experience": 37522,
+   "ppBonuses": 0,
+   "friendship": 156,
+   "evs": {
+    "hp": 2,
+    "attack": 0,
+    "defense": 9,
+    "speed": 61,
+    "spAttack": 0,
+    "spDefense": 1
+   },
+   "beauty": 5,
+   "sheen": 10,
+   "pokerus": 0,
+   "moves": [
+    112,
+    93,
+    278,
+    60
+   ],
+   "pp": [
+    30,
+    25,
+    10,
+    20
+   ],
+   "ivs": {
+    "hp": 20,
+    "attack": 15,
+    "defense": 17,
+    "speed": 24,
+    "spAttack": 23,
+    "spDefense": 22
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 9,
+   "metLocation": 254,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 0,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "7ae4fdc2eb252e797e804a8889c5fc2891d36fb4f453ce4fe10dde762ac686fa",
+   "fingerprint": "[122,40110,1985,20,15,17,24,23,22]",
+   "nationalSpeciesId": 122,
+   "location": {
+    "kind": "box",
+    "box": 1,
+    "slot": 8
+   },
+   "identityConflict": false,
+   "slotId": "box:1:8",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 538230590,
+   "otId": 2161188857,
+   "trainerId": 8185,
+   "secretId": 32977,
+   "nature": {
+    "id": 15,
+    "name": "Modest"
+   },
+   "shinyValue": 2,
+   "shiny": true,
+   "species": 10,
+   "heldItem": 0,
+   "experience": 125,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    33,
+    81,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    40,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 30,
+    "attack": 16,
+    "defense": 22,
+    "speed": 10,
+    "spAttack": 25,
+    "spDefense": 11
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 5,
+   "metLocation": 126,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "f37b4310055279469c7dd2fb54f32f768ef47763bd084b428f1c2091b400d166",
+   "fingerprint": "[10,538230590,2161188857,30,16,22,10,25,11]",
+   "nationalSpeciesId": 10,
+   "location": {
+    "kind": "box",
+    "box": 1,
+    "slot": 23
+   },
+   "identityConflict": false,
+   "slotId": "box:1:23",
+   "fixtureSaveOtId": 2161188857
+  },
+  {
+   "validity": "valid",
+   "personality": 515111832,
+   "otId": 3465800771,
+   "trainerId": 60483,
+   "secretId": 52883,
+   "nature": {
+    "id": 7,
+    "name": "Relaxed"
+   },
+   "shinyValue": 51195,
+   "shiny": false,
+   "species": 19,
+   "heldItem": 0,
+   "experience": 27,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    33,
+    39,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    30,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 9,
+    "attack": 5,
+    "defense": 18,
+    "speed": 4,
+    "spAttack": 27,
+    "spDefense": 16
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 3,
+   "metLocation": 122,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "536f7e56db1e3a210a852ee533a492725796d6a6f4eb2a29f5e9b5c727ac2e1f",
+   "fingerprint": "[19,515111832,3465800771,9,5,18,4,27,16]",
+   "nationalSpeciesId": 19,
+   "location": {
+    "kind": "box",
+    "box": 0,
+    "slot": 3
+   },
+   "identityConflict": false,
+   "slotId": "box:0:3",
+   "fixtureSaveOtId": 3465800771
+  },
+  {
+   "validity": "valid",
+   "personality": 2424629945,
+   "otId": 3465800771,
+   "trainerId": 60483,
+   "secretId": 52883,
+   "nature": {
+    "id": 20,
+    "name": "Calm"
+   },
+   "shinyValue": 22765,
+   "shiny": false,
+   "species": 26,
+   "heldItem": 0,
+   "experience": 125,
+   "ppBonuses": 0,
+   "friendship": 71,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    84,
+    45,
+    0,
+    0
+   ],
+   "pp": [
+    30,
+    40,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 29,
+    "attack": 3,
+    "defense": 25,
+    "speed": 7,
+    "spAttack": 27,
+    "spDefense": 22
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 5,
+   "metLocation": 126,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "c44b37a656a4e528f4d8abdf11e8ddcc6bede79262892d414777d163f15b10b1",
+   "fingerprint": "[26,2424629945,3465800771,29,3,25,7,27,22]",
+   "nationalSpeciesId": 26,
+   "location": {
+    "kind": "box",
+    "box": 0,
+    "slot": 2
+   },
+   "identityConflict": false,
+   "slotId": "box:0:2",
+   "fixtureSaveOtId": 3465800771
+  },
+  {
+   "validity": "valid",
+   "personality": 262037945,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 20,
+    "name": "Calm"
+   },
+   "shinyValue": 8490,
+   "shiny": false,
+   "species": 45,
+   "heldItem": 0,
+   "experience": 12034,
+   "ppBonuses": 0,
+   "friendship": 79,
+   "evs": {
+    "hp": 0,
+    "attack": 2,
+    "defense": 0,
+    "speed": 6,
+    "spAttack": 0,
+    "spDefense": 3
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    77,
+    78,
+    79,
+    51
+   ],
+   "pp": [
+    35,
+    30,
+    15,
+    30
+   ],
+   "ivs": {
+    "hp": 17,
+    "attack": 18,
+    "defense": 3,
+    "speed": 29,
+    "spAttack": 26,
+    "spDefense": 18
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 24,
+   "metLocation": 115,
+   "metGame": 4,
+   "ball": 2,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "4aca9d685317485012fabd60579804d56a8b46194743daac1c527e1a0c839a40",
+   "fingerprint": "[45,262037945,1706568373,17,18,3,29,26,18]",
+   "nationalSpeciesId": 45,
+   "location": {
+    "kind": "box",
+    "box": 0,
+    "slot": 21
+   },
+   "identityConflict": false,
+   "slotId": "box:0:21",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 1901584348,
+   "otId": 2161188857,
+   "trainerId": 8185,
+   "secretId": 32977,
+   "nature": {
+    "id": 23,
+    "name": "Careful"
+   },
+   "shinyValue": 12707,
+   "shiny": false,
+   "species": 53,
+   "heldItem": 0,
+   "experience": 103823,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    6,
+    185,
+    103,
+    154
+   ],
+   "pp": [
+    20,
+    20,
+    40,
+    15
+   ],
+   "ivs": {
+    "hp": 27,
+    "attack": 28,
+    "defense": 17,
+    "speed": 23,
+    "spAttack": 0,
+    "spDefense": 22
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 47,
+   "metLocation": 165,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "ecd9b5c3bff621898c21467590ab7286bca1f383224063f3d19fabf871996abe",
+   "fingerprint": "[53,1901584348,2161188857,27,28,17,23,0,22]",
+   "nationalSpeciesId": 53,
+   "location": {
+    "kind": "box",
+    "box": 1,
+    "slot": 19
+   },
+   "identityConflict": false,
+   "slotId": "box:1:19",
+   "fixtureSaveOtId": 2161188857
+  },
+  {
+   "validity": "valid",
+   "personality": 3206726023,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 23,
+    "name": "Careful"
+   },
+   "shinyValue": 12712,
+   "shiny": false,
+   "species": 65,
+   "heldItem": 0,
+   "experience": 189334,
+   "ppBonuses": 0,
+   "friendship": 71,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    248,
+    272,
+    94,
+    271
+   ],
+   "pp": [
+    15,
+    10,
+    10,
+    10
+   ],
+   "ivs": {
+    "hp": 4,
+    "attack": 11,
+    "defense": 24,
+    "speed": 19,
+    "spAttack": 16,
+    "spDefense": 26
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 58,
+   "metLocation": 141,
+   "metGame": 4,
+   "ball": 2,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "01622b48d3020cc0b831906a7ed34ec0b157b3c5412ab3d8245dbbb2a6d85b28",
+   "fingerprint": "[65,3206726023,1706568373,4,11,24,19,16,26]",
+   "nationalSpeciesId": 65,
+   "location": {
+    "kind": "box",
+    "box": 1,
+    "slot": 13
+   },
+   "identityConflict": false,
+   "slotId": "box:1:13",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 922947404,
+   "otId": 2161188857,
+   "trainerId": 8185,
+   "secretId": 32977,
+   "nature": {
+    "id": 4,
+    "name": "Naughty"
+   },
+   "shinyValue": 42855,
+   "shiny": false,
+   "species": 84,
+   "heldItem": 0,
+   "experience": 13824,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    45,
+    228,
+    31,
+    161
+   ],
+   "pp": [
+    40,
+    20,
+    20,
+    10
+   ],
+   "ivs": {
+    "hp": 9,
+    "attack": 7,
+    "defense": 19,
+    "speed": 19,
+    "spAttack": 12,
+    "spDefense": 28
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 24,
+   "metLocation": 118,
+   "metGame": 4,
+   "ball": 3,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "6f94f5a1c40d473d6d09f2b49eaaaf405e697b25b8ac9f256e2d0f5fac2eee88",
+   "fingerprint": "[84,922947404,2161188857,9,7,19,19,12,28]",
+   "nationalSpeciesId": 84,
+   "location": {
+    "kind": "box",
+    "box": 0,
+    "slot": 20
+   },
+   "identityConflict": false,
+   "slotId": "box:0:20",
+   "fixtureSaveOtId": 2161188857
+  },
+  {
+   "validity": "valid",
+   "personality": 2078115889,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 14,
+    "name": "Naive"
+   },
+   "shinyValue": 48353,
+   "shiny": false,
+   "species": 95,
+   "heldItem": 0,
+   "experience": 2197,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    33,
+    103,
+    20,
+    88
+   ],
+   "pp": [
+    35,
+    40,
+    20,
+    15
+   ],
+   "ivs": {
+    "hp": 2,
+    "attack": 0,
+    "defense": 15,
+    "speed": 11,
+    "spAttack": 31,
+    "spDefense": 15
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 13,
+   "metLocation": 138,
+   "metGame": 4,
+   "ball": 2,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "c477d873044f900c1591538ddd6ce8ef3ea9d1ee3cc0a7c34b773fdf63b2f613",
+   "fingerprint": "[95,2078115889,1706568373,2,0,15,11,31,15]",
+   "nationalSpeciesId": 95,
+   "location": {
+    "kind": "box",
+    "box": 0,
+    "slot": 16
+   },
+   "identityConflict": false,
+   "slotId": "box:0:16",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 2033146717,
+   "otId": 2161188857,
+   "trainerId": 8185,
+   "secretId": 32977,
+   "nature": {
+    "id": 17,
+    "name": "Quiet"
+   },
+   "shinyValue": 48474,
+   "shiny": false,
+   "species": 114,
+   "heldItem": 0,
+   "experience": 8000,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    79,
+    71,
+    74,
+    77
+   ],
+   "pp": [
+    15,
+    20,
+    40,
+    35
+   ],
+   "ivs": {
+    "hp": 29,
+    "attack": 25,
+    "defense": 26,
+    "speed": 9,
+    "spAttack": 15,
+    "spDefense": 7
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 20,
+   "metLocation": 121,
+   "metGame": 4,
+   "ball": 2,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "979a85eca821e363f97b68453e8ec2f91b2d355c54d9ea3a6cc32de50662647c",
+   "fingerprint": "[114,2033146717,2161188857,29,25,26,9,15,7]",
+   "nationalSpeciesId": 114,
+   "location": {
+    "kind": "box",
+    "box": 0,
+    "slot": 6
+   },
+   "identityConflict": false,
+   "slotId": "box:0:6",
+   "fixtureSaveOtId": 2161188857
+  },
+  {
+   "validity": "valid",
+   "personality": 2683573762,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 12,
+    "name": "Serious"
+   },
+   "shinyValue": 50939,
+   "shiny": false,
+   "species": 193,
+   "heldItem": 0,
+   "experience": 5832,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    193,
+    98,
+    104,
+    49
+   ],
+   "pp": [
+    40,
+    30,
+    15,
+    20
+   ],
+   "ivs": {
+    "hp": 1,
+    "attack": 29,
+    "defense": 8,
+    "speed": 18,
+    "spAttack": 26,
+    "spDefense": 26
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 18,
+   "metLocation": 166,
+   "metGame": 4,
+   "ball": 2,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "873bcb8c1f504fb5b8ca7f767c91c4bf30477b36994d5bf5960999a35eebd7b8",
+   "fingerprint": "[193,2683573762,1706568373,1,29,8,18,26,26]",
+   "nationalSpeciesId": 193,
+   "location": {
+    "kind": "box",
+    "box": 3,
+    "slot": 16
+   },
+   "identityConflict": false,
+   "slotId": "box:3:16",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 834617699,
+   "otId": 2161188857,
+   "trainerId": 8185,
+   "secretId": 32977,
+   "nature": {
+    "id": 24,
+    "name": "Quirky"
+   },
+   "shinyValue": 61428,
+   "shiny": false,
+   "species": 18,
+   "heldItem": 0,
+   "experience": 304358,
+   "ppBonuses": 0,
+   "friendship": 255,
+   "evs": {
+    "hp": 31,
+    "attack": 61,
+    "defense": 36,
+    "speed": 255,
+    "spAttack": 88,
+    "spDefense": 39
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    19,
+    17,
+    16,
+    98
+   ],
+   "pp": [
+    15,
+    20,
+    35,
+    30
+   ],
+   "ivs": {
+    "hp": 18,
+    "attack": 14,
+    "defense": 10,
+    "speed": 19,
+    "spAttack": 25,
+    "spDefense": 20
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 3,
+   "metLocation": 101,
+   "metGame": 4,
+   "ball": 4,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 32768,
+   "fatefulEncounter": false,
+   "level": 67,
+   "hp": 180,
+   "maxHp": 204,
+   "status1": 0,
+   "stats": {
+    "attack": 131,
+    "defense": 118,
+    "speed": 181,
+    "spAttack": 130,
+    "spDefense": 118
+   },
+   "id": "5a7ea06f19e22d66ee1279f52b12c1e45dd1b951ae1bcba8cdb716c0aeff4bd8",
+   "fingerprint": "[18,834617699,2161188857,18,14,10,19,25,20]",
+   "nationalSpeciesId": 18,
+   "location": {
+    "kind": "party",
+    "slot": 4
+   },
+   "identityConflict": false,
+   "slotId": "party:4",
+   "fixtureSaveOtId": 2161188857
+  },
+  {
+   "validity": "valid",
+   "personality": 2148015641,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 16,
+    "name": "Mild"
+   },
+   "shinyValue": 53532,
+   "shiny": false,
+   "species": 43,
+   "heldItem": 0,
+   "experience": 973,
+   "ppBonuses": 0,
+   "friendship": 171,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    71,
+    230,
+    0,
+    0
+   ],
+   "pp": [
+    20,
+    20,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 11,
+    "attack": 25,
+    "defense": 8,
+    "speed": 1,
+    "spAttack": 28,
+    "spDefense": 3
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 12,
+   "metLocation": 124,
+   "metGame": 4,
+   "ball": 2,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "level": 12,
+   "hp": 34,
+   "maxHp": 34,
+   "status1": 0,
+   "stats": {
+    "attack": 20,
+    "defense": 17,
+    "speed": 12,
+    "spAttack": 28,
+    "spDefense": 20
+   },
+   "id": "139851481b0c018022f8842f61bd97701ec2cf7bdb91da72b1167dec304da0f4",
+   "fingerprint": "[43,2148015641,1706568373,11,25,8,1,28,3]",
+   "nationalSpeciesId": 43,
+   "location": {
+    "kind": "party",
+    "slot": 5
+   },
+   "identityConflict": false,
+   "slotId": "party:5",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 2148015641,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 16,
+    "name": "Mild"
+   },
+   "shinyValue": 53532,
+   "shiny": false,
+   "species": 44,
+   "heldItem": 0,
+   "experience": 1059860,
+   "ppBonuses": 0,
+   "friendship": 255,
+   "evs": {
+    "hp": 27,
+    "attack": 195,
+    "defense": 52,
+    "speed": 40,
+    "spAttack": 146,
+    "spDefense": 50
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    51,
+    79,
+    80,
+    78
+   ],
+   "pp": [
+    30,
+    15,
+    20,
+    30
+   ],
+   "ivs": {
+    "hp": 11,
+    "attack": 25,
+    "defense": 8,
+    "speed": 1,
+    "spAttack": 28,
+    "spDefense": 3
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 12,
+   "metLocation": 124,
+   "metGame": 4,
+   "ball": 2,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 32768,
+   "fatefulEncounter": false,
+   "level": 100,
+   "hp": 247,
+   "maxHp": 247,
+   "status1": 0,
+   "stats": {
+    "attack": 208,
+    "defense": 149,
+    "speed": 96,
+    "spAttack": 262,
+    "spDefense": 170
+   },
+   "id": "f4b9a3799b40499bc0af5ebca7465c8174e3ca0345760bf6ab238db211523799",
+   "fingerprint": "[44,2148015641,1706568373,11,25,8,1,28,3]",
+   "nationalSpeciesId": 44,
+   "location": {
+    "kind": "party",
+    "slot": 5
+   },
+   "identityConflict": false,
+   "slotId": "party:5",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 2689320793,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 18,
+    "name": "Bashful"
+   },
+   "shinyValue": 10271,
+   "shiny": false,
+   "species": 67,
+   "heldItem": 0,
+   "experience": 666357,
+   "ppBonuses": 0,
+   "friendship": 255,
+   "evs": {
+    "hp": 33,
+    "attack": 122,
+    "defense": 61,
+    "speed": 218,
+    "spAttack": 58,
+    "spDefense": 18
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    67,
+    238,
+    69,
+    233
+   ],
+   "pp": [
+    18,
+    5,
+    20,
+    9
+   ],
+   "ivs": {
+    "hp": 1,
+    "attack": 2,
+    "defense": 26,
+    "speed": 26,
+    "spAttack": 26,
+    "spDefense": 26
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 16,
+   "metLocation": 138,
+   "metGame": 4,
+   "ball": 3,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 32768,
+   "fatefulEncounter": false,
+   "level": 86,
+   "hp": 241,
+   "maxHp": 241,
+   "status1": 0,
+   "stats": {
+    "attack": 204,
+    "defense": 160,
+    "speed": 151,
+    "spAttack": 125,
+    "spDefense": 134
+   },
+   "id": "9cdf63522c6953be4e4290e1e0f8a7f81d1ad727dcac6d39f808f594b544108a",
+   "fingerprint": "[67,2689320793,1706568373,1,2,26,26,26,26]",
+   "nationalSpeciesId": 67,
+   "location": {
+    "kind": "party",
+    "slot": 1
+   },
+   "identityConflict": false,
+   "slotId": "party:1",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 2699551984,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 9,
+    "name": "Lax"
+   },
+   "shinyValue": 2842,
+   "shiny": false,
+   "species": 31,
+   "heldItem": 0,
+   "experience": 11735,
+   "ppBonuses": 0,
+   "friendship": 76,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    24,
+    40,
+    44,
+    270
+   ],
+   "pp": [
+    30,
+    35,
+    25,
+    20
+   ],
+   "ivs": {
+    "hp": 28,
+    "attack": 19,
+    "defense": 30,
+    "speed": 16,
+    "spAttack": 28,
+    "spDefense": 25
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 24,
+   "metLocation": 136,
+   "metGame": 4,
+   "ball": 5,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "52896e36da5a812189521982cd8e2c22bd58a92e473465e15e866b4ae750ff5d",
+   "fingerprint": "[31,2699551984,1706568373,28,19,30,16,28,25]",
+   "nationalSpeciesId": 31,
+   "location": {
+    "kind": "box",
+    "box": 3,
+    "slot": 19
+   },
+   "identityConflict": false,
+   "slotId": "box:3:19",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 4072244701,
+   "otId": 3465800771,
+   "trainerId": 60483,
+   "secretId": 52883,
+   "nature": {
+    "id": 1,
+    "name": "Lonely"
+   },
+   "shinyValue": 21940,
+   "shiny": false,
+   "species": 47,
+   "heldItem": 103,
+   "experience": 16204,
+   "ppBonuses": 0,
+   "friendship": 255,
+   "evs": {
+    "hp": 0,
+    "attack": 3,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    148,
+    78,
+    77,
+    141
+   ],
+   "pp": [
+    20,
+    30,
+    35,
+    15
+   ],
+   "ivs": {
+    "hp": 27,
+    "attack": 6,
+    "defense": 11,
+    "speed": 21,
+    "spAttack": 8,
+    "spDefense": 9
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 25,
+   "metLocation": 136,
+   "metGame": 4,
+   "ball": 5,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "423e0d45d8a6c69ba0ce99ade989fa967e356179e9bcc8a9ab6ffdc0473f7f31",
+   "fingerprint": "[47,4072244701,3465800771,27,6,11,21,8,9]",
+   "nationalSpeciesId": 47,
+   "location": {
+    "kind": "box",
+    "box": 0,
+    "slot": 23
+   },
+   "identityConflict": false,
+   "slotId": "box:0:23",
+   "fixtureSaveOtId": 3465800771
+  },
+  {
+   "validity": "valid",
+   "personality": 3828565715,
+   "otId": 3465800771,
+   "trainerId": 60483,
+   "secretId": 52883,
+   "nature": {
+    "id": 15,
+    "name": "Modest"
+   },
+   "shinyValue": 32816,
+   "shiny": false,
+   "species": 111,
+   "heldItem": 0,
+   "experience": 21970,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    39,
+    23,
+    31,
+    184
+   ],
+   "pp": [
+    30,
+    20,
+    20,
+    10
+   ],
+   "ivs": {
+    "hp": 22,
+    "attack": 19,
+    "defense": 20,
+    "speed": 4,
+    "spAttack": 3,
+    "spDefense": 22
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 26,
+   "metLocation": 136,
+   "metGame": 4,
+   "ball": 5,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "a85554aced8c0ef8389311cfc738632c5220d0768792419e79aa836308968895",
+   "fingerprint": "[111,3828565715,3465800771,22,19,20,4,3,22]",
+   "nationalSpeciesId": 111,
+   "location": {
+    "kind": "box",
+    "box": 0,
+    "slot": 26
+   },
+   "identityConflict": false,
+   "slotId": "box:0:26",
+   "fixtureSaveOtId": 3465800771
+  },
+  {
+   "validity": "valid",
+   "personality": 2809608280,
+   "otId": 2161188857,
+   "trainerId": 8185,
+   "secretId": 32977,
+   "nature": {
+    "id": 5,
+    "name": "Bold"
+   },
+   "shinyValue": 7,
+   "shiny": true,
+   "species": 113,
+   "heldItem": 0,
+   "experience": 14060,
+   "ppBonuses": 0,
+   "friendship": 140,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    287,
+    135,
+    3,
+    107
+   ],
+   "pp": [
+    20,
+    10,
+    10,
+    20
+   ],
+   "ivs": {
+    "hp": 7,
+    "attack": 24,
+    "defense": 16,
+    "speed": 10,
+    "spAttack": 20,
+    "spDefense": 15
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 26,
+   "metLocation": 136,
+   "metGame": 4,
+   "ball": 5,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "ae600bd05b0fd4fd0047e183f86dc116c488256fad9b4a46c86f5bf4ff6065a5",
+   "fingerprint": "[113,2809608280,2161188857,7,24,16,10,20,15]",
+   "nationalSpeciesId": 113,
+   "location": {
+    "kind": "box",
+    "box": 0,
+    "slot": 2
+   },
+   "identityConflict": false,
+   "slotId": "box:0:2",
+   "fixtureSaveOtId": 2161188857
+  },
+  {
+   "validity": "valid",
+   "personality": 2014346919,
+   "otId": 3465800771,
+   "trainerId": 60483,
+   "secretId": 52883,
+   "nature": {
+    "id": 19,
+    "name": "Rash"
+   },
+   "shinyValue": 9319,
+   "shiny": false,
+   "species": 123,
+   "heldItem": 0,
+   "experience": 257491,
+   "ppBonuses": 0,
+   "friendship": 255,
+   "evs": {
+    "hp": 7,
+    "attack": 171,
+    "defense": 37,
+    "speed": 255,
+    "spAttack": 10,
+    "spDefense": 30
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    17,
+    228,
+    206,
+    163
+   ],
+   "pp": [
+    33,
+    20,
+    40,
+    20
+   ],
+   "ivs": {
+    "hp": 5,
+    "attack": 27,
+    "defense": 7,
+    "speed": 7,
+    "spAttack": 28,
+    "spDefense": 18
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 23,
+   "metLocation": 136,
+   "metGame": 4,
+   "ball": 5,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 32768,
+   "fatefulEncounter": false,
+   "level": 63,
+   "hp": 164,
+   "maxHp": 164,
+   "status1": 0,
+   "stats": {
+    "attack": 187,
+    "defense": 115,
+    "speed": 181,
+    "spAttack": 102,
+    "spDefense": 108
+   },
+   "id": "6916395728faacb7a61431422032e0ca5330f4d736afbcbef532e2994021c693",
+   "fingerprint": "[123,2014346919,3465800771,5,27,7,7,28,18]",
+   "nationalSpeciesId": 123,
+   "location": {
+    "kind": "party",
+    "slot": 4
+   },
+   "identityConflict": false,
+   "slotId": "party:4",
+   "fixtureSaveOtId": 3465800771
+  },
+  {
+   "validity": "valid",
+   "personality": 41005413,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 13,
+    "name": "Jolly"
+   },
+   "shinyValue": 64537,
+   "shiny": false,
+   "species": 201,
+   "heldItem": 0,
+   "experience": 15625,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    237,
+    0,
+    0,
+    0
+   ],
+   "pp": [
+    15,
+    0,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 28,
+    "attack": 13,
+    "defense": 10,
+    "speed": 6,
+    "spAttack": 0,
+    "spDefense": 21
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 25,
+   "metLocation": 191,
+   "metGame": 4,
+   "ball": 9,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "02004818b6f87262f74bd4020d9cb9edd0b3151c631420c206f99a165e687cba",
+   "fingerprint": "[201,41005413,1706568373,28,13,10,6,0,21]",
+   "nationalSpeciesId": 201,
+   "location": {
+    "kind": "box",
+    "box": 2,
+    "slot": 28
+   },
+   "identityConflict": false,
+   "slotId": "box:2:28",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 685443412,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 12,
+    "name": "Serious"
+   },
+   "shinyValue": 28290,
+   "shiny": false,
+   "species": 201,
+   "heldItem": 0,
+   "experience": 15625,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    237,
+    0,
+    0,
+    0
+   ],
+   "pp": [
+    15,
+    0,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 2,
+    "attack": 30,
+    "defense": 1,
+    "speed": 26,
+    "spAttack": 13,
+    "spDefense": 12
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 25,
+   "metLocation": 192,
+   "metGame": 4,
+   "ball": 9,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "687505b840d1db32c8e8aadd7c4e9b149012bcbf50fcaee4d69b7bec9a0ce1fc",
+   "fingerprint": "[201,685443412,1706568373,2,30,1,26,13,12]",
+   "nationalSpeciesId": 201,
+   "location": {
+    "kind": "box",
+    "box": 2,
+    "slot": 23
+   },
+   "identityConflict": false,
+   "slotId": "box:2:23",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 1894136737,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 12,
+    "name": "Serious"
+   },
+   "shinyValue": 1098,
+   "shiny": false,
+   "species": 201,
+   "heldItem": 0,
+   "experience": 15625,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    237,
+    0,
+    0,
+    0
+   ],
+   "pp": [
+    15,
+    0,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 6,
+    "attack": 16,
+    "defense": 5,
+    "speed": 28,
+    "spAttack": 12,
+    "spDefense": 17
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 25,
+   "metLocation": 191,
+   "metGame": 4,
+   "ball": 9,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "2105e23cfa2f42516a143c65e18738056978e48459e3987c3f14c4e7c3505230",
+   "fingerprint": "[201,1894136737,1706568373,6,16,5,28,12,17]",
+   "nationalSpeciesId": 201,
+   "location": {
+    "kind": "box",
+    "box": 3,
+    "slot": 0
+   },
+   "identityConflict": false,
+   "slotId": "box:3:0",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 3269956595,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 20,
+    "name": "Calm"
+   },
+   "shinyValue": 7705,
+   "shiny": false,
+   "species": 201,
+   "heldItem": 0,
+   "experience": 15625,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    237,
+    0,
+    0,
+    0
+   ],
+   "pp": [
+    15,
+    0,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 17,
+    "attack": 11,
+    "defense": 1,
+    "speed": 22,
+    "spAttack": 4,
+    "spDefense": 15
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 25,
+   "metLocation": 193,
+   "metGame": 4,
+   "ball": 9,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "fb6ac4c589040ebc95d04a421542f41726f09823107628a8d84a125cfae53c02",
+   "fingerprint": "[201,3269956595,1706568373,17,11,1,22,4,15]",
+   "nationalSpeciesId": 201,
+   "location": {
+    "kind": "box",
+    "box": 2,
+    "slot": 20
+   },
+   "identityConflict": false,
+   "slotId": "box:2:20",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 2257555212,
+   "otId": 2161188857,
+   "trainerId": 8185,
+   "secretId": 32977,
+   "nature": {
+    "id": 12,
+    "name": "Serious"
+   },
+   "shinyValue": 38571,
+   "shiny": false,
+   "species": 60,
+   "heldItem": 0,
+   "experience": 3798,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    145,
+    95,
+    55,
+    0
+   ],
+   "pp": [
+    30,
+    20,
+    25,
+    0
+   ],
+   "ivs": {
+    "hp": 25,
+    "attack": 2,
+    "defense": 9,
+    "speed": 4,
+    "spAttack": 25,
+    "spDefense": 2
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 18,
+   "metLocation": 125,
+   "metGame": 4,
+   "ball": 2,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "4c0c75b6b4ed5f7a4340ab37db24f740fd4f989888b6a08368514840c7e08b2e",
+   "fingerprint": "[60,2257555212,2161188857,25,2,9,4,25,2]",
+   "nationalSpeciesId": 60,
+   "location": {
+    "kind": "box",
+    "box": 0,
+    "slot": 15
+   },
+   "identityConflict": false,
+   "slotId": "box:0:15",
+   "fixtureSaveOtId": 2161188857
+  },
+  {
+   "validity": "valid",
+   "personality": 554788861,
+   "otId": 2161188857,
+   "trainerId": 8185,
+   "secretId": 32977,
+   "nature": {
+    "id": 11,
+    "name": "Hasty"
+   },
+   "shinyValue": 55748,
+   "shiny": false,
+   "species": 91,
+   "heldItem": 107,
+   "experience": 6141,
+   "ppBonuses": 0,
+   "friendship": 73,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    33,
+    110,
+    333,
+    48
+   ],
+   "pp": [
+    35,
+    40,
+    30,
+    20
+   ],
+   "ivs": {
+    "hp": 30,
+    "attack": 28,
+    "defense": 1,
+    "speed": 23,
+    "spAttack": 0,
+    "spDefense": 10
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 17,
+   "metLocation": 93,
+   "metGame": 4,
+   "ball": 3,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "bad216d7db7a052cd889e77618738c11c1493518c944def6aa87809286e46d19",
+   "fingerprint": "[91,554788861,2161188857,30,28,1,23,0,10]",
+   "nationalSpeciesId": 91,
+   "location": {
+    "kind": "box",
+    "box": 1,
+    "slot": 15
+   },
+   "identityConflict": false,
+   "slotId": "box:1:15",
+   "fixtureSaveOtId": 2161188857
+  },
+  {
+   "validity": "valid",
+   "personality": 459165637,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 12,
+    "name": "Serious"
+   },
+   "shinyValue": 7062,
+   "shiny": false,
+   "species": 118,
+   "heldItem": 0,
+   "experience": 4096,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    39,
+    346,
+    48,
+    30
+   ],
+   "pp": [
+    30,
+    15,
+    20,
+    25
+   ],
+   "ivs": {
+    "hp": 27,
+    "attack": 21,
+    "defense": 9,
+    "speed": 16,
+    "spAttack": 20,
+    "spDefense": 28
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 16,
+   "metLocation": 95,
+   "metGame": 4,
+   "ball": 2,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "c70df6dcc79e952f7f608658f810768a5503ff615e1f4cbbc582b8cc84812612",
+   "fingerprint": "[118,459165637,1706568373,27,21,9,16,20,28]",
+   "nationalSpeciesId": 118,
+   "location": {
+    "kind": "box",
+    "box": 0,
+    "slot": 22
+   },
+   "identityConflict": false,
+   "slotId": "box:0:22",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 1286148180,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 5,
+    "name": "Bold"
+   },
+   "shinyValue": 5104,
+   "shiny": false,
+   "species": 129,
+   "heldItem": 0,
+   "experience": 20631,
+   "ppBonuses": 0,
+   "friendship": 81,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    150,
+    33,
+    0,
+    0
+   ],
+   "pp": [
+    40,
+    35,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 22,
+    "attack": 21,
+    "defense": 12,
+    "speed": 12,
+    "spAttack": 7,
+    "spDefense": 23
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 25,
+   "metLocation": 94,
+   "metGame": 4,
+   "ball": 2,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "26e37fa56e2eeb8798f0d96d735c7f622605eaf7ced9126a46186631e792afef",
+   "fingerprint": "[129,1286148180,1706568373,22,21,12,12,7,23]",
+   "nationalSpeciesId": 129,
+   "location": {
+    "kind": "box",
+    "box": 0,
+    "slot": 7
+   },
+   "identityConflict": false,
+   "slotId": "box:0:7",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 3590567578,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 3,
+    "name": "Adamant"
+   },
+   "shinyValue": 12180,
+   "shiny": false,
+   "species": 55,
+   "heldItem": 0,
+   "experience": 1000000,
+   "ppBonuses": 0,
+   "friendship": 255,
+   "evs": {
+    "hp": 14,
+    "attack": 181,
+    "defense": 44,
+    "speed": 236,
+    "spAttack": 14,
+    "spDefense": 21
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    39,
+    70,
+    93,
+    56
+   ],
+   "pp": [
+    30,
+    15,
+    25,
+    5
+   ],
+   "ivs": {
+    "hp": 17,
+    "attack": 23,
+    "defense": 15,
+    "speed": 6,
+    "spAttack": 16,
+    "spDefense": 6
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 24,
+   "metLocation": 106,
+   "metGame": 4,
+   "ball": 2,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 32768,
+   "fatefulEncounter": false,
+   "level": 100,
+   "hp": 290,
+   "maxHp": 290,
+   "status1": 0,
+   "stats": {
+    "attack": 260,
+    "defense": 187,
+    "speed": 240,
+    "spAttack": 192,
+    "spDefense": 176
+   },
+   "id": "75dad954035c385d10bf572f02820438613af0f84fc2837d75de8595c2173447",
+   "fingerprint": "[55,3590567578,1706568373,17,23,15,6,16,6]",
+   "nationalSpeciesId": 55,
+   "location": {
+    "kind": "party",
+    "slot": 1
+   },
+   "identityConflict": false,
+   "slotId": "party:1",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 1821103611,
+   "otId": 2161188857,
+   "trainerId": 8185,
+   "secretId": 32977,
+   "nature": {
+    "id": 11,
+    "name": "Hasty"
+   },
+   "shinyValue": 9816,
+   "shiny": false,
+   "species": 117,
+   "heldItem": 0,
+   "experience": 300552,
+   "ppBonuses": 0,
+   "friendship": 255,
+   "evs": {
+    "hp": 14,
+    "attack": 49,
+    "defense": 125,
+    "speed": 209,
+    "spAttack": 30,
+    "spDefense": 83
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    56,
+    55,
+    127,
+    57
+   ],
+   "pp": [
+    5,
+    25,
+    15,
+    15
+   ],
+   "ivs": {
+    "hp": 7,
+    "attack": 16,
+    "defense": 3,
+    "speed": 22,
+    "spAttack": 15,
+    "spDefense": 4
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 15,
+   "metLocation": 124,
+   "metGame": 4,
+   "ball": 2,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 32768,
+   "fatefulEncounter": false,
+   "level": 66,
+   "hp": 155,
+   "maxHp": 155,
+   "status1": 0,
+   "stats": {
+    "attack": 109,
+    "defense": 136,
+    "speed": 182,
+    "spAttack": 144,
+    "spDefense": 80
+   },
+   "id": "be230c2998f97f9ba1b0350684d435416d939fb57bc0157ad6e15e273dda0e8b",
+   "fingerprint": "[117,1821103611,2161188857,7,16,3,22,15,4]",
+   "nationalSpeciesId": 117,
+   "location": {
+    "kind": "party",
+    "slot": 0
+   },
+   "identityConflict": false,
+   "slotId": "party:0",
+   "fixtureSaveOtId": 2161188857
+  },
+  {
+   "validity": "valid",
+   "personality": 3639020581,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 6,
+    "name": "Docile"
+   },
+   "shinyValue": 39887,
+   "shiny": false,
+   "species": 149,
+   "heldItem": 187,
+   "experience": 1250000,
+   "ppBonuses": 0,
+   "friendship": 255,
+   "evs": {
+    "hp": 6,
+    "attack": 129,
+    "defense": 60,
+    "speed": 255,
+    "spAttack": 24,
+    "spDefense": 36
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    57,
+    63,
+    17,
+    200
+   ],
+   "pp": [
+    15,
+    5,
+    35,
+    15
+   ],
+   "ivs": {
+    "hp": 19,
+    "attack": 5,
+    "defense": 29,
+    "speed": 0,
+    "spAttack": 26,
+    "spDefense": 2
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 21,
+   "metLocation": 136,
+   "metGame": 4,
+   "ball": 5,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 32768,
+   "fatefulEncounter": false,
+   "level": 100,
+   "hp": 312,
+   "maxHp": 312,
+   "status1": 0,
+   "stats": {
+    "attack": 310,
+    "defense": 239,
+    "speed": 228,
+    "spAttack": 237,
+    "spDefense": 216
+   },
+   "id": "7967d8eae117a2c43ce102c2c1023179b1e388082a680f42bf35564252bd166a",
+   "fingerprint": "[149,3639020581,1706568373,19,5,29,0,26,2]",
+   "nationalSpeciesId": 149,
+   "location": {
+    "kind": "party",
+    "slot": 0
+   },
+   "identityConflict": false,
+   "slotId": "party:0",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 1723698901,
+   "otId": 3465800771,
+   "trainerId": 60483,
+   "secretId": 52883,
+   "nature": {
+    "id": 1,
+    "name": "Lonely"
+   },
+   "shinyValue": 51896,
+   "shiny": false,
+   "species": 72,
+   "heldItem": 0,
+   "experience": 270,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    40,
+    48,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    20,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 16,
+    "attack": 5,
+    "defense": 14,
+    "speed": 8,
+    "spAttack": 21,
+    "spDefense": 27
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 6,
+   "metLocation": 120,
+   "metGame": 4,
+   "ball": 2,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "363dc0d725602e05a420f01f2858d1b552c94d44ba5e8725e5288e3a10d493b6",
+   "fingerprint": "[72,1723698901,3465800771,16,5,14,8,21,27]",
+   "nationalSpeciesId": 72,
+   "location": {
+    "kind": "box",
+    "box": 1,
+    "slot": 4
+   },
+   "identityConflict": false,
+   "slotId": "box:1:4",
+   "fixtureSaveOtId": 3465800771
+  },
+  {
+   "validity": "valid",
+   "personality": 2265455109,
+   "otId": 2161188857,
+   "trainerId": 8185,
+   "secretId": 32977,
+   "nature": {
+    "id": 9,
+    "name": "Lax"
+   },
+   "shinyValue": 549,
+   "shiny": false,
+   "species": 72,
+   "heldItem": 0,
+   "experience": 68590,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    51,
+    61,
+    35,
+    112
+   ],
+   "pp": [
+    30,
+    20,
+    20,
+    30
+   ],
+   "ivs": {
+    "hp": 29,
+    "attack": 19,
+    "defense": 20,
+    "speed": 19,
+    "spAttack": 29,
+    "spDefense": 22
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 38,
+   "metLocation": 112,
+   "metGame": 4,
+   "ball": 3,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "af2d05742d1b703d607bbcef646de6dc10c7522797ec6b223a3458b4240a1ab6",
+   "fingerprint": "[72,2265455109,2161188857,29,19,20,19,29,22]",
+   "nationalSpeciesId": 72,
+   "location": {
+    "kind": "box",
+    "box": 0,
+    "slot": 23
+   },
+   "identityConflict": false,
+   "slotId": "box:0:23",
+   "fixtureSaveOtId": 2161188857
+  },
+  {
+   "validity": "valid",
+   "personality": 4036285879,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 4,
+    "name": "Naughty"
+   },
+   "shinyValue": 27182,
+   "shiny": false,
+   "species": 72,
+   "heldItem": 0,
+   "experience": 156,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    40,
+    0,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    0,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 29,
+    "attack": 19,
+    "defense": 22,
+    "speed": 23,
+    "spAttack": 23,
+    "spDefense": 18
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 5,
+   "metLocation": 121,
+   "metGame": 4,
+   "ball": 2,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "6c750b0028844f676bb0c37bbd5f410498314502214e47d9035b10782af8f87d",
+   "fingerprint": "[72,4036285879,1706568373,29,19,22,23,23,18]",
+   "nationalSpeciesId": 72,
+   "location": {
+    "kind": "box",
+    "box": 0,
+    "slot": 2
+   },
+   "identityConflict": false,
+   "slotId": "box:0:2",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 4036285879,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 4,
+    "name": "Naughty"
+   },
+   "shinyValue": 27182,
+   "shiny": false,
+   "species": 73,
+   "heldItem": 0,
+   "experience": 34459,
+   "ppBonuses": 0,
+   "friendship": 177,
+   "evs": {
+    "hp": 16,
+    "attack": 26,
+    "defense": 36,
+    "speed": 32,
+    "spAttack": 19,
+    "spDefense": 5
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    40,
+    48,
+    61,
+    51
+   ],
+   "pp": [
+    35,
+    20,
+    20,
+    30
+   ],
+   "ivs": {
+    "hp": 29,
+    "attack": 19,
+    "defense": 22,
+    "speed": 23,
+    "spAttack": 23,
+    "spDefense": 18
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 5,
+   "metLocation": 121,
+   "metGame": 4,
+   "ball": 2,
+   "otGender": 1,
+   "language": 2,
+   "ribbons": 0,
+   "fatefulEncounter": false,
+   "id": "190e9fe748098227bff09a52aef2f5e831c07c1b5282576fd6f705bceeaf8682",
+   "fingerprint": "[73,4036285879,1706568373,29,19,22,23,23,18]",
+   "nationalSpeciesId": 73,
+   "location": {
+    "kind": "box",
+    "box": 3,
+    "slot": 5
+   },
+   "identityConflict": false,
+   "slotId": "box:3:5",
+   "fixtureSaveOtId": 1706568373
+  }
+ ],
+ "basic": [
+  {
+   "validity": "valid",
+   "personality": 3347322959,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 9,
+    "name": "Lax"
+   },
+   "shinyValue": 37062,
+   "shiny": false,
+   "species": 3,
+   "heldItem": 0,
+   "experience": 1059860,
+   "ppBonuses": 0,
+   "friendship": 255,
+   "evs": {
+    "hp": 41,
+    "attack": 62,
+    "defense": 113,
+    "speed": 255,
+    "spAttack": 27,
+    "spDefense": 12
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    75,
+    79,
+    235,
+    76
+   ],
+   "pp": [
+    25,
+    15,
+    5,
+    10
+   ],
+   "ivs": {
+    "hp": 4,
+    "attack": 21,
+    "defense": 15,
+    "speed": 12,
+    "spAttack": 18,
+    "spDefense": 26
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 5,
+   "id": "fc911d129742f4b78fc622b8da11365bbe1cc2671263aaf6d54367d8ca2907bd",
+   "fingerprint": "[3,3347322959,1706568373,4,21,15,12,18,26]",
+   "nationalSpeciesId": 3,
+   "location": {
+    "kind": "box",
+    "box": 3,
+    "slot": 23
+   },
+   "identityConflict": false,
+   "slotId": "box:3:23",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 301188197,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 22,
+    "name": "Sassy"
+   },
+   "shinyValue": 39579,
+   "shiny": false,
+   "species": 19,
+   "heldItem": 0,
+   "experience": 125,
+   "ppBonuses": 0,
+   "friendship": 120,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    33,
+    39,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    30,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 13,
+    "attack": 13,
+    "defense": 2,
+    "speed": 12,
+    "spAttack": 6,
+    "spDefense": 3
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 0,
+   "id": "477a275e25d4ed632086044174978fcbd236ad7af98aae072bfef2d0bebc6348",
+   "fingerprint": "[19,301188197,1706568373,13,13,2,12,6,3]",
+   "nationalSpeciesId": 19,
+   "location": {
+    "kind": "box",
+    "box": 9,
+    "slot": 3
+   },
+   "identityConflict": false,
+   "slotId": "box:9:3",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 748165257,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 7,
+    "name": "Relaxed"
+   },
+   "shinyValue": 31516,
+   "shiny": false,
+   "species": 19,
+   "heldItem": 0,
+   "experience": 125,
+   "ppBonuses": 0,
+   "friendship": 120,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    33,
+    39,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    30,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 27,
+    "attack": 13,
+    "defense": 12,
+    "speed": 11,
+    "spAttack": 27,
+    "spDefense": 30
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 0,
+   "id": "e0f6efc631ed25bd0843ada1c00cb12999e39c92bfd4507be6ebf76d8b7ca575",
+   "fingerprint": "[19,748165257,1706568373,27,13,12,11,27,30]",
+   "nationalSpeciesId": 19,
+   "location": {
+    "kind": "box",
+    "box": 10,
+    "slot": 0
+   },
+   "identityConflict": false,
+   "slotId": "box:10:0",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 1271310485,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 10,
+    "name": "Timid"
+   },
+   "shinyValue": 44126,
+   "shiny": false,
+   "species": 19,
+   "heldItem": 0,
+   "experience": 125,
+   "ppBonuses": 0,
+   "friendship": 120,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    33,
+    39,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    30,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 20,
+    "attack": 13,
+    "defense": 0,
+    "speed": 22,
+    "spAttack": 6,
+    "spDefense": 30
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 0,
+   "id": "6757a13eacb645f955b7d07a72ac49a0799f1961ec7bf7a1b0e0c6f8b44fa0d8",
+   "fingerprint": "[19,1271310485,1706568373,20,13,0,22,6,30]",
+   "nationalSpeciesId": 19,
+   "location": {
+    "kind": "box",
+    "box": 7,
+    "slot": 20
+   },
+   "identityConflict": false,
+   "slotId": "box:7:20",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 1742801994,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 19,
+    "name": "Rash"
+   },
+   "shinyValue": 9382,
+   "shiny": false,
+   "species": 19,
+   "heldItem": 0,
+   "experience": 125,
+   "ppBonuses": 0,
+   "friendship": 120,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    33,
+    39,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    30,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 16,
+    "attack": 13,
+    "defense": 14,
+    "speed": 11,
+    "spAttack": 6,
+    "spDefense": 16
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 0,
+   "id": "ca57c1b302f4e8502600e8e6f381c4de10554b0c4394282ae4fc1ad106989f4c",
+   "fingerprint": "[19,1742801994,1706568373,16,13,14,11,6,16]",
+   "nationalSpeciesId": 19,
+   "location": {
+    "kind": "box",
+    "box": 4,
+    "slot": 2
+   },
+   "identityConflict": false,
+   "slotId": "box:4:2",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 2069765201,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 1,
+    "name": "Lonely"
+   },
+   "shinyValue": 10242,
+   "shiny": false,
+   "species": 19,
+   "heldItem": 0,
+   "experience": 125,
+   "ppBonuses": 0,
+   "friendship": 120,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    33,
+    39,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    30,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 31,
+    "attack": 0,
+    "defense": 12,
+    "speed": 30,
+    "spAttack": 3,
+    "spDefense": 25
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 0,
+   "id": "e3d90e0904ae0e135a3e830af12772c9735d73fed04ef97f07eb319c19e58f7d",
+   "fingerprint": "[19,2069765201,1706568373,31,0,12,30,3,25]",
+   "nationalSpeciesId": 19,
+   "location": {
+    "kind": "box",
+    "box": 4,
+    "slot": 20
+   },
+   "identityConflict": false,
+   "slotId": "box:4:20",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 2501032902,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 2,
+    "name": "Brave"
+   },
+   "shinyValue": 25049,
+   "shiny": false,
+   "species": 19,
+   "heldItem": 0,
+   "experience": 125,
+   "ppBonuses": 0,
+   "friendship": 120,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    33,
+    39,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    30,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 5,
+    "attack": 25,
+    "defense": 9,
+    "speed": 29,
+    "spAttack": 3,
+    "spDefense": 25
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 0,
+   "id": "1c666455d39145c2c4181d9410e676976a05d1b73aa15ebd2e4be5698e02b47c",
+   "fingerprint": "[19,2501032902,1706568373,5,25,9,29,3,25]",
+   "nationalSpeciesId": 19,
+   "location": {
+    "kind": "box",
+    "box": 8,
+    "slot": 10
+   },
+   "identityConflict": false,
+   "slotId": "box:8:10",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 2817474755,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 5,
+    "name": "Bold"
+   },
+   "shinyValue": 43041,
+   "shiny": false,
+   "species": 19,
+   "heldItem": 0,
+   "experience": 125,
+   "ppBonuses": 0,
+   "friendship": 120,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    33,
+    39,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    30,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 16,
+    "attack": 15,
+    "defense": 12,
+    "speed": 8,
+    "spAttack": 3,
+    "spDefense": 12
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 0,
+   "id": "3704b55a7f5b89bd3cfcc2ba34577884002f7fc09724c3f1cce0cd6e4deed99a",
+   "fingerprint": "[19,2817474755,1706568373,16,15,12,8,3,12]",
+   "nationalSpeciesId": 19,
+   "location": {
+    "kind": "box",
+    "box": 4,
+    "slot": 16
+   },
+   "identityConflict": false,
+   "slotId": "box:4:16",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 3152874352,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 2,
+    "name": "Brave"
+   },
+   "shinyValue": 65424,
+   "shiny": false,
+   "species": 19,
+   "heldItem": 0,
+   "experience": 125,
+   "ppBonuses": 0,
+   "friendship": 120,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    33,
+    39,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    30,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 17,
+    "attack": 13,
+    "defense": 8,
+    "speed": 11,
+    "spAttack": 31,
+    "spDefense": 25
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 0,
+   "id": "b9d965aa9f4232eb6b77b255db0658ac9bc0dab101b68e8f33904ef975c2c194",
+   "fingerprint": "[19,3152874352,1706568373,17,13,8,11,31,25]",
+   "nationalSpeciesId": 19,
+   "location": {
+    "kind": "box",
+    "box": 8,
+    "slot": 12
+   },
+   "identityConflict": false,
+   "slotId": "box:8:12",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 3551836860,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 10,
+    "name": "Timid"
+   },
+   "shinyValue": 9733,
+   "shiny": false,
+   "species": 19,
+   "heldItem": 0,
+   "experience": 125,
+   "ppBonuses": 0,
+   "friendship": 120,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    33,
+    39,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    30,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 16,
+    "attack": 13,
+    "defense": 20,
+    "speed": 14,
+    "spAttack": 11,
+    "spDefense": 25
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 0,
+   "id": "56eee31880bb117256e4329a7c50fd7b0959972db2c51e9c1e66462422cfca2c",
+   "fingerprint": "[19,3551836860,1706568373,16,13,20,14,11,25]",
+   "nationalSpeciesId": 19,
+   "location": {
+    "kind": "box",
+    "box": 5,
+    "slot": 6
+   },
+   "identityConflict": false,
+   "slotId": "box:5:6",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 4139935083,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 8,
+    "name": "Impish"
+   },
+   "shinyValue": 56484,
+   "shiny": false,
+   "species": 19,
+   "heldItem": 0,
+   "experience": 125,
+   "ppBonuses": 0,
+   "friendship": 120,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    33,
+    39,
+    0,
+    0
+   ],
+   "pp": [
+    35,
+    30,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 13,
+    "attack": 13,
+    "defense": 27,
+    "speed": 29,
+    "spAttack": 16,
+    "spDefense": 5
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 0,
+   "id": "51274f21888bba761f89b2947d606081fb7885036b883cb1484f3d3219522daf",
+   "fingerprint": "[19,4139935083,1706568373,13,13,27,29,16,5]",
+   "nationalSpeciesId": 19,
+   "location": {
+    "kind": "box",
+    "box": 11,
+    "slot": 11
+   },
+   "identityConflict": false,
+   "slotId": "box:11:11",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 3299324924,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 24,
+    "name": "Quirky"
+   },
+   "shinyValue": 14422,
+   "shiny": false,
+   "species": 53,
+   "heldItem": 136,
+   "experience": 1000000,
+   "ppBonuses": 0,
+   "friendship": 255,
+   "evs": {
+    "hp": 37,
+    "attack": 89,
+    "defense": 84,
+    "speed": 213,
+    "spAttack": 50,
+    "spDefense": 37
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    163,
+    185,
+    44,
+    6
+   ],
+   "pp": [
+    20,
+    20,
+    25,
+    20
+   ],
+   "ivs": {
+    "hp": 5,
+    "attack": 4,
+    "defense": 5,
+    "speed": 28,
+    "spAttack": 19,
+    "spDefense": 15
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 10,
+   "id": "e02e21bb011f54b98ef95cd7492e01a7206a4e1febcf070d7f228f4ec3ed2b10",
+   "fingerprint": "[53,3299324924,1706568373,5,4,5,28,19,15]",
+   "nationalSpeciesId": 53,
+   "location": {
+    "kind": "box",
+    "box": 8,
+    "slot": 7
+   },
+   "identityConflict": false,
+   "slotId": "box:8:7",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 2526894787,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 12,
+    "name": "Serious"
+   },
+   "shinyValue": 33619,
+   "shiny": false,
+   "species": 103,
+   "heldItem": 0,
+   "experience": 19531,
+   "ppBonuses": 0,
+   "friendship": 71,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    115,
+    73,
+    93,
+    78
+   ],
+   "pp": [
+    20,
+    10,
+    25,
+    30
+   ],
+   "ivs": {
+    "hp": 19,
+    "attack": 22,
+    "defense": 24,
+    "speed": 12,
+    "spAttack": 9,
+    "spDefense": 12
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 25,
+   "id": "ef62e1c778e8215d816057657c3a860f8b6f8f345c8224ff9a09f28d19f7676a",
+   "fingerprint": "[103,2526894787,1706568373,19,22,24,12,9,12]",
+   "nationalSpeciesId": 103,
+   "location": {
+    "kind": "box",
+    "box": 3,
+    "slot": 8
+   },
+   "identityConflict": false,
+   "slotId": "box:3:8",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 3639020581,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 6,
+    "name": "Docile"
+   },
+   "shinyValue": 39887,
+   "shiny": false,
+   "species": 149,
+   "heldItem": 187,
+   "experience": 1250000,
+   "ppBonuses": 0,
+   "friendship": 255,
+   "evs": {
+    "hp": 6,
+    "attack": 129,
+    "defense": 60,
+    "speed": 255,
+    "spAttack": 24,
+    "spDefense": 36
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    57,
+    63,
+    17,
+    200
+   ],
+   "pp": [
+    15,
+    5,
+    35,
+    15
+   ],
+   "ivs": {
+    "hp": 19,
+    "attack": 5,
+    "defense": 29,
+    "speed": 0,
+    "spAttack": 26,
+    "spDefense": 2
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 21,
+   "level": 100,
+   "hp": 312,
+   "maxHp": 312,
+   "status1": 0,
+   "stats": {
+    "attack": 310,
+    "defense": 239,
+    "speed": 228,
+    "spAttack": 237,
+    "spDefense": 216
+   },
+   "id": "7967d8eae117a2c43ce102c2c1023179b1e388082a680f42bf35564252bd166a",
+   "fingerprint": "[149,3639020581,1706568373,19,5,29,0,26,2]",
+   "nationalSpeciesId": 149,
+   "location": {
+    "kind": "party",
+    "slot": 2
+   },
+   "identityConflict": false,
+   "slotId": "party:2",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 1106312816,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 16,
+    "name": "Mild"
+   },
+   "shinyValue": 61581,
+   "shiny": false,
+   "species": 201,
+   "heldItem": 0,
+   "experience": 15625,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    237,
+    0,
+    0,
+    0
+   ],
+   "pp": [
+    15,
+    0,
+    0,
+    0
+   ],
+   "ivs": {
+    "hp": 27,
+    "attack": 7,
+    "defense": 7,
+    "speed": 2,
+    "spAttack": 18,
+    "spDefense": 23
+   },
+   "isEgg": false,
+   "abilityNum": 0,
+   "metLevel": 25,
+   "id": "7e69786f74bc9ddcf80d0741cb28bd0a2749fed1d70017b36f487ea565739b07",
+   "fingerprint": "[201,1106312816,1706568373,27,7,7,2,18,23]",
+   "nationalSpeciesId": 201,
+   "location": {
+    "kind": "box",
+    "box": 3,
+    "slot": 1
+   },
+   "identityConflict": false,
+   "slotId": "box:3:1",
+   "fixtureSaveOtId": 1706568373
+  },
+  {
+   "validity": "valid",
+   "personality": 2001435849,
+   "otId": 1706568373,
+   "trainerId": 10933,
+   "secretId": 26040,
+   "nature": {
+    "id": 24,
+    "name": "Quirky"
+   },
+   "shinyValue": 17551,
+   "shiny": false,
+   "species": 227,
+   "heldItem": 0,
+   "experience": 33750,
+   "ppBonuses": 0,
+   "friendship": 70,
+   "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "speed": 0,
+    "spAttack": 0,
+    "spDefense": 0
+   },
+   "beauty": 0,
+   "sheen": 0,
+   "pokerus": 0,
+   "moves": [
+    129,
+    97,
+    31,
+    314
+   ],
+   "pp": [
+    20,
+    30,
+    20,
+    25
+   ],
+   "ivs": {
+    "hp": 29,
+    "attack": 27,
+    "defense": 22,
+    "speed": 7,
+    "spAttack": 28,
+    "spDefense": 27
+   },
+   "isEgg": false,
+   "abilityNum": 1,
+   "metLevel": 30,
+   "id": "4a76b8f098cda3a52181e9dea9879712755d437e3f6193749a9d47ba8ee5f112",
+   "fingerprint": "[227,2001435849,1706568373,29,27,22,7,28,27]",
+   "nationalSpeciesId": 227,
+   "location": {
+    "kind": "box",
+    "box": 3,
+    "slot": 2
+   },
+   "identityConflict": false,
+   "slotId": "box:3:2",
+   "fixtureSaveOtId": 1706568373
+  }
+ ]
+}

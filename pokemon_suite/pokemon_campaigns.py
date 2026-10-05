@@ -10,6 +10,8 @@ RUN_ID=re.compile(r'run-[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}\Z')
 TRAINER_NAME=re.compile(r'[A-Za-z]{1,7}\Z')
 SETTINGS={'label','starter','teamMode','helpers','seedMode','seed','teamSeed','afterCampaign','trainerName'}
 STARTERS=('random','bulbasaur','charmander','squirtle')
+# LeafGreen (build 124) plays the same story campaign from its own bot profile.
+CAMPAIGN_GAMES=('firered','leafgreen')
 
 def check_settings(value):
     """Early host check of campaign settings; the engine CLI validates them fully."""
@@ -22,8 +24,15 @@ def check_settings(value):
     if 'label' in value and (not isinstance(value['label'],str) or not value['label'].strip() or len(value['label'])>50):raise ValueError('Name the run using 1 to 50 characters.')
     return dict(value)
 
+def _unsupported(sessions,game):
+    if game not in CAMPAIGN_GAMES or not sessions.configured(game):return 'Fresh campaign automation is currently available for FireRed and LeafGreen.'
+    if (sessions.config()['games'][game].get('backend') or 'wasm')!='wasm':
+        return 'This library plays LeafGreen manually. Add FireRed or LeafGreen… with your LeafGreen US revision 1 game lets the bot play it.'
+    return None
+
 def check_game(sessions,game):
-    if game!='firered' or not sessions.configured(game):raise ValueError('Fresh campaign automation is currently available for FireRed.')
+    reason=_unsupported(sessions,game)
+    if reason:raise ValueError(reason)
 
 def resolve(sessions,game,action,settings=None):
     check_game(sessions,game);execution_config=sessions.execution_config_path(game);config=json.loads(execution_config.read_text())
@@ -37,7 +46,8 @@ def resolve(sessions,game,action,settings=None):
     return json.loads(result.stdout)
 
 def options(sessions,game):
-    if game!='firered' or not sessions.configured(game):return {'game':game,'supported':False,'reason':'Fresh campaign automation is currently available for FireRed.'}
+    reason=_unsupported(sessions,game)
+    if reason:return {'game':game,'supported':False,'reason':reason}
     data=resolve(sessions,game,'options')
     path=sessions.directory/game/'run-settings.json'
     data['settings']=json.loads(path.read_text()) if path.exists() else data['defaults']

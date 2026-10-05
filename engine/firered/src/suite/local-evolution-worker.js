@@ -10,6 +10,8 @@ import {FireRedNativeTradeHost,readNativeWirelessStatus,readNativeLinkGroup,read
 import {createEmeraldNativeTradeAdapter} from './emerald-native-trade.js';
 import {reserveLocalEvolution,verifyLocalEvolutionExchange,sameEvolutionIndividual,selectLocalTradePartner,verifyLocalTradeRestart,selectPartnerPlaceholder,verifyPartnerNetZero,pairRoles,keyedByRole,proveUncommittedLocalTrade} from './local-evolution.js';
 import {partnerTradeReady} from './fire-red-evolution.js';
+// extra-saves: single verified trade legs with another owned FireRed save.
+import {extraSaveLeg,reserveExtraSaveTrade,verifyPartnerExchangeLeg} from './extra-save-exchange.js';
 import {continueNativeSaveAsync,validateNativeTradeContinuation} from './native-cold-boot.js';
 import {createPinnedMgbaSession} from '../emulator/pinned-mgba.js';
 import {createFireRedObserver} from '../evidence/fire-red-observer.js';
@@ -43,7 +45,9 @@ export function createLocalEvolutionWorker({game,owner=game,role=game==='firered
  const peerOwner=()=>{
   if(role==='partner')return sourceOwner();
   const reserved=current?.reservation?.roles?.partner?.owner;if(reserved)return reserved;
-  const sourceState=hooks.fireRedState?.()??{};return nextTrade(sourceState.dexEvolution??sourceState.evolution)?.partner??'emerald';
+  const sourceState=hooks.fireRedState?.()??{};
+  const extra=extraSaveLeg(sourceState);if(extra)return extra.partnerOwner;// extra-saves
+  return nextTrade(sourceState.dexEvolution??sourceState.evolution)?.partner??'emerald';
  };
  const peer=()=>read(join(config.directory,peerOwner(),'status.json'));
  // The source is the single writer. Its default owner keeps the original
@@ -168,7 +172,10 @@ export function createLocalEvolutionWorker({game,owner=game,role=game==='firered
   const roles=pairRoles(pair.reservation),o=capture(),trainerId=o.playerMemory?.trainer?.trainerId;
   if(roles.partner.owner!==owner||roles.source.owner===owner)throw Error('The local pair is reserved for another partner owner.');
   if(!Number.isInteger(trainerId)||trainerId!==roles.partner.trainerId||trainerId===pair.leaderTrainerId)throw Error('The FireRed partner trainer ID must match its reservation and differ from the source save.');
-  if(!selectPartnerPlaceholder((o.playerMemory?.trainer?.party??[]).filter(p=>encounterFingerprint(p)===pair.reservation.partnerFingerprint)))throw Error('The partner reservation no longer matches an ordinary placeholder in its party.');
+  const named=(o.playerMemory?.trainer?.party??[]).filter(p=>encounterFingerprint(p)===pair.reservation.partnerFingerprint);
+  // extra-saves: a single leg offers exactly the individual this partner's offer names.
+  if(pair.reservation.method==='single'){if(named.length!==1||hooks.companionState?.()?.offer?.fingerprint!==pair.reservation.partnerFingerprint)throw Error('The partner no longer holds the individual this exchange leg names in its party.');return;}
+  if(!selectPartnerPlaceholder(named))throw Error('The partner reservation no longer matches an ordinary placeholder in its party.');
  }
  async function startTrade(pair){
   await hooks.pause('Starting the reserved native evolution trade.');await loadRuntime();
@@ -251,6 +258,18 @@ export function createLocalEvolutionWorker({game,owner=game,role=game==='firered
      if(role==='source'){
       const sourceState=hooks.fireRedState()??{},evolution=sourceState.dexEvolution??sourceState.evolution,preparation=sourceState.preparation;
       const ready=other?.bot?.preparation;
+      // extra-saves: one verified trade leg of an exchange with another FireRed save.
+      const extra=extraSaveLeg(sourceState);
+      if(extra){
+       if(extra.phase!=='waiting-for-transfer'||!extra.tradePreparation?.pokemon||ready?.phase!=='ready-for-transfer'||ready.requestId!==extra.requestId||!ready.transferCandidate)return;
+       const partnerCfg=config.games?.[extra.partnerOwner];
+       if(!coreManifest.native_rfu||!(partnerCfg?.nativeRadio?.core??partnerCfg?.core)||!json(join(partnerCfg.nativeRadio?.core??partnerCfg.core,'build-manifest.json')).native_rfu)return;
+       const o=hooks.observe();
+       const reservation=reserveExtraSaveTrade({leg:extra,source:extra.tradePreparation.pokemon,partner:ready.transferCandidate,sourceOwner:owner,sourceTrainerId:o.playerMemory?.trainer?.trainerId,
+        partnerTrainerId:ready.trainerId,partnerTitle:titleOf(extra.partnerOwner),sourceFlags:o.playerMemory?.storyState?.flagIds??{},partnerReady:ready});
+       await startTrade({schema:'pokemon-suite/local-evolution-pair/v2',requestId:reservation.requestId,reservation,leaderTrainerId:reservation.roles.source.trainerId,center:extra.tradePreparation.center,pairId:randomUUID(),token:randomBytes(32).toString('hex'),leg:'outbound',phase:'connecting'});
+       return;
+      }
       // The request can report waiting-for-transfer before its trade
       // preparation (source and center) exists; wait for that preparation.
       if(preparation?.phase!=='waiting-for-transfer'||!preparation.tradePreparation?.pokemon||ready?.phase!=='ready-for-transfer'||ready.requestId!==evolution?.requestId||!ready.transferCandidate)return;
@@ -317,7 +336,11 @@ export function createLocalEvolutionWorker({game,owner=game,role=game==='firered
      const otherReceipt=peer()?.localEvolution?.receipt;
      if(otherReceipt?.pairId!==current.pairId||otherReceipt.leg!==current.leg)return;
      const both=keyedByRole(current.reservation,current.receipt,otherReceipt);verifyLocalEvolutionExchange(current.reservation,current.leg,both);closeLink();
-     if(current.leg==='outbound'){
+     // extra-saves: a single leg completes here; its exchange owns what follows.
+     if(current.leg==='outbound'&&current.reservation.method==='single'){
+      await hooks.acceptExtraSaveTrade({reservation:current.reservation,outbound:both},capture());
+      current.outbound=both;current.phase='complete';writePair({...pair,phase:'complete',outbound:both});persist('extra-save-leg-verified');
+     }else if(current.leg==='outbound'){
       current.outbound=both;current.phase='waiting-for-evolution';writePair({...pair,phase:'evolving',outbound:both});persist('both-outbound-native-saves-verified');
      }else{
       const result={reservation:current.reservation,outbound:current.outbound,returned:both,evolution:pair.evolution};await hooks.acceptRoundTrip(result,capture());
@@ -325,6 +348,12 @@ export function createLocalEvolutionWorker({game,owner=game,role=game==='firered
      }
     }
     pair=record();
+    // extra-saves: after a single leg this partner proves exactly what it holds now.
+    if(role==='partner'&&current.phase==='waiting-for-peer-save'&&current.leg==='outbound'&&current.reservation?.method==='single'&&pair?.phase==='complete'){
+     verifyLocalEvolutionExchange(current.reservation,'outbound',pair.outbound);closeLink();
+     current.exchangeProof=verifyPartnerExchangeLeg({preparation:hooks.companionState?.(),reservation:current.reservation,trainer:capture().playerMemory?.trainer,ledger:hooks.extraSaveLedger?.()});
+     current.netZeroVerified=current.exchangeProof.netZeroVerified;current.phase='complete';persist('extra-save-partner-leg-verified');
+    }
     if(role==='partner'&&current.phase==='waiting-for-peer-save'&&current.leg==='outbound'&&pair?.phase==='evolving')await startEvolution(pair);
     if(role==='source'&&current.phase==='waiting-for-evolution'){
      const otherState=peer()?.localEvolution,e=otherState?.evolution;

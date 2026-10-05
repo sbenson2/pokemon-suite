@@ -14,7 +14,7 @@
 import {encounterFingerprint as fingerprint} from '../player/encounter-tracker.js';
 import {buildPokeBallMartCatalog} from '../player/campaign.js';
 import {mapRecommendation} from '../player/delegator.js';
-import {evolutionItemRecommendation} from './fire-red-evolution.js';
+import {evolutionItemRecommendation,takeMailRecommendation} from './fire-red-evolution.js';
 import {fireRedPokemonCenter} from './fire-red-link-quest.js';
 import {itemIsMail,MAIL_NONE} from '../evidence/mail-state.js';
 
@@ -694,19 +694,8 @@ export class QmmSupplyTask{
   return this.#save(o,'mail-supply-complete');
  }
  #takeMail(o,p){
-  const ui=o.playerMemory.ui??{},slot=o.playerMemory.trainer.party.indexOf(p);
-  if(ui.party?.stage==='confirm-send-mail-to-pc')return this.#rec({kind:'choose-menu-option',targetOption:'no',targetIndex:1});
-  if(ui.party?.stage==='confirm-lose-mail')return this.#rec({kind:'choose-menu-option',targetOption:'yes',targetIndex:0});
-  if(ui.party?.stage==='message')return this.#rec({kind:'acknowledge-cartridge-prompt'});
-  if(ui.party?.stage==='selection-menu'){
-   if(ui.party.selectedPartySlot!==slot)return this.#rec({kind:'close-menu'});
-   const actions=ui.party.actions??[],action=actions.includes('take-mail')?'take-mail':'mail';
-   return actions.includes(action)?this.#rec({kind:'choose-party-action',targetAction:action,targetIndex:actions.indexOf(action)}):this.#rec({kind:'close-menu'});
-  }
-  if(ui.party?.stage==='choose-pokemon')return this.#rec({kind:'choose-party-member',targetPartySlot:slot});
-  if(ui.startMenu){const index=ui.startMenu.order?.indexOf('pokemon')??-1;return this.#rec({kind:'choose-start-menu-item',targetItem:'pokemon',targetIndex:index});}
-  if(menuOpen(o))return this.#rec({kind:'close-menu'});
-  return o.emulator?.mode==='overworld'?this.#rec({kind:'open-start-menu'}):{kind:'wait'};
+  const recommendation=takeMailRecommendation(o,p);
+  return recommendation?this.#rec(recommendation):{kind:'wait'};
  }
 }
 

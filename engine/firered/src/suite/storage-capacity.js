@@ -1,4 +1,4 @@
-import {nationalSpeciesId} from '../evidence/gen3-national-species.js';
+import {nationalDexNumbers} from '../evidence/gen3-national-species.js';
 // Keep one box available for unexpected shinies, eggs and evolution transfers.
 // Capacity is cartridge evidence; collection receipts are not an occupancy count.
 export function assertCaptureCapacity(trainer,{quantity=1,protected:protectedEncounter=false}={}){
@@ -8,7 +8,7 @@ export function assertCaptureCapacity(trainer,{quantity=1,protected:protectedEnc
 }
 export function collectionStorage(trainer,{scope,records=[],quantity=0,caught=0}={}){
  const goal=scope==='postgame'?'national-dex':scope==='collection'?'shiny-national-dex':'current-task';
- const owned=scope==='postgame'?trainer?.pokedex?.ownedSpecies?.map(nationalSpeciesId).filter(Boolean):
+ const owned=scope==='postgame'?(Array.isArray(trainer?.pokedex?.ownedSpecies)?nationalDexNumbers(trainer.pokedex.ownedSpecies):undefined):
   records.filter(r=>r.owned&&r.nativeSaveVerified&&r.pokemon?.shiny===true&&Number.isInteger(r.nationalSpeciesId)&&r.nationalSpeciesId>=1&&r.nationalSpeciesId<=386).map(r=>r.nationalSpeciesId);
  const remainingTargets=goal==='current-task'?Math.max(0,quantity-caught):owned?386-new Set(owned).size:null;
  return {...storageCapacity(trainer,{remainingTargets:remainingTargets??0}),goal,remainingTargets};

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {spawn} from 'node:child_process';
 import {createServer} from 'node:net';
-import {mkdtempSync,mkdirSync,copyFileSync,readFileSync,existsSync,rmSync} from 'node:fs';
+import {mkdtempSync,mkdirSync,copyFileSync,readFileSync,writeFileSync,existsSync,rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {dirname,join,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -36,12 +36,23 @@ const port=()=>new Promise((done,fail)=>{const server=createServer();server.on('
 // clocks hold the running game. `restarts: 1`: a stall past the heartbeat ends
 // the link before the exchange; both owners cold-boot, prove the original
 // saves and the source retries the leg once.
+// September 28 (gates 118-02, 122-01): the partner FireRed restarted itself in
+// the trade room, and the partner reported its boot screen's empty party as a
+// changed party. A case with `partnerReset` presses the partner console's own
+// soft-reset chord (scripts/replay-console-reset.mjs; controller input only)
+// once both games are in the named callback on the named leg and the partner is
+// still choosing its Pokémon. Before any exchange that is a lost link: both
+// owners cold-boot, prove the original saves and the source retries once.
+// A task-scoped case models the durable checklist continuing after a collection
+// hunt. Its task scope is retained, but the checklist remains the work owner.
 export async function replayFireRedPartner({session,saved,inputs,cfg,partnerCfg,partnerRomBytes,createSession,fixture,corpusPath}){
- const owner=fixture.partnerOwner,stall=fixture.partnerStall??null;
+ const owner=fixture.partnerOwner,stall=fixture.partnerStall??null,reset=fixture.partnerReset??null,runScope=fixture.runScope??'postgame';
+ assert.ok(['postgame','task'].includes(runScope),'a FireRed partner replay uses a postgame checklist or its task-scoped continuation');
  if(stall)assert.ok(['firered',owner].includes(stall.owner)&&/^CB2_\w+$/.test(stall.callback2)&&['outbound','return'].includes(stall.leg)&&Number.isInteger(stall.ms)&&(stall.restarts===0&&stall.ms>=500&&stall.ms<=3500||stall.restarts===1&&stall.ms>=5000&&stall.ms<=8000),'a partner stall names an owner, callback, leg and a bounded duration');
+ if(reset)assert.ok(!stall&&reset.owner===owner&&/^CB2_\w+$/.test(reset.callback2)&&['outbound','return'].includes(reset.leg)&&reset.restarts===1,'a partner console reset names the partner, a callback and leg, and one verified retry');
  assert.ok(owner&&partnerCfg?.title==='firered'&&partnerCfg.role==='partner'&&partnerRomBytes,'a FireRed partner replay needs its verified partner owner');
  const root=mkdtempSync(join(tmpdir(),'suite-firered-partner-'));
- const children=new Map(),logs=new Map();let coordinator=null;
+ const children=new Map(),logs=new Map();let coordinator=null,coordinatorLog='',coordinatorPaused=false;
  const source=resolve(dirname(corpusPath),fixture.baseCheckpoint),baseRecord=json(source),base=new SaveVault(dirname(source),baseRecord.identity).read(baseRecord);
  const bankPath=resolve(dirname(corpusPath),fixture.partnerCheckpoint),bankRecord=json(bankPath),bank=new SaveVault(dirname(bankPath),bankRecord.identity).read(bankRecord);
  const durable=json(resolve(dirname(corpusPath),fixture.durableAgenda));
@@ -49,6 +60,7 @@ export async function replayFireRedPartner({session,saved,inputs,cfg,partnerCfg,
  const party=before.playerMemory.trainer.party,machoke=party.find(p=>p.species===67);
  assert.ok(machoke&&!machoke.shiny,'the permanent team carries its Machoke');
  const requestId=`team-partner-${machoke.otId}-${machoke.personality}-68`;
+ const sourceHoldingsBefore=holdings(before.playerMemory.trainer);
  const others=party.filter(p=>p!==machoke).map(encounterFingerprint).sort();
  // The partner's own starting holdings, read from a throwaway copy of the bank.
  const partnerSession=await createSession();let partnerBefore;
@@ -62,7 +74,7 @@ export async function replayFireRedPartner({session,saved,inputs,cfg,partnerCfg,
  new SaveVault(join(root,'firered','saves'),base.identity).write(base.state,base.sram,base.metadata);
  vault.write(saved.state,saved.sram,{frame:before.frame,postgame:controller.state()});
  atomicJson(join(root,'firered','active-hunt.json'),{id:run,manual:true,nativeRadio:true});
- atomicJson(join(root,'firered','bot-policy.json'),{enabled:false,consolePowered:false,awaitingCommand:false,mode:'postgame',runScope:'postgame'});
+ atomicJson(join(root,'firered','bot-policy.json'),{enabled:false,consolePowered:false,awaitingCommand:false,mode:'postgame',runScope});
  // The partner imports a temporary copy of the bank as its own working save,
  // through the same verified seed import the live partner owner uses.
  const copy=join(root,'partner-bank-copy');mkdirSync(copy);
@@ -75,13 +87,22 @@ export async function replayFireRedPartner({session,saved,inputs,cfg,partnerCfg,
   games:{firered:{...cfg,port:await port()},[owner]:{...mainCfg,nativeRadio:{cartridge:partnerCfg.nativeRadio.cartridge,core:partnerCfg.nativeRadio.core},title:'firered',role:'partner',seed,port:await port()}}};
  atomicJson(join(root,'config.json'),config);
  const worker=fileURLToPath(new URL('../engine/firered/src/suite/session-worker.js',import.meta.url));
+ const resetRequest=join(root,'console-reset.request');
+ const heldPartnerCommand=join(root,'held-prepare-partner.json');
  const env={...process.env};for(const key of ['POKEMON_SUITE_UPDATE_HOLD','POKEMON_SUITE_MANUAL_LAUNCH','POKEMON_SUITE_DESKTOP_NODE'])delete env[key];
  const owners=['firered',owner];
  const status=game=>{try{return json(join(root,game,'status.json'));}catch{return null;}};
- const start=game=>{const workerEnv={...env,...(config.games[game].adapterData?{POKEMON_SUITE_ADAPTER_DATA:config.games[game].adapterData}:{})};const child=spawn(process.execPath,[worker,join(root,'config.json'),game],{env:workerEnv,stdio:['ignore','pipe','pipe']});children.set(game,child);logs.set(game,'');for(const stream of [child.stdout,child.stderr])stream.on('data',b=>logs.set(game,(logs.get(game)+b).slice(-10000)));};
+ // The partner persists every native trade phase before its next input.
+ const tradePhase=game=>{try{return json(join(root,game,'saves','current.json')).metadata?.localEvolution?.trade?.phase??null;}catch{return null;}};
+ const start=game=>{const resetting=reset?.owner===game,workerEnv={...env,...(config.games[game].adapterData?{POKEMON_SUITE_ADAPTER_DATA:config.games[game].adapterData}:{}),...(resetting?{SUITE_REPLAY_CONSOLE_RESET:resetRequest}:{})};const child=spawn(process.execPath,[...(resetting?['--import',fileURLToPath(new URL('./replay-console-reset.mjs',import.meta.url))]:[]),worker,join(root,'config.json'),game],{env:workerEnv,stdio:['ignore','pipe','pipe']});children.set(game,child);logs.set(game,'');for(const stream of [child.stdout,child.stderr])stream.on('data',b=>logs.set(game,(logs.get(game)+b).slice(-10000)));};
  const wait=async(test,message,ms=30000)=>{const at=Date.now();while(Date.now()-at<ms){for(const [game,c] of children)assert.equal(c.exitCode,null,game+' exited: '+logs.get(game));if(test())return;await sleep(200);}throw Error(message+' '+JSON.stringify(Object.fromEntries(owners.map(g=>[g,{frame:status(g)?.frame,objective:status(g)?.bot?.objective?.id,reason:status(g)?.bot?.reason,preparation:status(g)?.bot?.preparation?.phase,preparationReason:status(g)?.bot?.preparation?.reason,local:status(g)?.localEvolution?.phase,localReason:status(g)?.localEvolution?.reason,error:status(g)?.commandError}]))));};
  let sequence=0;
  const command=async(game,body)=>{const commandId='firered-partner-test-'+(++sequence);atomicJson(join(root,game,'command.json'),{...body,commandId,sessionId:status(game).sessionId});await wait(()=>status(game)?.lastCommand===commandId,'Command not acknowledged: '+body.type);assert.equal(status(game).commandError,null);};
+ const startCoordinator=()=>{
+  assert.equal(coordinator,null,'the host coordinator starts once');
+  coordinator=spawn(process.env.PYTHON??'python3',['-u','-c','import json,sys,time\nfrom pathlib import Path\nfrom pokemon_suite.pokemon_sessions import SuiteSessions\nfrom pokemon_suite.postgame_partner import PostgamePartners\nfrom pokemon_suite.suite_save_store import atomic_file\nclass ReplaySessions(SuiteSessions):\n def command(self,game,body,session_id=None,idle_only=False):\n  if sys.argv[3] and body.get("type")=="prepare-partner" and body.get("requestId")!=sys.argv[2]:\n   atomic_file(Path(sys.argv[3]),json.dumps({"schema":"pokemon-suite/replay-held-command/v1","game":game,"body":body,"sessionId":session_id,"heldAt":int(time.time()*1000)}).encode())\n   raise ValueError("Replay held out-of-scope prepare-partner command "+str(body.get("requestId")))\n  return super().command(game,body,session_id=session_id,idle_only=idle_only)\np=PostgamePartners(ReplaySessions(Path(sys.argv[1])))\nwhile True:\n try:p.tick()\n except (OSError,ValueError,KeyError) as error:print(error,file=sys.stderr,flush=True)\n time.sleep(.5)',root,requestId,runScope==='task'?heldPartnerCommand:''],{cwd:fileURLToPath(new URL('..',import.meta.url)),env,stdio:['ignore','pipe','pipe']});
+  coordinator.stderr.on('data',b=>{coordinatorLog+=b;});
+ };
  try{
   for(const game of owners)start(game);
   await wait(()=>owners.every(g=>status(g)?.pid===children.get(g).pid),'Both FireRed owners must publish their real checkpoints',60000);
@@ -91,13 +112,22 @@ export async function replayFireRedPartner({session,saved,inputs,cfg,partnerCfg,
   // The host runs the coordinator as PostgamePartners._run does: a command the
   // partner has not acknowledged within its deadline (its cold-boot readiness
   // check is slow under load) is retried on a later tick, never fatal.
-  coordinator=spawn(process.env.PYTHON??'python3',['-u','-c','import sys,time\nfrom pathlib import Path\nfrom pokemon_suite.pokemon_sessions import SuiteSessions\nfrom pokemon_suite.postgame_partner import PostgamePartners\np=PostgamePartners(SuiteSessions(Path(sys.argv[1])))\nwhile True:\n try:p.tick()\n except (OSError,ValueError,KeyError) as error:print(error,file=sys.stderr,flush=True)\n time.sleep(.5)',root],{cwd:fileURLToPath(new URL('..',import.meta.url)),env,stdio:['ignore','pipe','pipe']});
-  let coordinatorLog='';coordinator.stderr.on('data',b=>{coordinatorLog+=b;});
+  startCoordinator();
   const availability=()=>existsSync(join(root,'firered','partner-availability.json'))?json(join(root,'firered','partner-availability.json')):null;
   await wait(()=>availability()?.available&&availability().partners?.some(p=>p.owner===owner),'The FireRed partner must advertise availability');
   assert.deepEqual(availability().partners,[{owner,title:'firered'}],'only the FireRed partner is available');
+  if(runScope==='task'){assert.equal(coordinator.kill('SIGSTOP'),true);coordinatorPaused=true;}
   await command('firered',{type:'set-bot',enabled:true});
-  let last='',chosen=false,stalled=null;const receiptPath=join(root,'firered',`acquisition-${requestId}.json`);
+  if(runScope==='task'){
+   await wait(()=>{const p=status('firered')?.bot?.preparation;return p?.requestId===requestId&&p.automatic===true&&p.phase==='waiting-for-transfer';},'The retained player task did not reach its verified transfer boundary',60000);
+   const sourceBeforePartner=status('firered'),partnerBeforeCommand=status(owner);
+   assert.equal(sourceBeforePartner.bot.runScope,'task','the worker must publish the actual task scope before host coordination');
+   assert.equal(sourceBeforePartner.localEvolution,null,'the source exchange has not started before host coordination');
+   assert.equal(partnerBeforeCommand.bot.preparation,null,'the paused host has not prepared the partner');
+   assert.equal(partnerBeforeCommand.localEvolution,null,'the partner exchange has not started before host coordination');
+   assert.equal(coordinator.kill('SIGCONT'),true);coordinatorPaused=false;
+  }
+  let last='',chosen=false,stalled=null,resetRequested=null;const receiptPath=join(root,'firered',`acquisition-${requestId}.json`);
   await wait(()=>{
    assert.equal(coordinator.exitCode,null,'coordinator failed: '+coordinatorLog);
    const fr=status('firered');
@@ -108,6 +138,11 @@ export async function replayFireRedPartner({session,saved,inputs,cfg,partnerCfg,
     console.log('# firered-partner stalled '+JSON.stringify({...stall,frame:fr.frame}));
     setTimeout(()=>{if(child.exitCode===null)child.kill('SIGCONT');stalled.resumed=true;},stall.ms);
    }
+   // Before the partner offers anything, so neither game can have started the exchange.
+   if(reset&&!resetRequested&&fr?.localEvolution?.leg===reset.leg&&owners.every(g=>status(g)?.callback2===reset.callback2)&&tradePhase(reset.owner)==='selecting-pokemon'){
+    writeFileSync(resetRequest,'');resetRequested={frame:fr.frame};
+    console.log('# firered-partner console reset requested '+JSON.stringify({...reset,frame:fr.frame}));
+   }
    const local=fr?.localEvolution?.requestId;
    if(local)assert.equal(local,requestId,'the teammate travels to the FireRed partner');
    chosen||=local===requestId;
@@ -115,13 +150,15 @@ export async function replayFireRedPartner({session,saved,inputs,cfg,partnerCfg,
    assert.notEqual(status(owner)?.bot?.preparation?.phase,'waiting',`partner: ${status(owner)?.bot?.preparation?.reason}`);
    return existsSync(receiptPath);
   // A verified retry repeats the whole outbound leg (cold boot, Direct Corner, trade).
-  },'The teammate did not finish both exchanges with the FireRed partner',stall?.restarts?1080000:720000);
+  },'The teammate did not finish both exchanges with the FireRed partner',stall?.restarts||reset?1080000:720000);
   assert.ok(chosen,'the postgame checklist reserved the teammate for the exchange');
   if(stall)assert.ok(stalled?.resumed,'the owner stall was injected and released during the exchange');
+  if(reset)assert.ok(resetRequested&&existsSync(resetRequest+'.done'),'the partner console took its soft-reset chord during the exchange');
   const receipt=json(receiptPath);assert.equal(receipt.nativeSaveVerified,true);assert.equal(receipt.pokemon.species,68);assert.ok(sameEvolutionIndividual(machoke,receipt.pokemon));
   const pair=json(join(root,'evolution-pairs',requestId+'.json'));
   assert.equal(pair.phase,'complete');
   if(stall)assert.equal(pair.restarts??0,stall.restarts,stall.restarts?'both owners proved the interrupted leg and retried it once':'the stalled owner was held by the linked frame clock, not restarted');
+  if(reset)assert.equal(pair.restarts??0,reset.restarts,'both owners proved the restarted console\'s leg and retried it once');
   assert.deepEqual(pair.reservation.roles,{source:{owner:'firered',title:'firered',trainerId:before.playerMemory.trainer.trainerId},partner:{owner,title:'firered',trainerId:partnerBefore.playerMemory.trainer.trainerId}});
   const placeholder=pair.reservation.partner;
   assert.ok(partnerBefore.playerMemory.trainer.party.some(p=>encounterFingerprint(p)===pair.reservation.partnerFingerprint),'the placeholder is the partner\'s own party member');
@@ -132,14 +169,41 @@ export async function replayFireRedPartner({session,saved,inputs,cfg,partnerCfg,
   await wait(()=>status(owner)?.bot?.preparation?.phase==='complete'&&status(owner)?.bot?.awaitingCommand===true,'The partner must verify its net-zero return and idle',60000);
   assert.equal(status(owner).bot.preparation.netZeroVerified,true);
   await wait(()=>status('firered')?.postgame?.entries?.find(e=>e.id==='team-evolution')?.status==='complete','The checklist must record the evolved team',60000);
+  if(runScope==='task'){
+   await wait(()=>{
+    const source=status('firered'),next=source?.bot?.preparation,available=availability(),held=existsSync(heldPartnerCommand)?json(heldPartnerCommand):null;
+    return source?.postgame?.active==='national-collection'&&next?.requestId&&next.requestId!==requestId&&
+     next.automatic===true&&next.phase==='waiting-for-transfer'&&available?.available===true&&Date.now()-available.checkedAt<10000&&
+     held?.body?.requestId===next.requestId&&coordinatorLog.includes('Replay held out-of-scope prepare-partner command '+next.requestId);
+   },'The task-scoped checklist did not continue to its next automatic evolution',60000);
+   const handoff=status('firered'),next=handoff.bot.preparation,partnerHandoff=status(owner),held=json(heldPartnerCommand),freshAvailability=availability();
+   assert.equal(handoff.bot.runScope,'task','the collection task scope is retained through the exchange handoff');
+   assert.equal(handoff.bot.enabled,true,'the retained checklist keeps the command bot running');
+   assert.equal(handoff.bot.awaitingCommand,false,'the retained checklist still owns executable work');
+   assert.equal(handoff.postgame.active,'national-collection','the original checklist continues its collection objective');
+   assert.equal(next.partnerOwner,owner,'the next automatic evolution keeps its selected partner');
+   assert.equal(freshAvailability.available,true,'the real coordinator keeps partner availability fresh at handoff');
+   assert.ok(Date.now()-freshAvailability.checkedAt<10000,'the partner advertisement is fresh at handoff');
+   assert.equal(held.game,owner,'the seam holds only the next partner command');
+   assert.equal(held.body.type,'prepare-partner');
+   assert.equal(held.body.requestId,next.requestId);
+   assert.match(coordinatorLog,new RegExp('Replay held out-of-scope prepare-partner command '+next.requestId));
+   assert.equal(partnerHandoff.bot.preparation.requestId,requestId,'the held command never replaces the completed first preparation');
+   assert.equal(partnerHandoff.bot.preparation.phase,'complete');
+   assert.equal(partnerHandoff.bot.awaitingCommand,true);
+   assert.equal(handoff.localEvolution,null,'the completed source bridge clears without opening a second pair');
+   assert.equal(partnerHandoff.localEvolution.requestId,requestId,'the partner retains only the completed first bridge');
+   assert.equal(partnerHandoff.localEvolution.phase,'complete');
+  }
   await command('firered',{type:'set-bot',enabled:false});
   await command(owner,{type:'set-bot',enabled:false});
   const final=vault.read();session.loadSram(final.sram);session.loadState(final.state);
-  const after=observer.capture(),team=after.playerMemory.trainer.party;
-  const machamp=team.find(p=>sameEvolutionIndividual(machoke,p));
-  assert.equal(machamp?.species,68,'Machamp returns to the party as the same individual');
+  const after=observer.capture(),trainer=after.playerMemory.trainer,team=trainer.party,sourceHoldingsAfter=holdings(trainer),owned=team.concat(trainer.storage.pokemon);
+  const machamp=(runScope==='task'?owned:team).find(p=>sameEvolutionIndividual(machoke,p));
+  assert.equal(machamp?.species,68,'Machamp remains owned as the same individual');
   assert.equal(machamp.heldItem,machoke.heldItem);
-  assert.deepEqual(team.filter(p=>p!==machamp).map(encounterFingerprint).sort(),others,'the other five teammates are unchanged');
+  if(runScope==='task')assert.deepEqual([...sourceHoldingsAfter.party,...sourceHoldingsAfter.storage].filter(fp=>fp!==encounterFingerprint(machamp)).sort(),[...sourceHoldingsBefore.party,...sourceHoldingsBefore.storage].filter(fp=>fp!==encounterFingerprint(machoke)).sort(),'the continued checklist only rearranges the owner’s other Pokémon');
+  else assert.deepEqual(team.filter(p=>p!==machamp).map(encounterFingerprint).sort(),others,'the other five teammates are unchanged');
   // The partner is net zero in its own native save: cold boot its final SRAM.
   const partnerVault=new SaveVault(join(root,owner,'saves'),bankRecord.identity),partnerFinal=partnerVault.read();
   const check=await createSession();
@@ -156,6 +220,7 @@ export async function replayFireRedPartner({session,saved,inputs,cfg,partnerCfg,
   return {before,after};
  }finally{
   for(const child of children.values())if(child.exitCode===null)child.kill('SIGCONT');
+  if(coordinatorPaused&&coordinator?.exitCode===null)coordinator.kill('SIGCONT');
   coordinator?.kill('SIGTERM');
   for(const [game,child] of children){if(child.exitCode!==null)continue;child.kill('SIGTERM');await Promise.race([new Promise(done=>child.once('exit',done)),sleep(15000)]);if(child.exitCode===null)child.kill('SIGKILL');}
   if(process.env.SUITE_REPLAY_KEEP==='1')console.log('# retained private replay '+root);else rmSync(root,{recursive:true,force:true});

@@ -12,17 +12,31 @@ import { createCampaignSupervisor } from "../player/campaign-supervisor.js";
 import { restoreCampaignAccounting } from "../player/campaign-suspension.js";
 import { createRecoveryLedger } from './recovery.js';
 import {captureRecoveryEvidence,recoveryProgress,recoveryFieldReady} from './campaign-recovery.js';
+import { frlgGame } from "../frlg.js";
+// extra-saves: a helper save's one-per-save choices and its goal stop.
+import {validateHelperGoal,inspectHelperGoal,HELPER_GOAL_WATCH} from './extra-save-helper.js';
 
 export const DEFAULT_RUN_SETTINGS = Object.freeze({ label: "FireRed adventure", starter: "random",
   teamMode: "random", helpers: "allowed", seedMode: "fresh", seed: null, teamSeed: null, afterCampaign: "postgame",
   // null types one of the seeded official presets; a goal may choose the name.
   trainerName: null });
 const SCHEMA = "pokemon-suite/campaign-run/v1";
+// extra-saves: optional helper-save settings, stored only when given, so a
+// default record (and its commitment) is exactly as before.
+const OPTIONAL_RUN_SETTINGS = Object.freeze(["fossil", "helperGoal"]);
+// LeafGreen (build 124) plays the same story campaign. Its postgame is not
+// implemented yet, so a LeafGreen run waits for commands after the Hall of Fame.
+const LEAFGREEN_RUN_SETTINGS = Object.freeze({ ...DEFAULT_RUN_SETTINGS, label: "LeafGreen adventure", afterCampaign: "wait" });
+export function defaultRunSettings(game = "firered") {
+  frlgGame(game);
+  return game === "leafgreen" ? LEAFGREEN_RUN_SETTINGS : DEFAULT_RUN_SETTINGS;
+}
 
-export function validateRunSettings(value) {
+export function validateRunSettings(value, game = "firered") {
+  const defaults = defaultRunSettings(game);
   if (!value || typeof value !== "object" || Array.isArray(value) ||
-      Object.keys(value).some(key => !Object.hasOwn(DEFAULT_RUN_SETTINGS,key))) throw new Error("Unknown or unsupported run setting.");
-  const settings = { ...DEFAULT_RUN_SETTINGS, ...value };
+      Object.keys(value).some(key => !Object.hasOwn(DEFAULT_RUN_SETTINGS,key) && !OPTIONAL_RUN_SETTINGS.includes(key))) throw new Error("Unknown or unsupported run setting.");
+  const settings = { ...defaults, ...value };
   if (typeof settings.label !== "string" || !settings.label.trim() || settings.label.length > 50) throw new Error("Name the run using 1 to 50 characters.");
   settings.label = settings.label.trim();
   if (!["random","bulbasaur","charmander","squirtle"].includes(settings.starter)) throw new Error("Choose a native FireRed starter.");
@@ -31,8 +45,17 @@ export function validateRunSettings(value) {
   if (settings.teamMode === "balanced" && settings.helpers !== "none") throw new Error("Balanced Adventure plans field moves within its six; choose no additional helpers.");
   if (!["fresh","replay"].includes(settings.seedMode)) throw new Error("Choose fresh randomness or explicit seed replay.");
   if (!["postgame","wait"].includes(settings.afterCampaign)) throw new Error("Choose postgame continuation or wait after the League.");
+  if (game === "leafgreen" && settings.afterCampaign !== "wait") throw new Error("The LeafGreen postgame is not available yet. Choose to wait after the League.");
   if (settings.trainerName !== null && (typeof settings.trainerName !== "string" || !PLAYER_NAME_PATTERN.test(settings.trainerName)))
     throw new Error("Choose a trainer name of 1 to 7 letters (A–Z, a–z), or leave it empty for a preset name.");
+  if (Object.hasOwn(settings, "fossil") && !["helix","dome"].includes(settings.fossil)) throw new Error("Choose the Helix Fossil or the Dome Fossil.");
+  if (Object.hasOwn(settings, "helperGoal")) {
+    const goal = validateHelperGoal(settings.helperGoal);
+    if (goal && settings.afterCampaign !== "wait") throw new Error("A helper save waits after its goal (afterCampaign 'wait').");
+    if (goal?.kind === "starter" && settings.starter !== goal.starter) throw new Error("A starter helper save must choose that starter.");
+    if (goal?.kind === "fossil" && (settings.fossil ?? "helix") !== goal.fossil) throw new Error("A fossil helper save must take that fossil at Mt. Moon.");
+    settings.helperGoal = goal;
+  }
   if (settings.seedMode === "fresh") {
     if (settings.seed !== null || settings.teamSeed !== null) throw new Error("Fresh runs create new seeds. Choose Replay to reuse seeds.");
   } else {
@@ -48,25 +71,33 @@ function commitment(record) {
     runProfile: record.runProfile, teamPlan: record.teamPlan, romSha1: record.romSha1 })).digest("hex");
 }
 
-export function createCampaignRun({ settings, rosterContext, romSha1 = null }) {
-  const config = validateRunSettings(settings);
+// A roster context belongs to one FRLG cartridge; a run commits that game.
+function assertRosterGame(rosterContext, game) {
+  const { cartridgeProfileId, title } = frlgGame(game);
+  if (rosterContext?.gameId !== cartridgeProfileId) throw new Error(`A verified ${title} roster is required for this ${title} run.`);
+}
+
+export function createCampaignRun({ settings, rosterContext, romSha1 = null, game = "firered" }) {
+  assertRosterGame(rosterContext, game);
+  const config = validateRunSettings(settings, game);
   const seed = config.seedMode === "replay" ? config.seed : randomBytes(4).readUInt32LE();
   const teamSeed = config.seedMode === "replay" ? config.teamSeed : `hex:${randomBytes(32).toString("hex")}`;
-  const runProfile = createRunProfile(seed,{starter:config.starter,playerName:config.trainerName});
+  const runProfile = createRunProfile(seed,{starter:config.starter,playerName:config.trainerName,game});
   const teamPlan = createRosterPlanForRun(runProfile.starter.species,seed,null,{
     rosterMode: config.teamMode === "random" ? "random" : "coherent", teamSeed,
     helpers: config.helpers, rosterContext,
   });
-  const record = { schema: SCHEMA, id: `run-${randomUUID()}`, game: "firered", createdAt: new Date().toISOString(),
+  const record = { schema: SCHEMA, id: `run-${randomUUID()}`, game, createdAt: new Date().toISOString(),
     settings: config, seed, teamSeed, runProfile, teamPlan, romSha1 };
   return { ...record, commitment: commitment(record) };
 }
 
 export function restoreCampaignRun(record, rosterContext) {
-  if (record?.schema !== SCHEMA || record.game !== "firered" || !/^run-[a-f0-9-]{36}$/.test(record.id ?? "") ||
+  if (record?.schema !== SCHEMA || !["firered","leafgreen"].includes(record.game) || !/^run-[a-f0-9-]{36}$/.test(record.id ?? "") ||
       record.commitment !== commitment(record)) throw new Error("The reviewed run commitment changed.");
-  const settings = validateRunSettings(record.settings);
-  const profile = createRunProfile(record.seed,{starter:settings.starter,playerName:settings.trainerName});
+  assertRosterGame(rosterContext, record.game);
+  const settings = validateRunSettings(record.settings, record.game);
+  const profile = createRunProfile(record.seed,{starter:settings.starter,playerName:settings.trainerName,game:record.game});
   if (!isDeepStrictEqual(profile,record.runProfile)) throw new Error("The committed starter or trainer changed.");
   if (settings.seedMode === "replay" && (settings.seed !== record.seed || settings.teamSeed !== record.teamSeed)) throw new Error("The replay seeds changed.");
   const plan = createRosterPlanForRun(profile.starter.species,record.seed,rosterCheckpoint(record.teamPlan),{
@@ -84,7 +115,7 @@ export function presentCampaignRun(record, state = null, storyProgress = null) {
   const measurements=state?.player?.campaignPlanner?.trainingMeasurements;
   const sample=measurements?.samples?.[measurements?.active?.key];
   const observedXpPerMinute=sample?.activeMs>0&&sample.battles>=2?sample.experience/(sample.activeMs/60000):rate?.measuredXpPerMinute;
-  const pokemon = (species,extra={}) => ({ species, ...extra, sprite: `./assets/pokedex/firered/${species}.png` });
+  const pokemon = (species,extra={}) => ({ species, ...extra, sprite: `./assets/pokedex/${record.game}/${species}.png` });
   return { id: record.id, label: record.settings.label, game: record.game, createdAt: record.createdAt,
     settings: record.settings, seed: record.seed, teamSeed: record.teamSeed, commitment: record.commitment,
     starter: pokemon(record.runProfile.starter.species,{name:record.runProfile.starter.name}),
@@ -106,7 +137,14 @@ export function presentCampaignRun(record, state = null, storyProgress = null) {
 }
 
 export function createCampaignController({record,world,story,mechanics,state=null,fieldTeamPlan=state?.fieldTeamPlan??record?.teamPlan,clock=Date.now,progressTimeoutMs}={}) {
-  const planner=createCampaignPlanner({teamPlan:fieldTeamPlan,world,story,mechanics,initialState:state?.player?.campaignPlanner??null});
+  const helperGoal=record?.settings?.helperGoal??null;
+  const planner=createCampaignPlanner({teamPlan:fieldTeamPlan,world,story,mechanics,initialState:state?.player?.campaignPlanner??null,
+    storyChoices:{fossil:record?.settings?.fossil??'helix',helperGoal}});
+  // extra-saves: the helper goal's park step runs through its own player.
+  let helperState=structuredClone(state?.helperGoal??{}),helperObjective=null,helperPlayer=null,activePlayer=null;
+  const openHelperPlayer=()=>{const wrapper={...planner,select:()=>helperObjective,selectCollection:()=>null,selectTraining:()=>null,selectBattleSquad:()=>[],campaignStatus:()=>({...planner.campaignStatus(),activeObjective:helperObjective})};
+    return createCentralPlayer({campaignPlanner:wrapper,mechanics,captureRequirements:{automaticShinies:true,optimizeCapture:true,shinyPriority:true,safari:true},
+      advisors:createPolicyAdvisors({world,mechanics,campaignPlanner:wrapper,runProfile:record.runProfile,teamPlan:fieldTeamPlan})});};
   const openPlayer=initialState=>createCentralPlayer({campaignPlanner:planner,mechanics,initialState,
     captureRequirements:{automaticShinies:true,optimizeCapture:true,shinyPriority:true,safari:true},
     advisors:createPolicyAdvisors({world,mechanics,campaignPlanner:planner,runProfile:record.runProfile,teamPlan:fieldTeamPlan})});
@@ -181,7 +219,7 @@ export function createCampaignController({record,world,story,mechanics,state=nul
   }
   return {
     record,
-    storyWatch:()=>planner.storyWatch(),
+    storyWatch:()=>{const w=planner.storyWatch();return helperGoal?{...w,flags:[...new Set([...w.flags,...HELPER_GOAL_WATCH.flags])],variables:[...new Set([...(w.variables??[]),...HELPER_GOAL_WATCH.variables])]}:w;},
     campaignStatus:()=>planner.campaignStatus(),
     storyProgress(observation){
       if(observation?.phase==='stable'&&storySnapshot?.frame!==observation.frame)storySnapshot=planner.storyProgress(observation);
@@ -191,7 +229,7 @@ export function createCampaignController({record,world,story,mechanics,state=nul
       objective:planner.campaignStatus().activeObjective??null,task:planner.campaignStatus().activeTask??null,
       activityAccounting:'blocked-pauses-v1',supervisionAccountingRepair:accounting.repair,
       supervision:supervisor.state(),recovery:recovery.state(),menuRecovery:structuredClone(menuRecovery),reviewedMenuRetry,
-      ...(Number.isFinite(lastRecoveryProbe)?{lastRecoveryProbe}:{}),player:player.state()}),
+      ...(Number.isFinite(lastRecoveryProbe)?{lastRecoveryProbe}:{}),...(helperGoal?{helperGoal:structuredClone(helperState)}:{}),player:player.state()}),
     pause(message="Paused by you."){if(status!=="complete"){supervisor.pause();status="paused";reason=message;}},
     resume({retryBlockedPolicy=false}={}){if(status!=="complete"){
       const safety=player.state();
@@ -215,7 +253,7 @@ export function createCampaignController({record,world,story,mechanics,state=nul
       supervisor.resume();status=hallOfFame?"finishing":"running";reason=null;
     }},
     wait(message){supervisor.pause();status="blocked";reason=message;},
-    observeExecution:update=>player.observeExecution(update),
+    observeExecution:update=>(activePlayer??player).observeExecution(update),
     acknowledgeCapture(fingerprint){
       const saved=player.state(),capture=saved.encounterSafety?.capture;
       if(!capture?.nativeSaveVerified||capture.fingerprint!==fingerprint)throw Error('Verify and save the capture before resuming the campaign.');
@@ -253,6 +291,18 @@ export function createCampaignController({record,world,story,mechanics,state=nul
         const continuation=inspectNativeSaveContinuation(o);
         if(continuation?.kind==="blocked"){this.wait(continuation.reason);return continuation;}
         if(continuation)return continuation;
+      }
+      // extra-saves: a helper save stops once its goal individual is saved in a linked Center.
+      activePlayer=null;
+      if(helperGoal){
+        const goal=inspectHelperGoal({observation:o,goal:helperGoal,state:helperState,world,mechanics});
+        if(goal.kind==='reached'){status="complete";reason="The helper goal is saved in a Pokémon Center with a Direct Corner.";
+          completion={helperGoal:goal.receipt,frame:o.frame,sramSha256:o.sram?.sha256??null};
+          return {kind:"campaign-complete",reason,helperGoal:goal.receipt,action:{buttons:[],holdFrames:1,releaseFrames:0}};}
+        if(goal.kind==='stop'){this.wait(goal.reason);return {kind:'blocked',reason:goal.reason,action:{buttons:[],holdFrames:1,releaseFrames:0}};}
+        if(goal.kind==='wait')return idle('Waiting for the helper goal observation.');
+        if(goal.kind==='policy'){helperObjective=goal.objective;helperPlayer??=openHelperPlayer();activePlayer=helperPlayer;
+          const decision=helperPlayer.decide(o);if(decision.kind==='blocked')this.wait(decision.reason??'The helper goal needs review.');return decision;}
       }
       let decision=player.decide(o);
       if(menuRecovery?.phase==='verifying'&&decision.kind!=='blocked'&&recoveryFieldReady(o)){

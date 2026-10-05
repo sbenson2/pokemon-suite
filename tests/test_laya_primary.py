@@ -293,7 +293,7 @@ class LayaPrimary(unittest.TestCase):
                          'a3add9bdd83160505e4d9293b305030fd51747f57b6037d35e2c576026c234cc', 'the calibrated asset’s intent question is frozen')
         self.assertEqual([[k, v] for k, v in pr.LAYA_OPTIONS.items()], options)
         self.assertEqual({intent.id for intent in pr.CATALOG} - set(pr.LAYA_OPTIONS),
-                         {'status-stop', 'status-owned', 'status-stats', 'status-missing', 'status-bag'})
+                         {'status-stop', 'status-owned', 'status-stats', 'status-missing', 'status-bag', 'story'})
 
         class Recording(Scripted):
             def predict(self, state, questions):
@@ -319,6 +319,22 @@ class LayaPrimary(unittest.TestCase):
         both = primary(agent).interpret('heal up, then tell me why it stopped', context=context())
         self.assertEqual(intents(both), ['heal', 'status-stop'])
         self.assertEqual({t for t, _ in agent.asked}, {'heal up'})
+
+    def test_story_requests_are_the_code_layers_alone(self):
+        """"play the story" (build 126) is code-only like stage 5's answers: Laya's options are unchanged and a story clause is never
+        sent to Laya, so the Laya-primary app and an app without Laya give the same answer on every save."""
+        from test_pokemon_requests import story_context
+        combined = pr.LayaCalibration(intent_temperature=1.0, weight=1.0, switch_margin=0.0, promote=0.0, reject=0.5, entity_threshold=0.0)
+        for state in ('new', 'mid', 'hof', 'offline'):
+            for text in ('play the story', 'beat the elite four', 'beat the game', 'continue the story'):
+                expected = stable(pr.Interpreter().interpret(text, via='typed', context=story_context(state)))
+                for intent in ('new-game', 'battle', 'bot-resume', 'catch'):
+                    for calibration, mode in ((PRIMARY, 'on'), (combined, 'on'), (PRIMARY, 'shadow')):
+                        with self.subTest(state=state, text=text, intent=intent, mode=mode, primary=calibration.primary):
+                            agent = Scripted(default=(intent, 0.99, 0.99), entity_p=1.0)
+                            result = primary(agent, calibration=calibration, mode=mode).interpret(text, context=story_context(state))
+                            self.assertEqual(stable(result), expected)
+                            self.assertEqual(agent.asked, [], 'Laya is not asked about a story request')
 
     def test_release_and_other_unsupported_families_stay_honest_refusals(self):
         text = 'let my magikarp go free'

@@ -13,7 +13,7 @@ import {FireRedEvolutionTask,selectOwnedDexEvolution,partnerTradeReady} from './
 import {TradePreparation} from './trade-preparation.js';
 import {PlayerTask} from './player-task.js';
 import {QmmSupplyTask,QMM_WATCH,QMM_DEFAULT_STOCK,qmmPartyHoldsMail,qmmRenewable} from './qmm-supply.js';
-import {PostgameAgenda,postgameFailureContext,POSTGAME_WATCH,resolvePostgameObjective,postgameChecklist,isLeagueChallengeMap,normalizePriorityTarget} from './postgame-agenda.js';
+import {PostgameAgenda,postgameFailureContext,POSTGAME_WATCH,resolvePostgameObjective,postgameChecklist,isLeagueChallengeMap,normalizePriorityTarget,collectionContext,exhaustedCollection} from './postgame-agenda.js';
 import {storageCapacity} from './storage-capacity.js';
 import {observePostgameProgress,observePostgameNavigation,observePostgameBoundary} from './postgame-watchdog.js';
 import {nationalSpeciesId} from '../evidence/gen3-national-species.js';
@@ -24,6 +24,8 @@ import {recordSaveStates,pendingRecordClaim} from './postgame-records.js';
 import {refreshLeagueTraining,validLeagueTrainingOwner,noteLeagueExpShareHold} from './league-exp-share.js';
 import {planHatchlingRelease,releaseDemand,releaseIdentityKeys,RELEASE_BATCH,RELEASE_LABEL} from './pc-release.js';
 import {resolveFireRedLinkQuest,resolveFireRedTravel,LINK_QUEST_WATCH,saveFireRedLinkUnlock,saveFireRedQuestMilestone,fireRedPokemonCenter} from './fire-red-link-quest.js';
+// extra-saves: families that need another FireRed save (extra-saves.js).
+import {selectExtraSaveObjective,refreshExtraSavePlan,deferExtraSaveNeed} from './extra-save-exchange.js';
 
 export function canContinuePostgame({enabled,running,mission,nativeTrade,wireless,postgame,recovery,interruptedRecovery}){
  // The checklist releases a blocked, unprotected hunt by deferring its objective
@@ -83,6 +85,8 @@ export function createPostgameController({world,story,mechanics,state=null,clock
  let status=state?.status??'running',reason=state?.reason??null,captures=state?.captures??0,misses=state?.misses??0;
  let save=state?.save??null,pendingObjective=state?.pendingObjective??null;
  let handoffRequested=state?.control?.handoffRequested===true,partnerAvailable=false;
+ let extraSaveSources=null;// extra-saves: owned FireRed saves published by the host
+ const extraSaveWorkflow=()=>(agenda.state.workflows??={}).extraSaves??={};
  let preparation=state?.preparation??state?.agenda?.preparation??(agenda.state.enabled?{kind:'postgame',phase:'prerequisites'}:null);
  // Opt-in Rare Candy supply (question-mark Mail). A stopped supply that holds
  // nothing yet is retried later; one holding Mail blocks for review.
@@ -209,10 +213,14 @@ export function createPostgameController({world,story,mechanics,state=null,clock
  const dependencyObjective=o=>{
   const m=o.playerMemory,dex=nationalDexProgress(m.trainer?.pokedex?.ownedSpecies),space=storageCapacity(m.trainer),flags=m.storyState?.flagIds??{};
   const goal=flags[2112]!==true?'national-dex':flags[2116]!==true?'sevii-link':'postgame';
+  // A finished National Dex collection (postgame-agenda.js exhaust) is idle for
+  // this exact collection: it is reported plainly, never as a retry.
+  const finished=exhaustedCollection(o,agenda.state.workflows);
   const dependencies=[...Object.entries(agenda.state.failures??{}).map(([id,value])=>({id,...value})),...deferredEvolutions.map(e=>({id:e.state.requestId,reason:e.reason,retryAt:e.retryAt})),
-   ...(fieldCare.deferredShopping?[{id:'stock-postgame-supplies',reason:fieldCare.deferredShopping.reason,retryAt:fieldCare.deferredShopping.retryAt,requiresStateChange:fieldCare.deferredShopping.exhausted}]:[])];
+   ...(fieldCare.deferredShopping?[{id:'stock-postgame-supplies',reason:fieldCare.deferredShopping.reason,retryAt:fieldCare.deferredShopping.retryAt,requiresStateChange:fieldCare.deferredShopping.exhausted}]:[]),
+   ...(finished?[{id:finished.id,exhausted:true,reason:finished.reason,summary:finished.summary,retryAt:null}]:[])];
   const retryAt=dependencies.filter(d=>!d.requiresStateChange&&d.retryAt>clock()).sort((a,b)=>a.retryAt-b.retryAt)[0]?.retryAt??null;
-  const detail=!dex.known||m.trainer?.partyValidity!=='valid'||!space.known?'Verify the current Pokédex, party and PC before choosing another source.':!space.canStart?(agenda.state.workflows?.pcRelease?.available===false?'Free PC space while preserving the shiny reserve: no Egg-sticker hatchling can be released safely; owned evolutions remain eligible.':'Free PC space while preserving the shiny reserve; owned evolutions remain eligible.'):retryAt?'Available routes are cooling down after failed attempts; retry the earliest route automatically.':goal==='national-dex'?`Register ${Math.max(0,60-dex.caught)} more species. No verified local capture, evolution, gift or prize route is currently available.`:goal==='sevii-link'?'Complete Celio’s link prerequisites; the current cartridge route could not be resolved.':'Remaining objectives require an available source, route or compatible partner.';
+  const detail=!dex.known||m.trainer?.partyValidity!=='valid'||!space.known?'Verify the current Pokédex, party and PC before choosing another source.':!space.canStart?(agenda.state.workflows?.pcRelease?.available===false?'Free PC space while preserving the shiny reserve: no Egg-sticker hatchling can be released safely; owned evolutions remain eligible.':'Free PC space while preserving the shiny reserve; owned evolutions remain eligible.'):retryAt?'Available routes are cooling down after failed attempts; retry the earliest route automatically.':goal==='national-dex'?`Register ${Math.max(0,60-dex.caught)} more species. No verified local capture, evolution, gift or prize route is currently available.`:goal==='sevii-link'?'Complete Celio’s link prerequisites; the current cartridge route could not be resolved.':finished?finished.reason:'Remaining objectives require an available source, route or compatible partner.';
   return {id:'postgame-dependency-'+goal,goal,label:goal==='national-dex'?'Unlock the National Pokédex':goal==='sevii-link'?'Complete Celio’s Ruby and Sapphire quest':'Complete remaining postgame objectives',target:{kind:'await-postgame-dependency',map:m.map.id,reason:fieldCare.deferredShopping?`${detail} Supply basket retained: ${fieldCare.deferredShopping.reason}`:detail},progress:{current:dex.known?dex.caught:null,required:goal==='national-dex'?60:386},dependencies,retryAt};
  };
  // Keep each owner's logical destination while resolving the current ferry
@@ -284,7 +292,8 @@ export function createPostgameController({world,story,mechanics,state=null,clock
   const openPlayer=o=>{
    const owned=new Set(o.playerMemory?.trainer?.pokedex?.ownedSpecies??[]);
   const collecting=storageCapacity(o.playerMemory?.trainer).canStart&&!playerTask&&!evolution&&(!preparation||preparation.phase==='complete'||owned.size<60);
-  const missing=collecting?(mechanics.data??mechanics).species.filter(s=>nationalSpeciesId(s.id)&&!owned.has(s.id)).map(s=>s.id):[];
+  // Pokédex flags are National numbers; hunt targets are internal species ids.
+  const missing=collecting?(mechanics.data??mechanics).species.filter(s=>nationalSpeciesId(s.id)&&!owned.has(nationalSpeciesId(s.id))).map(s=>s.id):[];
   // FireRed adds 30 to the escape formula per attempt. Nine attempts cover
   // even the slowest untrapped lead; the guard still protects every shiny.
   // A Mail-supply prerequisite (Spearow or Abra for a cartridge trade) is a capture target too.
@@ -296,6 +305,18 @@ export function createPostgameController({world,story,mechanics,state=null,clock
  return {
   storyWatch:()=>storyWatch,
   setPartnerAvailability(available){partnerAvailable=available===true?true:available?.available===true?structuredClone(available):false;},
+  // extra-saves: the host's inventory of other owned FireRed saves.
+  setExtraSaveSources(value){extraSaveSources=value?.schema==='pokemon-suite/extra-save-sources/v1'&&Array.isArray(value.sources)?structuredClone(value):null;},
+  acceptExtraSaveTrade(result,o){
+   if(acquisition?.state.kind!=='extra-save')throw Error('There is no current extra-save exchange.');
+   acquisition.acceptTrade(result,o);extraSaveWorkflow().active={needId:acquisition.state.route.needId,phase:acquisition.state.phase,reason:null,borrowed:acquisition.state.borrowed&&!acquisition.state.result?acquisition.state.route.subject.fingerprint:null};
+   preparation={kind:'postgame',phase:'complete'};objective=null;player=null;playerState=null;this.resume();
+  },
+  deferExtraSave(message){
+   if(acquisition?.state.kind!=='extra-save'||preparation?.kind!=='extra-save'||preparation.phase!=='waiting-for-transfer')throw Error('No extra-save exchange is waiting for its partner.');
+   if(!deferExtraSaveNeed(extraSaveWorkflow(),acquisition.state,message,clock())){preparation={...preparation,reason:message};reason=message;return;}
+   acquisition=null;preparation={kind:'postgame',phase:'complete'};objective=null;player=null;playerState=null;this.resume();
+  },
   // A saved Bot setting pushed to the running owner; a resume applies at the next
   // stable field decision outside the League.
   setLeagueTraining(value){if(!validLeagueTrainingOwner(value))throw Error('Invalid League training setting.');leagueTraining=value&&{enabled:value.enabled,resumedAt:value.resumedAt};noteLeagueTraining();},
@@ -404,8 +425,10 @@ export function createPostgameController({world,story,mechanics,state=null,clock
   decide(o){
    try{
    if(agenda.state.enabled&&o.phase==='stable'){
-    const signature=JSON.stringify([o.playerMemory?.trainer?.pokedex?.ownedSpecies,[582,611,750,749,748,730].map(id=>o.playerMemory?.storyState?.flagIds?.[id])]);
+    // The source table depends on held individuals, the Bag and story flags too.
+    const signature=collectionContext(o);
     if(signature!==agenda.state.collectionSignature){agenda.state.collection=nationalDexSources({o,world,mechanics});agenda.state.collectionSignature=signature;}
+    if(extraSaveSources)refreshExtraSavePlan({o,sources:extraSaveSources,workflow:extraSaveWorkflow(),world});// extra-saves
    }
    if(!fieldRolesKnown&&o.phase==='stable'&&o.playerMemory?.trainer?.partyValidity==='valid'){
     fieldTeamPlan.permanentFamilies=o.playerMemory.trainer.party.map(p=>[p.species]);fieldRolesKnown=true;
@@ -532,6 +555,20 @@ export function createPostgameController({world,story,mechanics,state=null,clock
    }
    if(acquisition&&!safety?.capture&&!save&&!o.emulator.inBattle&&!qmmOwns){
     const next=acquisition.inspect(o,{yieldRequested:Boolean(watchdog.boundary),...(acquisition.state.kind==='pc-release'?{release:releaseContext()}:{})});
+    // extra-saves: a verified trade leg with another owned FireRed save waits as a
+    // partner transfer; a clean exchange that cannot start defers only its family.
+    if(acquisition.state.kind==='extra-save'){
+     const w=extraSaveWorkflow();w.active={needId:acquisition.state.route.needId,phase:acquisition.state.phase,reason:next.reason??acquisition.state.reason??null,borrowed:acquisition.state.dirty&&acquisition.state.route.mode!=='keep'&&!acquisition.state.result?acquisition.state.route.subject.fingerprint:null};
+     if(next.kind==='transfer'){
+      preparation={requestId:next.requestId,kind:'extra-save',automatic:true,phase:'waiting-for-transfer',tradePreparation:next.tradePreparation,partnerOwner:next.partnerOwner,offer:next.offer,reason:next.reason};
+      status='waiting';reason=next.reason;return {kind:'blocked',reason};
+     }
+     if(next.kind==='stop'&&canYield(o)&&deferExtraSaveNeed(w,acquisition.state,next.reason,clock())){
+      acquisition=null;objective=null;player=null;playerState=null;status='running';reason=null;
+      return {kind:'resample',reason:next.reason,action:{buttons:[],holdFrames:1,releaseFrames:1}};
+     }
+     if(next.kind==='complete')w.active=null;
+    }
     if(next.kind==='complete')return {kind:'acquisition-saved',receipt:next.receipt};
     if(next.kind==='suspended'){
      if(!next.receipt?.nativeSaveVerified)throw Error('A suspended acquisition needs a native save receipt.');
@@ -593,7 +630,19 @@ export function createPostgameController({world,story,mechanics,state=null,clock
     }
     else if(next.kind==='supply'){
      objective=base.selectItemPreparation(o,next.item.nativeId);
-     if(!objective){status='waiting';reason=`No currently reachable supply of ${next.item.name??'the required item'} is verified.`;return {kind:'blocked',reason};}
+     if(!objective){
+      const missing=`No currently reachable supply of ${next.item.name??'the required item'} is verified.`;
+      // A national Dex evolution never stops the owner here: like a stalled
+      // one, it is retained for retry (its individual stays reserved) and the
+      // owner continues other work. An in-flight transaction keeps the stop.
+      if(dexEvolution&&!dexEvolution.state.baseline&&canYield(o)){
+       deferredEvolutions.push({state:structuredClone(dexEvolution.state),retryAt:clock()+300000,reason:missing});
+       dexEvolution=null;objective=null;player=null;playerState=null;
+       status='recovering';reason=missing+' The evolution is retained for retry; continue other available Pokédex work.';
+       return {kind:'resample',reason,action:{buttons:[],holdFrames:1,releaseFrames:1}};
+      }
+      status='waiting';reason=missing;return {kind:'blocked',reason};
+     }
     }else if(next.kind==='national-dex'||next.kind==='external'){objective=preparationObjective(o);preparation.phase=o.playerMemory.storyState?.flagIds?.[2112]===true?'sevii-link-quest':'national-dex';}
     else if(next.kind==='wait')return waitTransitionDecision(o)??{kind:'resample',reason:'Waiting for the evolution observation.',action:{buttons:[],holdFrames:8,releaseFrames:0}};
    }
@@ -650,7 +699,7 @@ export function createPostgameController({world,story,mechanics,state=null,clock
      // Egg breeding can be selected later in this decision. Keep its daycare
      // recovery reserve before generic care spends the money on a supply trip.
      const nextBudgetOwner=agenda.state.active??(o.playerMemory.storyState?.flagIds?.[2116]===true?
-      postgameChecklist(o,agenda.state.workflows,fieldTeamPlan).find(e=>e.status==='pending'&&e.executable&&!e.storageBlocked&&
+      postgameChecklist(o,agenda.state.workflows,fieldTeamPlan,agenda.state.collection).find(e=>e.status==='pending'&&e.executable&&!e.storageBlocked&&
        !(agenda.state.failures?.[e.id]?.retryAt>clock())&&
        !(agenda.state.failures?.[e.id]?.requiresStateChange&&agenda.state.failures[e.id].context===postgameFailureContext(o)))?.id:null);
      const permitsShopping=!['league-rematch','hall-sticker','league-training','trainer-tower','egg-sticker'].includes(nextBudgetOwner);
@@ -682,22 +731,29 @@ export function createPostgameController({world,story,mechanics,state=null,clock
       const next=agenda.select(o,clock(),{partnerAvailable,priorityOnly:true});
       if(next){
        selected=resolveEntry(next);
-       if(!selected||selected.target.kind==='stop-for-review'){agenda.defer(next.id,selected?.target.reason??'This objective needs its native workflow.',clock());selected=null;}
+       if(selected?.target.kind==='collection-exhausted'){agenda.exhaust(next.id,o,selected.target,clock());selected=null;}
+       else if(!selected||selected.target.kind==='stop-for-review'){agenda.defer(next.id,selected?.target.reason??'This objective needs its native workflow.',clock());selected=null;}
       }
      }
      selected??=preparationObjective(o);
      if(!selected&&agenda.state.enabled){
       // Exhaust available candidates in this decision. Deferring an unsupported
       // first entry must not leave the rest of the checklist stranded.
-      const budget=postgameChecklist(o,agenda.state.workflows,fieldTeamPlan).length;
+      const budget=postgameChecklist(o,agenda.state.workflows,fieldTeamPlan,agenda.state.collection).length;
       for(let attempt=0;attempt<budget&&!selected;attempt++){
        const next=agenda.select(o,clock(),{partnerAvailable});if(!next)break;
        selected=resolveEntry(next);
+       // Nothing left for this save alone: idle for this collection, not a retry.
+       if(selected?.target.kind==='collection-exhausted'){agenda.exhaust(next.id,o,selected.target,clock());selected=null;continue;}
        if(!selected||selected.target.kind==='stop-for-review'){
-        agenda.defer(next.id,selected?.target.reason??'This objective needs its native workflow.',clock());selected=null;
+        // A National Dex cooldown also ends when the collection changes (a trade).
+        agenda.defer(next.id,selected?.target.reason??'This objective needs its native workflow.',clock(),null,
+         next.id==='national-collection'?{collection:collectionContext(o),retryAt:selected?.target.retryAt??null}:{});selected=null;
        }
       }
      }
+     // extra-saves: families that need another FireRed save, only when no local checklist work is selectable.
+     if(!selected&&agenda.state.enabled&&!ownedMilestone())selected=selectExtraSaveObjective({o,sources:extraSaveSources,available:partnerAvailable,protectedFingerprints:reservedEvolutionFingerprints(),workflow:extraSaveWorkflow(),world,now:clock()});
      selected??=agenda.state.enabled?null:base.select(o)??base.selectCollection(o);
      if(objective&&selected?.id!==objective.id&&!['save-game','await-postgame-dependency'].includes(objective.target?.kind)&&
         !['save-game','stop-for-review'].includes(selected?.target?.kind)&&Number.isSafeInteger(o.playerMemory.gameStats?.savedGame)&&o.sram?.sha256){

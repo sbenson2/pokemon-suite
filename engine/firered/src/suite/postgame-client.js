@@ -7,10 +7,10 @@ import {validLeagueTrainingOwner} from './league-exp-share.js';
 export function createPostgameClient(options){
  const initial=createPostgameController(options);
  const client=createPlannerClient({kind:'postgame',module:new URL('./postgame.js',import.meta.url).href,options,
-  resumingCommands:['beginAdventure','beginAcquisition','beginPlayerTask','beginQmmSupply','beginEvolution','resumeVerifiedCapture','acceptEvolutionRoundTrip','deferPartnerEvolution'],
+  resumingCommands:['beginAdventure','beginAcquisition','beginPlayerTask','beginQmmSupply','beginEvolution','resumeVerifiedCapture','acceptEvolutionRoundTrip','deferPartnerEvolution','acceptExtraSaveTrade','deferExtraSave'],
   snapshot:{state:initial.state(),storyWatch:initial.storyWatch()}});
- const commands=['setPartnerAvailability','beginAdventure','rejectHunt','beginAcquisition','acknowledgeAcquisition','beginPlayerTask','beginQmmSupply','preserveEvolutionSource','beginEvolution','prepareAcquisition','resumeVerifiedCapture','requestHandoff','acknowledgeEvolution','acceptEvolutionRoundTrip','acknowledgeDexEvolution','deferPartnerEvolution','recordHunt','completeHunt'];
- let availabilityKey=null;
+ const commands=['setPartnerAvailability','beginAdventure','rejectHunt','beginAcquisition','acknowledgeAcquisition','beginPlayerTask','beginQmmSupply','preserveEvolutionSource','beginEvolution','prepareAcquisition','resumeVerifiedCapture','requestHandoff','acknowledgeEvolution','acceptEvolutionRoundTrip','acknowledgeDexEvolution','deferPartnerEvolution','recordHunt','completeHunt','acceptExtraSaveTrade','deferExtraSave'];// extra-saves
+ let availabilityKey=null,sourcesKey=null;
  return {...client,...Object.fromEntries(commands.map(name=>[name,(...args)=>client.command(name,...args)])),
   publishPartnerAvailability(value){
    // Legacy `true` is the Emerald companion; a document lists ready partner owners.
@@ -21,6 +21,12 @@ export function createPostgameClient(options){
    // The host command loop must remain available to pause a slow planner.
    // Republish after worker replacement, whose ephemeral availability is false.
    void client.command('setPartnerAvailability',available).catch(()=>{if(availabilityKey===key)availabilityKey=null;});
+  },
+  // extra-saves: the host's inventory of owned FireRed saves, pushed on change.
+  publishExtraSaveSources(value){
+   const key=JSON.stringify([value?.checkedAt??null,value?.sources?.length??0,client.metrics().restarts]);
+   if(key===sourcesKey)return;sourcesKey=key;
+   void client.command('setExtraSaveSources',value??null).catch(()=>{if(sourcesKey===key)sourcesKey=null;});
   },
   // A planner restart relaunches from these options, so the pushed setting stays.
   async setLeagueTraining(value){if(!validLeagueTrainingOwner(value))throw Error('Invalid League training setting.');options.leagueTraining=value;return client.command('setLeagueTraining',value);},

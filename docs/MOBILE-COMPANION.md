@@ -4,7 +4,9 @@
 
 The existing companion is a native SwiftUI client of the Mac app. The Mac owns emulators, bot tasks, ROMs, saves, collection and wireless transport. Both devices use the same library and commands. Closing or backgrounding the companion releases manual inputs and its stream; it does not stop the Mac bot.
 
-Games, Live game, Pokédex, Farming, Trading and Bot settings match the Mac destinations. iPhone uses the upper-left Poké Ball menu; iPad retains a sidebar and split views, with the same menu available. There is no bottom navigation bar. Both use the Mac's ROM-derived artwork, native system appearance and bounded scroll areas. Bot and farming forms, playback decoding and command transport reuse the Mac Swift sources. Unsupported games retain the host's capability restrictions.
+Games, Live game, Bank, Farming, Trading and Bot settings match the Mac destinations. iPhone uses the upper-left Poké Ball menu; iPad retains a sidebar and split views, with the same menu available. There is no bottom navigation bar. Both use the Mac's ROM-derived artwork, native system appearance and bounded scroll areas. Bot and farming forms, playback decoding and command transport reuse the Mac Swift sources. Unsupported games retain the host's capability restrictions.
+
+The **Bank** (formerly Pokédex) works as on the Mac: every species with its owned Pokémon in every save the Mac knows, how FireRed gets it, and **Get It**, which uses the same request flow and preview as Ask. The filter button narrows by type, owned, shiny-owned and obtainable. An owned Pokémon's details include **Send to Switch** for the current game. See [the Mac guide](MACOS.md).
 
 Trainer and Location details replace their summaries inside the existing card
 bounds, with a fixed return button and scrollable facts. The centered wordmark

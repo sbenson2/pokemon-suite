@@ -8,7 +8,7 @@ import SuiteCore
     private var pendingInstall: (() -> Void)?
     private var controller: SPUStandardUpdaterController?
     @Published private(set) var available = false
-    @Published private(set) var message = "This build has no public app update feed. Install a signed release when one is available."
+    @Published private(set) var message = "This version doesn’t update itself. Download new versions from the project’s Releases page on GitHub."
     override init() {
         super.init()
         guard let feed = Bundle.main.object(forInfoDictionaryKey: "SUFeedURL") as? String,

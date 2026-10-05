@@ -156,6 +156,17 @@ export class FireRedNativeTradeHost {
   // then completes five save standbys plus the reconstructed-menu standby.
   if(['CB2_LinkTrade','CB2_UpdateLinkTrade','CB2_WaitTradeComplete','CB2_TryLinkTradeEvolution'].includes(callback)&&Number.isInteger(wireless?.standby?.round))s.saveStandbyStart=wireless.standby.round;
   const linkError=['CB2_LinkError','CB2_PrintErrorMessage'].includes(o.emulator?.callback2);
+  // A console that left its loaded game (a native restart shows the boot,
+  // title and Continue screens) holds no party in RAM, so its empty party is
+  // not an identity change. Gates 118-02 and 122-01: the FireRed partner
+  // restarted itself in the trade room. Only its native save can tell: before
+  // the exchange this is a lost link, and the owner's restart cold-boots that
+  // save and proves its party and trade count. Afterwards it stays unresolved.
+  if(o.emulator?.mode==='boot'){
+   if(s.exchangeStarted)return stop('trade-outcome-unresolved','The game restarted after the exchange started. Preserving it; the partner may have received the Pokémon.');
+   if(s.cancellation)return stop('cancel-exit-incomplete','The game restarted before the cancelled trade left its room.');
+   return this.retry('The game restarted to its boot screen.',now);
+  }
   if(m.trainer?.partyValidity!=='valid')return {kind:'wait'};
   const party=m.trainer.party.map(encounterFingerprint),matches=party.filter(p=>p===s.fingerprint).length;
   if(matches===1&&!s.partyBefore){s.partyBefore=party;s.tradeCountBefore=Number.isInteger(wireless?.tradeCount)?wireless.tradeCount:null;}

@@ -31,3 +31,16 @@ test('two FireRed owners resolve to separate directories while their saves keep 
   [{firered:{}},'missing'],
  ])assert.throws(()=>resolveSuiteOwner({directory:root,games},key),/Unknown configured Suite game/);
 });
+
+// extra-saves: a helper FireRed save plays its own story campaign in its own
+// owner directory; it is neither the main save nor a trade partner.
+test('a helper FireRed owner has its own directory and is neither the main save nor a partner',t=>{
+ const root=mkdtempSync(join(tmpdir(),'suite-owners-'));t.after(()=>rmSync(root,{recursive:true,force:true}));
+ const config={directory:root,games:{firered:{port:1},'firered-helper-1':{title:'firered',role:'helper',port:2}}};
+ const helper=resolveSuiteOwner(config,'firered-helper-1');
+ assert.deepEqual([helper.owner,helper.title,helper.partner,helper.helper],['firered-helper-1','firered',false,true]);
+ assert.equal(helper.directory,join(root,'firered-helper-1'));
+ assert.equal(resolveSuiteOwner(config,'firered').helper,false);
+ assert.throws(()=>resolveSuiteOwner({directory:root,games:{firered:{role:'helper'}}},'firered'),/Unknown configured Suite game/);
+ assert.throws(()=>resolveSuiteOwner({directory:root,games:{'emerald-helper':{title:'emerald',role:'helper'}}},'emerald-helper'),/Unknown configured Suite game/);
+});

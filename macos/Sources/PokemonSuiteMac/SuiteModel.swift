@@ -4,7 +4,7 @@ import SuiteCore
 import UniformTypeIdentifiers
 
 enum SuitePage: String, CaseIterable, Identifiable {
-    case library = "Games", live = "Live game", pokedex = "Pokédex", farming = "Farming", trading = "Trading", bot = "Bot settings"
+    case library = "Games", live = "Live game", pokedex = "Bank", farming = "Farming", trading = "Trading", bot = "Bot settings"
     var id: String { rawValue }
     var symbol: String {
         switch self {
@@ -32,6 +32,8 @@ enum SuitePage: String, CaseIterable, Identifiable {
     @Published var manual = false
     @Published var quitting = false
     @Published var profile: URL
+    /// A Bot settings section another page asked to show (for example New run for a brand-new save).
+    @Published var botSectionRequest: String?
     let host = ServiceHost()
     let companion = CompanionHost()
     let playback = GamePlayback()
@@ -54,6 +56,17 @@ enum SuitePage: String, CaseIterable, Identifiable {
             return try await api.post(path, body)
         }))
 
+    /// The Bank's "Get it": the same request flow as Ask, with its own draft so the two never replace each other's preview.
+    lazy var bankRequests = BotRequestFlow(client: "mac-bank", transport: BotRequestTransport(
+        get: { [weak self] path in
+            guard let api = self?.api else { throw SuiteError("The game service is unavailable.") }
+            return try await api.get(path)
+        },
+        post: { [weak self] path, body in
+            guard let api = self?.api else { throw SuiteError("The game service is unavailable.") }
+            return try await api.post(path, body)
+        }))
+
     init() {
         let args = ProcessInfo.processInfo.arguments
         smoke = args.contains("--smoke-test")
@@ -63,6 +76,8 @@ enum SuitePage: String, CaseIterable, Identifiable {
         if let explicit, !smoke { UserDefaults.standard.set(explicit, forKey: "profilePath") }
         if let raw = UserDefaults.standard.string(forKey: "selectedPage"), let value = SuitePage(rawValue: raw) { page = value }
         if UserDefaults.standard.string(forKey: "selectedPage") == "Caught shinies" { page = .trading }
+        if UserDefaults.standard.string(forKey: "selectedPage") == "Pokédex" { page = .pokedex }  // the Pokédex became the Bank
+        UserDefaults.standard.removeObject(forKey: "appearance")  // the Light/Dark setting was removed; the app follows macOS
     }
 
     var games: [JSONValue] { state["library"].array }
@@ -80,6 +95,8 @@ enum SuitePage: String, CaseIterable, Identifiable {
         draftStore = (profile, store)
         return store
     }
+
+    func openBotSection(_ section: String) { botSectionRequest = section; page = .bot }
 
     func openCompleteSuite() { if let url = host.baseURL { NSWorkspace.shared.open(url) } }
     func openHelp() {
@@ -216,12 +233,14 @@ enum SuitePage: String, CaseIterable, Identifiable {
         presentingPanel = true
         Task {
             defer { presentingPanel = false }
-            let rom = NSOpenPanel(); rom.title = "Choose your FireRed US revision 1 game"; rom.allowedContentTypes = [UTType(filenameExtension: "gba") ?? .data]; rom.allowsMultipleSelection = false
+            let rom = NSOpenPanel(); rom.title = "Choose your FireRed or LeafGreen US revision 1 game"; rom.allowedContentTypes = [UTType(filenameExtension: "gba") ?? .data]; rom.allowsMultipleSelection = false
             guard await present(rom) == .OK, let image = rom.url else { return }
             perform { [self] in
-                // The emulator core and bot knowledge ship inside the app.
-                try await api?.post("/api/install/firered", .object(["rom": .string(image.path)]))
-                selectedGame = "firered"; dexGame = ""; await loadDex(); page = .live; notice = "FireRed added. Start game when you’re ready."
+                // The emulator core and bot knowledge ship inside the app. The
+                // verified image says whether it is FireRed or LeafGreen.
+                let installed = try await api?.post("/api/install/frlg", .object(["rom": .string(image.path)]))
+                let game = installed?["game"].string == "leafgreen" ? "leafgreen" : "firered"
+                selectedGame = game; dexGame = ""; await loadDex(); page = .live; notice = "\(game == "leafgreen" ? "LeafGreen" : "FireRed") added. Start game when you’re ready."
             }
         }
     }

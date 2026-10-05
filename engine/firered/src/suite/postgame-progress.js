@@ -1,6 +1,8 @@
-import {nationalSpeciesId} from '../evidence/gen3-national-species.js';
+import {nationalSpeciesId,nationalDexNumbers} from '../evidence/gen3-national-species.js';
 import {recordComplete} from './postgame-records.js';
 import {fameRosterRestorationComplete} from './postgame-collection-extras.js';
+import fireRedCatchable from './firered-catchable.json' with {type:'json'};
+const FIRERED_GOAL=fireRedCatchable.species.map(x=>x.id);
 
 // HasAllMons in the original cartridge excludes these six entries, including
 // Lugia and Ho-Oh. The user's complete collection still requires all 386.
@@ -13,8 +15,9 @@ export function missedLoreleiConversation(flags={}){
  return flags[724]===false&&flags[2116]===true?
   'Delivering the Sapphire returned Lorelei to the League; her optional house conversation was missed on this save.':null;
 }
-export function nationalDexProgress(nativeSpecies) {
- const known=Array.isArray(nativeSpecies),owned=new Set((nativeSpecies??[]).map(nationalSpeciesId).filter(Boolean));
+// ownedSpecies: the decoded Pokédex owned flags, already National Dex numbers.
+export function nationalDexProgress(ownedSpecies) {
+ const known=Array.isArray(ownedSpecies),owned=new Set(nationalDexNumbers(ownedSpecies));
  const missing=Array.from({length:386},(_,i)=>i+1).filter(id=>!owned.has(id));
  const diplomaMissing=missing.filter(id=>!DIPLOMA_EXCEPTIONS.has(id));
  return {known,caught:owned.size,total:386,complete:known&&!missing.length,missing,
@@ -27,6 +30,12 @@ export function postgameProgress(o,agenda={}) {
  agenda??={};
  const stable=o?.phase==='stable',m=stable?o.playerMemory??{}:{},f=m.storyState?.flagIds??{},v=m.storyState?.variableIds??{};
  const dex=nationalDexProgress(m.trainer?.pokedex?.ownedSpecies),e=m.postgameEvidence??{},stats=m.gameStats??{};
+ // The owner's goal: the species FireRed can register by itself. One-per-save
+ // choices another FireRed save must supply are planned (agenda.collection rows).
+ const rows=Array.isArray(agenda.collection)&&agenda.collection.length===386?agenda.collection:null;
+ const fireRed=dex.known?{caught:FIRERED_GOAL.filter(id=>!dex.missing.includes(id)).length,total:FIRERED_GOAL.length,
+  planned:rows?rows.filter(r=>r.goal&&r.planned&&r.status!=='complete').length:null,otherGames:rows?rows.filter(r=>r.category==='other-games').length:null}:null;
+ if(fireRed)dex.fireRed=fireRed;
  const compare=(value,target)=>Number.isFinite(value)?value>=target:undefined;
  const bool=value=>value===true?'complete':value===false?'pending':'unknown';
  const owned=id=>dex.known?!dex.missing.includes(id):undefined;
@@ -73,6 +82,8 @@ export function postgameProgress(o,agenda={}) {
    step('snorlax','Acquire Snorlax','Use a remaining Poké Flute encounter or a legitimate family/trade source.','Snorlax is registered as caught.',owned(143)),
    ...[[144,'Articuno'],[145,'Zapdos'],[146,'Moltres'],[150,'Mewtwo']].map(([id,name])=>step(name.toLowerCase(),'Catch '+name,'Use the remaining native encounter and verify the catch and save.','The species is registered as caught.',owned(id))),
    step('roamer','Catch this save’s roaming legendary','Track the native roamer, retain its identity and finish a verified capture.','The roaming species is registered as caught.',e.roamer?.species?owned(nationalSpeciesId(e.roamer.species)):undefined),
+   step('firered-catchable','Catch every Pokémon catchable in FireRed',fireRed?`${fireRed.caught} of ${fireRed.total} catchable in FireRed${fireRed.planned?`; ${fireRed.planned} planned through another FireRed save or a partner Pokémon`:''}${fireRed.otherGames!=null?`; ${fireRed.otherGames} more are only in other games or events`:''}.`:'Register every species FireRed itself can obtain.',
+    'Every FireRed-catchable species is registered, except one-per-save choices planned through another FireRed save.',fireRed?fireRed.caught+(fireRed.planned??0)>=fireRed.total:undefined),
    step('kanto-dex','Complete the Kanto Pokédex','Acquire all 150 non-event Kanto entries, including starters, fossils and trade evolutions.','All 150 entries required by the cartridge are caught.',dex.known?dex.kanto.complete:undefined),
    step('national-diploma','Qualify for the National Dex diploma','Acquire the 380 entries checked by the original game.','The cartridge’s exact National Dex completion test passes.',dex.known?dex.diploma.complete:undefined),
    step('national-386','Collect all 386 National Dex species','Use native catches, gifts, breeding, evolutions and compatible partner games.','Every National Dex species, including the six diploma exceptions, is registered as caught.',dex.known?dex.complete:undefined),

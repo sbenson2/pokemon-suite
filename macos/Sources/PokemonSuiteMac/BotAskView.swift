@@ -23,8 +23,6 @@ struct BotAskPanel: View {
     @StateObject private var dictation = SpeechDictation()
     @State private var text = ""
     @State private var dictated: String?
-    @State private var reply = ""
-    @State private var cancelling: SuiteGoal?
 
     private var goals: SuiteGoals? { sessionGoals ?? flow.goals }
     private var trimmed: String { text.trimmingCharacters(in: .whitespacesAndNewlines) }
@@ -55,20 +53,46 @@ struct BotAskPanel: View {
                 Label(message, systemImage: "mic.slash").font(.caption).foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true).accessibilityIdentifier("bot-ask-voice-message")
             }
-            response
-            if let goals { goalStatus(goals) }
+            BotRequestReview(flow: flow, onChange: onChange) { suggestion in
+                text = suggestion.id; dictated = nil
+                Task { await flow.useSuggestion(suggestion.id) }
+            }
+            if let goals { BotGoalStatus(flow: flow, goals: goals, onChange: onChange) }
         }
         // Opening Ask starts Laya loading. Without a running game the session carries no goal status; read the goal list once.
         .task { flow.warm(); if sessionGoals == nil { await flow.refreshGoals() } }
         .onDisappear { dictation.cancel() }
-        .confirmationDialog("Cancel this request?", isPresented: Binding(get: { cancelling != nil }, set: { if !$0 { cancelling = nil } }),
-                            titleVisibility: .visible, presenting: cancelling) { goal in
-            Button("Cancel Request", role: .destructive) { Task { await flow.cancelGoal(goal.id); onChange() } }
-            Button("Keep It", role: .cancel) {}
-        } message: { goal in
-            Text("The bot withdraws what “\(goal.text)” started, such as its hunt or priority target. Saves and caught Pokémon are kept, and a new game it started keeps playing.")
-        }
     }
+
+    private func send() {
+        let value = trimmed
+        guard !value.isEmpty, !flow.isWorking, !dictation.listening else { return }
+        let via = BotRequestVia.resolve(text: value, dictated: dictated)
+        Task { await flow.submit(value, via: via) }
+    }
+
+    private func toggleDictation() {
+        if !dictation.listening { flow.warm() } // Laya loads while the owner speaks
+        dictation.toggle(hints: vocabulary, partial: { partial in
+            text = partial; dictated = partial
+        }, final: { final in
+            text = final; dictated = final
+            Task { await flow.submit(final, via: .voice) }
+        })
+    }
+}
+
+/// Ask's review of a request draft: the result line, its question and choices, notes (confirmation
+/// reasons, hunt limitations, warnings) and Run/Confirm or Cancel. The Bank's "Get it" shows the same review.
+struct BotRequestReview: View {
+    @ObservedObject var flow: BotRequestFlow
+    var onChange: @MainActor () -> Void = {}
+    /// Suggested phrases after a request Ask couldn't read (typed requests only).
+    var suggest: ((BotRequestChoice) -> Void)?
+    @State private var reply = ""
+
+    /// Its rows join the enclosing stack, as they did inside the Ask panel.
+    var body: some View { Group { response } }
 
     @ViewBuilder private var response: some View {
         let line = flow.resultLine
@@ -91,12 +115,12 @@ struct BotAskPanel: View {
                 }
             }
         case .notUnderstood(let draft):
-            BotAskChips(items: draft.suggestions.map { BotRequestChoice(id: $0, label: $0) }, disabled: flow.isWorking) { suggestion in
-                text = suggestion.id; dictated = nil
-                Task { await flow.useSuggestion(suggestion.id) }
-            }
+            if let suggest { BotAskChips(items: draft.suggestions.map { BotRequestChoice(id: $0, label: $0) }, disabled: flow.isWorking, action: suggest) }
         case .answered(let draft):
             notes(draft.notes)
+            if let suggest, !draft.suggestions.isEmpty {
+                BotAskChips(items: draft.suggestions.map { BotRequestChoice(id: $0, label: $0) }, disabled: flow.isWorking, action: suggest)
+            }
         case .ready(let draft):
             notes(draft.notes)
             if let error = flow.error {
@@ -124,7 +148,21 @@ struct BotAskPanel: View {
         }
     }
 
-    @ViewBuilder private func goalStatus(_ goals: SuiteGoals) -> some View {
+    private func answer() {
+        let value = reply
+        reply = ""
+        Task { await flow.answer(value) }
+    }
+}
+
+/// "Your request": the goal the bot works on (or the last one), its progress and Cancel Request.
+struct BotGoalStatus: View {
+    @ObservedObject var flow: BotRequestFlow
+    let goals: SuiteGoals
+    var onChange: @MainActor () -> Void = {}
+    @State private var cancelling: SuiteGoal?
+
+    var body: some View {
         VStack(alignment: .leading, spacing: 3) {
             if let goal = goals.current {
                 HStack(alignment: .firstTextBaseline, spacing: 8) {
@@ -145,30 +183,13 @@ struct BotAskPanel: View {
             if let notice = flow.goalNotice { Text(notice).font(.caption).foregroundStyle(.secondary) }
             if let warning = goals.supervisorWarning { Label(warning, systemImage: "exclamationmark.triangle").font(.caption).foregroundStyle(.orange) }
         }.accessibilityElement(children: .contain).accessibilityIdentifier("bot-ask-goal")
-    }
-
-    private func send() {
-        let value = trimmed
-        guard !value.isEmpty, !flow.isWorking, !dictation.listening else { return }
-        let via = BotRequestVia.resolve(text: value, dictated: dictated)
-        reply = ""
-        Task { await flow.submit(value, via: via) }
-    }
-
-    private func answer() {
-        let value = reply
-        reply = ""
-        Task { await flow.answer(value) }
-    }
-
-    private func toggleDictation() {
-        if !dictation.listening { flow.warm() } // Laya loads while the owner speaks
-        dictation.toggle(hints: vocabulary, partial: { partial in
-            text = partial; dictated = partial
-        }, final: { final in
-            text = final; dictated = final; reply = ""
-            Task { await flow.submit(final, via: .voice) }
-        })
+        .confirmationDialog("Cancel this request?", isPresented: Binding(get: { cancelling != nil }, set: { if !$0 { cancelling = nil } }),
+                            titleVisibility: .visible, presenting: cancelling) { goal in
+            Button("Cancel Request", role: .destructive) { Task { await flow.cancelGoal(goal.id); onChange() } }
+            Button("Keep It", role: .cancel) {}
+        } message: { goal in
+            Text("The bot withdraws what “\(goal.text)” started, such as its hunt or priority target. Saves and caught Pokémon are kept, and a new game it started keeps playing.")
+        }
     }
 }
 

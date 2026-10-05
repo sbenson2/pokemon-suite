@@ -91,7 +91,14 @@ struct PostgameProgressView: View {
                 LabeledContent("Postgame checkpoints", value: "\(progress["completed"].text) / \(progress["total"].text)")
                 ProgressView(value: Double(progress["completed"].int), total: Double(max(1, progress["total"].int))).accessibilityLabel("Postgame checkpoints complete")
                 if dex["known"].bool {
-                    LabeledContent("National Pokédex", value: "\(dex["caught"].text) / 386")
+                    // The goal is every species FireRed can register by itself; the rest need other games.
+                    if dex["fireRed"]["total"].int > 0 {
+                        LabeledContent("Catchable in FireRed", value: "\(dex["fireRed"]["caught"].text) / \(dex["fireRed"]["total"].text)")
+                        if dex["fireRed"]["planned"].int > 0 {
+                            Text("\(dex["fireRed"]["planned"].text) more come from another FireRed save.").font(.callout).foregroundStyle(.secondary)
+                        }
+                    }
+                    LabeledContent("National Pokédex", value: "\(dex["caught"].text) / 386").foregroundStyle(.secondary)
                     LabeledContent("Diploma entries", value: "\(dex["diploma"]["caught"].text) / 380").foregroundStyle(.secondary)
                 }
                 if !progress["species"].array.isEmpty {
@@ -315,7 +322,15 @@ struct BotSaveProfilesView: View {
                 TextField("Save name", text: $name)
                 Button("Create New Save…") { pending = "new-save" }.disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || name.count > 50 || model.busy)
             }
-        }.formStyle(.grouped).overlay { Rectangle().stroke(.separator, lineWidth: 1).allowsHitTesting(false) }
+            #if os(macOS)
+            if model.selectedGame == "firered" { ExtraSavesSection() }
+            #endif
+        }
+        #if os(macOS)
+        .gameForm().padding(.horizontal, 12).padding(.bottom, 12)
+        #else
+        .formStyle(.grouped).overlay { Rectangle().stroke(.separator, lineWidth: 1).allowsHitTesting(false) }
+        #endif
             .confirmationDialog(pending == "restore-save" ? "Restore this save?" : "Create a new manual save?", isPresented: Binding(get: { pending != nil }, set: { if !$0 { pending = nil } }), titleVisibility: .visible) {
                 Button(pending == "restore-save" ? "Restore Save" : "Create Save") {
                     guard let action = pending else { return }

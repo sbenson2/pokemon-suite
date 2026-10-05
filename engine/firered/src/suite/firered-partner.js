@@ -4,12 +4,14 @@
 // native save; nothing here writes game memory or chooses a Pokémon to keep.
 import {encounterFingerprint} from '../player/encounter-tracker.js';
 import {selectPartnerPlaceholder,partnerHoldings} from './local-evolution.js';
+// extra-saves: an exchange leg names this partner's offer.
+import {selectExtraSaveOffer} from './extra-save-exchange.js';
 
 export const FIRERED_PARTNER_WATCH=Object.freeze({flags:Object.freeze([2089,2092,2112]),variables:Object.freeze([])});
 const CENTER=/^MAP_[A-Z0-9_]+_POKEMON_CENTER_(1F|2F)$/;
 const OWNER=/^[a-zA-Z0-9_-]{1,100}$/;
 
-export function inspectFireRedPartnerReadiness({live,saved,world,owner,requestId,sourceOwner='firered',sramSha256}){
+export function inspectFireRedPartnerReadiness({live,saved,world,owner,requestId,sourceOwner='firered',sramSha256,offer=null,ledger=null}){
  if(!OWNER.test(owner??'')||!OWNER.test(requestId??'')||!OWNER.test(sourceOwner??'')||owner===sourceOwner)throw Error('Choose the source evolution request for this FireRed partner.');
  const base={requestId,owner,sourceOwner,kind:'firered-partner',methods:['trade']};
  const waiting=reason=>({...base,phase:'waiting',reason});
@@ -33,9 +35,13 @@ export function inspectFireRedPartnerReadiness({live,saved,world,owner,requestId
  if(!Number.isInteger(trainerId)||trainerId<0||trainerId>65535||st.trainerId!==trainerId)return waiting('The FireRed partner trainer ID could not be verified.');
  const flags=s.storyState?.flagIds??{},pokedex=flags[2089]===true||flags[2092]===true;
  if(!pokedex)return waiting('The FireRed partner needs its Pokédex before it can trade.');
- const candidate=selectPartnerPlaceholder(t.party);
+ // extra-saves: a named offer, and nothing else while one of its loans is open.
+ if(!offer&&ledger?.open)return waiting(`The FireRed partner is lending to exchange ${ledger.open.exchangeId}; it serves nothing else until that Pokémon returns.`);
+ const selected=offer?selectExtraSaveOffer({trainer:t,offer,ledger}):null;
+ if(selected&&!selected.pokemon)return waiting(selected.reason);
+ const candidate=selected?selected.pokemon:selectPartnerPlaceholder(t.party);
  if(!candidate)return waiting('The FireRed partner party has no ordinary placeholder: a non-shiny, non-legendary Pokémon from #1–151 with no held item, no HM and no trade evolution.');
  return {...base,phase:'ready-for-transfer',reason:'The FireRed partner is saved in its Pokémon Center and ready for the paired trade evolution.',
   center:map.replace(/_2F$/,'_1F'),trainerId,pokedex:true,nationalDex:flags[2112]===true,transferCandidate:structuredClone(candidate),
-  holdings,nativeSaveVerified:true,savedSramSha256:sramSha256};
+  holdings,nativeSaveVerified:true,savedSramSha256:sramSha256,...(offer?{offer:structuredClone(offer)}:{})};
 }

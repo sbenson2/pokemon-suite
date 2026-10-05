@@ -15,8 +15,9 @@ const zeroIdentity = { validity: "valid", personality: 0, otId: 0, trainerId: 0,
   friendship: 0, beauty: 0, sheen: 0, pokerus: 0,
   evs: { hp: 0, attack: 0, defense: 0, speed: 0, spAttack: 0, spDefense: 0 },
   ivs: { hp: 0, attack: 0, defense: 0, speed: 0, spAttack: 0, spDefense: 0 },
-  // The fixtures' origins word is zero: the hatched met level.
-  metLevel: 0 };
+  // The fixtures' origins and ribbon words are zero: the hatched met level,
+  // no met location, origin game or ball, and no fateful-encounter flag.
+  metLevel: 0, metLocation: 0, metGame: 0, ball: 0, otGender: 0, language: 0, ribbons: 0, fatefulEncounter: false };
 
 function u32(value) {
   const bytes = new Uint8Array(4);

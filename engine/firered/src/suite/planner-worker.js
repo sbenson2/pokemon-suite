@@ -3,7 +3,7 @@ import {parentPort,workerData} from 'node:worker_threads';
 const module=await import(workerData.module);
 const planner=workerData.kind==='postgame'?module.createPostgameController(workerData.options):module.createCampaignController(workerData.options);
 const allowed=new Set(['decide','observeExecution','pause','resume','wait','acknowledgeCapture','snapshot','storyProgress']);
-if(workerData.kind==='postgame')for(const name of ['setPartnerAvailability','setLeagueTraining','beginAdventure','rejectHunt','beginAcquisition','acknowledgeAcquisition','beginPlayerTask','beginQmmSupply','preserveEvolutionSource','beginEvolution','prepareAcquisition','resumeVerifiedCapture','requestHandoff','acknowledgeEvolution','acceptEvolutionRoundTrip','acknowledgeDexEvolution','deferPartnerEvolution','recordHunt','completeHunt'])allowed.add(name);
+if(workerData.kind==='postgame')for(const name of ['setPartnerAvailability','setLeagueTraining','beginAdventure','rejectHunt','beginAcquisition','acknowledgeAcquisition','beginPlayerTask','beginQmmSupply','preserveEvolutionSource','beginEvolution','prepareAcquisition','resumeVerifiedCapture','requestHandoff','acknowledgeEvolution','acceptEvolutionRoundTrip','acknowledgeDexEvolution','deferPartnerEvolution','recordHunt','completeHunt','setExtraSaveSources','acceptExtraSaveTrade','deferExtraSave'])allowed.add(name);// extra-saves: last three
 let tail=Promise.resolve();
 parentPort.on('message',message=>{
  tail=tail.then(async()=>{

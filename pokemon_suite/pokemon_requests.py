@@ -54,6 +54,14 @@ CONFIRM_BELOW = 0.55  # accepted but less certain: ask the owner to confirm
 STATS = ('hp', 'attack', 'defense', 'specialAttack', 'specialDefense', 'speed')
 EV_KEYS = {'hp': 'hp', 'attack': 'attack', 'defense': 'defense', 'specialAttack': 'spAttack', 'specialDefense': 'spDefense', 'speed': 'speed'}
 STARTERS = {1: 'bulbasaur', 4: 'charmander', 7: 'squirtle'}
+# The Bank's "Get it" selection (Interpreter.select): the catch settings a typed request can also say.
+SELECTION_FIELDS = {'speciesId', 'shiny', 'natures', 'gender', 'abilityId', 'minIvs', 'maxIvs', 'hiddenPower', 'quantity', 'destination'}
+DESTINATIONS = ('save', 'switch')
+GOAL_STEPS = 10  # the goal supervisor's limit (pokemon_goals.normalize)
+# "… and send it to my Switch", "… then trade it": the caught Pokémon goes to the Switch (Builder.send_to_switch).
+SEND_TO_SWITCH = re.compile(r'^(?:(?:and|then|also|after that|afterwards) )*(?:(?:send|transfer|move|put) (?:it|them) (?:(?:over|across) )?(?:to|into|onto|on) '
+                            r'(?:my |the |your |our )?(?:nintendo )?switch|trade (?:it|them)(?: (?:away|over))?(?: (?:to|into|onto|on|with) '
+                            r'(?:my |the |your |our )?(?:nintendo )?switch)?)(?: (?:please|pls|too))?$')
 
 
 # ---------------------------------------------------------------------------
@@ -193,6 +201,7 @@ def _tokens(text):
     text = re.sub(r'\bw/o\b', ' without ', text)
     text = re.sub(r'\bw/(?=\s|$)', ' with ', text)
     text = re.sub(r'(\d)\s*\+', r'\1 or more ', text)
+    text = re.sub(r'(?<![\d-])(\d{1,2})\s*(?:-|–)\s*(\d{1,2})(?![\d-])', r'\1 to \2', text)  # "ivs 20-31 in speed", "levels 20-30"
     text = re.sub(r'(?<=[a-z0-9])\s*/\s*(?=\d)', ' ', text)  # EV/IV lists: "252 atk / 252 spe"
     text = text.replace('&', ' and ').replace('+', ' and ').replace('/', ' or ')
     words = []
@@ -1168,6 +1177,33 @@ def _answers():
     ]
 
 
+STORY_NOUNS = r'(story|storyline|main story|story mode|campaign|adventure|journey|playthrough)'
+# "... again", "... over", "... from the start": a new game (new-game), never this save's story.
+NOT_AGAIN = r'(?!( \w+){0,3} (again|over|from (the )?(start|scratch|beginning)))'
+STORY_WORDS = {'play', 'playing', 'finish', 'complete', 'continue', 'resume', 'keep', 'carry', 'go', 'on', 'through', 'out', 'beat', 'clear',
+               'whole', 'entire', 'rest', 'main', 'story', 'storyline', 'mode', 'campaign', 'adventure', 'journey', 'playthrough', 'game',
+               'pokemon', 'firered', 'elite', '4', 'champion', 'league', 'win', 'become', 'defeat', 'take', 'down', 'against', 'past', 'get',
+               'enter', 'reach', 'make', 'into', 'hall', 'fame'}
+
+
+def _code_actions():
+    """Actions the code layer alone reads (build 126), like stage 5's answers: not among Laya's options (LAYA_OPTIONS: the 38
+    trained intents, text and order unchanged), and a clause the code layer reads as one of them is never sent to Laya, so an app
+    without Laya and the Laya-primary app read them the same way."""
+    return [
+        Intent('story', 'campaign', 'Play the story to the Hall of Fame: continue this save’s story campaign, or start it from New Game when there is no save yet.',
+               ['play the story', 'beat the game', 'beat the elite four', 'continue the story', 'become the champion'],
+               {}, [A(r'\b(play|finish|complete|continue|resume|beat|clear)( through| out)?( the| this| your)?( whole| entire| rest of the| main)? '
+                      + STORY_NOUNS + r'\b' + NOT_AGAIN, 1.0),
+                    A(r'\b(keep|carry on|go on) (playing|with)( the| this| your)?( main)? ' + STORY_NOUNS + r'\b' + NOT_AGAIN, 1.0),
+                    A(r'\b(beat|finish|complete|clear)( through)?( the| this)?( whole| entire| main)? (game|pokemon|firered|pokemon firered)\b' + NOT_AGAIN, 1.0),
+                    A(r'\b(beat|defeat|clear|take down|win against|get past)( the)? (elite 4|champion|pokemon league|league)\b' + NOT_AGAIN, 1.0),
+                    A(r'\bbecome( the)?( pokemon)?( league)? champion\b' + NOT_AGAIN, 1.0), A(r'\bwin( the)?( pokemon)? league\b' + NOT_AGAIN, 1.0),
+                    A(r'\b(enter|get (in)?to|reach|make it to)( the)? hall of fame\b' + NOT_AGAIN, 1.0)],
+               STORY_WORDS),
+    ]
+
+
 # Entity kinds that can explain words for each intent (others count as unexplained).
 ENTITY_KINDS = {
     'catch': {'species', 'other', 'ball', 'nature', 'gender', 'move', 'held', 'stat', 'place', 'ability', 'other-ability'},
@@ -1177,12 +1213,13 @@ ENTITY_KINDS = {
     'collection': {'species'}, 'status-hunt': {'species', 'place'}, 'status-team': {'species', 'party'}, 'status-location': {'place'},
     'status-progress': {'place'}, 'status-shinies': {'species'},
     'status-owned': {'species', 'party'}, 'status-stats': {'species', 'party', 'stat'}, 'status-bag': {'item', 'ball', 'held'},
+    'story': {'place'},
 }
 UNSUPPORTED_KINDS = {'species', 'other', 'party', 'move', 'place', 'item', 'ball', 'held', 'stat', 'nature', 'gender'}
 _TRAINED = _intents()
 # Laya's intent question: exactly the options the fine-tuned asset was trained and calibrated on (ids, descriptions, order).
 LAYA_OPTIONS = {intent.id: intent.description for intent in _TRAINED}
-CATALOG = _TRAINED + _answers()
+CATALOG = _TRAINED + _answers() + _code_actions()
 for _intent in CATALOG:
     _intent.entities = frozenset(ENTITY_KINDS.get(_intent.id, UNSUPPORTED_KINDS if _intent.kind == 'unsupported' else set()))
 BY_ID = {intent.id: intent for intent in CATALOG}
@@ -1194,6 +1231,21 @@ for _intent in CATALOG:
 KNOWN_WORDS |= {'what', 'where', 'how', 'who', 'which', 'shiny', 'and', 'or', 'not', 'no', 'yes', 'then', 'after', 'before', 'first', 'next'}
 SUGGESTIONS = ['get me a shiny Mewtwo', 'heal then go to Cinnabar and save', 'catch 3 adamant Abra in Ultra Balls', 'buy 10 Ultra Balls',
                'do the postgame', "what's my team", 'stop the bot']
+# Before the first save only the story can run (a hunt or the postgame goal plays it first).
+BLANK_RUNS = {'campaign', 'farming', 'postgame', 'collection', 'trade'}  # the goal supervisor's new run for a blank library (NEEDS_SAVE)
+BLANK_SUGGESTIONS = ['play the story', 'start a new game as nova with squirtle', 'get me a shiny Mewtwo']
+STORY_DONE = ('This save has already entered the Hall of Fame, so its story is finished. Say “start a new game” to play the story again '
+              'on a new save (this save is backed up first).')
+LEAGUE_DONE = ('This save has already beaten the Elite Four. The stronger League rematch is part of the postgame checklist and can’t be '
+               'started on its own yet: say “do the postgame” to run the checklist, rematch included.')
+NO_CAMPAIGN = ('The bot didn’t start this save’s story, so it can’t continue it. Say “start a new game” to play the story from New Game '
+               'on a new save (this save is backed up first).')
+
+
+def _blank_save(ctx):
+    """A library with no save yet: the FireRed session at New Game and no story campaign."""
+    s = ctx.session() if ctx is not None and ctx.running() else None
+    return bool(s) and s.get('newProfile') is True and not s.get('campaign')
 
 
 # ---------------------------------------------------------------------------
@@ -1223,6 +1275,7 @@ class Clause:
     save: dict = field(default_factory=dict)
     request_for_preview: list = field(default_factory=list)
     offer: dict = None  # a one-tap fix an answer offers (the stop triage's proven-safe player task)
+    suggest: list = field(default_factory=list)  # what runs instead, when a builder says this one can't (shown as suggestions)
     laya: bool = False  # Laya-primary decided its intent (not the owner's answer)
 
     @property
@@ -2070,62 +2123,88 @@ LOW_IV = {'min': 0, 'minimum': 0, 'zero': 0, 'no': 0, 'worst': 0, 'lowest': 0, '
 HIGH_IV = {'perfect': 31, 'max': 31, 'maxed': 31, 'flawless': 31, 'full': 31, 'best': 31, 'high': 25}
 
 
+RANGE_BEFORE = re.compile(r'(?:between (\d+) and (\d+)|(?:from |of )?(\d+) to (\d+))(?: ivs?)?(?: in| for| on)?$')
+RANGE_AFTER = re.compile(r'^(?:between (\d+) and (\d+)|(?:(?:of|from|=) )?(\d+) to (\d+))\b')
+
+
+def _range(m):
+    low, high = [int(g) for g in m.groups() if g is not None]
+    return ('range', min(low, high), max(low, high)) if max(low, high) <= 31 else None
+
+
 def _iv_rule(before, after):
-    """('min'|'max'|'range', ...) for one stat from the words around it, or None."""
+    """(rule, used) for one stat from the words around it: rule is ('min'|'max'|'range', ...) or None, and used is how many
+    of the words it read, as ('before', n) (the last n words before the stat) or ('after', n) (the first n after it)."""
     b = ' '.join(before)
+    m = RANGE_BEFORE.search(b)
+    if m:
+        return _range(m), ('before', len(m.group(0).split()))
     for pattern, kind, shift in [(r'(at most|no more than|up to|max|maximum) (\d+)$', 'max', 0), (r'(under|below|less than) (\d+)$', 'max', -1),
                                  (r'(at least|min|minimum) (\d+)$', 'min', 0), (r'(over|above|more than) (\d+)$', 'min', 1),
                                  (r'(\d+) or (more|higher|better|above)$', 'min', 0), (r'(\d+) or (less|lower|below|fewer)$', 'max', 0)]:
         m = re.search(pattern, b)
         if m:
             n = int(next(g for g in m.groups() if g and g.isdigit())) + shift
-            return (kind, n) if 0 <= n <= 31 else None
-    m = re.search(r'between (\d+) and (\d+)$', b)
-    if m and int(m.group(2)) <= 31:
-        return ('range', min(int(m.group(1)), int(m.group(2))), max(int(m.group(1)), int(m.group(2))))
+            return ((kind, n) if 0 <= n <= 31 else None), ('before', len(m.group(0).split()))
     if before and before[-1].isdigit():
         n = int(before[-1])
-        return None if n > 31 else ('max', 0) if n == 0 else ('min', n)
+        return (None if n > 31 else ('max', 0) if n == 0 else ('min', n)), ('before', 1)
     if before and before[-1] in LOW_IV:
-        return ('max', LOW_IV[before[-1]])
+        return ('max', LOW_IV[before[-1]]), ('before', 1)
     if before and before[-1] in HIGH_IV:
-        return ('min', HIGH_IV[before[-1]])
-    a = after[1:] if after[:1] in (['iv'], ['ivs']) else after
+        return ('min', HIGH_IV[before[-1]]), ('before', 1)
+    lead = 1 if after[:1] in (['iv'], ['ivs']) else 0
+    a = after[lead:]
     t = ' '.join(a)
+    m = RANGE_AFTER.search(t)
+    if m:
+        return _range(m), ('after', lead + len(m.group(0).split()))
     for pattern, kind, shift in [(r'^(of |at |= )?(at most|no more than|up to|max|maximum) (\d+)', 'max', 0), (r'^(under|below|less than) (\d+)', 'max', -1),
                                  (r'^(at least|min|minimum) (\d+)', 'min', 0), (r'^(over|above|more than) (\d+)', 'min', 1),
                                  (r'^(of |= )?(\d+) or (less|lower|below|fewer)', 'max', 0), (r'^(of |= )?(\d+)( or (more|higher|better|above))?\b', 'min', 0)]:
         m = re.search(pattern, t)
-        if m and (after[:1] in (['iv'], ['ivs']) or kind == 'max' or m.group(0).split()[0] not in ('of',)):
+        if m and (lead or kind == 'max' or m.group(0).split()[0] not in ('of',)):
             n = int(next(g for g in m.groups() if g and g.isdigit())) + shift
             if not 0 <= n <= 31:
-                return None
-            return ('max', 0) if kind == 'min' and n == 0 else (kind, n)
-    m = re.search(r'^between (\d+) and (\d+)', t)
-    if m and int(m.group(2)) <= 31:
-        return ('range', min(int(m.group(1)), int(m.group(2))), max(int(m.group(1)), int(m.group(2))))
-    return None
+                return None, ('after', lead + len(m.group(0).split()))
+            return (('max', 0) if kind == 'min' and n == 0 else (kind, n)), ('after', lead + len(m.group(0).split()))
+    return None, None
+
+
+def _no_bounds(mins, maxs):
+    """IV requirements without the ones that constrain nothing: a minimum of 0 or a maximum of 31."""
+    return {k: v for k, v in mins.items() if v > 0}, {k: v for k, v in maxs.items() if v < 31}
 
 
 def _iv_ranges(tokens, clause, skip=frozenset()):
-    """(minIvs, maxIvs) per stat: "31 speed and 30+ special attack", "0 attack", "min speed", "speed iv at most 10"."""
-    kept = [t for k, t in enumerate(tokens) if k not in skip]
+    """(minIvs, maxIvs, used) per stat: "31 speed and 30+ special attack", "0 attack", "min speed", "speed iv at most 10",
+    "speed iv between 20 and 31", "ivs 20-31 in speed". used: the token indexes of the numbers they read, which are
+    never also a quantity or an encounter level."""
+    index = [k for k in range(len(tokens)) if k not in skip]
+    kept = [tokens[k] for k in index]
     text = ' '.join(kept)
-    mins, maxs = {}, {}
+    mins, maxs, used = {}, {}, set()
+
+    def matched(m):
+        first = len(text[:m.start()].split())
+        return {index[j] for j in range(first, first + len(m.group(0).split())) if kept[j].isdigit()}
     m = re.search(r'\b(at least|minimum|above|over|min) (\d+) (in )?(ivs?|iv) (in )?(every|all|each)( stats?)?\b|\b(all|every) ivs? (above|over|at least) (\d+)\b|\b(\d+) (or more )?ivs? in (every|all|each)', text)
     if m:
         n = next(int(g) for g in m.groups() if g and g.isdigit())
         if n <= 31:
-            return {s: n for s in STATS}, {}
+            return {s: n for s in STATS}, {}, matched(m)
     stats = [s for s in _stat_spans(clause) if s.start not in skip]
-    if re.search(r'\b(perfect|max|maxed|flawless|31|6|six) ivs?\b|\bivs? (all )?31\b|\b6 x 31\b|\bperfectly ivd\b', text) and not stats:
-        return {s: 31 for s in STATS}, {}
+    m = re.search(r'\b(perfect|max|maxed|flawless|31|6|six) ivs?\b|\bivs? (all )?31\b|\b6 x 31\b|\bperfectly ivd\b', text)
+    if m and not stats:
+        return {s: 31 for s in STATS}, {}, matched(m)
     previous = None
     for s in stats:
         stat = s.values('stat')[0][0]
-        before = [t for k, t in enumerate(tokens[max(0, s.start - 4):s.start], max(0, s.start - 4)) if k not in skip]
-        after = [t for k, t in enumerate(tokens[s.end:s.end + 5], s.end) if k not in skip]
-        rule = _iv_rule(before, after)
+        before_at = [k for k in range(max(0, s.start - 4), s.start) if k not in skip]
+        after_at = [k for k in range(s.end, min(len(tokens), s.end + 5)) if k not in skip]
+        rule, read = _iv_rule([tokens[k] for k in before_at], [tokens[k] for k in after_at])
+        if read:
+            used |= {k for k in (before_at[len(before_at) - read[1]:] if read[0] == 'before' else after_at[:read[1]]) if tokens[k].isdigit()}
         if rule is None and previous and previous[1] is not None and all(t in ('and', ',', 'or') for t in tokens[previous[0].end:s.start]):
             rule = previous[1]  # "0 attack and speed"
         if rule:
@@ -2137,8 +2216,8 @@ def _iv_ranges(tokens, clause, skip=frozenset()):
                 mins[stat], maxs[stat] = rule[1], rule[2]
         previous = (s, rule)
     if not mins and not maxs and re.search(r'\b(perfect|max|maxed|flawless) ivs?\b', text):
-        return {s: 31 for s in STATS}, {}
-    return mins, maxs
+        return {s: 31 for s in STATS}, {}, used
+    return (*_no_bounds(mins, maxs), used)
 
 
 def _ivs(tokens, clause):
@@ -2377,7 +2456,7 @@ class Builder:
             slots['ball'] = chosen_ball
             slots['ballRequirement'] = 'required' if chosen_ball == 'safari-ball' else 'preferred'
         ev_seg = _ev_segment(tokens, clause.spans)
-        mins, maxs = _iv_ranges(tokens, clause, skip=ev_seg)
+        mins, maxs, iv_numbers = _iv_ranges(tokens, clause, skip=ev_seg)
         if mins:
             slots['minIvs'] = mins
         if maxs:
@@ -2399,7 +2478,7 @@ class Builder:
                 _clarify(clause, 'ability', f"{why}. Its abilit{'y is' if len(own) == 1 else 'ies are'} {names}. Which should it have?",
                          [{'id': str(i), 'label': n} for i, n in own] + [{'id': 'any', 'label': 'Any ability'}], free=False)
                 return
-        final, encounter = _levels(tokens)
+        final, encounter = _levels([t if k not in iv_numbers else '_' for k, t in enumerate(tokens)])
         if final is not None:
             slots['finalLevel'] = final
         if encounter:
@@ -2421,7 +2500,7 @@ class Builder:
                 continue
             nxt = tokens[k + 1] if k + 1 < len(tokens) else ''
             prev = tokens[k - 1] if k else ''
-            if k in ev_seg or prev in ('level', 'to', 'final', 'least', 'and', 'minimum', 'above', 'over', 'most', 'under', 'below', 'max', 'maximum', 'iv', 'ivs') \
+            if k in ev_seg or k in iv_numbers or prev in ('level', 'to', 'final', 'least', 'and', 'minimum', 'above', 'over', 'most', 'under', 'below', 'max', 'maximum', 'iv', 'ivs') \
                     or nxt in ('iv', 'ivs', 'in', 'or', 'x') or (_span_at(clause.spans, k + 1) and 'stat' in _span_at(clause.spans, k + 1).kinds()) \
                     or (_span_at(clause.spans, k - 1) and 'stat' in _span_at(clause.spans, k - 1).kinds()):
                 consumed.add(k)
@@ -2462,6 +2541,12 @@ class Builder:
             clause.slots['evs'] = evs
             clause.steps.append({'kind': 'player-task', 'action': 'start', 'task': {'kind': 'ev-training', 'fingerprint': {'$ref': ('clause', clause.index)},
                                  'evs': {k: evs.get(k, 0) for k in SIX_EVS}, 'ivRanges': {}}})
+        self._catch_summary(clause, request, mon, static)
+
+    def _catch_summary(self, clause, request, mon, static):
+        """The catch's one-line summary; typed requests and the Bank's selection share it."""
+        vocab = self.vocab
+        slots = clause.slots
         bits = []
         if request['quantity'] != 1:
             bits.append(str(request['quantity']))
@@ -2495,6 +2580,100 @@ class Builder:
             extras.append('holding ' + next((h['name'] for h in vocab.dex.get('heldItems', []) if h['id'] == slots['heldItem']), 'an item'))
         what = ' '.join(bits + [mon['name']])
         clause.summary = f"Catch {what}" + (' ' + ', '.join(extras) if extras else '') + (' (priority legendary target)' if static else '')
+
+    def selection(self, clause, value):
+        """The Bank's "Get it" configurator: the catch slots a typed request fills, chosen as fields.
+
+        The fields map onto the same slots the phrase parser sets ("get me a shiny timid abra" and
+        {speciesId: 63, shiny: true, natures: ["timid"]} both give species, shiny and natures), then the
+        same farming request, summary and destination step: both produce the same goal."""
+        vocab = self.vocab
+        if not isinstance(value, dict) or set(value) - SELECTION_FIELDS or type(value.get('speciesId')) is not int:
+            raise ValueError('Choose a Pokémon and supported catch settings: ' + ', '.join(sorted(SELECTION_FIELDS)) + '.')
+        sid = value['speciesId']
+        mon = vocab.species.get(sid)
+        if mon is None:
+            raise ValueError(f'#{sid} isn’t in FireRed; it has Pokémon #1–386.')
+        slots = clause.slots
+        slots['species'] = sid
+        if value.get('hiddenPower') is not None:
+            if value['hiddenPower'] not in HP_TYPES:
+                raise ValueError('Choose a Hidden Power type: ' + ', '.join(HP_TYPES) + '.')
+            slots['hiddenPower'] = {'type': value['hiddenPower']}
+        if value.get('shiny') is not None:
+            if type(value['shiny']) is not bool:
+                raise ValueError('Choose whether the Pokémon must be shiny.')
+            slots['shiny'] = 'required' if value['shiny'] else 'any'
+        natures = value.get('natures') or []
+        known = [n['id'] for n in vocab.dex.get('natures', [])]
+        if not isinstance(natures, list) or any(n not in known for n in natures) or len(set(natures)) != len(natures):
+            raise ValueError('Choose natures from the FireRed list.')
+        if natures:
+            slots['natures'] = list(natures)
+        if value.get('gender') is not None:
+            if value['gender'] not in ('male', 'female', 'genderless'):
+                raise ValueError('Choose a gender: male, female or genderless.')
+            slots['gender'] = value['gender']
+        bounds = []
+        for key in ('minIvs', 'maxIvs'):
+            ivs = value.get(key) or {}
+            if not isinstance(ivs, dict) or set(ivs) - set(STATS) or any(type(v) is not int or not 0 <= v <= 31 for v in ivs.values()):
+                raise ValueError('Choose IVs from 0 to 31 for HP, Attack, Defense, Sp. Attack, Sp. Defense and Speed.')
+            bounds.append(ivs)
+        for key, ivs in zip(('minIvs', 'maxIvs'), _no_bounds(*bounds)):
+            if ivs:
+                slots[key] = dict(ivs)
+        if value.get('abilityId') is not None:
+            own = [a['id'] for a in mon['abilities']]
+            if value['abilityId'] not in own:
+                raise ValueError(f"{mon['name']} can’t have that ability in FireRed. Its abilit{'y is' if len(own) == 1 else 'ies are'} "
+                                 + ', '.join(a['name'] for a in mon['abilities']) + '.')
+            slots['ability'] = value['abilityId']
+        if value.get('quantity') is not None:
+            if type(value['quantity']) is not int:
+                raise ValueError('Choose a quantity from 1 to 99.')
+            slots['quantity'] = value['quantity']
+        destination = value.get('destination') or 'save'
+        if destination not in DESTINATIONS:
+            raise ValueError('Choose where the Pokémon goes: save (keep it in the save) or switch (send it to the Switch).')
+        chosen_ball = _answer_for(clause, 'ball', self.answers)
+        if chosen_ball in ('safari-ball', 'any'):
+            slots['ball'] = chosen_ball
+            slots['ballRequirement'] = 'required' if chosen_ball == 'safari-ball' else 'preferred'
+        static = sid in _static_ids()
+        request = self.farming_request(slots, mon, static)
+        if isinstance(request, str):
+            clause.status = 'invalid'
+            clause.message = request
+            return
+        clause.steps.append({'kind': 'farming', 'request': request})
+        clause.request_for_preview.append(request)
+        self._catch_summary(clause, request, mon, static)
+        if destination == 'switch':
+            self.send_to_switch(clause)
+
+    def send_to_switch(self, clause):
+        """"… and send it to my Switch" / destination "switch": after the catch is saved, trade each caught Pokémon
+        through the wireless radio, one trade step per Pokémon. The hunt records each one's inventory id
+        (captures.N.pokemonId), and each exchange still waits for the Switch to join and confirm it."""
+        request = next(s['request'] for s in clause.steps if s['kind'] == 'farming')
+        name, quantity = self.vocab.name(request['speciesId']), request['quantity']
+        room = GOAL_STEPS - len(self.prior_steps()) - len(clause.steps)
+        if quantity > room:
+            clause.status = 'invalid'
+            clause.message = (f'Sending to the Switch right after the catch works for up to {max(room, 0)} {name} in one request '
+                              f'(one trade each). Ask for fewer, or send the rest from the Bank once they are caught.')
+            return
+        clause.slots['destination'] = 'switch'
+        for k in range(quantity):
+            clause.steps.append({'kind': 'trade', 'via': 'trade-pokemon',
+                                 'payload': {'pokemonId': {'$ref': ('clause', clause.index, f'captures.{k}.pokemonId')}, 'sourceId': 'current'}})
+        what = f"{'the shiny' if request['shiny'] == 'required' else 'the'} {name}" if quantity == 1 else f"the {quantity} {name}, one at a time,"
+        clause.summary += ', then send it to the Switch' if quantity == 1 else ', then send them to the Switch'
+        clause.confirm.append(f"Trades {what} away to the Switch after {'it is' if quantity == 1 else 'they are'} caught and saved.")
+
+    def prior_steps(self):
+        return [s for c in self.prior for s in c.steps]
 
     def farming_request(self, slots, mon, static):
         d = self.defaults()
@@ -2776,8 +2955,43 @@ class Builder:
         clause.save = {'mode': 'new', 'trainerName': name, 'starter': starter or None, 'label': label}
         clause.steps.append({'kind': 'campaign', 'settings': settings})
         who = f' as {name}' if name else ''
-        clause.summary = f"New save{who} with {(starter or 'a random starter').capitalize() if starter != 'random' else 'a random starter'} → play the story to the Hall of Fame"
+        clause.summary = f"New save{who} with {starter.capitalize() if starter and starter != 'random' else 'a random starter'} → play the story to the Hall of Fame"
         clause.confirm.append('Starts a new save from New Game (the current save is backed up first).')
+
+    def story(self, clause):
+        """"play the story", "beat the elite four": this save's story campaign to the Hall of Fame. A new library starts it from New
+        Game and a campaign the bot plays continues. The goal supervisor decides again when the goal starts, so a request made while
+        the game is closed gets the same plan."""
+        if _new_save_scope(self.original):  # "beat the game on a new save" asks for a new game
+            clause.intent = 'new-game'
+            return self.new_game(clause)
+        s = self.ctx.session() if self.ctx.running() else None
+        campaign = (s or {}).get('campaign') if isinstance((s or {}).get('campaign'), dict) else None
+        progress = (s or {}).get('gameProgress') if isinstance((s or {}).get('gameProgress'), dict) else {}
+        unfinished = campaign is not None and campaign.get('status') != 'complete'
+        if s is not None and not unfinished:
+            if progress.get('leagueComplete') is True or (campaign or {}).get('status') == 'complete':
+                league = bool(re.search(r'\b(elite 4|champion|league)\b', clause.text))
+                clause.status = 'unsupported'
+                clause.slots['unsupported'] = 'league-rematch' if league else 'story-complete'
+                clause.message = LEAGUE_DONE if league else STORY_DONE
+                clause.suggest = ['do the postgame', 'start a new game', 'get me a shiny Mewtwo'] if league else \
+                    ['start a new game', 'do the postgame', 'get me a shiny Mewtwo']
+                return
+            if progress.get('leagueComplete') is False and s.get('newProfile') is not True:
+                clause.status = 'unsupported'
+                clause.slots['unsupported'] = 'story-no-campaign'
+                clause.message = NO_CAMPAIGN
+                clause.suggest = ['start a new game', 'heal then go to Cinnabar and save', "what's my team"]
+                return
+        clause.steps.append({'kind': 'campaign', 'settings': {'starter': 'random', 'afterCampaign': 'postgame'}, 'continue': True})
+        if unfinished:
+            badges = ((campaign.get('storyProgress') or {}).get('badges') or {}).get('earned')
+            clause.summary = 'Continue this save’s story campaign to the Hall of Fame' + (f' ({badges}/8 badges so far)' if isinstance(badges, int) else '')
+        elif s is not None and s.get('newProfile') is True:
+            clause.summary = 'Play the story from New Game to the Hall of Fame (random starter)'
+        else:
+            clause.summary = 'Play the story to the Hall of Fame: continues this save’s story campaign, or starts it from New Game if there is no save'
 
     def save_new(self, clause):
         label = _free_label(clause.tokens, self.case, self.original) or 'New FireRed save'
@@ -3103,11 +3317,12 @@ def status_answer(intent, ctx, vocab):
     s = ctx.session() or {}
     live = ctx.running()
     if intent == 'help':
-        return ('I can catch or hunt any FireRed Pokémon (shiny, nature, gender, ball, IVs, quantity, nickname), travel, get items, heal, save, '
-                'EV-train, start a new game with a trainer name and starter, manage save backups, trade saved shinies, run the postgame checklist '
-                'or the shiny collection, start, stop or resume the bot, change default capture settings and answer questions about the team, hunt, '
-                'location, progress, shinies and money, why the bot stopped, which Pokémon you have and where, their levels, IVs and EVs, '
-                'and missing Pokédex entries. Try “get me a shiny Mewtwo” or “heal then go to Cinnabar and save”.')
+        return ('I can play the story to the Hall of Fame, catch or hunt any FireRed Pokémon (shiny, nature, gender, ball, IVs, quantity, nickname), '
+                'travel, get items, heal, save, EV-train, start a new game with a trainer name and starter, manage save backups, trade saved shinies, '
+                'run the postgame checklist or the shiny collection, start, stop or resume the bot, change default capture settings and answer '
+                'questions about the team, hunt, location, progress, shinies and money, why the bot stopped, which Pokémon you have and where, '
+                'their levels, IVs and EVs, and missing Pokédex entries. '
+                + ('Try “play the story” or “get me a shiny Mewtwo”.' if _blank_save(ctx) else 'Try “get me a shiny Mewtwo” or “heal then go to Cinnabar and save”.'))
     if intent == 'status-saves':
         profiles = ctx.get('profiles')
         if profiles is None:
@@ -3381,6 +3596,13 @@ def _missing_answer(b, clause):
         if rows:
             wanted = set(missing)
             text += f" {sum(1 for r in rows if r.get('status') == 'local' and r.get('speciesId') in wanted)} of them can be caught or evolved on this cartridge."
+        # The owner's goal: the species FireRed itself can register (engine postgame-progress dex.fireRed).
+        goal = dex.get('fireRed') if isinstance(dex.get('fireRed'), dict) else {}
+        if isinstance(goal.get('caught'), int) and isinstance(goal.get('total'), int):
+            text += f" FireRed goal: {goal['caught']} of {goal['total']} catchable in FireRed"
+            if isinstance(goal.get('planned'), int) and goal['planned']:
+                text += f", {goal['planned']} planned through another FireRed save or a partner Pokémon"
+            text += '.'
         return text
     if not b.ctx.running():
         return OFFLINE
@@ -3437,7 +3659,7 @@ SCOPE_NEW = [('on', 'a', 'new', 'save'), ('on', 'a', 'fresh', 'save'), ('in', 'a
 SCOPE_CURRENT = [('on', 'my', 'current', 'save'), ('on', 'the', 'current', 'save'), ('on', 'this', 'save'), ('in', 'my', 'current', 'game'),
                  ('on', 'my', 'existing', 'save'), ('with', 'my', 'current', 'save'), ('using', 'my', 'current', 'save'), ('in', 'this', 'game'),
                  ('on', 'the', 'current', 'game'), ('in', 'the', 'current', 'game'), ('on', 'my', 'current', 'game')]
-SINGLETONS = {'new-game', 'save-new', 'save-restore', 'settings', 'postgame', 'collection', 'ev-training'}
+SINGLETONS = {'new-game', 'save-new', 'save-restore', 'settings', 'postgame', 'collection', 'ev-training', 'story'}
 THEN_WAIT = re.compile(r'\b(then|and) (wait|wait for me|stop there|hand it back|give me control)\b')
 THEN_CONTINUE = re.compile(r'\b(then|and) (keep working on|continue with|go back to) (your|my|the) (goals|checklist|postgame)\b')
 # Questions and negations are not requests. Speech has no '?', so a question is told by how the clause starts;
@@ -3447,7 +3669,8 @@ NEGATION_HEAD = LEAD + (r'(?:(?:i|we|you|lets|youd|wed) )?(?:do not|does not|did
                         r'|(?:would )?rather not|not)(?: (?:want|need)(?: you)? to| bother| ever| even)?')
 NEGATION = re.compile(NEGATION_HEAD + r' (\w+)')
 NEGATION_ONLY = re.compile(NEGATION_HEAD + r'$')  # "Don't, uh, catch a Pikachu.": dictation's comma parts the negation from its verb
-NEGATED_VERBS = (ACTION_START | {'want', 'need', 'use', 'abort', 'scrap', 'drop', 'end', 'call', 'kill', 'remove', 'delete'}) \
+NEGATED_VERBS = (ACTION_START | {'want', 'need', 'use', 'abort', 'scrap', 'drop', 'end', 'call', 'kill', 'remove', 'delete',
+                                  'defeat', 'win', 'become', 'enter', 'reach'}) \
     - {'forget', 'what', 'where', 'how', 'who', 'which', 'is', 'are', 'any', 'did', 'please', 'can', 'could', 'would', 'lets', 'do', 'tell', 'show', 'list', 'shiny'}
 PERSIST = re.compile(r'(?:stop|quit|give up|rest|pause|halt)(?: \w+){0,2} (?:until|till|unless|before)\b')  # "don't stop until you catch …" asks for the hunt
 IDLE_QUESTION = re.compile(LEAD + r'(?:(?:is|are|was|were|am|does|did|has)\b(?! (?:you|u) able to\b| it (?:ok|okay|alright|fine) (?:to|if)\b)|(?:do|have) (?:i|we|you)\b|what (?:is|are)\b'
@@ -3456,6 +3679,12 @@ NEGATED_REPLY = 'That asks the bot not to do something, so nothing was queued. T
 DECLINED_REPLY = 'Okay, nothing was queued.'
 VERB_SUMMARY = re.compile(r'(Catch|Travel|Get|Heal|Save|Start|Resume|Stop|Close|Cancel|Work|Complete|Collect|Change|Trade|Back) ')
 SAVE_BOUND_GIFTS = {133}  # the Celadon Eevee: like the one-time statics, the goal supervisor checks it against the save and can offer a new save
+
+
+def _new_save_scope(text):
+    """The request is scoped to a new save ("... on a new save"), as interpret() reads its scope words."""
+    tokens = _tokens(text)
+    return any(tuple(tokens[i:i + len(scope)]) == scope for scope in SCOPE_NEW for i in range(len(tokens) - len(scope) + 1))
 
 
 def _negated(tokens):
@@ -3492,6 +3721,7 @@ BUILD = {
     'goal-cancel': lambda b, c: b.goal_cancel(c), 'new-game': lambda b, c: b.new_game(c), 'save-new': lambda b, c: b.save_new(c),
     'save-restore': lambda b, c: b.save_restore(c), 'trade-shiny': lambda b, c: b.trade(c, True), 'trade-pokemon': lambda b, c: b.trade(c, False),
     'settings': lambda b, c: b.settings(c), 'postgame': lambda b, c: b.postgame(c), 'collection': lambda b, c: b.collection(c),
+    'story': lambda b, c: b.story(c),
 }
 for _intent in CATALOG:
     if _intent.kind == 'status' or _intent.kind == 'help':
@@ -3550,6 +3780,8 @@ class Interpreter:
                 'confirmation': {'required': False, 'reasons': []}, 'goal': None, 'direct': [], 'answer': None, 'preview': [],
                 'suggestions': [], 'unsupported': None, 'clauses': [], 'warnings': []}
         if not text.strip():
+            if _blank_save(ctx):
+                return {**base, 'message': 'Say or type what the bot should do, for example “play the story”.', 'suggestions': list(BLANK_SUGGESTIONS)}
             return {**base, 'message': 'Say or type what the bot should do, for example “get me a shiny Mewtwo”.', 'suggestions': SUGGESTIONS[:3]}
         tokens = _tokens(text)
         vocab = self.vocab
@@ -3611,6 +3843,24 @@ class Interpreter:
         if laya is not None:
             result['laya'] = laya.report()
         return result
+
+    def select(self, selection, via='ui', context=None, answers=None):
+        """The Bank's "Get it" selection -> the same draft a typed catch request produces (the same
+        builder, goal, preview, clarifications and confirmation). Deterministic: Laya is never asked."""
+        ctx = context if isinstance(context, Context) else Context(context)
+        answers = {str(k): v for k, v in (answers or {}).items()} if isinstance(answers, dict) else {}
+        base = {'understood': False, 'confidence': 0.0, 'parser': 'deterministic', 'summary': '', 'message': '', 'clarification': None,
+                'confirmation': {'required': False, 'reasons': []}, 'goal': None, 'direct': [], 'answer': None, 'preview': [],
+                'suggestions': [], 'unsupported': None, 'clauses': [], 'warnings': []}
+        clause = Clause(0, [])
+        clause.intent, clause.status, clause.score, clause.anchored = 'catch', 'accepted', 1.0, True
+        try:
+            Builder(self, ctx, answers, {}, '').selection(clause, selection)
+        except ValueError as error:
+            clause.status = 'invalid'
+            clause.message = str(error)
+        # The goal's request text is the catch's own summary ("Catch shiny Timid Abra").
+        return self._assemble(clause.summary, via, ctx, answers, [clause], None, None, 'deterministic', base)
 
     def _decide(self, clause, laya, ctx, answers, case, original='', prior=()):
         ranking = clause.ranking
@@ -3727,6 +3977,12 @@ class Interpreter:
                     prev.confirm.append(f'I read “{c.text}” as “raised to level {level}”. Confirm?')
                 c.status = 'merged'
                 continue
+            if prev and prev.status == 'accepted' and prev.intent == 'catch' and SEND_TO_SWITCH.match(c.text) \
+                    and not any(s.values('species') for s in c.spans) and 'destination' not in prev.slots:
+                # "get me a shiny abra and send it to my switch": the catch's destination (the Bank's "Send to the Switch").
+                Builder(self, ctx, answers, case, original, [x for x in out[:-1] if x.status == 'accepted']).send_to_switch(prev)
+                c.status = 'merged'
+                continue
             if prev and prev.status == 'accepted' and c.status in ('clarify', 'rejected') and c.intent in ('item', 'catch') \
                     and prev.intent == c.intent and not any(s.kinds() & {'item', 'ball', 'held', 'species'} for s in c.spans) \
                     and any(t.isdigit() for t in c.tokens):
@@ -3755,10 +4011,10 @@ class Interpreter:
         result['clauses'].sort(key=lambda r: r['index'])
         if invalid:
             c = invalid[0]
-            return {**result, 'message': c.message, 'suggestions': self._nearest(c)}
+            return {**result, 'message': c.message, 'suggestions': self._nearest(c, ctx)}
         if unsupported and not accepted and not pending:
             c = unsupported[0]
-            return {**result, 'unsupported': c.slots.get('unsupported'), 'message': c.message, 'suggestions': self._nearest(c)}
+            return {**result, 'unsupported': c.slots.get('unsupported'), 'message': c.message, 'suggestions': self._nearest(c, ctx)}
         if pending:
             c = pending[0]
             return {**result, 'clarification': c.clarify, 'summary': ' → '.join(x.summary for x in accepted if x.summary),
@@ -3779,7 +4035,7 @@ class Interpreter:
                                       'choices': [{'id': 'continue', 'label': 'Continue: ' + ' → '.join(x.summary for x in accepted if x.summary)},
                                                   {'id': 'cancel', 'label': 'Cancel'}]}}
         if not accepted:
-            nearest = self._nearest(clauses[0] if clauses else None)
+            nearest = self._nearest(clauses[0] if clauses else None, ctx)
             quoted = text.strip()
             if len(quoted) > 80:
                 quoted = quoted[:77] + '…'
@@ -3797,6 +4053,10 @@ class Interpreter:
             ref = (step.get('task') or {}).get('fingerprint')
             if isinstance(ref, dict) and isinstance(ref.get('$ref'), tuple):
                 step['task']['fingerprint'] = {'$ref': f"steps[{farming_index[ref['$ref'][1]]}].result.fingerprint"}
+            # "Send it to the Switch": the inventory id of each Pokémon the catch saved.
+            ref = (step.get('payload') or {}).get('pokemonId')
+            if isinstance(ref, dict) and isinstance(ref.get('$ref'), tuple):
+                step['payload']['pokemonId'] = {'$ref': f"steps[{farming_index[ref['$ref'][1]]}].result.{ref['$ref'][2]}"}
         direct = [d for c in accepted for d in c.direct]
         answers_text = [c.answer for c in accepted if c.answer]
         save = {'mode': mode or 'current-if-able', 'trainerName': None, 'starter': None, 'label': None}
@@ -3841,7 +4101,7 @@ class Interpreter:
                         question = f'{name} is only found in the Safari Zone, where only Safari Balls work. Use Safari Balls?'
                         return {**result, 'message': question, 'clarification': {'id': f'{c.index}:ball', 'slot': 'ball', 'clause': c.index, 'question': question,
                                 'freeText': False, 'choices': [{'id': 'safari-ball', 'label': 'Use Safari Balls'}, {'id': 'any', 'label': 'Any suitable ball'}]}}
-                    return {**result, 'message': str(error), 'suggestions': self._nearest(c)}
+                    return {**result, 'message': str(error), 'suggestions': self._nearest(c, ctx)}
                 except Exception as error:
                     result['warnings'].append(f'Preview unavailable: {error}')
         summary_parts = []
@@ -3855,6 +4115,13 @@ class Interpreter:
             summary += ' (current save if it can reach it, else it asks)'
         if answers_text:
             summary = (summary + ' · ' if summary else '') + ' '.join(answers_text)
+        if goal is not None and _blank_save(ctx) and save['mode'] != 'new' and not any(s['kind'] in BLANK_RUNS for s in steps) \
+                and any(s['kind'] == 'player-task' and s.get('action') == 'start' for s in steps):
+            # Before the first save a task (travel, heal, items, save, EV training) has nothing to run on. The bot's own controls
+            # and save profiles still work; a story or a hunt (which plays the story first) makes the save the tasks then run on.
+            reply = 'There’s no save yet, so the bot can’t do that. Say “play the story” to start it from New Game.'
+            return {**result, 'understood': True, 'confidence': confidence, 'summary': summary, 'answer': ' '.join(answers_text + [reply]),
+                    'preview': previews, 'message': reply, 'suggestions': list(BLANK_SUGGESTIONS)}
         if stuck and len(stuck) == sum(len(c.request_for_preview) for c in accepted):
             reply = f'Understood, but the bot can’t run this yet: {stuck[0]}'  # nothing to Run: every hunt in it would fail at once
             return {**result, 'understood': True, 'confidence': confidence, 'summary': summary, 'answer': ' '.join(answers_text + [reply]), 'preview': previews,
@@ -3864,11 +4131,15 @@ class Interpreter:
                 'answer': ' '.join(answers_text) if answers_text else None, 'preview': previews,
                 'confirmation': {'required': bool(confirm), 'reasons': confirm}, 'message': '', **({'offer': offers[0]} if offers else {})}
 
-    def _nearest(self, clause):
+    def _nearest(self, clause, ctx=None):
+        if clause is not None and clause.suggest:
+            return list(clause.suggest[:3])
+        if clause is not None and clause.slots.get('unsupported') in ('negated', 'declined'):
+            return [BY_ID['goal-cancel'].examples[0], BY_ID['bot-stop'].examples[0]] if clause.slots['unsupported'] == 'negated' else []
+        if _blank_save(ctx):
+            return list(BLANK_SUGGESTIONS)  # nothing else runs before the first save
         if clause is None or not clause.ranking:
             return SUGGESTIONS[:3]
-        if clause.slots.get('unsupported') in ('negated', 'declined'):
-            return [BY_ID['goal-cancel'].examples[0], BY_ID['bot-stop'].examples[0]] if clause.slots['unsupported'] == 'negated' else []
         out = []
         for intent_id, score, details in clause.ranking:
             intent = BY_ID[intent_id]
@@ -4243,6 +4514,22 @@ class RequestService:
             self._follow(key, draft_id, payload['text'], answers, result)
         return {**result, 'draftId': draft_id}
 
+    def select(self, payload):
+        """The Bank's "Get it": a structured selection -> a draft in the same store, committed by the same commit."""
+        if not isinstance(payload, dict) or set(payload) - {'selection', 'answers'} or not isinstance(payload.get('selection'), dict):
+            raise RequestError(400, 'Send the Bank selection (and optionally answers).')
+        answers = payload.get('answers') or {}
+        if not isinstance(answers, dict) or any(not isinstance(k, str) or not isinstance(v, (str, int)) for k, v in answers.items()):
+            raise RequestError(400, 'Answers map a clarification id to a choice.')
+        answers = {k: str(v) for k, v in answers.items()}
+        selection = copy.deepcopy(payload['selection'])
+        result = self.interpreter.select(selection, via='ui', context=self.context_provider(), answers=answers)
+        text = result.get('summary') or ''
+        draft_id = self.drafts.put({'selection': selection, 'text': text, 'via': 'ui', 'answers': answers, 'result': result})
+        if self.log_path:
+            self._log(text, 'ui', result, draftId=draft_id, bank=True, **({'answers': answers} if answers else {}))
+        return {**result, 'draftId': draft_id}
+
     def commit(self, payload):
         if not isinstance(payload, dict) or set(payload) - {'draftId', 'goal', 'answers', 'idempotencyKey'} or ('draftId' in payload) == ('goal' in payload):
             raise RequestError(400, 'Commit a draftId or a goal, with an idempotencyKey.')
@@ -4271,7 +4558,10 @@ class RequestService:
                 extra = {k: v for k, v in answers.items()}
                 if extra:
                     merged = {**draft['answers'], **extra}
-                    result = self.interpreter.interpret(draft['text'], via=draft['via'], context=self.context_provider(), answers=merged)
+                    if 'selection' in draft:  # a Bank draft is answered from its selection, not re-read as text
+                        result = self.interpreter.select(draft['selection'], via=draft['via'], context=self.context_provider(), answers=merged)
+                    else:
+                        result = self.interpreter.interpret(draft['text'], via=draft['via'], context=self.context_provider(), answers=merged)
                 if not result['understood'] or result.get('clarification'):
                     raise RequestError(409, 'The request is not understood yet: ' + (result.get('message') or 'answer the clarification first.'))
                 goal = result.get('goal')
