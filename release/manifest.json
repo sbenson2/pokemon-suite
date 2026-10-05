@@ -3903,7 +3903,7 @@
     },
     {
       "path": "pokemon_suite/server.py",
-      "sha256": "f49acf201f6e32a98adfbefb5624128730a98b6c61ce86b87c98029fb4021c61"
+      "sha256": "e09d4d77be72fa25a0c40a44732e79d40b83c4cd9f360e4187be9a128c309ca4"
     },
     {
       "path": "pokemon_suite/static/assets/pokemon/hardware/SOURCE.md",
@@ -4992,6 +4992,10 @@
     {
       "path": "tests/test_runtime_selection.py",
       "sha256": "abb1c0a217bc067cd831a5d8752c0599dc10bea5188b43aa19db3a81ff0cffdd"
+    },
+    {
+      "path": "tests/test_server_burst.py",
+      "sha256": "d5e1ca618b1c8771e9fc7f81f7021b51aca39f7867b50764c728ff1725fb41a0"
     },
     {
       "path": "tests/test_session_liveness.py",

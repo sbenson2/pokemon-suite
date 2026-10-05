@@ -31,6 +31,10 @@ STATIC = Path(__file__).parent / 'static'
 
 class SuiteServer(ThreadingHTTPServer):
     daemon_threads = True
+    # A page load opens about thirty connections at once; the default listen
+    # backlog of five made macOS reset some, so browsers lost scripts. 128 is
+    # the macOS default kern.ipc.somaxconn.
+    request_queue_size = 128
 
     def __init__(self, directory, port=0):
         self.directory = Path(directory).resolve()
