@@ -1,0 +1,461 @@
+{
+ "schema": "pokemon-suite/native-regression-map/v1",
+ "policy": "docs/BOT-REGRESSION-GATE.md, \"Keeping the corpus lean\": a case leaves the required list only with an entry here naming the case that now checks each of its assertions.",
+ "baseline": {
+  "count": 143,
+  "sha256": "c19e695ea863e9163b1d869d00e862d0faa38b34832003f9cd4a4157979d0ba5",
+  "recorded": "build 126 (2026-10-05), before the first consolidation",
+  "ids": [
+   "battle-tape-equivalence",
+   "campaign-balanced-progression",
+   "campaign-battle-interruptions",
+   "campaign-blocked-clock",
+   "campaign-completion-preview",
+   "campaign-cycling-route",
+   "campaign-direct-training",
+   "campaign-field-dialogue",
+   "campaign-helper-dome-fossil",
+   "campaign-helper-fossil-goal",
+   "campaign-hm-policy",
+   "campaign-home-healing",
+   "campaign-league-lance",
+   "campaign-league-lorelei",
+   "campaign-major-battle",
+   "campaign-menu-interruptions",
+   "campaign-menu-route-recovery",
+   "campaign-move-understanding",
+   "campaign-moving-rematch",
+   "campaign-navigation-interruptions",
+   "campaign-postgame-handoff",
+   "campaign-recharge-approach",
+   "campaign-roster-acquisition",
+   "campaign-safari-search",
+   "campaign-seagallop-return",
+   "campaign-story-checkpoints",
+   "campaign-story-retry",
+   "campaign-strategy-recovery",
+   "campaign-teaching",
+   "campaign-training-batch",
+   "campaign-transform",
+   "campaign-victory-boulder",
+   "campaign-victory-road-return",
+   "campaign-vs-seeker-cycle",
+   "competitive-ev-training",
+   "dojo-gift-hidden-power",
+   "dojo-gift-timing",
+   "goal-new-game-trainer-name",
+   "goal-supervisor-postgame-handoff",
+   "helper-dojo-prize",
+   "helper-park-archived-save",
+   "helper-roamer-preparation",
+   "helper-start-campaign",
+   "island-fly-region",
+   "leafgreen-mansion-secret-key",
+   "leafgreen-new-game",
+   "manual-new-save-bot-start",
+   "moltres-ascent",
+   "national-dex-save",
+   "owned-trade-sevii",
+   "pc-exit-native-save",
+   "pc-roster-exit",
+   "postgame-acquisition-travel",
+   "postgame-automatic-partner",
+   "postgame-bellossom-sun-stone",
+   "postgame-boundary-recovery",
+   "postgame-breed-to-evolve",
+   "postgame-breeding",
+   "postgame-checklist-agenda",
+   "postgame-collection-sources",
+   "postgame-combat-preparation",
+   "postgame-dunsparce-tunnel-rng",
+   "postgame-egg-record-claim",
+   "postgame-egg-record-repeat",
+   "postgame-egg-wait-progress",
+   "postgame-evolution-acceleration",
+   "postgame-evolution-learning",
+   "postgame-evolution-route",
+   "postgame-evolution-save",
+   "postgame-extra-save-keep-hitmon",
+   "postgame-extra-save-loan",
+   "postgame-extra-save-loan-charmander",
+   "postgame-extra-save-loan-resume",
+   "postgame-fame-cut-gym-trainer",
+   "postgame-fame-cut-roster",
+   "postgame-fame-fact",
+   "postgame-fame-museum-guide-loop",
+   "postgame-fame-original-togetic",
+   "postgame-field-medicine",
+   "postgame-firered-partner",
+   "postgame-firered-partner-console-reset",
+   "postgame-firered-partner-restart",
+   "postgame-firered-partner-stall",
+   "postgame-fishing-collection",
+   "postgame-flareon-fire-stone",
+   "postgame-funding-recovery",
+   "postgame-game-corner",
+   "postgame-held-item-partner",
+   "postgame-hunt-rejection",
+   "postgame-icefall",
+   "postgame-income-chain",
+   "postgame-league-champion-tactics",
+   "postgame-league-exp-share",
+   "postgame-league-exp-share-restore",
+   "postgame-league-exp-share-strike",
+   "postgame-league-finish",
+   "postgame-league-intermission",
+   "postgame-league-menu-settle",
+   "postgame-league-record",
+   "postgame-league-shortage",
+   "postgame-league-training",
+   "postgame-maintenance-recovery",
+   "postgame-national-ember-hunt",
+   "postgame-npc-trade-start-menu",
+   "postgame-objective-selection",
+   "postgame-pc-held-reference",
+   "postgame-pc-release-hatchlings",
+   "postgame-politoed-kings-rock",
+   "postgame-priority-static-target",
+   "postgame-qmm-duplicate",
+   "postgame-qmm-prerequisites",
+   "postgame-qmm-renewable",
+   "postgame-qmm-setup-battle",
+   "postgame-rare-candy-move-learn",
+   "postgame-rare-candy-move-learn-resume",
+   "postgame-recovery-storage",
+   "postgame-released-hunt-resume",
+   "postgame-safari-dex-capture",
+   "postgame-safari-dex-entry",
+   "postgame-safari-save",
+   "postgame-sapphire",
+   "postgame-shopping-resume",
+   "postgame-snorlax-handoff",
+   "postgame-supplies",
+   "postgame-supply-replan",
+   "postgame-team-trade-evolution",
+   "postgame-tower-admission",
+   "postgame-tower-balanced-roster",
+   "postgame-tower-defeat",
+   "postgame-tower-double-recovery",
+   "postgame-tower-recovery-prize",
+   "postgame-tower-travel",
+   "postgame-unown-handoff",
+   "postgame-unown-successor",
+   "postgame-victory-road-funding",
+   "postgame-worker-resume",
+   "protected-capture-exhaustion",
+   "roamer-capture-handoff",
+   "roamer-supplies",
+   "seafoam-current",
+   "static-legendary-timing",
+   "task-firered-partner",
+   "trainer-portrait"
+  ]
+ },
+ "retired": [
+  {
+   "id": "postgame-firered-partner",
+   "replacedBy": "postgame-firered-partner-link-faults",
+   "script": "scripts/replay-firered-partner.mjs",
+   "since": "build 126",
+   "reason": "The clean round trip is the final attempt of the link-faults trade: the same checkpoint, partner save and checklist reach the same receipt, evolved Machamp and net-zero partner.",
+   "assertions": [
+    {
+     "old": "the postgame checklist reserved the teammate for the exchange",
+     "new": "the postgame checklist reserved the teammate for the exchange"
+    },
+    {
+     "old": "Machamp remains owned as the same individual",
+     "new": "Machamp remains owned as the same individual"
+    },
+    {
+     "old": "the other five teammates are unchanged",
+     "new": "the other five teammates are unchanged"
+    },
+    {
+     "old": "The partner must verify its net-zero return and idle",
+     "new": "The partner must verify its net-zero return and idle"
+    },
+    {
+     "old": "the partner holds exactly its original individuals again",
+     "new": "the partner holds exactly its original individuals again"
+    },
+    {
+     "old": "the placeholder is back",
+     "new": "the placeholder is back"
+    },
+    {
+     "old": "the partner kept nothing",
+     "new": "the partner kept nothing"
+    },
+    {
+     "old": "the banked partner save is immutable",
+     "new": "the banked partner save is immutable"
+    },
+    {
+     "old": "the placeholder is ordinary: not shiny, legendary, an egg or an item holder",
+     "new": "the placeholder is ordinary: not shiny, legendary, an egg or an item holder"
+    }
+   ]
+  },
+  {
+   "id": "postgame-firered-partner-stall",
+   "replacedBy": "postgame-firered-partner-link-faults",
+   "script": "scripts/replay-firered-partner.mjs",
+   "since": "build 126",
+   "reason": "Fault 3 of the link-faults trade is the same 2.5 s partner stall at CB2_TradeMenu on the outbound leg; it must complete without a retry.",
+   "assertions": [
+    {
+     "old": "the owner stall was injected and released during the exchange",
+     "new": "the owner stall was injected and released during the exchange"
+    },
+    {
+     "old": "the stalled owner was held by the linked frame clock, not restarted",
+     "new": "the stalled owner was held by the linked frame clock, not restarted"
+    },
+    {
+     "old": "the postgame checklist reserved the teammate for the exchange",
+     "new": "the postgame checklist reserved the teammate for the exchange"
+    },
+    {
+     "old": "Machamp remains owned as the same individual",
+     "new": "Machamp remains owned as the same individual"
+    },
+    {
+     "old": "the other five teammates are unchanged",
+     "new": "the other five teammates are unchanged"
+    },
+    {
+     "old": "The partner must verify its net-zero return and idle",
+     "new": "The partner must verify its net-zero return and idle"
+    },
+    {
+     "old": "the partner holds exactly its original individuals again",
+     "new": "the partner holds exactly its original individuals again"
+    },
+    {
+     "old": "the placeholder is back",
+     "new": "the placeholder is back"
+    },
+    {
+     "old": "the partner kept nothing",
+     "new": "the partner kept nothing"
+    },
+    {
+     "old": "the banked partner save is immutable",
+     "new": "the banked partner save is immutable"
+    },
+    {
+     "old": "the placeholder is ordinary: not shiny, legendary, an egg or an item holder",
+     "new": "the placeholder is ordinary: not shiny, legendary, an egg or an item holder"
+    }
+   ]
+  },
+  {
+   "id": "postgame-firered-partner-restart",
+   "replacedBy": "postgame-firered-partner-link-faults",
+   "script": "scripts/replay-firered-partner.mjs",
+   "since": "build 126",
+   "reason": "Fault 2 of the link-faults trade is the same 6 s partner stall past the link heartbeat; both owners cold-boot, prove their saves and retry once.",
+   "assertions": [
+    {
+     "old": "the owner stall was injected and released during the exchange",
+     "new": "the owner stall was injected and released during the exchange"
+    },
+    {
+     "old": "both owners proved the interrupted leg and retried it once",
+     "new": "both owners proved the interrupted leg and retried it once"
+    },
+    {
+     "old": "the postgame checklist reserved the teammate for the exchange",
+     "new": "the postgame checklist reserved the teammate for the exchange"
+    },
+    {
+     "old": "Machamp remains owned as the same individual",
+     "new": "Machamp remains owned as the same individual"
+    },
+    {
+     "old": "the other five teammates are unchanged",
+     "new": "the other five teammates are unchanged"
+    },
+    {
+     "old": "The partner must verify its net-zero return and idle",
+     "new": "The partner must verify its net-zero return and idle"
+    },
+    {
+     "old": "the partner holds exactly its original individuals again",
+     "new": "the partner holds exactly its original individuals again"
+    },
+    {
+     "old": "the placeholder is back",
+     "new": "the placeholder is back"
+    },
+    {
+     "old": "the partner kept nothing",
+     "new": "the partner kept nothing"
+    },
+    {
+     "old": "the banked partner save is immutable",
+     "new": "the banked partner save is immutable"
+    },
+    {
+     "old": "the placeholder is ordinary: not shiny, legendary, an egg or an item holder",
+     "new": "the placeholder is ordinary: not shiny, legendary, an egg or an item holder"
+    }
+   ]
+  },
+  {
+   "id": "postgame-firered-partner-console-reset",
+   "replacedBy": "postgame-firered-partner-link-faults",
+   "script": "scripts/replay-firered-partner.mjs",
+   "since": "build 126",
+   "reason": "Fault 1 of the link-faults trade is the same partner console soft reset while it is still choosing its Pokémon; one verified retry.",
+   "assertions": [
+    {
+     "old": "the partner console took its soft-reset chord during the exchange",
+     "new": "the partner console took its soft-reset chord during the exchange"
+    },
+    {
+     "old": "both owners proved the restarted console's leg and retried it once",
+     "new": "both owners proved the restarted console's leg and retried it once"
+    },
+    {
+     "old": "the postgame checklist reserved the teammate for the exchange",
+     "new": "the postgame checklist reserved the teammate for the exchange"
+    },
+    {
+     "old": "Machamp remains owned as the same individual",
+     "new": "Machamp remains owned as the same individual"
+    },
+    {
+     "old": "the other five teammates are unchanged",
+     "new": "the other five teammates are unchanged"
+    },
+    {
+     "old": "The partner must verify its net-zero return and idle",
+     "new": "The partner must verify its net-zero return and idle"
+    },
+    {
+     "old": "the partner holds exactly its original individuals again",
+     "new": "the partner holds exactly its original individuals again"
+    },
+    {
+     "old": "the placeholder is back",
+     "new": "the placeholder is back"
+    },
+    {
+     "old": "the partner kept nothing",
+     "new": "the partner kept nothing"
+    },
+    {
+     "old": "the banked partner save is immutable",
+     "new": "the banked partner save is immutable"
+    },
+    {
+     "old": "the placeholder is ordinary: not shiny, legendary, an egg or an item holder",
+     "new": "the placeholder is ordinary: not shiny, legendary, an egg or an item holder"
+    }
+   ]
+  },
+  {
+   "id": "postgame-extra-save-loan",
+   "replacedBy": "postgame-extra-save-loan-charmander",
+   "script": "scripts/replay-extra-save-loan.mjs",
+   "since": "build 126",
+   "reason": "The same loan transaction (open leg, registration, Day Care with the main save's own Ditto, close leg, hatch, team restore, save, partner net zero) for another starter family; the Charmander case also covers the parked archived partner.",
+   "assertions": [
+    {
+     "old": "the main save starts without this starter line",
+     "new": "the main save starts without this starter line"
+    },
+    {
+     "old": "the main save holds its own Ditto",
+     "new": "the main save holds its own Ditto"
+    },
+    {
+     "old": "the partner party holds its non-shiny lent Pokémon",
+     "new": "the partner party holds its non-shiny lent Pokémon"
+    },
+    {
+     "old": "the host showed the loan route, its partner save and an unknown ETA",
+     "new": "the host showed the loan route, its partner save and an unknown ETA"
+    },
+    {
+     "old": "the lent Pokémon registered by the trade, the Egg species by hatching",
+     "new": "the lent Pokémon registered by the trade, the Egg species by hatching"
+    },
+    {
+     "old": "the Pokédex registers the lent species and the hatched one",
+     "new": "the Pokédex registers the lent species and the hatched one"
+    },
+    {
+     "old": "the lent Pokémon went back",
+     "new": "the lent Pokémon went back"
+    },
+    {
+     "old": "the hatchling is the main save's own",
+     "new": "the hatchling is the main save's own"
+    },
+    {
+     "old": "the main save's duplicate came back",
+     "new": "the main save's duplicate came back"
+    },
+    {
+     "old": "the Ditto stays",
+     "new": "the Ditto stays"
+    },
+    {
+     "old": "the original team is back in the party",
+     "new": "the original team is back in the party"
+    },
+    {
+     "old": "the partner holds exactly its original individuals again",
+     "new": "the partner holds exactly its original individuals again"
+    },
+    {
+     "old": "the lent Pokémon is back in the partner party",
+     "new": "the lent Pokémon is back in the partner party"
+    },
+    {
+     "old": "the partner checkpoint is immutable",
+     "new": "the partner checkpoint is immutable"
+    }
+   ]
+  },
+  {
+   "id": "postgame-extra-save-loan-resume",
+   "replacedBy": "postgame-extra-save-loan-charmander",
+   "script": "scripts/replay-extra-save-loan.mjs",
+   "since": "build 126",
+   "reason": "The Charmander loan stops and restarts both owners at the Day Care withdrawal after the Egg (restartAt), where native run 1 stopped; the restarted owners must finish the loan from what they persisted. The original menu stall is covered at the unit layer.",
+   "lowerLayer": "engine/firered/test/extra-save-exchange.test.js: \"the exchange lets the Day Care task answer its withdrawal menu\"",
+   "preservedCheckpoint": "the private loan-midway fixture stays preserved for reproduction",
+   "assertions": [
+    {
+     "old": "the main save stopped mid-loan",
+     "new": "the main save stopped mid-loan"
+    },
+    {
+     "old": "the partner holds the open loan for this exchange",
+     "new": "the partner holds the open loan for this exchange"
+    },
+    {
+     "old": "the restarted partner keeps its open loan",
+     "new": "the restarted partner keeps its open loan"
+    },
+    {
+     "old": "The partner must close its loan and idle",
+     "new": "The partner must close its loan and idle"
+    },
+    {
+     "old": "the original team is back in the party",
+     "new": "the original team is back in the party"
+    },
+    {
+     "old": "the partner holds exactly its original individuals again",
+     "new": "the partner holds exactly its original individuals again"
+    }
+   ]
+  }
+ ],
+ "moved": []
+}

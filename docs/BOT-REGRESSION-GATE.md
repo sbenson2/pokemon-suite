@@ -430,7 +430,8 @@ The native suite's time limits come from the gate plan (`gate-plan.json`; see
 "Parallel lanes, phases and time limits" below), so they grow with the corpus
 instead of a fixed aggregate deadline. Long hunts are bounded by observed
 progress rather than by wall-clock windows. Individual replay and
-gameplay deadlines remain in force; new scenarios do not remove historical ones.
+gameplay deadlines remain in force; new scenarios do not remove historical ones,
+except through the coverage map in "Keeping the corpus lean".
 Successful saves alone cannot keep a stalled objective's progress deadline alive.
 
 The seventy-fourth case, `postgame-tower-balanced-roster`, starts with the
@@ -805,7 +806,8 @@ during dialogue, restores HP, and hands control back to the campaign before
 leaving. Opening navigation must not override subsequent visits to the house.
 The source-controlled `engine/firered/test-support/native-regressions.json`
 requires these case identifiers, so a corpus containing only the newest bug
-cannot qualify a release.
+cannot qualify a release. A case leaves that list only through the coverage map
+described in "Keeping the corpus lean".
 
 A seventh replay uses the original Misty turn-zero checkpoint to verify that
 major battles override XP switch-training. It requires Grass attacks, no fainted
@@ -1276,6 +1278,46 @@ original-individual preservation. This supplements the original A-form case;
 it does not replace it or establish all 28 forms. With this successor case, all
 86 scenarios are mandatory. A separate consecutive-capture receipt must
 establish travel to another chamber before claiming that joined workflow.
+
+## Keeping the corpus lean
+
+Until build 126 no case had ever left the required corpus: it grew from 6 cases
+(September 12) to 143, each a full emulator replay of seconds to twenty minutes.
+From build 126 these rules apply:
+
+- **Lowest layer first.** Each behavior fix still adds a regression test for the
+  actual failure, at the lowest layer that reproduces it. When one decision or
+  one message is wrong, that is an engine unit test or a test on a recorded
+  observation. A native replay is for a failure that needs a multi-step
+  transaction in the real emulator: menus, saves, trades, restarts. A
+  reproducible native failure keeps its checkpoint preserved privately either way.
+- **One replay per save and transaction.** Cases that replay the same checkpoint
+  and transaction, differing only in an injected fault or a restart point,
+  become one replay that checks each of them in turn.
+- **A map, never a silent removal.** A case leaves `required` only with an entry
+  in `engine/firered/test-support/native-regression-map.json`. The entry names
+  the replacing case, the reason, and where each of the old case's assertions is
+  now checked. `tests/test_native_regression_map.py` proves that every case of the
+  recorded 143-case baseline is still required or mapped, and that every mapped
+  assertion message is in the replacing script.
+- **Tiers.** Owner installs are meant to qualify with the core tier: every
+  required case except those listed under `releaseOnly`. Public releases run the
+  full corpus, including `releaseOnly` cases such as the long legendary timing
+  cases. The verifier and packaging do not enforce tiers yet, so until they do,
+  every gate runs the full corpus.
+
+Build 126 merged these cases:
+
+| Retired | Now checked by |
+| --- | --- |
+| `postgame-firered-partner`, `-stall`, `-restart`, `-console-reset` | `postgame-firered-partner-link-faults`: on one trade, a partner console reset (verified retry 1), a 6 s partner stall past the link heartbeat (verified retry 2), then a 2.5 s stall that must finish without a retry. The clean round trip is its final attempt. |
+| `postgame-extra-save-loan` | `postgame-extra-save-loan-charmander`: the same loan transaction for another starter family, from the parked archived partner save. |
+| `postgame-extra-save-loan-resume` | `postgame-extra-save-loan-charmander` with `restartAt: 'daycare-withdrawal'`: both owners stop and restart at the Day Care withdrawal after the Egg and must finish the loan. The original menu stall stays covered by `engine/firered/test/extra-save-exchange.test.js`, and its preserved checkpoint stays in the private corpus. |
+
+Faults for the partner trades are declared as `linkFaults` and validated by
+`engine/firered/test-support/link-faults.js`. Faults run one per trade attempt.
+A fault that completes without a retry must come last. The list may cost at most
+three verified retries, the most the game allows before it refuses another.
 
 ## Development selections and evidence reuse
 

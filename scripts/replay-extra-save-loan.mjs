@@ -14,6 +14,7 @@ import {encounterFingerprint} from '../engine/firered/src/player/encounter-track
 import {verifyLocalEvolutionExchange} from '../engine/firered/src/suite/local-evolution.js';
 import {continueNativeSave} from '../engine/firered/src/suite/native-cold-boot.js';
 import {nationalSpeciesId} from '../engine/firered/src/evidence/gen3-national-species.js';
+import {loanRestartPoint} from '../engine/firered/test-support/link-faults.js';
 const json=p=>JSON.parse(readFileSync(p));
 // Independent checks (not the code under test).
 const holdings=t=>{assert.ok(t?.partyValidity==='valid'&&t.storage?.validity==='valid','party and PC are readable');return {party:t.party.map(encounterFingerprint).sort(),storage:t.storage.pokemon.map(encounterFingerprint).sort()};};
@@ -38,8 +39,13 @@ const port=()=>new Promise((done,fail)=>{const server=createServer();server.on('
 // Blastoise, hatches the Egg and saves; the partner closes its loan net zero.
 // `family`: the same loan for another starter line, e.g. the Charmander line from
 // the archived FIRE save's Charizard once that save is parked in a linked Center.
+// `restartAt: 'daycare-withdrawal'` (build 126): a fresh loan stops both owners
+// (SIGTERM, which persists each owner) as the main save walks back to the Day
+// Care for its parents after receiving the Egg, the point where native run 1
+// stopped. Both owners restart from what they persisted and must finish the
+// loan with the same invariants the preserved `-loan-resume` checkpoint checked.
 export async function replayExtraSaveLoan({session,saved,inputs,cfg,partnerCfg,partnerRomBytes,createSession,fixture,corpusPath}){
- const owner=fixture.partnerOwner,resume=fixture.resume===true;
+ const owner=fixture.partnerOwner,resume=fixture.resume===true,restartAt=loanRestartPoint(fixture);
  const family=fixture.family??{needId:'starter-squirtle',subject:9,egg:7,species:[7,8,9]},partnerLabel=fixture.partnerLabel??'RED (partner)';
  assert.ok(owner&&partnerCfg?.title==='firered'&&partnerCfg.role==='partner'&&partnerRomBytes,'an extra-save replay needs its verified FireRed partner owner');
  const root=mkdtempSync(join(tmpdir(),'suite-extra-save-loan-'));
@@ -103,11 +109,17 @@ export async function replayExtraSaveLoan({session,saved,inputs,cfg,partnerCfg,p
   let coordinatorLog='';coordinator.stderr.on('data',b=>{coordinatorLog=(coordinatorLog+b).slice(-5000);});
   if(!resume)await wait(()=>existsSync(join(root,'firered','extra-save-sources.json'))&&json(join(root,'firered','extra-save-sources.json')).sources?.some(s=>s.source.owner===owner),'The host must publish the partner as an extra-save source '+coordinatorLog,60000);
   await command('firered',{type:'set-bot',enabled:true});
-  let last='',opened=null,closed=null,sawPlan=false;
+  let last='',opened=null,closed=null,sawPlan=false,eggReceived=false,restartDue=false,restarted=null;
   const TRANSFER=/Waiting for .* to lend|Returning the borrowed|A separate compatible game/;
-  await wait(()=>{
+  const loanDone=()=>{
    assert.equal(coordinator.exitCode,null,'coordinator failed: '+coordinatorLog);
    const fr=status('firered'),row=fr?.extraSaves?.find(r=>r.needId===family.needId);
+   // The restart point: back at the Day Care Woman for the parents after the Day Care Man handed over the Egg.
+   if(restartAt&&!restarted){
+    const objective=fr?.bot?.objective?.id??'';
+    if(objective.endsWith('-daycare-FourIsland_EventScript_DaycareMan'))eggReceived=true;
+    if(eggReceived&&fr?.map==='MAP_FOUR_ISLAND_POKEMON_DAY_CARE'&&objective.endsWith('-daycare-FourIsland_PokemonDayCare_EventScript_DaycareWoman')){restartDue=true;return true;}
+   }
    sawPlan||=row?.mode==='borrow and return'&&row.save===partnerLabel;
    const p=fr?.bot?.preparation;
    const trace=JSON.stringify([fr?.bot?.objective?.id,fr?.map,p?.kind,p?.phase,row?.doing,...owners.map(g=>[g,status(g)?.localEvolution?.phase,status(g)?.localEvolution?.requestId])]);
@@ -119,7 +131,35 @@ export async function replayExtraSaveLoan({session,saved,inputs,cfg,partnerCfg,p
    if(local?.requestId?.endsWith('-open'))opened??=local.requestId;
    if(local?.requestId?.endsWith('-close'))closed??=local.requestId;
    return (agenda()?.acquisitions??[]).some(r=>r.method==='extra-save'&&r.mode==='loan'&&r.nativeSaveVerified);
-  },'The loan did not finish both legs, the Egg and the final save',3600000);
+  };
+  // Stop both owners as the app would on quit, prove the mid-loan state they
+  // persisted, start them again and let the loan finish.
+  const restartOwners=async()=>{
+   console.log('# extra-save-loan restart '+JSON.stringify({at:restartAt,frame:status('firered')?.frame,map:status('firered')?.map}));
+   for(const game of owners)children.get(game).kill('SIGTERM');
+   for(const game of owners){
+    const child=children.get(game);
+    if(child.exitCode===null&&child.signalCode===null)await Promise.race([new Promise(done=>child.once('exit',done)),sleep(60000)]);
+    assert.ok(child.exitCode!==null||child.signalCode!==null,game+' stopped for the restart');
+   }
+   const exchange=json(join(root,'firered','hunts',run,'native-radio','saves','current.json')).metadata?.postgame?.acquisition;
+   assert.equal(exchange?.kind,'extra-save');assert.equal(exchange.phase,'daycare','the main save stopped mid-loan');
+   assert.ok(exchange.daycare?.egg,'the Egg was received before the restart');
+   const ledger=json(join(root,owner,'saves','current.json')).metadata?.extraSaveLedger?.open;
+   assert.equal(ledger?.exchangeId,exchange.requestId,'the partner holds the open loan for this exchange');
+   for(const game of owners)start(game);
+   await wait(()=>owners.every(g=>status(g)?.pid===children.get(g).pid),'Both FireRed owners must publish their real checkpoints',60000);
+   await wait(()=>status(owner)?.extraSaveInventory?.pokemon?.length>0,'The partner must publish its inventory',60000);
+   assert.equal(status(owner).extraSaveLedger?.open?.exchangeId,exchange.requestId,'the restarted partner keeps its open loan');
+   await command('firered',{type:'set-bot',enabled:true});
+   return {exchangeId:exchange.requestId,frame:status('firered')?.frame};
+  };
+  await wait(loanDone,'The loan did not finish both legs, the Egg and the final save',3600000);
+  if(restartDue){
+   restarted=await restartOwners();restartDue=false;
+   await wait(loanDone,'The loan did not finish both legs, the Egg and the final save after the restart',3600000);
+  }
+  if(restartAt)assert.ok(restarted,'both owners restarted at the '+restartAt);
   if(!resume)assert.ok(sawPlan,'the host showed the loan route, its partner save and an unknown ETA');
   const receipt=(agenda().acquisitions).find(r=>r.method==='extra-save');
   assert.deepEqual(receipt.registered,[family.subject,family.egg],'the lent Pokémon registered by the trade, the Egg species by hatching');
@@ -158,7 +198,8 @@ export async function replayExtraSaveLoan({session,saved,inputs,cfg,partnerCfg,p
    assert.ok(back,'the lent Pokémon is back in the partner party');
   }finally{check.close();}
   assert.equal(digest(readFileSync(resolve(dirname(bankPath),bankRecord.sramPath))),bankRecord.sramSha256,'the partner checkpoint is immutable');
-  console.log('# extra-save-loan verified '+JSON.stringify({exchangeId,registered:receipt.registered,hatched:receipt.fingerprint,frame:after.frame}));
+  if(restarted)assert.equal(restarted.exchangeId,exchangeId,'the restarted loan is the one that finished');
+  console.log('# extra-save-loan verified '+JSON.stringify({exchangeId,registered:receipt.registered,hatched:receipt.fingerprint,frame:after.frame,...(restarted?{restartedAt:restartAt}:{})}));
   return {before,after};
  }finally{
   coordinator?.kill('SIGTERM');

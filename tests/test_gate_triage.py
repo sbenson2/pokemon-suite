@@ -74,6 +74,16 @@ class LabelledFailures(unittest.TestCase):
                  'error': 'firered-partner: The prepared trade party changed unexpectedly. Its current state is preserved.'}
         self.assertEqual(gt.classify(party, {})['class'], 'regression', 'first seen in 118-02; investigate, never auto-retry')
 
+    def test_the_merged_link_faults_case_keeps_the_heartbeat_family(self):
+        # Build 126 merged the partner stall, restart and console-reset cases into one
+        # link-faults trade; its 6 s stall (fault 2) is where the heartbeat can expire.
+        heartbeat = {'stage': 'native-replays', 'case': 'postgame-firered-partner-link-faults', 'test': None,
+                     'error': 'firered-partner: The received Pokémon is saved locally, but the final link handshake or '
+                              'normal exit is not verified. Preserving this game for inspection.'}
+        result = gt.classify(heartbeat, {})
+        self.assertEqual((result['class'], result['family']), ('known-flaky', 'firered-partner-heartbeat-load'))
+        self.assertEqual(gt.classify(heartbeat, {'reproduced': True})['class'], 'regression')
+
     def test_rom_integrity_is_never_retryable(self):
         verdict = gt.classify({'stage': 'rom-integrity', 'case': None, 'test': None, 'error': 'ENOTEMPTY'}, {})
         self.assertEqual(verdict['class'], 'regression')

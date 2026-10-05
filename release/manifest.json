@@ -47,7 +47,7 @@
     },
     {
       "path": "docs/BOT-REGRESSION-GATE.md",
-      "sha256": "ad47b3d9f1d29c4b06a264d689725b4fdf48dd7c36064d7e612f5c915913a1d9"
+      "sha256": "e598f0c49a2a3739499f948dd7678ef44b7f3fdf8ffac1c2460a694cde43ceba"
     },
     {
       "path": "docs/CAMPAIGN-PERFORMANCE.md",
@@ -1150,12 +1150,20 @@
       "sha256": "3156568dcda1e6fc51215e791b36ccebd0395a3657ce91ce4e07eed9cb774522"
     },
     {
+      "path": "engine/firered/test-support/link-faults.js",
+      "sha256": "24a624d4402b79175bc1329eae6b19a33f7cbc2b4edeb28b704edefdbf09fac2"
+    },
+    {
       "path": "engine/firered/test-support/misty-battle.json",
       "sha256": "c784aca8c638629bdd86d599d24680de0f621e06dfea57895e0da18fb42abe61"
     },
     {
+      "path": "engine/firered/test-support/native-regression-map.json",
+      "sha256": "7121839b6a067eb96ebe6120ac897042a0b520bcd7c28d396888a594d8ab893a"
+    },
+    {
       "path": "engine/firered/test-support/native-regressions.json",
-      "sha256": "d87cf0a0b711e94d371efdddd553a6f2314320aed5b6eae6addf29cea449fb05"
+      "sha256": "55b4be371cc7f995bcf1043d2948b549752c1233dceba0b1d0dd58bf9e656734"
     },
     {
       "path": "engine/firered/test-support/native-transform-planner.js",
@@ -1612,6 +1620,10 @@
     {
       "path": "engine/firered/test/limit-cycle.test.js",
       "sha256": "ea3a7fa5e4b8a92c2ebb372fb62c58a916656a65ce7683932e9c73470715af95"
+    },
+    {
+      "path": "engine/firered/test/link-faults.test.js",
+      "sha256": "da1f463352b2ee19fe37c582a3fe9ffa7ea7cd2079b0c66490dacd43385dca6f"
     },
     {
       "path": "engine/firered/test/live-audio.test.js",
@@ -4271,7 +4283,7 @@
     },
     {
       "path": "scripts/gate_triage.py",
-      "sha256": "ef9b8b6c6d92df55fe164328a7ba198c790883710549c01b6d47213672cd4fb7"
+      "sha256": "1a7248ad8389b06bf38d4cbf3dc1c77812bb4fe8e85d42925e6e2070dcedc0b4"
     },
     {
       "path": "scripts/goal-supervisor-replay.py",
@@ -4319,7 +4331,7 @@
     },
     {
       "path": "scripts/replay-bot.mjs",
-      "sha256": "5c0e44c21878a65ee2c6de91a616eaa902329606a1a408da06da414a2985efdf"
+      "sha256": "eda988c733fb8971492407a04b7265ea8f4f9bb69147c36b9aabab303e930e26"
     },
     {
       "path": "scripts/replay-boundary-recovery.mjs",
@@ -4403,7 +4415,7 @@
     },
     {
       "path": "scripts/replay-extra-save-loan.mjs",
-      "sha256": "5cb09b0698f9ce2f8123b771af39ca4bb0bf33d8480ab15b98ee0c19e7d43779"
+      "sha256": "b74798be59127dbbafc9c7dc45baebdd706a23f44260cd3af9353b88ef752fc2"
     },
     {
       "path": "scripts/replay-fame-checker.mjs",
@@ -4415,7 +4427,7 @@
     },
     {
       "path": "scripts/replay-firered-partner.mjs",
-      "sha256": "0d327f247af1e37d2275cb6d6b9bcf96ea22db23ee0975ee35ed8cbff6b96703"
+      "sha256": "8d46c4c2fe2dd5ad7b61afbda72141a8bcc6e54ea49b83165ec1e4ebed598e19"
     },
     {
       "path": "scripts/replay-funding-recovery.mjs",
@@ -4895,7 +4907,7 @@
     },
     {
       "path": "tests/test_gate_triage.py",
-      "sha256": "67c66809890bb2b55f08175bcd356c008cb567f01d8a236c919ca599a76cd50e"
+      "sha256": "029e76e870cdeba1b0db4106bd20a49c28435ccdb2d848688c13647bc0b63cbf"
     },
     {
       "path": "tests/test_gen3_rules.py",
@@ -4952,6 +4964,10 @@
     {
       "path": "tests/test_native_playback.py",
       "sha256": "2984f8c5c64ebbe02d0e695aac44099e2d25d5b5863c696dcefa93db8e1d3d27"
+    },
+    {
+      "path": "tests/test_native_regression_map.py",
+      "sha256": "54098020cd4872f4e95b34a3271228df67e8f43dbe431b0ee6829962cffd6f18"
     },
     {
       "path": "tests/test_package.py",

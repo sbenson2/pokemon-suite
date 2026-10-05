@@ -60,7 +60,9 @@ FAMILIES = {
                   'has run in the exclusive serial phase since, so a repeat there deserves a closer look.'},
     'firered-partner-heartbeat-load': {
         'title': 'FireRed partner link heartbeat expired under load', 'class': 'known-flaky', 'since': '117-01',
-        'case': 'postgame-firered-partner-restart', 'match': r'final link handshake or normal exit is not verified',
+        # Build 126 merged the restart case into the link-faults trade (its fault 2), so both ids belong here.
+        'case': ('postgame-firered-partner-restart', 'postgame-firered-partner-link-faults'),
+        'match': r'final link handshake or normal exit is not verified',
         'advice': 'The log first shows "The local partner heartbeat expired". It failed at load 119 (117-01) and while '
                   'screen recording and video encoding ran beside the gate (118-01); it passed quietly in 117-02, '
                   '117-03 and 118-02. Retry at load below 20 with nothing else running.'},
@@ -118,7 +120,8 @@ def classify(failure, context, families_before=None):
     for name, family in FAMILIES.items():
         if families_before is not None and run_key(family['since']) >= run_key(families_before):
             continue
-        if family['case'] and family['case'] != case:
+        cases = family['case'] if isinstance(family['case'], (tuple, list)) else (family['case'],)
+        if family['case'] and case not in cases:
             continue
         if family['match'] and not re.search(family['match'], error):
             continue
