@@ -4611,7 +4611,7 @@
     },
     {
       "path": "scripts/replay-runner.mjs",
-      "sha256": "d927ce6d355e67c94f5522478175199d5ad9eb80500f9c8ae8401a2021b51c13"
+      "sha256": "2f74fb38b340965fe009deac7bbd81a3064a0038187668602032ac2bfa45c85b"
     },
     {
       "path": "scripts/replay-safari-dex-capture.mjs",

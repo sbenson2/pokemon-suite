@@ -29,7 +29,8 @@ function runOne(fixture, phase, startCase) {
     }
     if (Number.isFinite(limit)) {
       timer = setTimeout(() => {
-        const reason = `watchdog: ${fixture.id} exceeded ${Math.round(limit / 60000)} min (${limit} ms)`;
+        const shown = limit >= 60000 ? `${Math.round(limit / 60000)} min` : `${Math.round(limit / 1000)} s`;
+        const reason = `watchdog: ${fixture.id} exceeded ${shown} (${limit} ms)`;
         try { handle.abort?.(reason); } catch {}
         finish({pass: false, watchdog: true, error: reason});
       }, limit);
