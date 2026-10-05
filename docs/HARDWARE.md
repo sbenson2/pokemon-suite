@@ -56,10 +56,27 @@ You can cancel while the bot is preparing or waiting for the Switch. Once the ex
 | Date | Setup | Result |
 |---|---|---|
 | September 2026 | Mac mini (M1), Archer T3U, Switch 2, English LeafGreen | One complete exchange: a shiny Wigglytuff for a Chansey. Both games saved, the room was left normally, and the received Pokémon was confirmed in the Mac's save. |
-| September 2026 | Same | A second exchange saved on both sides, then the connection dropped while leaving the room. The bot recovered with both saves intact. A fix for the likely cause is in the current release but hasn't been tried on hardware yet. |
+| September 2026 | Same | A second exchange saved on both sides, then the connection dropped while leaving the room. The bot recovered with both saves intact. A fix for the likely cause shipped afterwards, and the local.7 exchange below left the room normally. |
 | September 2026 | Same Mac and adapter, with the rebuilt radio (runtime local.7) | One complete exchange: a shiny Hitmonlee for a shiny Meowth. Both games saved, the room was left normally, and the received Pokémon was confirmed in the Mac's save. The trade was chosen while the bot was on Four Island, and the release it ran on couldn't route from the Sevii Islands to the Pokémon Center, so it was walked to the ferry by hand. The bot now takes the ferry itself. |
 
 Not tested yet: the original Switch, Switch Lite and OLED, other Macs, repeated trades in one session, and pulling the adapter out mid-trade.
+
+## Troubleshooting
+
+| The app says | What to do |
+|---|---|
+| *Connect an Archer T3U USB adapter (RTL8822BU) to this Mac. A USB-C adapter or hub may be needed.* | Plug the adapter in, through a USB-C to USB-A adapter if your Mac needs one. Check that System Information lists it with IDs `0x2357` / `0x012d`. A T3U Plus or T3U Nano won't work. |
+| *Choose your console key file in Wireless settings.* | Open **Trading**, choose **Console Keys** and pick your `prod.keys`. |
+| *The console key file is missing required radio credentials.* or *…has invalid radio credentials.* | The file needs `master_key_00`, `master_key_12`, `aes_kek_generation_source` and `aes_key_generation_source` from your own console. Make a fresh copy of the file from your Switch. |
+| *Another Pokémon Suite game is using the wireless adapter.* | Only one trade can run at a time. Let the other game's trade finish or cancel it. |
+| *The wireless runtime could not boot* or *…did not open its channel.* | Quit and reopen Pokémon Suite. With no trade running, unplug the adapter and plug it back in. Make sure TP-Link's macOS driver isn't installed. |
+| *Install the wireless runtime…*, *…needs to be reinstalled* or *…changed; reinstall it before trading.* | The radio files inside the app are missing or were changed. Download the app again and replace it; your saves stay where they are. |
+
+## Safety
+
+- While this is experimental, don't trade a Pokémon you can't afford to lose.
+- Run one trade at a time, and leave the adapter plugged in and the app open until the Mac says the trade is done.
+- The Mac saves before it trades and checks its save after. An interrupted trade is kept for review and never retried on its own; the Switch side follows the game's own rules for an interrupted link.
 
 ## Licenses and source
 
