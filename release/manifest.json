@@ -47,7 +47,7 @@
     },
     {
       "path": "docs/BOT-REGRESSION-GATE.md",
-      "sha256": "47e0afd4322d98b557adf6adc1e453e3ce797f193acb0545827c41690d0373f7"
+      "sha256": "ad47b3d9f1d29c4b06a264d689725b4fdf48dd7c36064d7e612f5c915913a1d9"
     },
     {
       "path": "docs/CAMPAIGN-PERFORMANCE.md",
@@ -1155,7 +1155,7 @@
     },
     {
       "path": "engine/firered/test-support/native-regressions.json",
-      "sha256": "628bc641c0308544c4b4a0896105681d9534d119f58d8acf5cf0b980724e431e"
+      "sha256": "d87cf0a0b711e94d371efdddd553a6f2314320aed5b6eae6addf29cea449fb05"
     },
     {
       "path": "engine/firered/test-support/native-transform-planner.js",
@@ -3943,7 +3943,7 @@
     },
     {
       "path": "pokemon_suite/server.py",
-      "sha256": "f49acf201f6e32a98adfbefb5624128730a98b6c61ce86b87c98029fb4021c61"
+      "sha256": "e09d4d77be72fa25a0c40a44732e79d40b83c4cd9f360e4187be9a128c309ca4"
     },
     {
       "path": "pokemon_suite/static/assets/pokemon/hardware/SOURCE.md",
@@ -4271,7 +4271,7 @@
     },
     {
       "path": "scripts/gate_triage.py",
-      "sha256": "c1de38d7c34ae23b46040ae33feb76f06389b34e032a2d8c0dd558c12ec55811"
+      "sha256": "ef9b8b6c6d92df55fe164328a7ba198c790883710549c01b6d47213672cd4fb7"
     },
     {
       "path": "scripts/goal-supervisor-replay.py",
@@ -4319,7 +4319,7 @@
     },
     {
       "path": "scripts/replay-bot.mjs",
-      "sha256": "c250c5f5358beab29579144b7fc82c4c3580a7c34f075614e17663969b42385f"
+      "sha256": "5c0e44c21878a65ee2c6de91a616eaa902329606a1a408da06da414a2985efdf"
     },
     {
       "path": "scripts/replay-boundary-recovery.mjs",
@@ -4650,6 +4650,10 @@
       "sha256": "c59c211c4725b4d13d16102bf3f21ce3f2cd7accaa549dc2f64d704918f2cb56"
     },
     {
+      "path": "scripts/replay-runner.mjs",
+      "sha256": "2f74fb38b340965fe009deac7bbd81a3064a0038187668602032ac2bfa45c85b"
+    },
+    {
       "path": "scripts/replay-safari-dex-capture.mjs",
       "sha256": "8020e62ba7ab002152fd3d389a8c3d958ecd66cedcadc12c8bd70c04fbc73344"
     },
@@ -4719,7 +4723,7 @@
     },
     {
       "path": "scripts/run-gate.py",
-      "sha256": "6162968ae2a573131de6855cacbd5bba3c515922e60f2bdd48e0dcde76ff89e2"
+      "sha256": "c6efae317168faeaef2c13e85aef71f92432f90103e8f2669583aed1aee8d35f"
     },
     {
       "path": "scripts/stage-radio-host.py",
@@ -4735,7 +4739,7 @@
     },
     {
       "path": "scripts/verify-bot.py",
-      "sha256": "52d95657a8509db8f5eac17fb48e8e65af02575acb3d331d0c9daa698a1c0f7e"
+      "sha256": "a30adc533370ed4dbae7650f70eed40cbfae29e9baf7f5c97cf9e5e7f1b5ceae"
     },
     {
       "path": "scripts/verify-live.mjs",
@@ -4796,6 +4800,10 @@
     {
       "path": "tests/replay-rom-inputs.test.mjs",
       "sha256": "ee40d7293af580c83ec7cd8bbc203adfe41772a1f2e180f6281f412c90751a9f"
+    },
+    {
+      "path": "tests/replay-runner.test.mjs",
+      "sha256": "4832ead332ed0073e96fe7c60bf241f1b8cb3435b729e643c8751c98fbf809c6"
     },
     {
       "path": "tests/request-ask.test.mjs",
@@ -4880,6 +4888,10 @@
     {
       "path": "tests/test_game_resources.py",
       "sha256": "1e3a25589d0074141833f2288a170f66b11ae673428be975610339954ade4a30"
+    },
+    {
+      "path": "tests/test_gate_plan.py",
+      "sha256": "894837637e1c116e4d9a62663e9aff6bc496f56a010122c1a65c0761d3409583"
     },
     {
       "path": "tests/test_gate_triage.py",
@@ -5020,6 +5032,10 @@
     {
       "path": "tests/test_runtime_selection.py",
       "sha256": "abb1c0a217bc067cd831a5d8752c0599dc10bea5188b43aa19db3a81ff0cffdd"
+    },
+    {
+      "path": "tests/test_server_burst.py",
+      "sha256": "d5e1ca618b1c8771e9fc7f81f7021b51aca39f7867b50764c728ff1725fb41a0"
     },
     {
       "path": "tests/test_session_liveness.py",

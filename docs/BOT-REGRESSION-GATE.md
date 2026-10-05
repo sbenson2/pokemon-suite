@@ -426,9 +426,10 @@ floors and prizes of each Tower mode; a combined cold Continue verifies all four
 prize flags and every original individual. This does not assert completion of
 all 96 Fame facts, all 28 Unown forms, 200 League entries or 300 hatches.
 
-The whole native suite has a 170-minute aggregate process deadline, inside the
-runner's three-hour cap; long hunts are bounded by observed progress rather than
-by wall-clock windows. Individual replay and
+The native suite's time limits come from the gate plan (`gate-plan.json`; see
+"Parallel lanes, phases and time limits" below), so they grow with the corpus
+instead of a fixed aggregate deadline. Long hunts are bounded by observed
+progress rather than by wall-clock windows. Individual replay and
 gameplay deadlines remain in force; new scenarios do not remove historical ones.
 Successful saves alone cannot keep a stalled objective's progress deadline alive.
 
@@ -1285,10 +1286,24 @@ selection can never become a release receipt. A release run keeps every corpus
 case mandatory.
 
 `--resume-from <dir>` reuses per-case passes from an earlier run only when the
-reviewed source and corpus hashes are identical. Each reused case is rechecked
-against its recorded ROM SHA-1, core digest and checkpoint state hash; failures
-always rerun. The report lists every reused case in `reusedCases`, and the
-native check records per-case durations.
+reviewed source and corpus hashes are identical. The earlier run may have failed
+or been interrupted: only its passed cases are offered (collected into
+`reuse-evidence.json`). Each reused case is rechecked against its recorded ROM
+SHA-1, core digest and checkpoint state hash; failures always rerun. The report
+lists every reused case in `reusedCases`, and the native check records per-case
+durations.
+
+Evidence is durable while the run is still going:
+- `run-manifest.json` is written before any suite runs (source and corpus
+  hashes, options, the plan's digest, estimate and budget);
+- `checks.jsonl` gets one line per finished suite;
+- `case-evidence.jsonl` gets one fsynced line per finished native case, with the
+  case's own log (`native/<id>.log`) and its SHA-256, before that replay lane
+  takes another case. The final `case-evidence.json` is still written.
+
+A stopped run (SIGTERM, including the gate wrapper's deadline) stops every
+replay worker and the owners they spawned, then writes `report.json` with
+`status: failed` and `interrupted: true`. Resume it with `--resume-from`.
 
 `scripts/run-gate.py` runs a gate detached and writes `gate.done.json` with the
 exit code, elapsed time and check summary, then posts a desktop notification.
@@ -1324,35 +1339,42 @@ triage matches the diagnosed class 9 times, against 6 for a constant
 is deterministic: 13 failures are too few to calibrate Laya, and L1.1 measured
 zero-shot Laya at a constant's accuracy on stop triage.
 
-### Parallel lanes and fail-fast order
+### Parallel lanes, phases and time limits
 
 `--lanes N` runs the native replays in N worker processes. Each worker runs one
 case at a time, in its own emulator, exactly as the serial runner does. Some
-cases are paced by the wall clock, so they run afterward with no other replay
-competing for the CPU:
-- the real-time wireless exchanges (`postgame-automatic-partner`,
-  `postgame-team-trade-evolution`, `postgame-held-item-partner`,
-  `postgame-firered-partner`, `task-firered-partner`,
-  `postgame-firered-partner-stall`,
-  `postgame-firered-partner-restart`, `postgame-firered-partner-console-reset`,
-  `postgame-extra-save-loan`, `postgame-extra-save-loan-resume`,
-  `postgame-extra-save-loan-charmander` and `postgame-recovery-storage`)
-- `campaign-transform`, whose planner supervision uses a one-second worker
-  timeout; under a heavily loaded host it once saw an extra timeout restart.
+cases are paced by the wall clock, so they run with no other replay competing
+for the CPU. They are listed as `exclusive` in
+`engine/firered/test-support/native-regressions.json`, beside `required`:
+the real-time wireless exchanges between two live games (the partner, trade
+evolution, held-item, extra-save loan and helper trade cases, and
+`postgame-recovery-storage`), and `campaign-transform`, whose planner
+supervision restarts a worker after a real timeout.
 
-After a failure no new case starts. Cases already running finish, so their own cleanup of spawned
-owners and temporary saves still runs.
+verify-bot writes the schedule to `gate-plan.json` before any suite runs
+(`--plan-only` writes just the plan):
+- **Phases.** Exclusive cases named in `--first` run first, alone; then the
+  parallel lanes; then the remaining exclusive cases, alone. Within a phase,
+  `--first` cases come first, then cases without a recorded duration (usually
+  new ones), then the longest first, using `--order-from <run>` durations.
+- **Budget.** The estimate replays the schedule with the recorded durations,
+  counting fifteen minutes for a case without one. The native suite's deadline
+  is 1.5 × the estimate + 10 minutes. `scripts/run-gate.py` adds 45 minutes for
+  the other suites to set its own outer deadline.
+- **Watchdog.** Each case may run for max(3 × its recorded duration, 15 minutes)
+  (45 minutes without a record). Past that, its worker and everything the worker
+  started are stopped and the case fails.
+- **Failure limit.** After `--max-failures` native failures (default 3) no new
+  case starts; cases already running finish, so their own cleanup of spawned
+  owners and temporary saves still runs. Below the limit a lane failure does not
+  stop the run, so the exclusive cases still run and report.
 
-`--first <id,...>` runs the named cases first, such as those covering the
-change. `--order-from <run>` schedules the remaining cases longest first, using
-that run's recorded durations. Cases without a recorded duration (usually new
-ones) run before the rest.
-
-Lanes and order change only scheduling. Every corpus case still runs to its
-verified end state, and the report records `lanes` and `order`.
-`scripts/run-gate.py` uses three lanes by default; `--lanes 1` restores the
-serial runner. On gate 95-03's timings, three lanes finish in about 44 minutes
-instead of 131. The longest case sets the floor.
+Lanes, order and the plan change only scheduling. Every corpus case still runs
+to its verified end state, any failure fails the run, and the report records
+`lanes`, `order` and the plan's estimate and budget. `scripts/run-gate.py` uses
+three lanes by default; `--lanes 1` runs every phase one case at a time. On gate
+95-03's timings, three lanes finish in about 44 minutes instead of 131. The
+longest case sets the floor.
 
 Replays are deterministic except where a spawned worker or a real-time link
 paces them by wall clock. Between gates 95-03 and 96-01, 76 of 86 cases ended

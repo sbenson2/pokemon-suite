@@ -96,11 +96,12 @@ import {replayLeafGreenMansion} from './replay-leafgreen-mansion.mjs';
 // Private saves stay outside the export. Each case runs in its own emulator;
 // only ordinary controller inputs are applied, never cartridge memory writes.
 import assert from 'node:assert/strict';
-import {readFileSync, writeFileSync} from 'node:fs';
+import {readFileSync, writeFileSync, openSync, writeSync, fsyncSync, closeSync, mkdirSync, createWriteStream} from 'node:fs';
 import {fork} from 'node:child_process';
 import {createInterface} from 'node:readline';
 import {fileURLToPath} from 'node:url';
 import {dirname, resolve} from 'node:path';
+import {runPlan} from './replay-runner.mjs';
 import {SaveVault, digest} from '../engine/firered/src/suite/save-vault.js';
 import {createPinnedMgbaSession} from '../engine/firered/src/emulator/pinned-mgba.js';
 import {createFireRedObserver} from '../engine/firered/src/evidence/fire-red-observer.js';
@@ -131,10 +132,19 @@ const reusePath = option('--reuse');
 const orderPath = option('--order');
 const lanes = Math.max(1, Number.parseInt(option('--lanes') ?? '1', 10) || 1);
 const worker = process.argv.includes('--worker');
-// These cases are paced by the wall clock: real-time wireless exchanges between
-// two live games, and planner supervision with a one-second worker timeout.
-// With lanes they run after the parallel phase, with no other replay competing.
-const EXCLUSIVE = new Set(['postgame-automatic-partner', 'postgame-team-trade-evolution', 'postgame-held-item-partner','postgame-firered-partner','task-firered-partner','postgame-firered-partner-stall','postgame-firered-partner-restart','postgame-firered-partner-console-reset', 'postgame-extra-save-loan', 'postgame-extra-save-loan-resume', 'postgame-extra-save-loan-charmander', 'postgame-extra-save-keep-hitmon', 'postgame-politoed-kings-rock', 'postgame-recovery-storage', 'campaign-transform']);
+// Cases paced by the wall clock (real-time wireless exchanges between two live
+// games, planner supervision with a real worker timeout) run alone, after the
+// parallel lanes. The list lives beside the required cases.
+const regressions = json(fileURLToPath(new URL('../engine/firered/test-support/native-regressions.json', import.meta.url)));
+const EXCLUSIVE = new Set(regressions.exclusive ?? []);
+// The gate plan (verify-bot gate-plan.json): phases, lanes, per-case watchdogs
+// and the failure limit. Direct runs without one use the exclusive list and
+// stop at the first failure, as before.
+const planPath = option('--plan');
+const journalPath = option('--evidence-journal');
+const caseLogDir = option('--case-log-dir');
+const maxFailuresOption = option('--max-failures');
+const DEFAULT_WATCHDOG_MS = 45 * 60 * 1000;
 assert.equal(corpus.schema, 'pokemon-suite/native-regressions/v1');
 assert.ok(Array.isArray(corpus.cases) && corpus.cases.length > 0);
 assert.equal(new Set(corpus.cases.map(c => c.id)).size, corpus.cases.length);
@@ -307,104 +317,155 @@ async function runFixture(fixture) {
 const writeEvidence = () => {
   if (evidenceOut && !worker) writeFileSync(evidenceOut, JSON.stringify({schema: 'pokemon-suite/case-evidence/v1', cases: evidence}, null, 2)+'\n');
 };
-let passed = 0;
-const recordPass = (fixture, result, ms) => {
-  passed += 1;
-  console.log(`ok ${passed} - ${fixture.id}`);
-  if (result.reused) {
-    console.log('# reused '+JSON.stringify({id: fixture.id, evidence: result.evidence}));
-    console.log('# timing '+JSON.stringify({id: fixture.id, ms: 0, reused: true}));
-  } else {
-    console.log('# evidence '+JSON.stringify(result.evidence));
-    console.log('# timing '+JSON.stringify({id: fixture.id, ms}));
-  }
-  evidence.push({id: fixture.id, pass: true, reused: result.reused, evidence: result.evidence});
+// One durable line per finished case, written before its slot takes another
+// case, so an interrupted run keeps every result it reached (verify-bot
+// --resume-from reuses the passed ones).
+const journalLine = entry => {
+  if (!journalPath || worker) return;
+  const fd = openSync(journalPath, 'a');
+  try { writeSync(fd, JSON.stringify({...entry, at: new Date().toISOString()})+'\n'); fsyncSync(fd); }
+  finally { closeSync(fd); }
 };
-const recordFailure = (fixture, error) => {
-  evidence.push({id: fixture.id, pass: false, error: String(error?.message ?? error)});
-  writeEvidence();
+const caseLog = id => caseLogDir ? resolve(caseLogDir, id + '.log') : null;
+const logDigest = id => { try { return caseLog(id) ? digest(readFileSync(caseLog(id))) : null; } catch { return null; } };
+let passed = 0, failed = 0;
+const recordResult = (fixture, result, phase) => {
+  if (result.pass) {
+    passed += 1;
+    console.log(`ok ${passed + failed} - ${fixture.id}`);
+    if (result.reused) {
+      console.log('# reused '+JSON.stringify({id: fixture.id, evidence: result.evidence}));
+      console.log('# timing '+JSON.stringify({id: fixture.id, ms: 0, reused: true}));
+    } else {
+      console.log('# evidence '+JSON.stringify(result.evidence));
+      console.log('# timing '+JSON.stringify({id: fixture.id, ms: result.ms}));
+    }
+    evidence.push({id: fixture.id, pass: true, reused: result.reused, evidence: result.evidence});
+  } else {
+    failed += 1;
+    console.log(`not ok ${passed + failed} - ${fixture.id}`);
+    console.log('# failed '+JSON.stringify({id: fixture.id, watchdog: result.watchdog === true,
+      error: String(result.error ?? 'failed').split('\n')[0].slice(0, 400)}));
+    evidence.push({id: fixture.id, pass: false, error: String(result.error ?? 'failed')});
+    writeEvidence();
+  }
+  journalLine({id: fixture.id, phase, pass: result.pass === true, reused: result.reused === true,
+    evidence: result.pass ? result.evidence : null, error: result.pass ? null : String(result.error ?? 'failed'),
+    watchdog: result.watchdog === true, ms: result.ms ?? null,
+    log: caseLog(fixture.id) ? 'native/' + fixture.id + '.log' : null, logSha256: logDigest(fixture.id)});
 };
 
-// Fail-fast order: named cases first, then cases without a recorded duration
-// (usually new), then the longest first so parallel lanes finish together.
-// Without an order file the corpus order is kept.
+// A lane is a worker process that runs one case at a time, exactly as before.
+// Workers lead their own process group, so a watchdog or an interrupt stops a
+// case together with every owner it spawned. A worker marks the end of each
+// case on both output streams, so every line lands in that case's log.
+const SCRIPT = fileURLToPath(import.meta.url);
+class Lane {
+  constructor() { this.child = null; this.gone = true; this.busy = false; }
+  spawn() {
+    const child = fork(SCRIPT, [...process.argv.slice(2), '--worker'], {stdio: ['ignore', 'pipe', 'pipe', 'ipc'], detached: true});
+    this.child = child; this.gone = false;
+    // A replaced worker (stopped by a watchdog) may still flush output or exit
+    // late; only the lane's current worker affects the current case.
+    const live = () => this.child === child;
+    for (const [name, stream] of [['stdout', child.stdout], ['stderr', child.stderr]]) {
+      createInterface({input: stream}).on('line', line => {
+        if (line.startsWith('#@case-end ')) { if (live()) { this.ends?.add(name); this.settle(); } return; }
+        // Worker output stays a TAP comment; only this process reports results.
+        console.log(line.startsWith('#') ? line : '# ' + line);
+        if (live()) this.log?.write(line + '\n');
+      });
+    }
+    child.on('message', message => { if (live()) { this.message = message; this.settle(); } });
+    child.on('exit', (code, signal) => {
+      if (!live()) return;
+      this.gone = true;
+      if (this.current) this.finish({pass: false, error: `The replay worker exited during ${this.current.id} (${signal ?? code}).`});
+    });
+  }
+  run(fixture) {
+    if (this.gone) this.spawn();
+    this.current = fixture; this.message = null; this.ends = new Set();
+    this.log = caseLog(fixture.id) ? createWriteStream(caseLog(fixture.id), {flags: 'a'}) : null;
+    const promise = new Promise(done => { this.done = done; });
+    this.child.send({id: fixture.id});
+    return {promise, abort: reason => this.kill(reason)};
+  }
+  settle() {
+    if (this.current && this.message && this.ends.size === 2) this.finish(this.message);
+  }
+  finish(result) {
+    const done = this.done, log = this.log;
+    this.current = null; this.done = null; this.log = null; this.message = null;
+    if (log) log.end(() => done?.(result)); else done?.(result);
+  }
+  group(signal) { try { process.kill(-this.child.pid, signal); } catch {} }
+  kill(reason) {
+    this.log?.write(`# ${reason}\n`);
+    this.log?.end();
+    this.current = null; this.done = null; this.log = null; this.message = null;
+    this.gone = true;
+    // Signal this worker's group by its pid: the lane may already run a new worker.
+    const pid = this.child.pid;
+    const signal = name => { try { process.kill(-pid, name); } catch {} };
+    signal('SIGTERM');
+    setTimeout(() => signal('SIGKILL'), 5000).unref();
+  }
+  close() { if (this.child && !this.gone) this.child.disconnect(); }
+}
+
+// Without a plan: the legacy fail-fast order file, if any, then corpus order.
 const ordered = list => {
   if (!orderPath) return list;
   const {first = [], durations = {}} = json(resolve(orderPath));
   const rank = c => first.includes(c.id) ? [0, first.indexOf(c.id)] : durations[c.id] == null ? [1, 0] : [2, -durations[c.id]];
   return [...list].sort((a, b) => { const x = rank(a), y = rank(b); return x[0] - y[0] || x[1] - y[1]; });
 };
-
-async function runSerial(list) {
-  for (const fixture of list) {
-    const startedAt = Date.now();
-    let result;
-    try { result = await runFixture(fixture); }
-    catch (error) { recordFailure(fixture, error); throw error; }
-    recordPass(fixture, result, Date.now() - startedAt);
-  }
-}
-
-// Each lane is a worker process running one case at a time, exactly as the
-// serial runner does. After a failure no new case starts; cases already
-// running finish so their own cleanup (spawned owners, temporary saves) runs.
-async function runLanes(list, count) {
-  const pending = [...list];
-  let failure = null;
-  const lane = () => new Promise(done => {
-    const child = fork(fileURLToPath(import.meta.url), [...process.argv.slice(2), '--worker'], {stdio: ['ignore', 'pipe', 'pipe', 'ipc']});
-    // Worker output stays a TAP comment; only this process reports results.
-    for (const stream of [child.stdout, child.stderr]) {
-      createInterface({input: stream}).on('line', line => console.log(line.startsWith('#') ? line : '# ' + line));
-    }
-    let current = null;
-    const next = () => {
-      current = failure ? null : pending.shift() ?? null;
-      if (current) child.send({id: current.id}); else child.disconnect();
-    };
-    child.on('message', message => {
-      if (message.pass) recordPass(current, message, message.ms);
-      else {
-        failure ??= new Error(`${current.id}: ${message.error}`);
-        recordFailure(current, message.error);
-        console.log(`# failed ${current.id}; waiting for running lanes to finish`);
-      }
-      next();
-    });
-    // A lane ends once the worker has exited and both output streams have
-    // drained; 'close' also waits on the disconnected IPC channel.
-    let waiting = 3, ended = '';
-    const finish = () => {
-      if (--waiting) return;
-      if (current) {
-        failure ??= new Error(`The replay worker exited during ${current.id} (${ended}).`);
-        recordFailure(current, new Error(`The replay worker exited (${ended}).`));
-      }
-      done();
-    };
-    child.stdout.on('end', finish);
-    child.stderr.on('end', finish);
-    child.on('exit', (code, signal) => { ended = String(signal ?? code); finish(); });
-    next();
-  });
-  await Promise.all(Array.from({length: Math.min(count, list.length)}, lane));
-  if (failure) { writeEvidence(); throw failure; }
-}
+const defaultPlan = () => {
+  const queue = ordered(fixtures);
+  return {lanes, maxFailures: Math.max(1, Number.parseInt(maxFailuresOption ?? '1', 10) || 1), watchdogs: {},
+    phases: [{name: 'lanes', mode: 'lanes', cases: queue.filter(c => !EXCLUSIVE.has(c.id)).map(c => c.id)},
+             {name: 'exclusive', mode: 'serial', cases: queue.filter(c => EXCLUSIVE.has(c.id)).map(c => c.id)}]
+      .filter(phase => phase.cases.length)};
+};
 
 if (worker) {
   process.on('message', async ({id}) => {
     const startedAt = Date.now();
-    try { process.send({id, pass: true, ...(await runFixture(fixtures.find(c => c.id === id))), ms: Date.now() - startedAt}); }
-    catch (error) { process.send({id, pass: false, error: String(error?.stack ?? error?.message ?? error)}); }
+    let message;
+    try { message = {id, pass: true, ...(await runFixture(fixtures.find(c => c.id === id))), ms: Date.now() - startedAt}; }
+    catch (error) { message = {id, pass: false, error: String(error?.stack ?? error?.message ?? error)}; }
+    process.stdout.write('#@case-end ' + id + '\n');
+    process.stderr.write('#@case-end ' + id + '\n');
+    process.send(message);
   });
   process.on('disconnect', () => process.exit(0));
 } else {
-  const queue = ordered(fixtures);
-  if (lanes === 1) await runSerial(queue);
-  else {
-    await runLanes(queue.filter(c => !EXCLUSIVE.has(c.id)), lanes);
-    await runSerial(queue.filter(c => EXCLUSIVE.has(c.id)));
-  }
+  const plan = planPath ? json(resolve(planPath)) : defaultPlan();
+  if (maxFailuresOption && planPath) plan.maxFailures = Math.max(1, Number.parseInt(maxFailuresOption, 10) || 1);
+  const byId = new Map(fixtures.map(c => [c.id, c]));
+  const scheduled = plan.phases.flatMap(phase => phase.cases);
+  assert.deepEqual([...scheduled].sort(), [...byId.keys()].sort(), 'the plan schedules every selected case exactly once');
+  if (caseLogDir) mkdirSync(caseLogDir, {recursive: true});
+  const pool = [];
+  const stopAll = code => { for (const lane of pool) if (!lane.gone) lane.group('SIGKILL'); process.exit(code); };
+  process.on('SIGTERM', () => stopAll(143));
+  process.on('SIGINT', () => stopAll(130));
+  const startCase = fixture => {
+    let lane = pool.find(candidate => !candidate.busy);
+    if (!lane) { lane = new Lane(); pool.push(lane); }
+    lane.busy = true;
+    const handle = lane.run(fixture);
+    return {promise: handle.promise.finally(() => { lane.busy = false; }),
+            abort: reason => { handle.abort(reason); lane.busy = false; }};
+  };
+  const phases = plan.phases.map(phase => ({...phase,
+    cases: phase.cases.map(id => ({...byId.get(id), watchdogMs: plan.watchdogs?.[id] ?? DEFAULT_WATCHDOG_MS}))}));
+  const outcome = await runPlan({phases, lanes: plan.lanes ?? lanes, maxFailures: plan.maxFailures ?? 1, startCase,
+    onResult: (fixture, result, phase) => recordResult(fixture, result, phase)});
+  for (const lane of pool) lane.close();
   writeEvidence();
-  console.log(`# tests ${passed}\n# pass ${passed}\n# skipped 0`);
+  if (outcome.notRun.length) console.log('# not run after the failure limit: ' + outcome.notRun.join(','));
+  console.log(`# tests ${fixtures.length}\n# pass ${passed}\n# fail ${failed}\n# skipped ${outcome.notRun.length}`);
+  process.exitCode = failed || outcome.notRun.length ? 1 : 0;
 }

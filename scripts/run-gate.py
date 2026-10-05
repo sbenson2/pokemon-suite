@@ -1,7 +1,8 @@
 """Run the bot regression gate as a detached job and report once on completion.
 
-With three replay lanes the gate takes under an hour; serially, up to two
-hours. Nobody should poll it: this wrapper writes the
+The gate's outer deadline comes from its plan (`gate-plan.json`, written by
+verify-bot from recorded case durations): the native budget plus time for the
+unit suites, so it grows with the corpus. Nobody should poll it: this wrapper writes the
 normal verify-bot log and report, then a `gate.done.json` summary, and posts a
 desktop notification. Inspect the summary or the report when it exists; do not
 watch the log. A failed run's summary carries the gate triage (scripts/gate_triage.py):
@@ -20,6 +21,20 @@ import time
 
 import gate_triage
 
+# Unit, host and adapter suites plus ROM checks around the native budget.
+PLAN_SUITE_ALLOWANCE = 45 * 60
+# Until verify-bot has written the plan (it does so before any suite runs).
+PROVISIONAL_DEADLINE = 3 * 3600
+
+
+def plan_deadline(plan_path):
+    """Seconds the whole gate may take: the plan's native budget plus the other
+    suites; None until verify-bot has written the plan."""
+    try:
+        return json.loads(plan_path.read_text())['budgetMs'] / 1000 + PLAN_SUITE_ALLOWANCE
+    except (OSError, ValueError, KeyError, TypeError):
+        return None
+
 
 def notify(message):
     try:
@@ -35,7 +50,9 @@ def main():
     parser.add_argument('--corpus', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--log', type=Path, default=None)
-    parser.add_argument('--deadline-hours', type=float, default=3.0)
+    parser.add_argument('--deadline-hours', type=float, default=None,
+                        help='Outer deadline override. Default: the gate plan\'s native budget plus '
+                             '45 minutes for the other suites (three hours until the plan exists).')
     parser.add_argument('--env', action='append', default=[], metavar='KEY=VALUE')
     parser.add_argument('--no-notify', action='store_true')
     parser.add_argument('--lanes', type=int, default=3,
@@ -44,7 +61,9 @@ def main():
     parser.add_argument('--order-from', type=Path, default=None,
                         help='A previous run whose durations schedule the longest native cases first.')
     parser.add_argument('--resume-from', type=Path, default=None,
-                        help='A failed run of the identical source and corpus whose passed cases are reused.')
+                        help='A failed or interrupted run of the identical source and corpus whose passed cases are reused.')
+    parser.add_argument('--max-failures', type=int, default=3,
+                        help='Native failures after which no new case starts (default 3).')
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
     log = args.log or args.output.with_suffix('.log')
@@ -59,17 +78,28 @@ def main():
     if args.first: command += ['--first', args.first]
     if args.order_from: command += ['--order-from', str(args.order_from.resolve())]
     if args.resume_from: command += ['--resume-from', str(args.resume_from.resolve())]
+    command += ['--max-failures', str(args.max_failures)]
     samples = args.output.parent / (args.output.name + '.load.jsonl')
     samples.parent.mkdir(parents=True, exist_ok=True)
     sampled = None
     start = time.monotonic()
+    plan_path = args.output / 'gate-plan.json'
+    deadline = args.deadline_hours * 3600 if args.deadline_hours else None
     with log.open('w') as stream:
         process = subprocess.Popen(command, cwd=root, env=environment,
                                    stdout=stream, stderr=subprocess.STDOUT, start_new_session=True)
         while process.poll() is None:
-            if time.monotonic() - start > args.deadline_hours * 3600:
+            if deadline is None:
+                deadline = plan_deadline(plan_path)
+            if time.monotonic() - start > (deadline if deadline is not None else PROVISIONAL_DEADLINE):
+                # verify-bot writes an interrupted report on SIGTERM; its passed
+                # cases stay reusable with --resume-from.
                 os.killpg(process.pid, signal.SIGTERM)
-                process.wait(timeout=30)
+                try:
+                    process.wait(timeout=60)
+                except subprocess.TimeoutExpired:
+                    os.killpg(process.pid, signal.SIGKILL)
+                    process.wait(timeout=30)
                 break
             if sampled is None or time.monotonic() - sampled >= 60:
                 sampled = time.monotonic()
@@ -81,11 +111,12 @@ def main():
             time.sleep(5)
     elapsed = round(time.monotonic() - start)
     summary = {'exitCode': process.returncode, 'elapsedSeconds': elapsed,
+               'deadlineSeconds': round(deadline) if deadline is not None else None,
                'log': str(log), 'report': str(args.output / 'report.json')}
     report_path = args.output / 'report.json'
     if report_path.exists():
         report = json.loads(report_path.read_text())
-        summary.update({key: report.get(key) for key in ('status', 'receipt', 'sourceSha256', 'reusedCases', 'lanes')})
+        summary.update({key: report.get(key) for key in ('status', 'interrupted', 'receipt', 'sourceSha256', 'reusedCases', 'lanes')})
         summary['checks'] = [{key: check.get(key) for key in ('id', 'tests', 'passed', 'failed', 'skipped')}
                              for check in report.get('checks', [])]
     if summary.get('status') != 'passed' and report_path.exists():
