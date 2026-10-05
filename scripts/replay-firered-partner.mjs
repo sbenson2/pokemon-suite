@@ -12,6 +12,7 @@ import {createPostgameController} from '../engine/firered/src/suite/postgame.js'
 import {encounterFingerprint} from '../engine/firered/src/player/encounter-tracker.js';
 import {sameEvolutionIndividual,verifyLocalEvolutionExchange} from '../engine/firered/src/suite/local-evolution.js';
 import {continueNativeSave} from '../engine/firered/src/suite/native-cold-boot.js';
+import {parseLinkFaults} from '../engine/firered/test-support/link-faults.js';
 const json=p=>JSON.parse(readFileSync(p));
 // Independent checks (not the code under test): the partner's individuals as
 // sorted fingerprints, and the owner's placeholder rules.
@@ -43,13 +44,18 @@ const port=()=>new Promise((done,fail)=>{const server=createServer();server.on('
 // once both games are in the named callback on the named leg and the partner is
 // still choosing its Pokémon. Before any exchange that is a lost link: both
 // owners cold-boot, prove the original saves and the source retries once.
+// October 4 (build 126): `linkFaults` injects several of these faults into one
+// trade, one per attempt (test-support/link-faults.js). The link-faults case
+// resets the partner console (retry 1), then stalls the partner past the
+// heartbeat (retry 2), then stalls it briefly (held, no retry): one replay
+// covers what the -console-reset, -restart and -stall cases checked separately.
 // A task-scoped case models the durable checklist continuing after a collection
 // hunt. Its task scope is retained, but the checklist remains the work owner.
 export async function replayFireRedPartner({session,saved,inputs,cfg,partnerCfg,partnerRomBytes,createSession,fixture,corpusPath}){
- const owner=fixture.partnerOwner,stall=fixture.partnerStall??null,reset=fixture.partnerReset??null,runScope=fixture.runScope??'postgame';
+ const owner=fixture.partnerOwner,runScope=fixture.runScope??'postgame';
  assert.ok(['postgame','task'].includes(runScope),'a FireRed partner replay uses a postgame checklist or its task-scoped continuation');
- if(stall)assert.ok(['firered',owner].includes(stall.owner)&&/^CB2_\w+$/.test(stall.callback2)&&['outbound','return'].includes(stall.leg)&&Number.isInteger(stall.ms)&&(stall.restarts===0&&stall.ms>=500&&stall.ms<=3500||stall.restarts===1&&stall.ms>=5000&&stall.ms<=8000),'a partner stall names an owner, callback, leg and a bounded duration');
- if(reset)assert.ok(!stall&&reset.owner===owner&&/^CB2_\w+$/.test(reset.callback2)&&['outbound','return'].includes(reset.leg)&&reset.restarts===1,'a partner console reset names the partner, a callback and leg, and one verified retry');
+ // Validated fault sequence: owners, callbacks, legs, bounded stalls, at most one reset and three retries.
+ const faults=parseLinkFaults(fixture,owner),reset=faults.find(f=>f.kind==='reset')??null,retries=faults.at(-1)?.restartsAfter??0;
  assert.ok(owner&&partnerCfg?.title==='firered'&&partnerCfg.role==='partner'&&partnerRomBytes,'a FireRed partner replay needs its verified partner owner');
  const root=mkdtempSync(join(tmpdir(),'suite-firered-partner-'));
  const children=new Map(),logs=new Map();let coordinator=null,coordinatorLog='',coordinatorPaused=false;
@@ -127,21 +133,32 @@ export async function replayFireRedPartner({session,saved,inputs,cfg,partnerCfg,
    assert.equal(partnerBeforeCommand.localEvolution,null,'the partner exchange has not started before host coordination');
    assert.equal(coordinator.kill('SIGCONT'),true);coordinatorPaused=false;
   }
-  let last='',chosen=false,stalled=null,resetRequested=null;const receiptPath=join(root,'firered',`acquisition-${requestId}.json`);
+  let last='',chosen=false,next=0;const fired=[],receiptPath=join(root,'firered',`acquisition-${requestId}.json`);
+  const pairPath=join(root,'evolution-pairs',requestId+'.json'),pairRestarts=()=>{try{return json(pairPath).restarts??0;}catch{return 0;}};
   await wait(()=>{
    assert.equal(coordinator.exitCode,null,'coordinator failed: '+coordinatorLog);
    const fr=status('firered');
    const trace=JSON.stringify([fr?.bot?.objective?.id,...owners.map(g=>[g,status(g)?.bot?.preparation?.phase,status(g)?.localEvolution?.phase,status(g)?.localEvolution?.leg,status(g)?.localEvolution?.reason])]);
    if(trace!==last){console.log('# firered-partner '+fr?.frame+' '+trace);last=trace;}
-   if(stall&&!stalled&&fr?.localEvolution?.leg===stall.leg&&owners.every(g=>status(g)?.callback2===stall.callback2)){
-    const child=children.get(stall.owner);stalled={frame:fr.frame};child.kill('SIGSTOP');
-    console.log('# firered-partner stalled '+JSON.stringify({...stall,frame:fr.frame}));
-    setTimeout(()=>{if(child.exitCode===null)child.kill('SIGCONT');stalled.resumed=true;},stall.ms);
+   // One fault per trade attempt: a fault with a retry is settled once the pair
+   // records that verified retry; only then is the next fault armed.
+   const restartsNow=pairRestarts();
+   for(const entry of fired)if(entry.fault.restarts&&!entry.retried&&restartsNow>=entry.fault.restartsAfter){
+    entry.retried=true;console.log('# firered-partner fault '+entry.fault.index+' retried '+JSON.stringify({kind:entry.fault.kind,restarts:restartsNow,frame:fr?.frame}));
    }
-   // Before the partner offers anything, so neither game can have started the exchange.
-   if(reset&&!resetRequested&&fr?.localEvolution?.leg===reset.leg&&owners.every(g=>status(g)?.callback2===reset.callback2)&&tradePhase(reset.owner)==='selecting-pokemon'){
-    writeFileSync(resetRequest,'');resetRequested={frame:fr.frame};
-    console.log('# firered-partner console reset requested '+JSON.stringify({...reset,frame:fr.frame}));
+   const fault=faults[next],settled=fired.every(e=>e.fault.restarts?e.retried:e.resumed);
+   // A reset waits until the partner is still choosing its Pokémon, so neither game can have started the exchange.
+   if(fault&&settled&&restartsNow===fault.attempt&&fr?.localEvolution?.leg===fault.leg&&owners.every(g=>status(g)?.callback2===fault.callback2)&&(fault.kind!=='reset'||tradePhase(fault.owner)==='selecting-pokemon')){
+    const entry={fault,frame:fr.frame,resumed:false,retried:false};fired.push(entry);next++;
+    const detail={owner:fault.owner,callback2:fault.callback2,leg:fault.leg,...(fault.kind==='stall'?{ms:fault.ms}:{}),restarts:fault.restarts,attempt:fault.attempt,frame:fr.frame};
+    if(fault.kind==='stall'){
+     const child=children.get(fault.owner);child.kill('SIGSTOP');
+     console.log('# firered-partner fault '+fault.index+' stall '+JSON.stringify(detail));
+     setTimeout(()=>{if(child.exitCode===null)child.kill('SIGCONT');entry.resumed=true;},fault.ms);
+    }else{
+     writeFileSync(resetRequest,'');entry.resumed=true;
+     console.log('# firered-partner fault '+fault.index+' console reset requested '+JSON.stringify(detail));
+    }
    }
    const local=fr?.localEvolution?.requestId;
    if(local)assert.equal(local,requestId,'the teammate travels to the FireRed partner');
@@ -150,15 +167,23 @@ export async function replayFireRedPartner({session,saved,inputs,cfg,partnerCfg,
    assert.notEqual(status(owner)?.bot?.preparation?.phase,'waiting',`partner: ${status(owner)?.bot?.preparation?.reason}`);
    return existsSync(receiptPath);
   // A verified retry repeats the whole outbound leg (cold boot, Direct Corner, trade).
-  },'The teammate did not finish both exchanges with the FireRed partner',stall?.restarts||reset?1080000:720000);
+  },'The teammate did not finish both exchanges with the FireRed partner',720000+360000*retries);
   assert.ok(chosen,'the postgame checklist reserved the teammate for the exchange');
-  if(stall)assert.ok(stalled?.resumed,'the owner stall was injected and released during the exchange');
-  if(reset)assert.ok(resetRequested&&existsSync(resetRequest+'.done'),'the partner console took its soft-reset chord during the exchange');
+  // A retry recorded in the same instant the exchange finished settles here.
+  for(const entry of fired)if(entry.fault.restarts&&!entry.retried&&pairRestarts()>=entry.fault.restartsAfter)entry.retried=true;
+  for(const fault of faults){
+   const entry=fired.find(e=>e.fault===fault);
+   assert.ok(entry,`link fault ${fault.index} (${fault.kind}) was injected during the exchange`);
+   if(fault.kind==='stall')assert.ok(entry.resumed,'the owner stall was injected and released during the exchange');
+   else assert.ok(existsSync(resetRequest+'.done'),'the partner console took its soft-reset chord during the exchange');
+   if(fault.restarts)assert.ok(entry.retried,fault.kind==='reset'?'both owners proved the restarted console\'s leg and retried it once':'both owners proved the interrupted leg and retried it once');
+  }
   const receipt=json(receiptPath);assert.equal(receipt.nativeSaveVerified,true);assert.equal(receipt.pokemon.species,68);assert.ok(sameEvolutionIndividual(machoke,receipt.pokemon));
   const pair=json(join(root,'evolution-pairs',requestId+'.json'));
   assert.equal(pair.phase,'complete');
-  if(stall)assert.equal(pair.restarts??0,stall.restarts,stall.restarts?'both owners proved the interrupted leg and retried it once':'the stalled owner was held by the linked frame clock, not restarted');
-  if(reset)assert.equal(pair.restarts??0,reset.restarts,'both owners proved the restarted console\'s leg and retried it once');
+  // A stall without a retry is held by the paired frame clocks: it adds no retry of its own.
+  for(const fault of faults.filter(f=>!f.restarts))assert.equal(pair.restarts??0,fault.restartsAfter,'the stalled owner was held by the linked frame clock, not restarted');
+  assert.equal(pair.restarts??0,retries,`the exchange took exactly the ${retries} verified ${retries===1?'retry':'retries'} its link faults cost`);
   assert.deepEqual(pair.reservation.roles,{source:{owner:'firered',title:'firered',trainerId:before.playerMemory.trainer.trainerId},partner:{owner,title:'firered',trainerId:partnerBefore.playerMemory.trainer.trainerId}});
   const placeholder=pair.reservation.partner;
   assert.ok(partnerBefore.playerMemory.trainer.party.some(p=>encounterFingerprint(p)===pair.reservation.partnerFingerprint),'the placeholder is the partner\'s own party member');
